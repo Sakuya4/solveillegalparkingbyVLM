@@ -38,8 +38,8 @@
 // ===========================
 // Enter your WiFi credentials
 // ===========================
-const char* ssid = "janalexei";
-const char* password = "29020498";
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
 
 void startCameraServer();
 void setupLedFlash(int pin);
