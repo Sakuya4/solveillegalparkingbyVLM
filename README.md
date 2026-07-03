@@ -69,92 +69,47 @@ cmd:
 5. 開始分析
 
 ---
-### 專題升級方向：Edge 即時違停事件偵測
+### 未來展望
 
-本專案後續規劃從原本的單張圖片 YOLO + VLM demo，升級為可模擬政府機構監視器或 edge 裝置部署的「違規事件輔助偵測與蒐證系統」。
+目前版本已經可以完成基本的影像上傳與違停辨識。後續希望把它整理成更接近真實場景的監視器端系統：攝影機持續輸入影像，系統先在本地端篩出疑似違規事件，再交給 VLM 或人工審核做後續判斷。
 
-核心定位不是全自動開罰，而是：
-
-1. 在 edge 端即時偵測車輛、紅線或禁停區。
-2. 透過追蹤器計算車輛停留時間與靜止狀態。
-3. 只在疑似違規事件發生時建立 evidence package。
-4. 由 VLM 作為二次審查與說明產生器。
-5. 最後交由人工審核確認是否成立。
-
-這樣可以降低 VLM 成本、避免逐幀上雲，也讓每個判定都有可解釋的依據。
+這個方向的重點不是把所有模型都堆進來，而是把「違停」從單張圖片判斷，整理成一個可以被測試、統計、解釋的事件流程。
 
 ---
-### 目前新增功能
+### 目前完成的延伸工作
 
-目前已新增一組可測試的 edge 模擬與事件判定核心，放在：
+目前新增了一組比較乾淨的事件判定與模擬核心，放在：
 
 `Application/DebugVersion/src/illegal_parking`
 
-新增內容包含：
+它可以先在沒有實體監視器或 edge 硬體的情況下，用圖片資料夾、影片或 webcam 模擬輸入來源，並測試事件判定邏輯。
 
-1. `event_models.py`
-   - 定義 `BBox`, `TrackSnapshot`, `RuleEvidence`, `ViolationCandidate` 等事件資料結構。
+另外也新增了：
 
-2. `violation_engine.py`
-   - 根據車輛類別、YOLO 信心分數、停留時間、紅線重疊比例、ROI 狀態判斷是否成為違規候選事件。
-
-3. `frame_sources.py`
-   - 支援模擬 edge input：
-     - `SyntheticFrameSource`
-     - `ImageFolderSource`
-     - `VideoFileSource`
-     - `WebcamSource`
-   - 也提供 `EdgeProfile`，可模擬低 FPS 或低算力 edge 裝置。
-
-4. `simulation.py`
-   - 可讀取 frame source 並輸出處理幀數摘要。
-
-5. `metrics.py`
-   - 提供事件層級的 TP / FP / FN / TN、precision、recall、false positive rate。
+- `scripts/run_edge_simulation.py`：用命令列跑模擬輸入來源。
+- `hardware_sim/`：用 Verilog / SystemC 的方式描述未來可能硬體化的事件過濾邏輯。
+- `tests/`：目前用 pytest 驗證 Python 事件引擎、edge 模擬與硬體模擬測試向量。
 
 ---
-### Edge 模擬執行方式
+### Phase 1：軟體端事件模擬與統計
 
-目前可以在沒有實體監視器或 edge 硬體的情況下，用資料夾或影片模擬輸入來源。
+這個階段先把現有 YOLO / VLM demo 整理成可測試的軟體流程。
 
-範例：使用圖片資料夾模擬監視器串流
+目前已完成：
+
+1. 建立事件資料結構，例如車輛框、追蹤狀態、停留時間、紅線/ROI 判斷。
+2. 建立違停候選事件判定邏輯。
+3. 建立圖片資料夾、影片、webcam 的模擬輸入介面。
+4. 建立初步統計指標，例如 precision、recall、false positive rate。
+5. 保留原本 GUI demo，新增的核心邏輯先獨立測試。
+
+模擬執行範例：
 
 ```powershell
 python scripts\run_edge_simulation.py --source image-folder --path data\samples\frames --source-fps 30 --target-fps 5
 ```
 
-範例：使用影片檔模擬監視器串流
-
-```powershell
-python scripts\run_edge_simulation.py --source video --path data\samples\demo.mp4 --source-fps 30 --target-fps 10
-```
-
-輸出會是 JSON 摘要，例如：
-
-```json
-{
-  "camera_id": "image_folder",
-  "source_type": "image_folder",
-  "profile_name": "jetson_or_mini_pc_sim",
-  "total_frames": 100,
-  "processed_frames": 17,
-  "skipped_frames": 83
-}
-```
-
----
-### 測試與目前結果統計
-
-目前新增了 pytest 測試，主要驗證：
-
-- 違規候選事件判定
-- 停留時間與紅線/ROI 條件
-- edge profile 的降 FPS 行為
-- frame source 的讀取流程
-- 模擬 runner 的統計摘要
-- precision / recall / false positive rate 計算
-
-執行測試：
+測試：
 
 ```powershell
 python -m pytest
@@ -163,44 +118,34 @@ python -m pytest
 目前測試結果：
 
 ```text
-14 passed
+16 passed
 ```
 
 ---
-### 後續功能展示規劃
+### Phase 2：硬體感知模擬
 
-後續展示畫面會以「事件審核」為主，而不是只顯示模型框線：
+這個階段先不急著把 AI 模型放進硬體，而是挑出比較適合硬體化的部分：紅線重疊統計、停留時間累積、事件狀態機。
 
-1. 原始監視器畫面
-2. YOLO 車輛偵測框
-3. 紅線或禁停區 mask
-4. 車輛停留時間
-5. 疑似違規事件列表
-6. VLM 審查理由
-7. 人工審核結果：確認、駁回、證據不足
+目前先建立了：
 
----
-### 後續模型比較規劃
+- `hardware_sim/rtl/dwell_fsm.v`
+- `hardware_sim/rtl/bbox_overlap_counter.v`
+- `hardware_sim/systemc/event_pipeline_sim.cpp`
+- `hardware_sim/python_golden/dwell_fsm_model.py`
+- `hardware_sim/test_vectors/dwell_fsm_vectors.json`
 
-模型不會一次全部放進主線，而是分階段比較：
+這部分的目標是讓專題可以多一個角度：除了 Python / YOLO / VLM，也能說明哪些邏輯適合放在 edge accelerator 或 FPGA-like pipeline 裡先做過濾，減少後端 AI 模型的負擔。
 
-1. Baseline
-   - YOLO + 紅線 overlap + 停留時間
-
-2. VLM Reviewer
-   - BLIP-2 作為既有 baseline
-   - Qwen3-VL 或 InternVL 作為 open-source VLM 比較
-   - GPT / Gemini 類雲端 VLM 僅在資料政策允許時比較
-
-3. Bad Case Enhancement
-   - NAFNet：只用於模糊、低光、壓縮嚴重影像的輔助辨識
-   - SM3Det：只用於高角度、小目標、遠距監視器場景 fallback
+現階段 pytest 會先用 Python golden model 檢查測試向量。之後如果有時間，可以再接 Verilator、Icarus Verilog、SystemC 或 cocotb 做更完整的 RTL 模擬。
 
 ---
-### 重要設計原則
+### 使用到的語言與工具
 
-- 原始影像永遠保留，影像增強結果只作為模型輔助。
-- VLM 不直接作為唯一裁判，只負責二次審查與理由生成。
-- 系統輸出疑似違規事件，最終仍由人工確認。
-- 不逐幀呼叫 VLM，只在事件候選成立時呼叫。
-- 所有判定都需要可追溯的 evidence package。
+- Python：主流程、事件判定、模擬、評估、測試。
+- OpenCV / NumPy：影像與影片處理。
+- YOLO：車輛偵測。
+- VLM：後續做違規事件的二次審查與說明。
+- PySide6：目前 GUI demo。
+- pytest：測試事件邏輯與模擬流程。
+- Verilog：描述可硬體化的事件過濾模組。
+- SystemC / C++：描述較高階的硬體/系統模擬流程。

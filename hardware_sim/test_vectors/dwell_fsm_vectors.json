@@ -1,0 +1,35 @@
+[
+  {
+    "name": "stationary_vehicle_in_restricted_zone_becomes_candidate",
+    "threshold_cycles": 4,
+    "sequence": [
+      {"track_valid": true, "restricted_zone": true, "stationary": true},
+      {"track_valid": true, "restricted_zone": true, "stationary": true},
+      {"track_valid": true, "restricted_zone": true, "stationary": true},
+      {"track_valid": true, "restricted_zone": true, "stationary": true}
+    ],
+    "expected_candidate_cycle": 3
+  },
+  {
+    "name": "moving_vehicle_does_not_accumulate_dwell",
+    "threshold_cycles": 3,
+    "sequence": [
+      {"track_valid": true, "restricted_zone": true, "stationary": false},
+      {"track_valid": true, "restricted_zone": true, "stationary": false},
+      {"track_valid": true, "restricted_zone": true, "stationary": false},
+      {"track_valid": true, "restricted_zone": true, "stationary": false}
+    ],
+    "expected_candidate_cycle": null
+  },
+  {
+    "name": "leaving_restricted_zone_resets_counter",
+    "threshold_cycles": 3,
+    "sequence": [
+      {"track_valid": true, "restricted_zone": true, "stationary": true},
+      {"track_valid": true, "restricted_zone": false, "stationary": true},
+      {"track_valid": true, "restricted_zone": true, "stationary": true},
+      {"track_valid": true, "restricted_zone": true, "stationary": true}
+    ],
+    "expected_candidate_cycle": null
+  }
+]
