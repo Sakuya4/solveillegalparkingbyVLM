@@ -10,8 +10,11 @@
 - [x] Add violation hot-spot analysis and cost-savings estimation.
 - [x] Add A1/A2 accident risk hot-spot analysis.
 - [x] Add FishEye8K / FE-DETRAC YOLO dataset planner and estimated training report.
-- [ ] Download FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
-- [ ] Train detector baseline and fine-tuned traffic-camera model.
+- [x] Add FishEye8K FiftyOne-to-YOLO converter.
+- [x] Run local GPU YOLOv8n sanity training on a FishEye8K quick subset.
+- [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
+- [ ] Train full detector baseline and fine-tuned traffic-camera model.
+- [ ] Add RT-DETR / D-FINE comparison path.
 - [ ] Add SAM-assisted pseudo-label workflow for vehicle/red-line masks.
 - [ ] Compare YOLO-only, fine-tuned detector, and SAM-assisted event logic.
 - [ ] Build a final report table for accuracy, latency, violation reduction, accident-risk coverage, and estimated savings.

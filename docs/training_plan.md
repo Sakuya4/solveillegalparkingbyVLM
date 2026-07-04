@@ -57,3 +57,36 @@ yolo detect train model=yolov8n.pt data=data/processed/training/fisheye8k.yaml e
 For stronger accuracy, test `yolov8s.pt` or a newer Ultralytics small model.
 For edge deployment, keep `yolov8n.pt` as the baseline because it is easier to
 profile on CPU, NPU, or Snapdragon-class hardware.
+
+## Local GPU Setup
+
+The current local training environment uses a project-local virtual environment:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+.venv\Scripts\python.exe -m pip install ultralytics huggingface_hub pyyaml
+```
+
+Verified hardware:
+
+```text
+NVIDIA GeForce RTX 3060, 12GB VRAM
+torch 2.11.0+cu128
+CUDA available: True
+```
+
+## FishEye8K Conversion
+
+The Hugging Face FishEye8K mirror is stored as FiftyOne samples. Convert a
+quick subset with:
+
+```powershell
+.venv\Scripts\python.exe scripts\prepare_fisheye8k_yolo.py `
+  --download-missing `
+  --max-per-split 80 `
+  --output data/processed/training/fisheye8k_yolo_quick
+```
+
+The converter writes YOLO labels and a `data.yaml`. If the dataset has no
+validation split, it uses `test` as `val` for Ultralytics training.

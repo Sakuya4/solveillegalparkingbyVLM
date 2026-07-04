@@ -64,6 +64,8 @@ Raw data is intentionally not tracked by git.
 Training setup and expected pre-training outputs are documented in
 `docs/training_plan.md`.
 
+Model comparison strategy is documented in `docs/model_comparison.md`.
+
 ## Validation Plan
 
 The project can now be verified at three levels:

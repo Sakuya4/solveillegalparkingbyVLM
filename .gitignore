@@ -2,10 +2,12 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 outputs/
+runs/
 webcam_captures/
 data/raw/
 data/processed/
 /yolov8n.pt
+/yolo*.pt
 *.log
 .env
 .env.*

@@ -1,0 +1,5 @@
+# Install CUDA PyTorch separately, for example:
+# python -m pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
+ultralytics>=8.4.0
+huggingface_hub>=1.0.0
+pyyaml>=6.0.0
