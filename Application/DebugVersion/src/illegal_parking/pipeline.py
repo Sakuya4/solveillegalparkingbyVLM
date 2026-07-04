@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import time
 
 from .detectors import Detector
 from .evidence_writer import EvidenceWriter
@@ -21,6 +22,9 @@ class PipelineSummary:
     detections_seen: int
     events_written: int
     events_path: str | None
+    elapsed_sec: float
+    effective_fps: float
+    source_metadata: dict
 
     def to_dict(self) -> dict:
         return {
@@ -32,6 +36,9 @@ class PipelineSummary:
             "detections_seen": self.detections_seen,
             "events_written": self.events_written,
             "events_path": self.events_path,
+            "elapsed_sec": self.elapsed_sec,
+            "effective_fps": self.effective_fps,
+            "source_metadata": self.source_metadata,
         }
 
 
@@ -45,6 +52,7 @@ class EventPipeline:
         output_dir: str | Path,
         profile: EdgeProfile,
         tracker: SimpleIouTracker | None = None,
+        max_frames: int | None = None,
     ):
         self.source = source
         self.detector = detector
@@ -55,15 +63,19 @@ class EventPipeline:
         self.tracker = tracker or SimpleIouTracker()
         self.writer = EvidenceWriter(output_dir)
         self._emitted_track_ids: set[int] = set()
+        self.max_frames = max_frames
 
     def run(self) -> PipelineSummary:
         total_frames = 0
         processed_frames = 0
         detections_seen = 0
         events_written = 0
+        start = time.perf_counter()
 
         try:
             while True:
+                if self.max_frames is not None and total_frames >= self.max_frames:
+                    break
                 ok, frame = self.source.read()
                 if not ok or frame is None:
                     break
@@ -103,6 +115,7 @@ class EventPipeline:
         finally:
             self.source.release()
 
+        elapsed_sec = time.perf_counter() - start
         metadata = self.source.get_metadata()
         events_path = self.writer.events_path if self.writer.events_path.exists() else None
         return PipelineSummary(
@@ -114,4 +127,7 @@ class EventPipeline:
             detections_seen=detections_seen,
             events_written=events_written,
             events_path=str(events_path) if events_path else None,
+            elapsed_sec=elapsed_sec,
+            effective_fps=total_frames / elapsed_sec if elapsed_sec > 0 else 0.0,
+            source_metadata=metadata,
         )

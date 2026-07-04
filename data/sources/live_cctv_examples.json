@@ -1,0 +1,10 @@
+[
+  {
+    "id": "taichung_c000129",
+    "title": "臺中市 C000129 馬場路/后科路",
+    "source_page": "https://opendata.taichung.gov.tw/search/9aa519fe-3557-4991-8623-9f4275205333",
+    "cctv_page_url": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+    "source_type": "cctv-page",
+    "notes": "The CCTV page contains an image source that the live validator resolves before reading frames."
+  }
+]

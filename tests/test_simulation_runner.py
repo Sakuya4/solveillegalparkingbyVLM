@@ -34,3 +34,20 @@ def test_run_frame_source_releases_source():
     run_frame_source(source, EdgeProfile(name="full_rate"))
 
     assert source.released
+
+
+def test_run_frame_source_stops_at_max_frames():
+    source = SyntheticFrameSource(
+        [np.zeros((2, 2, 3), dtype=np.uint8) for _ in range(10)],
+        camera_id="sim_cam",
+    )
+
+    summary = run_frame_source(
+        source,
+        EdgeProfile(name="full_rate", source_fps=10.0, target_fps=10.0),
+        max_frames=3,
+    )
+
+    assert summary.total_frames == 3
+    assert summary.processed_frames == 3
+    assert summary.effective_fps >= 0.0

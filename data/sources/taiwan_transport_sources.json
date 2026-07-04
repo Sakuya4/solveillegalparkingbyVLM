@@ -47,6 +47,18 @@
     "notes": "Detailed A1/A2 accident records with coordinates and road-condition fields for risk scoring."
   },
   {
+    "id": "taichung_live_cctv_sites",
+    "title": "臺中市交通影像靜態資訊",
+    "role": "live_cctv_sites",
+    "source_page": "https://opendata.taichung.gov.tw/search/9aa519fe-3557-4991-8623-9f4275205333",
+    "license": "政府資料開放授權條款-第1版",
+    "download_url": null,
+    "target_filename": null,
+    "format": "external",
+    "enabled_by_default": false,
+    "notes": "Official Taichung CCTV static information includes cctvid, roadsection, coordinates, URL, and status fields. Use as the first live-image validation target."
+  },
+  {
     "id": "fisheye8k",
     "title": "FishEye8K traffic-camera object detection dataset",
     "role": "vision_training",

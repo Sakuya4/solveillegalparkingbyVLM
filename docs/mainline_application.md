@@ -78,6 +78,32 @@ The project can now be verified at three levels:
    - Dataset: Taipei/Taoyuan violations, New Taipei camera sites, A1/A2 accidents.
    - Metrics: hot-spot overlap, time-of-day consistency, high-risk-road coverage.
 
+4. Live-image usefulness
+   - Source: public CCTV pages or approved government CCTV feeds.
+   - Tooling: `scripts/run_edge_simulation.py --source cctv-page`.
+   - Metrics: effective FPS, read latency, event trigger delay, evidence write latency.
+
+Example:
+
+```powershell
+python scripts\run_edge_simulation.py `
+  --source cctv-page `
+  --path "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129" `
+  --max-frames 5 `
+  --read-timeout-sec 5 `
+  --source-fps 1 `
+  --target-fps 1 `
+  --detector none
+```
+
+Use `--source image-url` for direct JPEG/PNG snapshot URLs and
+`--source stream-url` for RTSP, MJPEG, or HLS URLs that OpenCV can open.
+
+Live CCTV validation proves runtime behavior, throughput, and frame-read
+stability. It does not by itself prove violation accuracy, because public CCTV
+feeds may not contain labeled violations. Accuracy still comes from replayed
+annotated clips and model datasets.
+
 ## Hardware Branch Relationship
 
 The Verilog/SystemC branch implements the deterministic event filter:
