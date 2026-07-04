@@ -1,0 +1,33 @@
+[
+  {
+    "name": "red_pixels_in_bbox_band_trigger_overlap",
+    "min_red_pixels": 3,
+    "pixels": [
+      {"in_bbox_band": true, "is_red_pixel": true},
+      {"in_bbox_band": true, "is_red_pixel": false},
+      {"in_bbox_band": true, "is_red_pixel": true},
+      {"in_bbox_band": false, "is_red_pixel": true},
+      {"in_bbox_band": true, "is_red_pixel": true}
+    ],
+    "expected": {
+      "band_pixels": 4,
+      "red_pixels": 3,
+      "overlap_hit": true
+    }
+  },
+  {
+    "name": "red_pixels_outside_bbox_band_do_not_count",
+    "min_red_pixels": 2,
+    "pixels": [
+      {"in_bbox_band": false, "is_red_pixel": true},
+      {"in_bbox_band": false, "is_red_pixel": true},
+      {"in_bbox_band": true, "is_red_pixel": false},
+      {"in_bbox_band": true, "is_red_pixel": true}
+    ],
+    "expected": {
+      "band_pixels": 2,
+      "red_pixels": 1,
+      "overlap_hit": false
+    }
+  }
+]

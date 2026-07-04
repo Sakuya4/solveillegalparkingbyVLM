@@ -1,0 +1,73 @@
+[
+  {
+    "id": "taipei_traffic_violations_113",
+    "title": "臺北市交通違規舉發項目及地點 113年",
+    "role": "violation_records",
+    "source_page": "https://data.gov.tw/dataset/173625",
+    "license": "政府資料開放授權條款-第1版",
+    "download_url": "https://data.taipei/api/dataset/6df5ded8-ddfc-413b-93ea-4e26a5a77027/resource/8deab6c0-005e-4306-89fd-bff881c771a9/download",
+    "target_filename": "taipei_traffic_violations_113.csv",
+    "format": "csv",
+    "encoding": "big5",
+    "notes": "Government open-data violation records. Useful for violation type and road hot-spot analysis."
+  },
+  {
+    "id": "taoyuan_traffic_violations_113",
+    "title": "桃園市交通違規舉發項目及地點 113年",
+    "role": "violation_records",
+    "source_page": "https://data.gov.tw/dataset/168176",
+    "license": "政府資料開放授權條款-第1版",
+    "download_url": "https://opendata.tycg.gov.tw/api/dataset/08b2987e-01e5-458d-a8c1-cd4b540a0105/resource/fa2601c4-404d-4098-ae1b-895f6393d721/download",
+    "target_filename": "taoyuan_traffic_violations_113.csv",
+    "format": "csv",
+    "encoding": "big5",
+    "notes": "Includes latitude and longitude, making it useful for spatial validation and heat-map demos."
+  },
+  {
+    "id": "new_taipei_illegal_parking_camera_sites",
+    "title": "新北市違規停車自動偵測系統設置地點",
+    "role": "camera_sites",
+    "source_page": "https://data.ntpc.gov.tw/datasets/bb59a616-3572-4e92-9d09-01bf422057a6",
+    "license": "政府資料開放授權條款-第1版",
+    "download_url": "https://data.ntpc.gov.tw/api/datasets/bb59a616-3572-4e92-9d09-01bf422057a6/csv",
+    "target_filename": "new_taipei_illegal_parking_camera_sites.csv",
+    "format": "csv",
+    "encoding": "utf-8-sig",
+    "notes": "Deployment reference for illegal-parking automatic enforcement camera locations."
+  },
+  {
+    "id": "taiwan_accidents_a1_a2_113",
+    "title": "113年傷亡道路交通事故資料 A1/A2",
+    "role": "accident_records",
+    "source_page": "https://data.gov.tw/dataset/172969",
+    "license": "政府資料開放授權條款-第1版",
+    "download_url": "https://opdadm.moi.gov.tw/api/v1/no-auth/resource/api/dataset/CCAD7AA8-5139-4066-8BE3-D6CC3154C137/resource/36C1D864-51F8-4A78-9D68-8298E00B0732/download",
+    "target_filename": "taiwan_accidents_a1_a2_113.zip",
+    "format": "zip",
+    "notes": "Detailed A1/A2 accident records with coordinates and road-condition fields for risk scoring."
+  },
+  {
+    "id": "fisheye8k",
+    "title": "FishEye8K traffic-camera object detection dataset",
+    "role": "vision_training",
+    "source_page": "https://github.com/MoyoG/FishEye8K",
+    "license": "See upstream dataset terms before redistribution",
+    "download_url": null,
+    "target_filename": null,
+    "format": "external",
+    "enabled_by_default": false,
+    "notes": "Taiwan traffic-camera image dataset for detector training. Kept metadata-only here because the full image dataset should be handled by the training workflow."
+  },
+  {
+    "id": "fe_detrac",
+    "title": "FE-DETRAC traffic-camera object detection and tracking dataset",
+    "role": "vision_training",
+    "source_page": "https://scidm.nchc.org.tw/dataset/fe-detrac",
+    "license": "See upstream dataset terms before redistribution",
+    "download_url": null,
+    "target_filename": null,
+    "format": "external",
+    "enabled_by_default": false,
+    "notes": "Expanded Taiwan fisheye traffic-camera dataset for object detection and tracking experiments."
+  }
+]

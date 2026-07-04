@@ -3,6 +3,9 @@ __pycache__/
 .pytest_cache/
 outputs/
 webcam_captures/
+data/raw/
+data/processed/
+/yolov8n.pt
 *.log
 .env
 .env.*
