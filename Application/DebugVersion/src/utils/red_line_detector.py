@@ -93,9 +93,10 @@ def bbox_hits_redline(bbox: tuple, red_mask: np.ndarray,
         x2 = max(0, min(x2, w-1))
         y2 = max(0, min(y2, h-1))
         
-        # 檢查底部區域 (假設紅線在底部)
+        # 檢查車輛底部接觸帶：紅線可能落在車框內部底緣，也可能在車框下方路緣。
         y_top = max(y2 - band_px, 0)
-        strip = red_mask[y_top:y2+1, x1:x2+1]
+        y_bottom = min(y2 + band_px, h - 1)
+        strip = red_mask[y_top:y_bottom+1, x1:x2+1]
         
         if strip.size == 0:
             return False, 0.0
