@@ -76,7 +76,8 @@ The project can now be verified at three levels:
 
 3. City-level usefulness
    - Dataset: Taipei/Taoyuan violations, New Taipei camera sites, A1/A2 accidents.
-   - Metrics: hot-spot overlap, time-of-day consistency, high-risk-road coverage.
+   - Metrics: hot-spot overlap, time-of-day consistency, high-risk-road coverage,
+     projected violation reduction, and estimated manual-review cost savings.
 
 4. Live-image usefulness
    - Source: public CCTV pages or approved government CCTV feeds.
@@ -103,6 +104,40 @@ Live CCTV validation proves runtime behavior, throughput, and frame-read
 stability. It does not by itself prove violation accuracy, because public CCTV
 feeds may not contain labeled violations. Accuracy still comes from replayed
 annotated clips and model datasets.
+
+## Hot-Spot Reduction Standard
+
+Public violation records can define the deployment target:
+
+```text
+high-heat roads before deployment
+  -> automated event detection and review
+  -> fewer repeated violations
+  -> medium/low heat after deployment
+```
+
+Run:
+
+```powershell
+python scripts\analyze_hotspots.py `
+  --input data/raw/taiwan/taoyuan_traffic_violations_113.csv `
+  --top-n 30 `
+  --high-heat-reduction-rate 0.35 `
+  --minutes-per-manual-case 8 `
+  --hourly-labor-cost 550 `
+  --system-monthly-cost 50000
+```
+
+The output estimates:
+
+- baseline violations in the selected hot spots
+- projected violations after automated enforcement
+- reduced violations
+- manual handling cost before/after
+- net savings after system operating cost
+
+This turns hot-spot data into a measurable project target instead of only a
+map visualization.
 
 ## Hardware Branch Relationship
 
