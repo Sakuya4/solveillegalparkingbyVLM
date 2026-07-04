@@ -8,11 +8,12 @@
 - [x] Prepare Taiwan open-data sources locally without committing raw data.
 - [x] Add live CCTV validation source for public camera pages.
 - [x] Add violation hot-spot analysis and cost-savings estimation.
+- [x] Add A1/A2 accident risk hot-spot analysis.
 - [ ] Add FishEye8K / FE-DETRAC training dataset conversion.
 - [ ] Train detector baseline and fine-tuned traffic-camera model.
 - [ ] Add SAM-assisted pseudo-label workflow for vehicle/red-line masks.
 - [ ] Compare YOLO-only, fine-tuned detector, and SAM-assisted event logic.
-- [ ] Build a final report table for accuracy, latency, hot-spot reduction, and estimated savings.
+- [ ] Build a final report table for accuracy, latency, violation reduction, accident-risk coverage, and estimated savings.
 
 ## Branch: Hardware-Aware Event Filter
 
@@ -28,6 +29,7 @@
 
 - [x] Runtime validation: read public CCTV frames and report effective FPS.
 - [x] Open-data validation: rank roads by violation hot spots.
+- [x] Risk validation: rank A1/A2 accident hot spots by coordinate grid.
 - [ ] Intervention validation: compare before/after windows once repeated monthly data is available.
 - [ ] Training validation: report mAP, recall, FPS, and edge latency for trained models.
 - [ ] Event validation: report precision, recall, false-positive rate, and trigger delay on annotated clips.

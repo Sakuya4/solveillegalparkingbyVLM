@@ -139,6 +139,35 @@ The output estimates:
 This turns hot-spot data into a measurable project target instead of only a
 map visualization.
 
+## A1/A2 Accident Risk Standard
+
+A1/A2 data should be used as a risk baseline, not as a direct promise that one
+camera immediately prevents crashes. The practical target is:
+
+```text
+A1/A2 high-risk grids
+  -> deploy cameras or replay validation clips near those grids
+  -> detect precursor events such as illegal stopping, lane blockage, red-line parking, or poor sight-line behavior
+  -> reduce repeated precursor events
+  -> compare later A1/A2 and violation records against the baseline
+```
+
+Run:
+
+```powershell
+python scripts\analyze_accidents.py `
+  --input data/raw/taiwan/taiwan_accidents_a1_a2_113.zip `
+  --top-n 30 `
+  --grid-precision 3 `
+  --a1-weight 5 `
+  --a2-weight 1 `
+  --high-risk-reduction-rate 0.2
+```
+
+The report ranks coordinate-grid hot spots by weighted risk. A1 cases carry a
+higher score than A2 cases, so fatal-risk locations move up the deployment
+priority list even when the raw case count is smaller.
+
 ## Hardware Branch Relationship
 
 The Verilog/SystemC branch implements the deterministic event filter:
