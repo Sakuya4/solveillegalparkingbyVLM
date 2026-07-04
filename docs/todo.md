@@ -9,7 +9,8 @@
 - [x] Add live CCTV validation source for public camera pages.
 - [x] Add violation hot-spot analysis and cost-savings estimation.
 - [x] Add A1/A2 accident risk hot-spot analysis.
-- [ ] Add FishEye8K / FE-DETRAC training dataset conversion.
+- [x] Add FishEye8K / FE-DETRAC YOLO dataset planner and estimated training report.
+- [ ] Download FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train detector baseline and fine-tuned traffic-camera model.
 - [ ] Add SAM-assisted pseudo-label workflow for vehicle/red-line masks.
 - [ ] Compare YOLO-only, fine-tuned detector, and SAM-assisted event logic.

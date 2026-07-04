@@ -61,6 +61,9 @@ government open-data sources into `data/raw/taiwan/`, and writes
 
 Raw data is intentionally not tracked by git.
 
+Training setup and expected pre-training outputs are documented in
+`docs/training_plan.md`.
+
 ## Validation Plan
 
 The project can now be verified at three levels:
