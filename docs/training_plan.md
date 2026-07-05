@@ -166,6 +166,81 @@ on pedestrian and truck classes. This is a useful baseline for showing why the
 project should compare D-FINE / RT-DETR and add SAM/SAM2-assisted evidence
 rather than stopping at YOLO.
 
+## First RT-DETR Baseline Result
+
+The first RT-DETR run used the same FishEye8K 1K/1K subset as the YOLOv8n
+baseline. The purpose is not to claim final production accuracy yet. It is to
+prove that the project has a stronger non-YOLO detector path with measured
+tradeoffs.
+
+Source basis:
+
+- Ultralytics RT-DETR documentation presents RT-DETR as a real-time,
+  end-to-end detector and provides `rtdetr-l.pt` training examples.
+- Ultralytics train-mode documentation uses standard `epochs`, `imgsz`,
+  `device`, and pretrained-model training arguments.
+- The local run keeps `imgsz=640` so YOLOv8n and RT-DETR-L use the same image
+  scale.
+
+Command:
+
+```powershell
+.venv\Scripts\yolo.exe detect train `
+  model=rtdetr-l.pt `
+  data=data/processed/training/fisheye8k_yolo_1k/data.yaml `
+  epochs=30 `
+  imgsz=640 `
+  batch=2 `
+  device=0 `
+  workers=0 `
+  patience=15 `
+  project=outputs/training `
+  name=fisheye8k_rtdetr_l_1k_e30 `
+  exist_ok=True
+```
+
+Validation command:
+
+```powershell
+.venv\Scripts\yolo.exe detect val `
+  model=runs/detect/outputs/training/fisheye8k_rtdetr_l_1k_e30/weights/best.pt `
+  data=data/processed/training/fisheye8k_yolo_1k/data.yaml `
+  imgsz=640 `
+  batch=2 `
+  device=0 `
+  workers=0 `
+  project=outputs/validation `
+  name=fisheye8k_rtdetr_l_1k_best `
+  exist_ok=True
+```
+
+Best validation result:
+
+| Metric | Value |
+| --- | ---: |
+| Precision | 0.641 |
+| Recall | 0.498 |
+| mAP50 | 0.533 |
+| mAP50-95 | 0.298 |
+| Inference | 29.0 ms/image |
+| Train time | about 2h 34m |
+
+Per-class mAP50:
+
+| Class | mAP50 |
+| --- | ---: |
+| Bus | 0.662 |
+| Bike | 0.560 |
+| Car | 0.721 |
+| Pedestrian | 0.128 |
+| Truck | 0.593 |
+
+Interpretation: RT-DETR-L is substantially more accurate than YOLOv8n on the
+same subset, especially for car, truck, and bus detection. It is also much
+slower. This gives the mainline project a real detector comparison: use YOLOv8n
+as the edge-speed baseline, RT-DETR-L as the stronger accuracy baseline, then
+measure which one produces better violation events after rule filtering.
+
 ## Local GPU Setup
 
 The current local training environment uses a project-local virtual environment:

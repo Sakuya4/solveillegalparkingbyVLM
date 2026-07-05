@@ -115,6 +115,71 @@ YOLOv8n baseline is fast but not enough
   -> compare event precision/recall, not only detector mAP
 ```
 
+## RT-DETR Baseline Result
+
+The first non-YOLO detector baseline used the same FishEye8K 1K/1K subset as
+the YOLOv8n run. This makes the comparison useful even though it is not yet a
+full-dataset result.
+
+RT-DETR is a strong candidate because Ultralytics describes it as a real-time,
+end-to-end transformer detector with hybrid encoder design, anchor-free
+detection, and NMS-free inference. The local run used the official
+`rtdetr-l.pt` checkpoint, `imgsz=640`, and a 30-epoch transfer-learning schedule.
+
+Command:
+
+```powershell
+.venv\Scripts\yolo.exe detect train `
+  model=rtdetr-l.pt `
+  data=data/processed/training/fisheye8k_yolo_1k/data.yaml `
+  epochs=30 `
+  imgsz=640 `
+  batch=2 `
+  device=0 `
+  workers=0 `
+  patience=15 `
+  project=outputs/training `
+  name=fisheye8k_rtdetr_l_1k_e30 `
+  exist_ok=True
+```
+
+Best-checkpoint validation:
+
+| Model | Epochs | Precision | Recall | mAP50 | mAP50-95 | Inference |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| YOLOv8n | 100 | 0.430 | 0.350 | 0.329 | 0.175 | 3.9 ms/image |
+| RT-DETR-L | 30 | 0.641 | 0.498 | 0.533 | 0.298 | 29.0 ms/image |
+
+Per-class RT-DETR-L result:
+
+| Class | mAP50 | mAP50-95 |
+| --- | ---: | ---: |
+| Bus | 0.662 | 0.439 |
+| Bike | 0.560 | 0.240 |
+| Car | 0.721 | 0.417 |
+| Pedestrian | 0.128 | 0.053 |
+| Truck | 0.593 | 0.340 |
+
+Interpretation:
+
+- RT-DETR-L gives a much stronger detector baseline than YOLOv8n on this
+  subset: `+0.204` mAP50 and `+0.123` mAP50-95.
+- The gain is not free. RT-DETR-L is about 7.4x slower per image on this local
+  validation run.
+- The weak class remains pedestrian. This points to data balance, small-object
+  handling, and SAM/SAM2-assisted mask or crop evidence as the next meaningful
+  improvements.
+
+This is now the clearest project claim:
+
+```text
+YOLOv8n proves the edge baseline.
+RT-DETR-L proves the stronger detector path.
+SAM/SAM2 should improve evidence quality and labels around road markings.
+The final system must choose a detector based on event accuracy and edge cost,
+not popularity.
+```
+
 ## Open-Source Goal
 
 The repo should let another country do the same workflow:

@@ -13,9 +13,10 @@
 - [x] Add FishEye8K FiftyOne-to-YOLO converter.
 - [x] Run local GPU YOLOv8n sanity training on a FishEye8K quick subset.
 - [x] Add detector training error analysis and weak-class recommendations.
+- [x] Run RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
-- [ ] Add RT-DETR / D-FINE comparison path.
+- [ ] Add D-FINE comparison path.
 - [ ] Add SAM-assisted pseudo-label workflow for vehicle/red-line masks.
 - [ ] Compare YOLO-only, fine-tuned detector, and SAM-assisted event logic.
 - [ ] Build a final report table for accuracy, latency, violation reduction, accident-risk coverage, and estimated savings.
@@ -37,5 +38,5 @@
 - [x] Open-data validation: rank roads by violation hot spots.
 - [x] Risk validation: rank A1/A2 accident hot spots by coordinate grid.
 - [ ] Intervention validation: compare before/after windows once repeated monthly data is available.
-- [ ] Training validation: report mAP, recall, FPS, and edge latency for trained models.
+- [x] Training validation: report mAP, recall, FPS, and edge latency for first trained models.
 - [ ] Event validation: report precision, recall, false-positive rate, and trigger delay on annotated clips.
