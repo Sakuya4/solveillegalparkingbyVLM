@@ -85,6 +85,36 @@ So the sanity result should not be compared against the full-data estimate.
 | SAM/SAM2 | Label and evidence assistant | Helps generate masks for vehicles, red lines, curb zones, and occlusion reasoning. |
 | VLM | Review stage | Explains candidate events and helps human-review prioritization. |
 
+## Current Error Analysis
+
+The first source-backed YOLOv8n run is useful because it exposes why a
+YOLO-only project is weak:
+
+| Class | mAP50 | Issue |
+| --- | ---: | --- |
+| Car | 0.517 | Usable baseline for vehicle detection. |
+| Bike | 0.494 | Near usable, but still low for deployment. |
+| Bus | 0.479 | Detectable, but needs stronger localization. |
+| Truck | 0.122 | Weak rare-class performance. |
+| Pedestrian | 0.030 | Fails on small/vulnerable-road-user class. |
+
+The generated analysis report identifies:
+
+- best mAP50 epoch: 58
+- best mAP50: 0.32968
+- best mAP50-95: 0.17529
+- weak classes: Pedestrian, Truck
+- instance imbalance ratio: about 57.9x
+
+This supports the next experiment:
+
+```text
+YOLOv8n baseline is fast but not enough
+  -> train RT-DETR / D-FINE for stronger real-time detection
+  -> use SAM/SAM2 to add mask-level rule evidence
+  -> compare event precision/recall, not only detector mAP
+```
+
 ## Open-Source Goal
 
 The repo should let another country do the same workflow:

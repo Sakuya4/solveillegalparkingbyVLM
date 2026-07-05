@@ -12,6 +12,7 @@
 - [x] Add FishEye8K / FE-DETRAC YOLO dataset planner and estimated training report.
 - [x] Add FishEye8K FiftyOne-to-YOLO converter.
 - [x] Run local GPU YOLOv8n sanity training on a FishEye8K quick subset.
+- [x] Add detector training error analysis and weak-class recommendations.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add RT-DETR / D-FINE comparison path.
@@ -25,6 +26,7 @@
 - [x] Add Verilog bbox overlap counter.
 - [x] Add Python golden models and vectors.
 - [x] Add self-checking Verilog testbenches.
+- [x] Document how the hardware-aware branch supports detector error control.
 - [ ] Add SystemC queue/throughput simulation using measured live-camera FPS.
 - [ ] Connect hardware filter vectors to real pipeline event evidence.
 - [ ] Document Snapdragon/QNN export and profiling path.

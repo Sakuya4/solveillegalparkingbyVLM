@@ -93,3 +93,50 @@ vvp hardware_sim\build\bbox_overlap_counter_tb.vvp
 SystemC remains the higher-level transaction simulation path. It mirrors the
 same evidence signals and helps explain how an edge device would schedule the
 rule filter before forwarding candidate events to software.
+
+## Relationship To The Main Detector Experiments
+
+The hardware-aware branch is not a separate product. It supports the main
+research question:
+
+```text
+detector output is imperfect
+  -> deterministic event filter checks dwell time and restricted-zone evidence
+  -> only stable candidates reach VLM/human review
+  -> fewer false alerts and lower review cost
+```
+
+This is important because the first YOLOv8n FishEye8K baseline is weak on some
+classes. The system should not trust a single detector frame. It should use:
+
+- detector confidence and class
+- tracker stability
+- restricted-zone overlap
+- dwell-time persistence
+- event acknowledgment after evidence is written
+
+The Verilog modules model the low-level rule logic. The SystemC model represents
+the transaction-level scheduling question: how many candidate events per second
+can the edge device filter before expensive AI review becomes the bottleneck?
+
+## Next SystemC Task
+
+The next SystemC slice should add a queue/throughput simulation:
+
+| Input | Meaning |
+| --- | --- |
+| camera_fps | Effective camera read FPS from live CCTV validation. |
+| detections_per_frame | Detector load from YOLO/RT-DETR/D-FINE. |
+| filter_cycles | Deterministic event-filter cost. |
+| review_latency_ms | VLM or human-review latency per candidate. |
+
+Expected output:
+
+- candidate events per minute
+- dropped/queued candidates
+- VLM review load reduction
+- minimum edge filter throughput required for deployment
+
+This makes the branch useful even without physical NPU hardware. It simulates
+the deployment pressure that a Snapdragon/NPU implementation would need to
+handle later.
