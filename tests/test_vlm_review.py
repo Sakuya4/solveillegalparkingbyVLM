@@ -5,6 +5,7 @@ from pathlib import Path
 
 from illegal_parking.vlm_review import (
     VlmReviewRequest,
+    build_unparsed_vlm_review_result,
     compare_vlm_review_results,
     build_redline_parking_review_request,
     parse_vlm_review_result_text,
@@ -184,6 +185,41 @@ def test_parse_vlm_review_result_text_handles_string_booleans():
     assert result.likely_violation is False
     assert result.confidence == 0.33
     assert result.human_review_needed is True
+
+
+def test_parse_vlm_review_result_text_keeps_string_reason_as_one_item():
+    result = parse_vlm_review_result_text(
+        '{"likely_violation": true, "confidence": 0.44, "visual_reasons": "red-line contact is visible", "missing_evidence": "needs second frame", "human_review_needed": true}',
+        provider="sample_vlm",
+    )
+
+    assert result.visual_reasons == ["red-line contact is visible"]
+    assert result.missing_evidence == ["needs second frame"]
+
+
+def test_parse_vlm_review_result_text_rejects_unknown_boolean_words():
+    try:
+        parse_vlm_review_result_text(
+            '{"likely_violation": "stop", "confidence": 0.9, "visual_reasons": [], "missing_evidence": [], "human_review_needed": false}',
+            provider="small_vlm",
+        )
+    except ValueError as exc:
+        assert "Unsupported boolean string" in str(exc)
+    else:
+        raise AssertionError("Expected unsupported boolean string to fail normalization.")
+
+
+def test_build_unparsed_vlm_review_result_requires_human_review():
+    result = build_unparsed_vlm_review_result(
+        '{"likely_violation": "stop"',
+        provider="small_vlm",
+        error="invalid json",
+    )
+
+    assert result.likely_violation is False
+    assert result.confidence == 0.0
+    assert result.human_review_needed is True
+    assert result.provider == "small_vlm"
 
 
 def test_run_vlm_review_cli_accepts_vlm_json_response(tmp_path):

@@ -55,8 +55,8 @@ class VlmReviewResult:
         return cls(
             likely_violation=_as_bool(payload["likely_violation"]),
             confidence=float(payload["confidence"]),
-            visual_reasons=[str(item) for item in payload.get("visual_reasons", [])],
-            missing_evidence=[str(item) for item in payload.get("missing_evidence", [])],
+            visual_reasons=_as_string_list(payload.get("visual_reasons", [])),
+            missing_evidence=_as_string_list(payload.get("missing_evidence", [])),
             human_review_needed=_as_bool(payload["human_review_needed"]),
             provider=str(provider or payload.get("provider", "unknown_vlm")),
         )
@@ -131,6 +131,18 @@ def review_redline_parking_offline(
 def parse_vlm_review_result_text(text: str, provider: str) -> VlmReviewResult:
     payload = json.loads(_extract_json_object(text))
     return VlmReviewResult.from_dict(payload, provider=provider)
+
+
+def build_unparsed_vlm_review_result(raw_text: str, provider: str, error: str) -> VlmReviewResult:
+    snippet = " ".join(raw_text.split())[:240]
+    return VlmReviewResult(
+        likely_violation=False,
+        confidence=0.0,
+        visual_reasons=[f"Unparsed VLM response: {snippet}"] if snippet else [],
+        missing_evidence=[f"VLM response could not be normalized: {error}"],
+        human_review_needed=True,
+        provider=provider,
+    )
 
 
 def compare_vlm_review_results(
@@ -228,4 +240,15 @@ def _as_bool(value: Any) -> bool:
             return True
         if normalized in {"false", "no", "0"}:
             return False
+        raise ValueError(f"Unsupported boolean string: {value}")
     return bool(value)
+
+
+def _as_string_list(value: Any) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, str):
+        return [value]
+    if isinstance(value, list):
+        return [str(item) for item in value]
+    return [str(value)]

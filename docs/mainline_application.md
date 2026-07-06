@@ -190,6 +190,49 @@ python scripts\compare_vlm_reviews.py `
 This lets the project compare BLIP-2, Qwen-VL, LLaVA-style local models, or a
 cloud VLM without changing the event evidence format.
 
+Run a local Hugging Face Transformers VLM:
+
+```powershell
+python scripts\run_transformers_vlm_review.py `
+  --request-json outputs\user_redline_sam_demo\vlm_review_request.json `
+  --model-id Qwen/Qwen2.5-VL-3B-Instruct `
+  --provider-name qwen2_5_vl_3b `
+  --device 0 `
+  --allow-unparsed `
+  --raw-output outputs\user_redline_sam_demo\qwen2_5_vl_raw.txt `
+  --result-output outputs\user_redline_sam_demo\qwen2_5_vl_result.json
+```
+
+This runner uses the Hugging Face Transformers `image-text-to-text` pipeline
+format. Qwen2.5-VL is a good first local target because it has a 3B instruction
+checkpoint, while BLIP-2 can remain an older baseline.
+
+Source references:
+
+- Hugging Face image-text-to-text task guide: https://huggingface.co/docs/transformers/en/tasks/image_text_to_text
+- Hugging Face Qwen2.5-VL model docs: https://huggingface.co/docs/transformers/en/model_doc/qwen2_5_vl
+- Qwen/Qwen2.5-VL-3B-Instruct model card: https://huggingface.co/Qwen/Qwen2.5-VL-3B-Instruct
+
+First lightweight local VLM smoke:
+
+```powershell
+python scripts\run_transformers_vlm_review.py `
+  --request-json outputs\user_redline_sam_demo\vlm_review_request.json `
+  --model-id llava-hf/llava-interleave-qwen-0.5b-hf `
+  --provider-name llava_interleave_qwen_0_5b `
+  --device 0 `
+  --max-new-tokens 512 `
+  --allow-unparsed `
+  --raw-output outputs\user_redline_sam_demo\llava_interleave_qwen_0_5b_raw.txt `
+  --result-output outputs\user_redline_sam_demo\llava_interleave_qwen_0_5b_result.json
+```
+
+Observed result: the model ran locally, but the response did not normalize into
+the required JSON schema. The comparison report therefore marks it as
+`human_review_needed: true` and disagreement with the offline evidence baseline.
+This gives the report a useful VLM metric beyond accuracy: schema-following
+stability.
+
 ## Data Roles
 
 | Role | Sources | Purpose |

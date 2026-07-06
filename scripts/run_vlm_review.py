@@ -9,7 +9,12 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "Application" / "DebugVersion" / "src"
 sys.path.insert(0, str(SRC))
 
-from illegal_parking.vlm_review import VlmReviewRequest, parse_vlm_review_result_text, review_redline_parking_offline
+from illegal_parking.vlm_review import (
+    VlmReviewRequest,
+    build_unparsed_vlm_review_result,
+    parse_vlm_review_result_text,
+    review_redline_parking_offline,
+)
 
 
 def main() -> int:
@@ -24,6 +29,7 @@ def main() -> int:
     )
     parser.add_argument("--vlm-response-text", help="Path to a VLM response containing the expected JSON object.")
     parser.add_argument("--vlm-provider-name", default="external_vlm", help="Provider name for --provider vlm-json.")
+    parser.add_argument("--allow-unparsed", action="store_true", help="Write a review-needed result if the VLM response is not valid normalized JSON.")
     args = parser.parse_args()
 
     payload = json.loads(Path(args.request_json).read_text(encoding="utf-8"))
@@ -34,7 +40,12 @@ def main() -> int:
         if not args.vlm_response_text:
             raise SystemExit("--vlm-response-text is required when --provider vlm-json")
         response_text = Path(args.vlm_response_text).read_text(encoding="utf-8")
-        result = parse_vlm_review_result_text(response_text, provider=args.vlm_provider_name)
+        try:
+            result = parse_vlm_review_result_text(response_text, provider=args.vlm_provider_name)
+        except (ValueError, json.JSONDecodeError) as exc:
+            if not args.allow_unparsed:
+                raise
+            result = build_unparsed_vlm_review_result(response_text, provider=args.vlm_provider_name, error=str(exc))
 
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)

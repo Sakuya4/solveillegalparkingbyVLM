@@ -6,3 +6,7 @@ pyyaml>=6.0.0
 
 # Optional for SAM-assisted mask evidence:
 # python -m pip install git+https://github.com/facebookresearch/segment-anything.git
+
+# Optional for local VLM review adapters:
+transformers>=4.57.0
+accelerate>=1.0.0

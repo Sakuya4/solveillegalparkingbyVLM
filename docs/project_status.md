@@ -56,10 +56,12 @@ profiling.
 - [x] Add offline evidence reviewer as deterministic baseline.
 - [x] Add CLI for normalizing saved VLM JSON/text responses.
 - [x] Add CLI for comparing VLM providers against the baseline.
+- [x] Add source-backed Hugging Face Transformers VLM runner.
+- [x] Run a lightweight local LLaVA/Qwen 0.5B VLM smoke test and record schema-following failure.
 - [ ] Add BLIP-2 local runner or retire it if too heavy for the available GPU.
-- [ ] Add one stronger modern VLM runner such as Qwen-VL/LLaVA-style local inference.
+- [ ] Run one stronger modern VLM such as Qwen-VL/LLaVA-style local inference on the demo event.
 - [ ] Add optional cloud VLM runner for high-quality comparison.
-- [ ] Report VLM accuracy, confidence calibration, latency, and human-review rate.
+- [ ] Report VLM accuracy, confidence calibration, schema-following rate, latency, and human-review rate.
 
 ## Hardware Branch Checklist
 
@@ -77,13 +79,14 @@ profiling.
 - A privacy-safe red-line parking demo from a real photo.
 - SAM-prompted vehicle mask and bottom-footprint overlap evidence.
 - A deterministic review decision: likely violation, confidence, reasons, and human-review flag.
+- A first local VLM smoke result showing that small VLMs may run but fail the JSON review contract.
 - Public data reports for violation hot spots, A1/A2 accident risk, and projected savings.
 - YOLOv8n versus RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
 - Verilog-style deterministic filtering blocks for dwell and overlap logic.
 
 ## Next Best Milestones
 
-1. Run one real VLM provider on the existing user-photo review package and compare it with the offline baseline.
+1. Run Qwen2.5-VL-3B or another stronger local VLM on the existing user-photo review package and compare schema-following and decision quality with the offline baseline.
 2. Build a 20 to 50 image/clip event validation set with labels: violation, no violation, uncertain.
 3. Train or validate D-FINE/RT-DETR/YOLO on the same data slice and report event-level quality.
 4. Add SystemC throughput simulation tied to measured pipeline FPS.
