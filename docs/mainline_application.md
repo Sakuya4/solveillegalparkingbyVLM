@@ -167,6 +167,29 @@ contract so future model adapters can be compared with the same fields:
 `likely_violation`, `confidence`, `visual_reasons`, `missing_evidence`, and
 `human_review_needed`.
 
+Normalize a saved VLM response into the same result format:
+
+```powershell
+python scripts\run_vlm_review.py `
+  --provider vlm-json `
+  --request-json outputs\user_redline_sam_demo\vlm_review_request.json `
+  --vlm-response-text outputs\user_redline_sam_demo\qwen_response.txt `
+  --vlm-provider-name qwen_vl `
+  --output outputs\user_redline_sam_demo\qwen_vl_result.json
+```
+
+Compare reviewers:
+
+```powershell
+python scripts\compare_vlm_reviews.py `
+  --result-json outputs\user_redline_sam_demo\vlm_review_result.json `
+  --result-json outputs\user_redline_sam_demo\qwen_vl_result.json `
+  --output outputs\user_redline_sam_demo\vlm_comparison.json
+```
+
+This lets the project compare BLIP-2, Qwen-VL, LLaVA-style local models, or a
+cloud VLM without changing the event evidence format.
+
 ## Data Roles
 
 | Role | Sources | Purpose |

@@ -21,6 +21,7 @@
 - [x] Add privacy redaction and two-sided red-line contact band for demos.
 - [x] Add VLM review request package for red-line parking events.
 - [x] Add deterministic VLM-compatible decision baseline.
+- [x] Add VLM response normalization and provider comparison tooling.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -48,6 +49,17 @@ class VlmReviewResult:
             "human_review_needed": self.human_review_needed,
             "provider": self.provider,
         }
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any], provider: str | None = None) -> "VlmReviewResult":
+        return cls(
+            likely_violation=_as_bool(payload["likely_violation"]),
+            confidence=float(payload["confidence"]),
+            visual_reasons=[str(item) for item in payload.get("visual_reasons", [])],
+            missing_evidence=[str(item) for item in payload.get("missing_evidence", [])],
+            human_review_needed=_as_bool(payload["human_review_needed"]),
+            provider=str(provider or payload.get("provider", "unknown_vlm")),
+        )
 
 
 @dataclass(frozen=True)
@@ -116,6 +128,34 @@ def review_redline_parking_offline(
     )
 
 
+def parse_vlm_review_result_text(text: str, provider: str) -> VlmReviewResult:
+    payload = json.loads(_extract_json_object(text))
+    return VlmReviewResult.from_dict(payload, provider=provider)
+
+
+def compare_vlm_review_results(
+    results: list[VlmReviewResult],
+    baseline_provider: str = "offline_evidence_reviewer",
+) -> list[dict[str, Any]]:
+    if not results:
+        return []
+    baseline = next((result for result in results if result.provider == baseline_provider), results[0])
+    rows: list[dict[str, Any]] = []
+    for result in results:
+        rows.append(
+            {
+                "provider": result.provider,
+                "likely_violation": result.likely_violation,
+                "confidence": result.confidence,
+                "human_review_needed": result.human_review_needed,
+                "agrees_with_baseline": result.likely_violation == baseline.likely_violation,
+                "confidence_delta_from_baseline": round(result.confidence - baseline.confidence, 4),
+                "missing_evidence_count": len(result.missing_evidence),
+            }
+        )
+    return rows
+
+
 def _build_prompt(evidence: dict[str, Any]) -> str:
     footprint_ratio = float(evidence.get("footprint_overlap_ratio", 0.0))
     footprint_pixels = int(evidence.get("footprint_overlap_pixels", 0))
@@ -161,3 +201,31 @@ def _find_missing_evidence(request: VlmReviewRequest) -> list[str]:
     if not request.image_paths:
         missing.append("Review image paths.")
     return missing
+
+
+def _extract_json_object(text: str) -> str:
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        lines = cleaned.splitlines()
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        if lines and lines[-1].strip() == "```":
+            lines = lines[:-1]
+        cleaned = "\n".join(lines).strip()
+    start = cleaned.find("{")
+    end = cleaned.rfind("}")
+    if start == -1 or end == -1 or end < start:
+        raise ValueError("VLM response does not contain a JSON object.")
+    return cleaned[start : end + 1]
+
+
+def _as_bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if normalized in {"true", "yes", "1"}:
+            return True
+        if normalized in {"false", "no", "0"}:
+            return False
+    return bool(value)
