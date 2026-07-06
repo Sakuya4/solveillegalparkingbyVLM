@@ -82,7 +82,9 @@ It writes:
 
 The default demo uses a synthetic camera frame and bbox-mask fallback. For a
 real frame, pass `--image`, `--bbox x1,y1,x2,y2`, and optionally
-`--restricted-rect x1,y1,x2,y2`. To use SAM, also pass `--sam-checkpoint`.
+`--restricted-rect x1,y1,x2,y2` or `--restricted-line x1,y1,x2,y2,width`.
+Use `--restricted-line` for red-line parking photos where the no-parking
+evidence is a painted curb line. To use SAM, also pass `--sam-checkpoint`.
 
 Public real-photo demo:
 

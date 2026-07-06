@@ -32,3 +32,30 @@ def test_mask_evidence_demo_writes_visual_artifacts(tmp_path):
     assert (tmp_path / "vehicle_mask.png").exists()
     assert (tmp_path / "restricted_mask.png").exists()
     assert (tmp_path / "overlap_overlay.jpg").exists()
+
+
+def test_mask_evidence_demo_accepts_restricted_line(tmp_path):
+    script = Path("scripts/run_mask_evidence_demo.py")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--output-dir",
+            str(tmp_path),
+            "--bbox",
+            "270,250,470,380",
+            "--restricted-line",
+            "200,340,520,340,14",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    stdout = json.loads(result.stdout)
+
+    assert stdout["mask_source"] == "bbox"
+    assert stdout["restricted_line"] == [200, 340, 520, 340, 14]
+    assert stdout["restricted_overlap_pixels"] > 0
+    assert "restricted_rect" not in stdout
