@@ -26,6 +26,9 @@ def main() -> int:
     parser.add_argument("--bbox", help="Vehicle bbox as x1,y1,x2,y2. Defaults to the synthetic vehicle bbox.")
     parser.add_argument("--restricted-rect", help="Restricted zone rect as x1,y1,x2,y2. Defaults to synthetic red-line band.")
     parser.add_argument("--restricted-line", help="Restricted red line as x1,y1,x2,y2,width.")
+    parser.add_argument("--restricted-line-margin-px", type=int, default=0, help="Extra margin on both sides of a restricted line.")
+    parser.add_argument("--blur-region", action="append", default=[], help="Privacy blur region as x1,y1,x2,y2. Can be repeated.")
+    parser.add_argument("--hide-region", action="append", default=[], help="Solid-fill removal region as x1,y1,x2,y2. Can be repeated.")
     parser.add_argument("--sam-checkpoint", help="Optional SAM checkpoint. If omitted, bbox mask fallback is used.")
     parser.add_argument("--sam-model-type", default="vit_b")
     parser.add_argument("--device", default="cuda")
@@ -52,8 +55,14 @@ def main() -> int:
             restricted_rect = _parse_bbox(args.restricted_rect)
         restricted_line = _parse_line(args.restricted_line) if args.restricted_line else None
 
+    frame = _apply_privacy_regions(
+        frame,
+        blur_regions=[_parse_bbox(value) for value in args.blur_region],
+        hide_regions=[_parse_bbox(value) for value in args.hide_region],
+    )
+
     restricted_mask = (
-        _line_mask(frame.shape[:2], restricted_line)
+        _line_mask(frame.shape[:2], restricted_line, margin_px=args.restricted_line_margin_px)
         if restricted_line
         else _rect_mask(frame.shape[:2], restricted_rect)
     )
@@ -96,6 +105,7 @@ def main() -> int:
     }
     if restricted_line:
         record["restricted_line"] = list(restricted_line)
+        record["restricted_line_margin_px"] = args.restricted_line_margin_px
     else:
         record["restricted_rect"] = list(restricted_rect.as_xyxy())
     (output_dir / "evidence.json").write_text(
@@ -161,13 +171,13 @@ def _rect_mask(shape_hw: tuple[int, int], rect: BBox) -> np.ndarray:
     return mask
 
 
-def _line_mask(shape_hw: tuple[int, int], line: tuple[int, int, int, int, int]) -> np.ndarray:
+def _line_mask(shape_hw: tuple[int, int], line: tuple[int, int, int, int, int], margin_px: int = 0) -> np.ndarray:
     import cv2
 
     h, w = shape_hw
     x1, y1, x2, y2, width = line
     mask = np.zeros((h, w), dtype=np.uint8)
-    cv2.line(mask, (x1, y1), (x2, y2), 1, max(1, width))
+    cv2.line(mask, (x1, y1), (x2, y2), 1, max(1, width + 2 * max(0, margin_px)))
     return mask
 
 
@@ -210,6 +220,35 @@ def _draw_overlap(frame: np.ndarray, vehicle_mask: np.ndarray, restricted_mask: 
     cv2.drawContours(out, restricted_contours, -1, (0, 0, 255), 2)
     cv2.drawContours(out, footprint_contours, -1, (255, 180, 0), 2)
     return out
+
+
+def _apply_privacy_regions(frame: np.ndarray, blur_regions: list[BBox], hide_regions: list[BBox]) -> np.ndarray:
+    import cv2
+
+    out = frame.copy()
+    for region in blur_regions:
+        x1, y1, x2, y2 = _clip_region(region, out.shape[:2])
+        if x2 <= x1 or y2 <= y1:
+            continue
+        roi = out[y1:y2, x1:x2]
+        pixelated = cv2.resize(roi, (max(1, roi.shape[1] // 12), max(1, roi.shape[0] // 12)), interpolation=cv2.INTER_LINEAR)
+        out[y1:y2, x1:x2] = cv2.resize(pixelated, (roi.shape[1], roi.shape[0]), interpolation=cv2.INTER_NEAREST)
+    for region in hide_regions:
+        x1, y1, x2, y2 = _clip_region(region, out.shape[:2])
+        if x2 <= x1 or y2 <= y1:
+            continue
+        out[y1:y2, x1:x2] = (42, 42, 42)
+    return out
+
+
+def _clip_region(region: BBox, shape_hw: tuple[int, int]) -> tuple[int, int, int, int]:
+    h, w = shape_hw
+    return (
+        max(0, min(region.x1, w)),
+        max(0, min(region.y1, h)),
+        max(0, min(region.x2, w)),
+        max(0, min(region.y2, h)),
+    )
 
 
 def _demo_footprint_mask(shape_hw: tuple[int, int], bbox: BBox, height_ratio: float = 0.2) -> np.ndarray:

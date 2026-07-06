@@ -89,6 +89,11 @@ The overlay uses yellow for the SAM/bbox vehicle mask, red for the restricted
 line, blue for the vehicle bottom footprint, and green for the footprint-line
 overlap.
 
+For privacy-safe demo outputs, pass `--blur-region x1,y1,x2,y2` for plates and
+`--hide-region x1,y1,x2,y2` for timestamp/address text. Red-line parking should
+use `--restricted-line-margin-px` because either side of the painted red line is
+restricted; the evidence records the resulting contact band width.
+
 Public real-photo demo:
 
 ```powershell
@@ -135,6 +140,19 @@ demo therefore reports both body-mask overlap and bottom-footprint overlap.
 For red-line parking review, `footprint_overlap_pixels` and
 `footprint_overlap_ratio` are the more useful contact evidence fields.
 
+Prepare a VLM review package:
+
+```powershell
+python scripts\prepare_vlm_review.py `
+  --evidence-json outputs\user_redline_sam_demo\evidence.json `
+  --image-dir outputs\user_redline_sam_demo `
+  --output outputs\user_redline_sam_demo\vlm_review_request.json
+```
+
+This does not call a VLM yet. It creates a model-neutral review request with
+privacy instructions, image paths, and structured evidence. That request can be
+sent to a VLM or used by a human reviewer.
+
 ## Data Roles
 
 | Role | Sources | Purpose |
@@ -157,6 +175,18 @@ government open-data sources into `data/raw/taiwan/`, and writes
 `data/raw/taiwan/inventory.json`.
 
 Raw data is intentionally not tracked by git.
+
+The Taiwan government open data is not image training data. It is used for:
+
+- violation hot-spot ranking and projected enforcement savings
+- A1/A2 accident-risk ranking and deployment prioritization
+- before/after intervention validation when repeated monthly data is available
+- camera-site and live-CCTV runtime validation
+
+Detector training still uses traffic-camera image datasets such as FishEye8K
+and FE-DETRAC. The government data answers a different question: where the
+system should be deployed and whether it reduces repeated violations or
+high-risk precursor events.
 
 Training setup and expected pre-training outputs are documented in
 `docs/training_plan.md`.

@@ -18,6 +18,8 @@
 - [x] Add runnable SAM/bbox mask-evidence demo artifacts.
 - [x] Add public real-photo illegal-parking demo command.
 - [x] Run real SAM checkpoint demo with red-line footprint evidence.
+- [x] Add privacy redaction and two-sided red-line contact band for demos.
+- [x] Add VLM review request package for red-line parking events.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.
