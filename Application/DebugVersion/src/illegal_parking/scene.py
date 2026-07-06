@@ -6,12 +6,14 @@ from typing import Protocol
 import numpy as np
 
 from .event_models import BBox
+from .mask_evidence import MaskEvidence, MaskEvidenceAnalyzer
 
 
 @dataclass(frozen=True)
 class SceneEvidence:
     redline_overlap_ratio: float
     in_no_parking_roi: bool = False
+    mask_evidence: MaskEvidence | None = None
 
 
 class SceneAnalyzer(Protocol):
@@ -37,6 +39,7 @@ class RedlineSceneAnalyzer:
     def __init__(self, band_px: int = 30, min_ratio: float = 0.003):
         self.band_px = band_px
         self.min_ratio = min_ratio
+        self.mask_analyzer = MaskEvidenceAnalyzer()
         self._last_mask: np.ndarray | None = None
 
     def analyze(self, frame_bgr: np.ndarray, bbox: BBox) -> SceneEvidence:
@@ -49,7 +52,17 @@ class RedlineSceneAnalyzer:
             band_px=self.band_px,
             min_ratio=self.min_ratio,
         )
-        return SceneEvidence(redline_overlap_ratio=ratio, in_no_parking_roi=False)
+        mask_evidence = self.mask_analyzer.analyze(
+            frame_bgr=frame_bgr,
+            bbox=bbox,
+            restricted_mask=self._last_mask,
+            in_no_parking_roi=False,
+        )
+        return SceneEvidence(
+            redline_overlap_ratio=ratio,
+            in_no_parking_roi=False,
+            mask_evidence=mask_evidence,
+        )
 
     def get_last_mask(self) -> np.ndarray | None:
         return self._last_mask

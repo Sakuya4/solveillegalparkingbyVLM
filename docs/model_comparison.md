@@ -180,6 +180,29 @@ The final system must choose a detector based on event accuracy and edge cost,
 not popularity.
 ```
 
+## SAM/SAM2 Evidence Path
+
+SAM is not used as a detector replacement in this project. Its role is to turn
+a detector bbox into better rule evidence:
+
+```text
+YOLO / RT-DETR bbox
+  -> SAM/SAM2 prompt mask
+  -> vehicle-mask overlap with red-line or no-parking region
+  -> event-level evidence fields
+```
+
+The current implementation includes:
+
+- bbox-mask fallback for environments without SAM weights
+- optional `SamPromptMaskProvider` for Meta Segment Anything checkpoints
+- event JSON fields for mask source, vehicle mask area, restricted overlap
+  pixels, and restricted overlap ratio
+
+The next SAM step is pseudo-labeling: use SAM/SAM2 to help create vehicle and
+road-marking masks for a small annotated validation set, then compare
+event-level precision/recall against the bbox-only baseline.
+
 ## Open-Source Goal
 
 The repo should let another country do the same workflow:

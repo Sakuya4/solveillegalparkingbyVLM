@@ -14,6 +14,7 @@
 - [x] Run local GPU YOLOv8n sanity training on a FishEye8K quick subset.
 - [x] Add detector training error analysis and weak-class recommendations.
 - [x] Run RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
+- [x] Add SAM-ready mask evidence interface for detector bbox prompts.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.

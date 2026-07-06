@@ -1,4 +1,5 @@
 from illegal_parking.event_models import BBox, TrackSnapshot
+from illegal_parking.mask_evidence import MaskEvidence
 from illegal_parking.violation_engine import ViolationEngine, ViolationEngineConfig
 
 
@@ -46,6 +47,29 @@ def test_candidate_is_created_for_stationary_vehicle_on_redline():
     assert candidate.rule_evidence.redline_overlap_ratio == 0.04
     assert "redline overlap" in candidate.reasons
     assert "dwell time threshold met" in candidate.reasons
+
+
+def test_candidate_records_mask_evidence_when_available():
+    engine = ViolationEngine()
+
+    candidate = engine.evaluate(
+        make_track(),
+        redline_overlap_ratio=0.04,
+        in_no_parking_roi=False,
+        mask_evidence=MaskEvidence(
+            source="sam_prompt",
+            vehicle_mask_area=1200,
+            restricted_overlap_pixels=180,
+            restricted_overlap_ratio=0.15,
+            restricted_coverage_ratio=0.4,
+        ),
+    )
+
+    assert candidate.is_candidate
+    assert candidate.rule_evidence.mask_source == "sam_prompt"
+    assert candidate.rule_evidence.vehicle_mask_area == 1200
+    assert candidate.rule_evidence.restricted_overlap_pixels == 180
+    assert candidate.rule_evidence.mask_restricted_overlap_ratio == 0.15
 
 
 def test_short_dwell_time_stays_observing_even_inside_roi():

@@ -64,6 +64,11 @@ class RuleEvidence:
     redline_overlap_ratio: float
     in_no_parking_roi: bool
     stable_frame_count: int
+    mask_source: str | None = None
+    vehicle_mask_area: int = 0
+    restricted_overlap_pixels: int = 0
+    mask_restricted_overlap_ratio: float = 0.0
+    mask_restricted_coverage_ratio: float = 0.0
 
 
 @dataclass(frozen=True)
@@ -76,4 +81,3 @@ class ViolationCandidate:
     is_candidate: bool
     rule_evidence: RuleEvidence
     reasons: list[str] = field(default_factory=list)
-

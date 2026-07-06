@@ -31,12 +31,39 @@ For a government or campus deployment, each camera runs an edge process:
    - annotated frame
    - vehicle crop
    - rule evidence JSON
+   - coarse or SAM-assisted vehicle/restricted-zone mask evidence
    - frame index and camera ID
 6. Send only candidate events to VLM or human review.
 7. Compare event distribution with public violation and accident hot spots.
 
 The practical value is that the system does not claim every detection is a
 ticket. It produces reviewable evidence and measurable event quality.
+
+## SAM-Assisted Evidence
+
+The mainline now separates object detection from rule evidence:
+
+```text
+detector bbox
+  -> vehicle mask provider
+  -> restricted-zone mask overlap
+  -> auditable event evidence
+```
+
+The default provider uses the detector bbox as a coarse vehicle mask, so the
+pipeline still works without a large segmentation checkpoint. When
+`segment-anything` and a SAM checkpoint are available, `SamPromptMaskProvider`
+can use the detector bbox as a prompt and return a tighter vehicle mask.
+
+This matters because the project should not only say "a vehicle was detected."
+It can report how much of the vehicle evidence overlaps the red line or
+configured no-parking region. That is closer to what a reviewer or government
+operator needs for an auditable violation event.
+
+References:
+
+- Segment Anything official repository: https://github.com/facebookresearch/segment-anything
+- SAM 2 official repository: https://github.com/facebookresearch/sam2
 
 ## Data Roles
 

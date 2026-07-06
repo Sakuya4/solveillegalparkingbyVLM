@@ -97,6 +97,7 @@ class EventPipeline:
                         track,
                         redline_overlap_ratio=scene.redline_overlap_ratio,
                         in_no_parking_roi=scene.in_no_parking_roi,
+                        mask_evidence=scene.mask_evidence,
                     )
                     if candidate.is_candidate and track.track_id not in self._emitted_track_ids:
                         self.writer.write_event(

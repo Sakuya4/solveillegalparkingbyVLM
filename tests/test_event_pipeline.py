@@ -51,6 +51,9 @@ def test_pipeline_writes_one_candidate_event_with_artifacts(tmp_path):
     assert events[0]["track_id"] == 1
     assert events[0]["status"] == "CANDIDATE"
     assert events[0]["rule_evidence"]["dwell_time_sec"] == 3.0
+    assert events[0]["rule_evidence"]["mask_source"] == "bbox"
+    assert events[0]["rule_evidence"]["vehicle_mask_area"] == 2500
+    assert events[0]["rule_evidence"]["mask_restricted_overlap_ratio"] == 0.05
     assert (tmp_path / events[0]["artifacts"]["original_frame"]).exists()
     assert (tmp_path / events[0]["artifacts"]["annotated_frame"]).exists()
     assert (tmp_path / events[0]["artifacts"]["vehicle_crop"]).exists()
