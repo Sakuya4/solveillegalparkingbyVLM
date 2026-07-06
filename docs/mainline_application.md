@@ -65,6 +65,25 @@ References:
 - Segment Anything official repository: https://github.com/facebookresearch/segment-anything
 - SAM 2 official repository: https://github.com/facebookresearch/sam2
 
+Run the demo:
+
+```powershell
+python scripts\run_mask_evidence_demo.py --output-dir outputs\mask_evidence_demo
+```
+
+It writes:
+
+- `original.jpg`
+- `bbox_overlay.jpg`
+- `vehicle_mask.png`
+- `restricted_mask.png`
+- `overlap_overlay.jpg`
+- `evidence.json`
+
+The default demo uses a synthetic camera frame and bbox-mask fallback. For a
+real frame, pass `--image`, `--bbox x1,y1,x2,y2`, and optionally
+`--restricted-rect x1,y1,x2,y2`. To use SAM, also pass `--sam-checkpoint`.
+
 ## Data Roles
 
 | Role | Sources | Purpose |
