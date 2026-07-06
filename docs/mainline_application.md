@@ -153,6 +153,20 @@ This does not call a VLM yet. It creates a model-neutral review request with
 privacy instructions, image paths, and structured evidence. That request can be
 sent to a VLM or used by a human reviewer.
 
+Run the deterministic offline reviewer:
+
+```powershell
+python scripts\run_vlm_review.py `
+  --request-json outputs\user_redline_sam_demo\vlm_review_request.json `
+  --output outputs\user_redline_sam_demo\vlm_review_result.json
+```
+
+The offline reviewer is the first VLM-compatible decision baseline. It does not
+replace BLIP-2, Qwen-VL, GPT-4o-class, or other VLMs; it fixes the input/output
+contract so future model adapters can be compared with the same fields:
+`likely_violation`, `confidence`, `visual_reasons`, `missing_evidence`, and
+`human_review_needed`.
+
 ## Data Roles
 
 | Role | Sources | Purpose |

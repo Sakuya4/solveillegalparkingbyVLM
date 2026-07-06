@@ -20,9 +20,11 @@
 - [x] Run real SAM checkpoint demo with red-line footprint evidence.
 - [x] Add privacy redaction and two-sided red-line contact band for demos.
 - [x] Add VLM review request package for red-line parking events.
+- [x] Add deterministic VLM-compatible decision baseline.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.
+- [ ] Add real VLM adapters and compare against the deterministic review baseline.
 - [ ] Add SAM-assisted pseudo-label workflow for vehicle/red-line masks.
 - [ ] Compare YOLO-only, fine-tuned detector, and SAM-assisted event logic.
 - [ ] Build a final report table for accuracy, latency, violation reduction, accident-risk coverage, and estimated savings.
