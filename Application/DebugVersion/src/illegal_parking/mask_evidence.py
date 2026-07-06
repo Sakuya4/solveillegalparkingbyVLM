@@ -15,6 +15,9 @@ class MaskEvidence:
     restricted_overlap_pixels: int
     restricted_overlap_ratio: float
     restricted_coverage_ratio: float
+    footprint_area: int = 0
+    footprint_overlap_pixels: int = 0
+    footprint_overlap_ratio: float = 0.0
 
 
 class VehicleMaskProvider(Protocol):
@@ -99,6 +102,9 @@ class MaskEvidenceAnalyzer:
                 restricted_overlap_pixels=0,
                 restricted_overlap_ratio=0.0,
                 restricted_coverage_ratio=0.0,
+                footprint_area=0,
+                footprint_overlap_pixels=0,
+                footprint_overlap_ratio=0.0,
             )
 
         if in_no_parking_roi:
@@ -112,12 +118,18 @@ class MaskEvidenceAnalyzer:
 
         overlap_pixels = int(np.logical_and(vehicle_mask, restricted).sum())
         restricted_area = int(restricted.sum())
+        footprint_mask = _bbox_footprint_mask(vehicle_mask.shape, bbox)
+        footprint_area = int(footprint_mask.sum())
+        footprint_overlap_pixels = int(np.logical_and(footprint_mask, restricted).sum())
         return MaskEvidence(
             source=self.vehicle_mask_provider.source_name,
             vehicle_mask_area=vehicle_area,
             restricted_overlap_pixels=overlap_pixels,
             restricted_overlap_ratio=overlap_pixels / vehicle_area,
             restricted_coverage_ratio=overlap_pixels / restricted_area if restricted_area else 0.0,
+            footprint_area=footprint_area,
+            footprint_overlap_pixels=footprint_overlap_pixels,
+            footprint_overlap_ratio=footprint_overlap_pixels / footprint_area if footprint_area else 0.0,
         )
 
 
@@ -125,3 +137,16 @@ def _as_binary_mask(mask: np.ndarray) -> np.ndarray:
     if mask.ndim != 2:
         raise ValueError("Mask must be a 2D array.")
     return (mask > 0).astype(np.uint8)
+
+
+def _bbox_footprint_mask(shape_hw: tuple[int, int], bbox: BBox, height_ratio: float = 0.2) -> np.ndarray:
+    h, w = shape_hw
+    mask = np.zeros((h, w), dtype=np.uint8)
+    x1 = max(0, min(bbox.x1, w))
+    x2 = max(0, min(bbox.x2, w))
+    y2 = max(0, min(bbox.y2, h))
+    footprint_height = max(1, int(np.ceil(bbox.height * height_ratio)))
+    y1 = max(0, min(y2 - footprint_height, h))
+    if x2 > x1 and y2 > y1:
+        mask[y1:y2, x1:x2] = 1
+    return mask

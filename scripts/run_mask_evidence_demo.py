@@ -79,7 +79,7 @@ def main() -> int:
     cv2.imwrite(str(output_dir / "bbox_overlay.jpg"), _draw_bbox_and_zone(frame, bbox, restricted_rect, restricted_line))
     cv2.imwrite(str(output_dir / "vehicle_mask.png"), _mask_to_image(vehicle_mask))
     cv2.imwrite(str(output_dir / "restricted_mask.png"), _mask_to_image(restricted_mask))
-    cv2.imwrite(str(output_dir / "overlap_overlay.jpg"), _draw_overlap(frame, vehicle_mask, restricted_mask))
+    cv2.imwrite(str(output_dir / "overlap_overlay.jpg"), _draw_overlap(frame, vehicle_mask, restricted_mask, bbox))
 
     evidence_record = asdict(evidence)
     evidence_record["mask_source"] = evidence_record.pop("source")
@@ -193,20 +193,35 @@ def _draw_bbox_and_zone(
     return out
 
 
-def _draw_overlap(frame: np.ndarray, vehicle_mask: np.ndarray, restricted_mask: np.ndarray) -> np.ndarray:
+def _draw_overlap(frame: np.ndarray, vehicle_mask: np.ndarray, restricted_mask: np.ndarray, bbox: BBox) -> np.ndarray:
     import cv2
 
     out = frame.copy()
     vehicle = vehicle_mask > 0
     restricted = restricted_mask > 0
-    overlap = np.logical_and(vehicle, restricted)
+    footprint_mask = _demo_footprint_mask(vehicle_mask.shape, bbox)
+    overlap = np.logical_and(footprint_mask > 0, restricted)
     out[restricted] = (0.35 * out[restricted] + np.array([0, 0, 255]) * 0.65).astype(np.uint8)
     out[overlap] = (0, 255, 0)
     vehicle_contours, _ = cv2.findContours(vehicle_mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     restricted_contours, _ = cv2.findContours(restricted_mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    footprint_contours, _ = cv2.findContours(footprint_mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cv2.drawContours(out, vehicle_contours, -1, (0, 255, 255), 2)
     cv2.drawContours(out, restricted_contours, -1, (0, 0, 255), 2)
+    cv2.drawContours(out, footprint_contours, -1, (255, 180, 0), 2)
     return out
+
+
+def _demo_footprint_mask(shape_hw: tuple[int, int], bbox: BBox, height_ratio: float = 0.2) -> np.ndarray:
+    h, w = shape_hw
+    mask = np.zeros((h, w), dtype=np.uint8)
+    x1 = max(0, min(bbox.x1, w))
+    x2 = max(0, min(bbox.x2, w))
+    y2 = max(0, min(bbox.y2, h))
+    y1 = max(0, min(y2 - max(1, int(np.ceil(bbox.height * height_ratio))), h))
+    if x2 > x1 and y2 > y1:
+        mask[y1:y2, x1:x2] = 1
+    return mask
 
 
 if __name__ == "__main__":

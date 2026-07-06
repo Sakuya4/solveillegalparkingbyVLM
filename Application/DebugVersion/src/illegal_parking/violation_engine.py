@@ -49,6 +49,13 @@ class ViolationEngine:
             mask_restricted_coverage_ratio=mask_evidence.restricted_coverage_ratio
             if mask_evidence
             else fallback_overlap_ratio,
+            footprint_area=mask_evidence.footprint_area if mask_evidence else fallback_vehicle_area,
+            footprint_overlap_pixels=mask_evidence.footprint_overlap_pixels
+            if mask_evidence
+            else fallback_overlap_pixels,
+            footprint_overlap_ratio=mask_evidence.footprint_overlap_ratio
+            if mask_evidence
+            else fallback_overlap_ratio,
         )
 
         if class_name not in self.config.vehicle_classes:

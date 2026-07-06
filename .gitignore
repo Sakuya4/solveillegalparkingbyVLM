@@ -9,6 +9,7 @@ data/processed/
 /yolov8n.pt
 /yolo*.pt
 /rtdetr*.pt
+/models/
 *.log
 .env
 .env.*

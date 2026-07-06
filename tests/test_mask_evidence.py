@@ -57,3 +57,23 @@ def test_mask_evidence_can_mark_roi_without_redline_pixels():
     assert evidence.restricted_overlap_ratio == 1.0
     assert evidence.restricted_coverage_ratio == 1.0
     assert evidence.source == "bbox"
+
+
+def test_mask_evidence_reports_bottom_footprint_overlap():
+    frame = np.zeros((10, 10, 3), dtype=np.uint8)
+    vehicle_mask = np.zeros((10, 10), dtype=np.uint8)
+    vehicle_mask[2:8, 2:8] = 1
+    redline_mask = np.zeros((10, 10), dtype=np.uint8)
+    redline_mask[7:9, 3:6] = 1
+    analyzer = MaskEvidenceAnalyzer(StaticVehicleMaskProvider(vehicle_mask))
+
+    evidence = analyzer.analyze(
+        frame_bgr=frame,
+        bbox=BBox(2, 2, 8, 8),
+        restricted_mask=redline_mask,
+        in_no_parking_roi=False,
+    )
+
+    assert evidence.footprint_area == 12
+    assert evidence.footprint_overlap_pixels == 3
+    assert evidence.footprint_overlap_ratio == 0.25

@@ -69,6 +69,9 @@ class RuleEvidence:
     restricted_overlap_pixels: int = 0
     mask_restricted_overlap_ratio: float = 0.0
     mask_restricted_coverage_ratio: float = 0.0
+    footprint_area: int = 0
+    footprint_overlap_pixels: int = 0
+    footprint_overlap_ratio: float = 0.0
 
 
 @dataclass(frozen=True)

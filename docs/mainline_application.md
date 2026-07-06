@@ -85,6 +85,9 @@ real frame, pass `--image`, `--bbox x1,y1,x2,y2`, and optionally
 `--restricted-rect x1,y1,x2,y2` or `--restricted-line x1,y1,x2,y2,width`.
 Use `--restricted-line` for red-line parking photos where the no-parking
 evidence is a painted curb line. To use SAM, also pass `--sam-checkpoint`.
+The overlay uses yellow for the SAM/bbox vehicle mask, red for the restricted
+line, blue for the vehicle bottom footprint, and green for the footprint-line
+overlap.
 
 Public real-photo demo:
 
@@ -105,6 +108,32 @@ The image is a Wikimedia Commons real-world illegal-parking example: a delivery
 truck parked in a bike lane in Washington, D.C. It is licensed CC BY-SA 4.0 by
 Sdkb, so it is safer for an open demo than reusing news-site images with unclear
 rights.
+
+SAM checkpoint demo:
+
+```powershell
+python -m pip install git+https://github.com/facebookresearch/segment-anything.git
+
+New-Item -ItemType Directory -Force -Path models\sam
+Invoke-WebRequest `
+  -Uri "https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth" `
+  -OutFile "models\sam\sam_vit_b_01ec64.pth"
+
+python scripts\run_mask_evidence_demo.py `
+  --image path\to\redline-parking.jpg `
+  --bbox 95,220,525,640 `
+  --restricted-line 205,585,138,952,24 `
+  --sam-checkpoint models\sam\sam_vit_b_01ec64.pth `
+  --sam-model-type vit_b `
+  --device cuda `
+  --output-dir outputs\user_redline_sam_demo
+```
+
+The SAM body mask can be accurate while direct body/red-line overlap remains
+small, because the red line is often under the vehicle or beside the tire. The
+demo therefore reports both body-mask overlap and bottom-footprint overlap.
+For red-line parking review, `footprint_overlap_pixels` and
+`footprint_overlap_ratio` are the more useful contact evidence fields.
 
 ## Data Roles
 

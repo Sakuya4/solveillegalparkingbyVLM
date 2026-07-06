@@ -17,6 +17,7 @@
 - [x] Add SAM-ready mask evidence interface for detector bbox prompts.
 - [x] Add runnable SAM/bbox mask-evidence demo artifacts.
 - [x] Add public real-photo illegal-parking demo command.
+- [x] Run real SAM checkpoint demo with red-line footprint evidence.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.
