@@ -245,9 +245,11 @@ def _as_bool(value: Any) -> bool:
 
 
 def _as_string_list(value: Any) -> list[str]:
-    if value is None:
+    if value is None or value is False:
         return []
     if isinstance(value, str):
+        if value.strip().lower() in {"", "false", "none", "null", "no"}:
+            return []
         return [value]
     if isinstance(value, list):
         return [str(item) for item in value]

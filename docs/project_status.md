@@ -2,7 +2,7 @@
 
 ## Current Completion
 
-Estimated completion: **60% to 65%**.
+Estimated completion: **65% to 70%**.
 
 This estimate is based on runnable project components, tested scripts, generated
 demo evidence, and measured training results. The remaining work is mostly full
@@ -58,10 +58,11 @@ profiling.
 - [x] Add CLI for comparing VLM providers against the baseline.
 - [x] Add source-backed Hugging Face Transformers VLM runner.
 - [x] Run a lightweight local LLaVA/Qwen 0.5B VLM smoke test and record schema-following failure.
+- [x] Run Qwen2.5-VL-3B on the privacy-safe red-line demo event.
 - [ ] Add BLIP-2 local runner or retire it if too heavy for the available GPU.
-- [ ] Run one stronger modern VLM such as Qwen-VL/LLaVA-style local inference on the demo event.
+- [x] Record single-event VLM provider comparison table.
 - [ ] Add optional cloud VLM runner for high-quality comparison.
-- [ ] Report VLM accuracy, confidence calibration, schema-following rate, latency, and human-review rate.
+- [ ] Report VLM accuracy, confidence calibration, schema-following rate, latency, and human-review rate over an annotated validation set.
 
 ## Hardware Branch Checklist
 
@@ -80,14 +81,15 @@ profiling.
 - SAM-prompted vehicle mask and bottom-footprint overlap evidence.
 - A deterministic review decision: likely violation, confidence, reasons, and human-review flag.
 - A first local VLM smoke result showing that small VLMs may run but fail the JSON review contract.
+- A stronger Qwen2.5-VL-3B local VLM result that agrees with the evidence baseline on the red-line demo.
 - Public data reports for violation hot spots, A1/A2 accident risk, and projected savings.
 - YOLOv8n versus RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
 - Verilog-style deterministic filtering blocks for dwell and overlap logic.
 
 ## Next Best Milestones
 
-1. Run Qwen2.5-VL-3B or another stronger local VLM on the existing user-photo review package and compare schema-following and decision quality with the offline baseline.
-2. Build a 20 to 50 image/clip event validation set with labels: violation, no violation, uncertain.
+1. Build a 20 to 50 image/clip event validation set with labels: violation, no violation, uncertain.
+2. Run offline, Qwen2.5-VL-3B, and one optional cloud VLM over the validation set.
 3. Train or validate D-FINE/RT-DETR/YOLO on the same data slice and report event-level quality.
 4. Add SystemC throughput simulation tied to measured pipeline FPS.
 5. Produce the final report table: detector metrics, VLM review metrics, event metrics, hot-spot reduction estimate, and hardware/runtime cost.

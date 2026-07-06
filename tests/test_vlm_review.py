@@ -197,6 +197,16 @@ def test_parse_vlm_review_result_text_keeps_string_reason_as_one_item():
     assert result.missing_evidence == ["needs second frame"]
 
 
+def test_parse_vlm_review_result_text_treats_false_missing_evidence_as_empty():
+    result = parse_vlm_review_result_text(
+        '{"likely_violation": true, "confidence": 0.95, "visual_reasons": "overlap is clear", "missing_evidence": false, "human_review_needed": false}',
+        provider="qwen_vl",
+    )
+
+    assert result.visual_reasons == ["overlap is clear"]
+    assert result.missing_evidence == []
+
+
 def test_parse_vlm_review_result_text_rejects_unknown_boolean_words():
     try:
         parse_vlm_review_result_text(

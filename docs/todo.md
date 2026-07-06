@@ -24,10 +24,12 @@
 - [x] Add VLM response normalization and provider comparison tooling.
 - [x] Add source-backed Transformers VLM runner for Qwen/LLaVA-style models.
 - [x] Run lightweight local LLaVA/Qwen 0.5B VLM smoke and record schema failure.
+- [x] Run Qwen2.5-VL-3B local review on the privacy-safe red-line demo.
+- [x] Add single-event VLM comparison result table.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.
-- [ ] Run real VLM adapters and compare against the deterministic review baseline.
+- [ ] Run VLM adapters over a labeled event validation set.
 - [ ] Add SAM-assisted pseudo-label workflow for vehicle/red-line masks.
 - [ ] Compare YOLO-only, fine-tuned detector, and SAM-assisted event logic.
 - [ ] Build a final report table for accuracy, latency, violation reduction, accident-risk coverage, and estimated savings.

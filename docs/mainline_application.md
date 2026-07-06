@@ -233,6 +233,11 @@ the required JSON schema. The comparison report therefore marks it as
 This gives the report a useful VLM metric beyond accuracy: schema-following
 stability.
 
+Measured VLM results are tracked in `docs/vlm_results.md`. Current single-event
+comparison: the lightweight 0.5B LLaVA/Qwen model failed the schema contract,
+while `Qwen/Qwen2.5-VL-3B-Instruct` agreed with the deterministic evidence
+baseline and returned `confidence = 0.95`.
+
 ## Data Roles
 
 | Role | Sources | Purpose |
