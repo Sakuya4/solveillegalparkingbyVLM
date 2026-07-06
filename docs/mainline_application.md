@@ -84,6 +84,26 @@ The default demo uses a synthetic camera frame and bbox-mask fallback. For a
 real frame, pass `--image`, `--bbox x1,y1,x2,y2`, and optionally
 `--restricted-rect x1,y1,x2,y2`. To use SAM, also pass `--sam-checkpoint`.
 
+Public real-photo demo:
+
+```powershell
+New-Item -ItemType Directory -Force -Path outputs\public_illegal_parking_demo
+Invoke-WebRequest `
+  -Uri "https://upload.wikimedia.org/wikipedia/commons/8/83/FedEx_driver_parked_in_bike_lane.jpg" `
+  -OutFile "outputs\public_illegal_parking_demo\source.jpg"
+
+python scripts\run_mask_evidence_demo.py `
+  --image outputs\public_illegal_parking_demo\source.jpg `
+  --bbox 485,175,1230,930 `
+  --restricted-rect 430,760,1290,1040 `
+  --output-dir outputs\public_illegal_parking_demo
+```
+
+The image is a Wikimedia Commons real-world illegal-parking example: a delivery
+truck parked in a bike lane in Washington, D.C. It is licensed CC BY-SA 4.0 by
+Sdkb, so it is safer for an open demo than reusing news-site images with unclear
+rights.
+
 ## Data Roles
 
 | Role | Sources | Purpose |

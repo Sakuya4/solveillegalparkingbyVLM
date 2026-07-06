@@ -16,6 +16,7 @@
 - [x] Run RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
 - [x] Add SAM-ready mask evidence interface for detector bbox prompts.
 - [x] Add runnable SAM/bbox mask-evidence demo artifacts.
+- [x] Add public real-photo illegal-parking demo command.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.
