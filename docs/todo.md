@@ -28,6 +28,7 @@
 - [x] Run lightweight local LLaVA/Qwen 0.5B VLM smoke and record schema failure.
 - [x] Run Qwen2.5-VL-3B local review on the privacy-safe red-line demo.
 - [x] Add single-event VLM comparison result table.
+- [x] Add event validation manifest schema and simulated evaluation workflow.
 - [ ] Download full FishEye8K / FE-DETRAC image data and verify YOLO labels locally.
 - [ ] Train full detector baseline and fine-tuned traffic-camera model.
 - [ ] Add D-FINE comparison path.

@@ -27,6 +27,7 @@ hardware/runtime profiling.
 - [x] Add deterministic VLM-compatible review result baseline.
 - [x] Add VLM response normalization and provider comparison report tooling.
 - [x] Run a real local VLM on the same review package.
+- [x] Add event validation manifest schema and simulated workflow.
 - [ ] Build a small annotated event validation set for illegal parking clips/photos.
 - [ ] Measure event precision, recall, false-positive rate, and trigger delay.
 
@@ -87,6 +88,7 @@ hardware/runtime profiling.
 - A deterministic review decision: likely violation, confidence, reasons, and human-review flag.
 - A first local VLM smoke result showing that small VLMs may run but fail the JSON review contract.
 - A stronger Qwen2.5-VL-3B local VLM result that agrees with the evidence baseline on the red-line demo.
+- A simulated event validation workflow for testing reports before enough real data exists.
 - Public data reports for violation hot spots, A1/A2 accident risk, and projected savings.
 - YOLOv8n versus RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
 - Verilog-style deterministic filtering blocks for dwell and overlap logic.

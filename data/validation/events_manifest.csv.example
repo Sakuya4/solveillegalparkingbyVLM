@@ -1,0 +1,5 @@
+event_id,image_path,label,source_type,is_simulated,has_red_line,red_line_visible,plate_redacted,timestamp_redacted,redistribution_ok,notes
+tw_redline_user_001,outputs/user_redline_sam_demo/original.jpg,violation,self_collected,false,true,clear,true,true,false,Privacy-safe user red-line parking demo; original source image should stay local unless redistribution permission is confirmed.
+sim_redline_violation_001,,violation,simulated,true,true,clear,true,true,false,Simulated positive for workflow testing.
+sim_no_redline_negative_001,,no_violation,simulated,true,false,none,true,true,false,Simulated negative to prevent vehicle-only false positives.
+sim_occluded_uncertain_001,,uncertain,simulated,true,true,occluded,true,true,false,Simulated uncertain case skipped by binary evaluation.
