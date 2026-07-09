@@ -1,12 +1,14 @@
-# Mainline Application
+# Smart City Traffic Violation System
 
 ## Goal
 
-Build a Taiwan traffic-violation event system that can run at an edge camera,
-produce auditable evidence, and compare its output with public traffic records.
+Build a smart-city traffic violation monitoring system that can run at an edge
+camera, produce auditable event evidence, and compare deployment impact with
+public violation and accident-risk records.
 
-The mainline is no longer only red-line parking. Red-line parking remains the
-first rule, but the project becomes a deployable event pipeline:
+The project is no longer positioned as only a red-line parking detector.
+Red-line parking remains the first complete event case because it is visual,
+common, and easy to explain, but the application goal is broader:
 
 ```text
 camera/video/image folder
@@ -16,6 +18,12 @@ camera/video/image folder
   -> event candidate writer
   -> VLM or human review
   -> city-level validation and reporting
+```
+
+The working title is:
+
+```text
+Smart-city traffic violation hot-spot monitoring, event review, and edge deployment system
 ```
 
 ## What the Finished Application Looks Like

@@ -4,14 +4,19 @@
 
 Estimated completion: **65% to 70%**.
 
+Current positioning: **smart-city traffic violation hot-spot monitoring, event
+review, and edge deployment system**. Red-line parking is the first complete
+event case, not the whole project boundary.
+
 This estimate is based on runnable project components, tested scripts, generated
-demo evidence, and measured training results. The remaining work is mostly full
-training, real VLM adapter runs, event-level validation, and hardware/runtime
-profiling.
+demo evidence, measured training results, and a real Qwen2.5-VL-3B review run.
+The remaining work is mostly full training, event-level validation, and
+hardware/runtime profiling.
 
 ## Mainline Checklist
 
-- [x] Define the project as an edge-camera traffic-violation event system.
+- [x] Define the project as an application-facing smart-city violation monitoring system.
+- [x] Position red-line parking as the first event case rather than the whole project.
 - [x] Support image, video, webcam, image URL, stream URL, and public CCTV page frame sources.
 - [x] Build detector, tracker, scene evidence, rule engine, and event writer pipeline.
 - [x] Emit auditable event artifacts: original frame, annotated frame, crop, masks, and JSON evidence.
@@ -21,7 +26,7 @@ profiling.
 - [x] Run a real user-photo SAM red-line parking demo.
 - [x] Add deterministic VLM-compatible review result baseline.
 - [x] Add VLM response normalization and provider comparison report tooling.
-- [ ] Run a real local or cloud VLM on the same review package.
+- [x] Run a real local VLM on the same review package.
 - [ ] Build a small annotated event validation set for illegal parking clips/photos.
 - [ ] Measure event precision, recall, false-positive rate, and trigger delay.
 

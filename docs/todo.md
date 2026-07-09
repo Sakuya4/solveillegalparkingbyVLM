@@ -1,7 +1,9 @@
 # Project TODO
 
-## Mainline: Taiwan Violation Event System
+## Mainline: Smart-City Traffic Violation Monitoring System
 
+- [x] Reposition the project as an application-facing smart-city violation monitoring system.
+- [x] Keep red-line parking as the first complete event case.
 - [x] Build edge simulation from image/video/webcam sources.
 - [x] Emit auditable candidate events with evidence artifacts.
 - [x] Add frame-level event evaluation.

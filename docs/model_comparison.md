@@ -2,7 +2,8 @@
 
 ## Positioning
 
-YOLO remains the baseline, not the project centerpiece.
+The model comparison supports the smart-city traffic violation monitoring
+system. YOLO remains the speed baseline, not the project centerpiece.
 
 The main claim should be:
 
@@ -10,6 +11,7 @@ The main claim should be:
 YOLO is a fast baseline.
 D-FINE / RT-DETR are stronger detector candidates for traffic-camera training.
 SAM/SAM2 helps produce masks and rule evidence, but is not the detector baseline by itself.
+VLMs review candidate events and expose whether the evidence is clear enough for automation or human review.
 ```
 
 This is stronger than saying "we used YOLO + VLM", because the project becomes
