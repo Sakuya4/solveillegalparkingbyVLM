@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import numpy as np
 import pytest
+import cv2
 
 from illegal_parking.incident_features import (
     aggregate_motion_features,
     compute_frame_motion,
     compute_motion_sequence,
+    extract_video_window_features,
+    read_video_window,
 )
 
 
@@ -61,3 +64,34 @@ def test_aggregate_motion_features_reports_mean_max_std_and_peak_position() -> N
 def test_aggregate_motion_features_rejects_empty_sequence() -> None:
     with pytest.raises(ValueError, match="empty motion sequence"):
         aggregate_motion_features([])
+
+
+def test_video_window_feature_extraction_reads_selected_frames(tmp_path) -> None:
+    video_path = tmp_path / "motion.avi"
+    writer = cv2.VideoWriter(
+        str(video_path),
+        cv2.VideoWriter_fourcc(*"MJPG"),
+        10.0,
+        (64, 48),
+    )
+    assert writer.isOpened()
+    for offset in range(8):
+        frame = np.zeros((48, 64, 3), dtype=np.uint8)
+        frame[16:28, 8 + offset * 3 : 20 + offset * 3] = 255
+        writer.write(frame)
+    writer.release()
+
+    frames = read_video_window(video_path, 1, 8, frame_stride=2, target_width=32)
+    features = extract_video_window_features(
+        video_path,
+        start_frame=0,
+        end_frame=8,
+        roi_normalized=(0.1, 0.2, 0.8, 0.8),
+        frame_stride=2,
+        target_width=32,
+    )
+
+    assert len(frames) == 4
+    assert frames[0].shape[1] == 32
+    assert features["roi_flow_mean_max"] > 0.0
+    assert all(np.isfinite(value) for value in features.values())
