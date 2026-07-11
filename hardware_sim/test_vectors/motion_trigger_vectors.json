@@ -1,0 +1,27 @@
+[
+  {
+    "name": "spike_latches_until_ack_and_clear",
+    "min_roi_motion": 200,
+    "roi_margin": 80,
+    "sequence": [
+      {"frame_valid": true, "global_motion": 100, "roi_motion": 120},
+      {"frame_valid": true, "global_motion": 100, "roi_motion": 300},
+      {"frame_valid": true, "global_motion": 90, "roi_motion": 320},
+      {"frame_valid": true, "global_motion": 90, "roi_motion": 310, "ack_event": true},
+      {"frame_valid": true, "global_motion": 80, "roi_motion": 100},
+      {"frame_valid": true, "global_motion": 100, "roi_motion": 300}
+    ],
+    "expected_trigger_cycles": [1, 5]
+  },
+  {
+    "name": "global_camera_motion_does_not_trigger",
+    "min_roi_motion": 200,
+    "roi_margin": 80,
+    "sequence": [
+      {"frame_valid": true, "global_motion": 240, "roi_motion": 260},
+      {"frame_valid": true, "global_motion": 300, "roi_motion": 320},
+      {"frame_valid": true, "global_motion": 180, "roi_motion": 199}
+    ],
+    "expected_trigger_cycles": []
+  }
+]
