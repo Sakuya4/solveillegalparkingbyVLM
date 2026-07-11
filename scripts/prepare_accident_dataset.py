@@ -48,13 +48,16 @@ def main() -> int:
     ]
 
     output_dir.mkdir(parents=True, exist_ok=True)
+    file_payload = file_validation.to_dict()
+    missing_paths = file_payload.pop("missing_paths")
+    file_payload["missing_path_sample"] = missing_paths[:20]
     report = {
         "metadata": str(metadata_path),
         "dataset_root": str(dataset_root),
         "window_frames": args.window_frames,
         "negative_gap_frames": args.negative_gap_frames,
         "manifest": summary.to_dict(),
-        "files": file_validation.to_dict(),
+        "files": file_payload,
         "window_count": len(windows),
         "normal_window_count": sum(window.label == "normal" for window in windows),
         "incident_window_count": sum(window.label == "incident" for window in windows),
@@ -63,6 +66,7 @@ def main() -> int:
         json.dumps(report, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
+    (output_dir / "missing_videos.txt").write_text("\n".join(missing_paths), encoding="utf-8")
     with (output_dir / "temporal_windows.jsonl").open("w", encoding="utf-8", newline="\n") as handle:
         for window in windows:
             handle.write(json.dumps(window.to_dict(), ensure_ascii=False) + "\n")
