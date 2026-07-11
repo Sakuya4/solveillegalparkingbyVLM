@@ -1,7 +1,7 @@
 # Hardware Simulation Notes
 
-This folder sketches the hardware-aware part of the illegal-parking project.
-The goal is not to move YOLO or VLM into RTL. The goal is to show which
+This folder implements the hardware-aware part of the edge traffic-event
+project. The goal is not to move every detector or VLM into RTL. The goal is to show which
 parts of the edge pipeline are simple, deterministic, and suitable for
 hardware-style simulation.
 
@@ -12,6 +12,8 @@ The hardware side focuses on event filtering before expensive AI review:
 - red-pixel and bbox-band overlap counting
 - dwell-time accumulation
 - event candidate FSM
+- accident motion-spike triggering
+- shared NPU and review queue capacity simulation
 
 The software side remains responsible for:
 
@@ -26,17 +28,23 @@ hardware_sim/
   rtl/
     dwell_fsm.v
     bbox_overlap_counter.v
+    motion_trigger.v
   testbench/
     dwell_fsm_tb.v
     bbox_overlap_counter_tb.v
+    motion_trigger_tb.v
   systemc/
     event_pipeline_sim.cpp
+    npu_queue_sim.cpp
   python_golden/
     dwell_fsm_model.py
     overlap_counter_model.py
+    motion_trigger_model.py
+    npu_queue_model.py
   test_vectors/
     dwell_fsm_vectors.json
     overlap_counter_vectors.json
+    motion_trigger_vectors.json
 ```
 
 ## How This Helps the Project
@@ -67,6 +75,10 @@ The Verilog modules are intentionally small:
 
 - `bbox_overlap_counter.v` counts red pixels inside the vehicle contact band.
 - `dwell_fsm.v` turns stable restricted-zone occupancy into one candidate event.
+- `motion_trigger.v` compares accident-ROI motion with global camera motion and
+  emits one duplicate-suppressed incident pulse.
+- `npu_queue_model.py` estimates multi-camera frame drops, latency, utilization,
+  and review backpressure before target hardware is available.
 
 This keeps YOLO/VLM in software while making the rule filter easy to reason
 about with digital-IC style vectors.
@@ -90,9 +102,29 @@ iverilog -g2012 -o hardware_sim\build\bbox_overlap_counter_tb.vvp hardware_sim\r
 vvp hardware_sim\build\bbox_overlap_counter_tb.vvp
 ```
 
-SystemC remains the higher-level transaction simulation path. It mirrors the
-same evidence signals and helps explain how an edge device would schedule the
-rule filter before forwarding candidate events to software.
+The Python queue model is the executable transaction-level golden model.
+`npu_queue_sim.cpp` implements the same camera, NPU, and review queues as a
+timed SystemC simulation.
+
+After installing the official Accellera SystemC package, build with:
+
+```powershell
+cmake -S hardware_sim\systemc -B hardware_sim\build-systemc -DCMAKE_PREFIX_PATH=<systemc-install>
+cmake --build hardware_sim\build-systemc --config Release
+```
+
+The CMake target follows the official `SystemC::systemc` package interface.
+
+Run a measured-latency profile with:
+
+```powershell
+python scripts\run_edge_queue_simulation.py --camera-count 4 --camera-fps 15 --detector-latency-ms 29 --temporal-latency-ms 3 --sweep-max-cameras 6
+```
+
+Using the current RT-DETR measurement (29 ms) plus a 3 ms temporal stage, the
+simulation supports two 15 FPS cameras without frame loss. Three cameras drop
+about 30.3% of frames and four drop about 47.8%. These are scheduling-model
+results, not measurements from a physical Snapdragon device.
 
 ## Relationship To The Main Detector Experiments
 

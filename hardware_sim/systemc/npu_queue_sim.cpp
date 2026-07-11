@@ -1,0 +1,146 @@
+#include <systemc>
+
+#include <cstdlib>
+#include <iostream>
+#include <string>
+
+using namespace sc_core;
+
+struct QueueProfile {
+    unsigned camera_count = 4;
+    double camera_fps = 15.0;
+    double duration_sec = 60.0;
+    double detector_latency_ms = 29.0;
+    double temporal_latency_ms = 3.0;
+    unsigned npu_queue_capacity = 8;
+    unsigned candidate_stride = 100;
+    double review_latency_ms = 300.0;
+    unsigned review_queue_capacity = 8;
+};
+
+SC_MODULE(CameraFarm) {
+    sc_fifo_out<unsigned> frames;
+    QueueProfile profile;
+    unsigned generated = 0;
+    unsigned dropped = 0;
+
+    SC_HAS_PROCESS(CameraFarm);
+
+    CameraFarm(sc_module_name name, QueueProfile input_profile)
+        : sc_module(name), profile(input_profile) {
+        SC_THREAD(run);
+    }
+
+    void run() {
+        const sc_time frame_period(1000.0 / profile.camera_fps, SC_MS);
+        unsigned frame_id = 0;
+        while (sc_time_stamp() < sc_time(profile.duration_sec, SC_SEC)) {
+            for (unsigned camera = 0; camera < profile.camera_count; ++camera) {
+                ++generated;
+                if (!frames->nb_write(frame_id++)) {
+                    ++dropped;
+                }
+            }
+            wait(frame_period);
+        }
+    }
+};
+
+SC_MODULE(NpuWorker) {
+    sc_fifo_in<unsigned> frames;
+    sc_fifo_out<unsigned> candidates;
+    QueueProfile profile;
+    unsigned processed = 0;
+    unsigned candidate_count = 0;
+    unsigned dropped_candidates = 0;
+
+    SC_HAS_PROCESS(NpuWorker);
+
+    NpuWorker(sc_module_name name, QueueProfile input_profile)
+        : sc_module(name), profile(input_profile) {
+        SC_THREAD(run);
+    }
+
+    void run() {
+        while (true) {
+            unsigned frame_id = frames->read();
+            wait(sc_time(profile.detector_latency_ms + profile.temporal_latency_ms, SC_MS));
+            ++processed;
+            if (profile.candidate_stride > 0 && processed % profile.candidate_stride == 0) {
+                ++candidate_count;
+                if (!candidates->nb_write(frame_id)) {
+                    ++dropped_candidates;
+                }
+            }
+        }
+    }
+};
+
+SC_MODULE(ReviewWorker) {
+    sc_fifo_in<unsigned> candidates;
+    QueueProfile profile;
+    unsigned completed = 0;
+
+    SC_HAS_PROCESS(ReviewWorker);
+
+    ReviewWorker(sc_module_name name, QueueProfile input_profile)
+        : sc_module(name), profile(input_profile) {
+        SC_THREAD(run);
+    }
+
+    void run() {
+        while (true) {
+            candidates->read();
+            wait(sc_time(profile.review_latency_ms, SC_MS));
+            ++completed;
+        }
+    }
+};
+
+static QueueProfile parse_args(int argc, char* argv[]) {
+    QueueProfile profile;
+    for (int index = 1; index + 1 < argc; index += 2) {
+        std::string option = argv[index];
+        std::string value = argv[index + 1];
+        if (option == "--camera-count") profile.camera_count = std::stoul(value);
+        else if (option == "--camera-fps") profile.camera_fps = std::stod(value);
+        else if (option == "--duration-sec") profile.duration_sec = std::stod(value);
+        else if (option == "--detector-latency-ms") profile.detector_latency_ms = std::stod(value);
+        else if (option == "--temporal-latency-ms") profile.temporal_latency_ms = std::stod(value);
+        else if (option == "--npu-queue-capacity") profile.npu_queue_capacity = std::stoul(value);
+        else if (option == "--candidate-stride") profile.candidate_stride = std::stoul(value);
+        else if (option == "--review-latency-ms") profile.review_latency_ms = std::stod(value);
+        else if (option == "--review-queue-capacity") profile.review_queue_capacity = std::stoul(value);
+        else {
+            std::cerr << "Unknown option: " << option << std::endl;
+            std::exit(2);
+        }
+    }
+    return profile;
+}
+
+int sc_main(int argc, char* argv[]) {
+    QueueProfile profile = parse_args(argc, argv);
+    sc_fifo<unsigned> frame_queue("frame_queue", profile.npu_queue_capacity);
+    sc_fifo<unsigned> review_queue("review_queue", profile.review_queue_capacity);
+
+    CameraFarm camera_farm("camera_farm", profile);
+    NpuWorker npu("npu", profile);
+    ReviewWorker reviewer("reviewer", profile);
+    camera_farm.frames(frame_queue);
+    npu.frames(frame_queue);
+    npu.candidates(review_queue);
+    reviewer.candidates(review_queue);
+
+    sc_start(sc_time(profile.duration_sec, SC_SEC));
+
+    std::cout << "generated_frames=" << camera_farm.generated << '\n'
+              << "processed_frames=" << npu.processed << '\n'
+              << "queued_frames=" << frame_queue.num_available() << '\n'
+              << "dropped_frames=" << camera_farm.dropped << '\n'
+              << "generated_candidates=" << npu.candidate_count << '\n'
+              << "completed_reviews=" << reviewer.completed << '\n'
+              << "queued_reviews=" << review_queue.num_available() << '\n'
+              << "dropped_candidates=" << npu.dropped_candidates << std::endl;
+    return 0;
+}

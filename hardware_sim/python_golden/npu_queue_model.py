@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import deque
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 
 import numpy as np
 
@@ -33,6 +33,7 @@ class EdgeQueueProfile:
 class EdgeQueueResult:
     generated_frames: int
     processed_frames: int
+    pending_frames: int
     dropped_frames: int
     frame_drop_rate: float
     npu_utilization: float
@@ -56,7 +57,7 @@ def simulate_edge_queues(profile: EdgeQueueProfile) -> EdgeQueueResult:
     service_ms = profile.detector_latency_ms + profile.temporal_latency_ms
 
     npu_finishes: deque[float] = deque()
-    frame_latencies: list[float] = []
+    accepted_latencies: list[float] = []
     accepted_finishes: list[float] = []
     dropped_frames = 0
     for arrival in arrivals:
@@ -68,9 +69,12 @@ def simulate_edge_queues(profile: EdgeQueueProfile) -> EdgeQueueResult:
         finish = start + service_ms
         npu_finishes.append(finish)
         accepted_finishes.append(finish)
-        frame_latencies.append(finish - arrival)
+        accepted_latencies.append(finish - arrival)
 
-    candidate_times = _candidate_times(accepted_finishes, profile.candidate_probability)
+    completed_indices = [index for index, finish in enumerate(accepted_finishes) if finish <= duration_ms]
+    completed_finishes = [accepted_finishes[index] for index in completed_indices]
+    frame_latencies = [accepted_latencies[index] for index in completed_indices]
+    candidate_times = _candidate_times(completed_finishes, profile.candidate_probability)
     review_finishes: deque[float] = deque()
     accepted_reviews: list[float] = []
     dropped_candidates = 0
@@ -86,14 +90,16 @@ def simulate_edge_queues(profile: EdgeQueueProfile) -> EdgeQueueResult:
 
     completed_reviews = sum(finish <= duration_ms for finish in accepted_reviews)
     pending_reviews = len(accepted_reviews) - completed_reviews
-    processed_frames = len(accepted_finishes)
+    processed_frames = len(completed_finishes)
+    pending_frames = len(accepted_finishes) - processed_frames
     generated_candidates = len(candidate_times)
     return EdgeQueueResult(
         generated_frames=len(arrivals),
         processed_frames=processed_frames,
+        pending_frames=pending_frames,
         dropped_frames=dropped_frames,
         frame_drop_rate=_divide(dropped_frames, len(arrivals)),
-        npu_utilization=min(1.0, _divide(processed_frames * service_ms, duration_ms)),
+        npu_utilization=min(1.0, _divide(len(accepted_finishes) * service_ms, duration_ms)),
         mean_frame_latency_ms=float(np.mean(frame_latencies)) if frame_latencies else 0.0,
         p95_frame_latency_ms=float(np.percentile(frame_latencies, 95)) if frame_latencies else 0.0,
         generated_candidates=generated_candidates,
@@ -103,6 +109,23 @@ def simulate_edge_queues(profile: EdgeQueueProfile) -> EdgeQueueResult:
         review_drop_rate=_divide(dropped_candidates, generated_candidates),
         review_utilization=min(1.0, _divide(len(accepted_reviews) * profile.review_latency_ms, duration_ms)),
     )
+
+
+def simulate_camera_capacity_sweep(
+    base_profile: EdgeQueueProfile,
+    max_camera_count: int,
+) -> dict:
+    if max_camera_count <= 0:
+        raise ValueError("max_camera_count must be positive")
+    profiles: list[dict] = []
+    for camera_count in range(1, max_camera_count + 1):
+        result = simulate_edge_queues(replace(base_profile, camera_count=camera_count))
+        profiles.append({"camera_count": camera_count, **result.to_dict()})
+    zero_drop_counts = [row["camera_count"] for row in profiles if row["dropped_frames"] == 0]
+    return {
+        "max_zero_drop_cameras": max(zero_drop_counts, default=0),
+        "profiles": profiles,
+    }
 
 
 def _frame_arrivals(camera_count: int, camera_fps: float, duration_sec: float) -> list[float]:

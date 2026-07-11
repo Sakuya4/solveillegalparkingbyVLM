@@ -25,6 +25,7 @@ def test_hardware_sim_sources_are_present():
     assert (ROOT / "hardware_sim" / "rtl" / "bbox_overlap_counter.v").exists()
     assert (ROOT / "hardware_sim" / "rtl" / "motion_trigger.v").exists()
     assert (ROOT / "hardware_sim" / "systemc" / "event_pipeline_sim.cpp").exists()
+    assert (ROOT / "hardware_sim" / "systemc" / "npu_queue_sim.cpp").exists()
     assert (ROOT / "hardware_sim" / "testbench" / "dwell_fsm_tb.v").exists()
     assert (ROOT / "hardware_sim" / "testbench" / "bbox_overlap_counter_tb.v").exists()
     assert (ROOT / "hardware_sim" / "testbench" / "motion_trigger_tb.v").exists()

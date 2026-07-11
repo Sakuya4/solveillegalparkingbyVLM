@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import pytest
 
-from hardware_sim.python_golden.npu_queue_model import EdgeQueueProfile, simulate_edge_queues
+from hardware_sim.python_golden.npu_queue_model import (
+    EdgeQueueProfile,
+    simulate_camera_capacity_sweep,
+    simulate_edge_queues,
+)
 
 
 def test_edge_queue_processes_all_frames_when_npu_has_capacity() -> None:
@@ -46,6 +50,8 @@ def test_edge_queue_drops_frames_when_shared_npu_is_overloaded() -> None:
     assert result.generated_frames == 400
     assert result.dropped_frames > 0
     assert result.processed_frames < result.generated_frames
+    assert result.pending_frames > 0
+    assert result.processed_frames + result.pending_frames + result.dropped_frames == result.generated_frames
     assert result.npu_utilization == pytest.approx(1.0, abs=0.02)
     assert result.p95_frame_latency_ms > profile.detector_latency_ms
 
@@ -69,3 +75,24 @@ def test_review_queue_can_drop_candidates_independently_of_npu_frames() -> None:
     assert result.generated_candidates == 50
     assert result.dropped_candidates > 0
     assert result.completed_reviews < result.generated_candidates
+
+
+def test_capacity_sweep_finds_maximum_zero_drop_camera_count() -> None:
+    profile = EdgeQueueProfile(
+        camera_count=1,
+        camera_fps=15.0,
+        duration_sec=10.0,
+        detector_latency_ms=29.0,
+        temporal_latency_ms=3.0,
+        npu_queue_capacity=8,
+        candidate_probability=0.0,
+        review_latency_ms=0.0,
+        review_queue_capacity=0,
+    )
+
+    sweep = simulate_camera_capacity_sweep(profile, max_camera_count=4)
+
+    assert sweep["max_zero_drop_cameras"] == 2
+    assert [row["camera_count"] for row in sweep["profiles"]] == [1, 2, 3, 4]
+    assert sweep["profiles"][1]["frame_drop_rate"] == pytest.approx(0.0)
+    assert sweep["profiles"][2]["frame_drop_rate"] > 0.0
