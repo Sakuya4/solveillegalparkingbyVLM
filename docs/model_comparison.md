@@ -2,8 +2,10 @@
 
 ## Positioning
 
-The model comparison supports the smart-city traffic violation monitoring
-system. YOLO remains the speed baseline, not the project centerpiece.
+These detector results remain the front-end baseline for the edge traffic
+incident system. The active comparison now adds temporal incident models and
+event-level metrics. YOLO remains the speed baseline, not the project
+centerpiece.
 
 The main claim should be:
 

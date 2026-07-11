@@ -59,6 +59,33 @@
     "notes": "Official Taichung CCTV static information includes cctvid, roadsection, coordinates, URL, and status fields. Use as the first live-image validation target."
   },
   {
+    "id": "accident_cctv_benchmark",
+    "title": "ACCIDENT fixed-CCTV traffic accident benchmark",
+    "role": "primary_incident_training",
+    "source_page": "https://www.kaggle.com/datasets/picekl/accident",
+    "github": "https://github.com/accidentbench/ACCIDENT",
+    "license": "CC-BY-NC-SA-4.0",
+    "download_url": null,
+    "target_filename": null,
+    "format": "kaggle_dataset",
+    "enabled_by_default": false,
+    "verified_size_bytes": 16758864720,
+    "notes": "Primary Phase 1 dataset: 2,027 real CCTV accident clips and 2,211 CARLA clips with temporal, spatial, type, scene, quality, and geographic split metadata. Kaggle access and metadata download verified on 2026-07-12."
+  },
+  {
+    "id": "tumtraf_accident",
+    "title": "TUM Traffic Accident Dataset",
+    "role": "secondary_trajectory_validation",
+    "source_page": "https://tum-traffic-dataset.github.io/tumtraf-a/",
+    "github": "https://github.com/tum-traffic-dataset/tum-traffic-dataset-dev-kit",
+    "license": "CC-BY-NC-SA-4.0",
+    "download_url": null,
+    "target_filename": null,
+    "format": "registration_required",
+    "enabled_by_default": false,
+    "notes": "Secondary roadside camera/LiDAR source with tracks, masks, trajectories, and real accidents. Use after the ACCIDENT baseline is reproducible."
+  },
+  {
     "id": "fisheye8k",
     "title": "FishEye8K traffic-camera object detection dataset",
     "role": "vision_training",

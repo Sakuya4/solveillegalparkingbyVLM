@@ -2,21 +2,24 @@
 
 ## Current Completion
 
-Estimated completion: **65% to 70%**.
+Existing red-line/event platform: **about 70% complete**.
 
-Current positioning: **smart-city traffic violation hot-spot monitoring, event
-review, and edge deployment system**. Red-line parking is the first complete
-event case, not the whole project boundary.
+New ACCIDENT incident mainline: **about 10% complete**. Dataset selection,
+license/access checks, and metadata acquisition are complete; video download,
+training, and event evaluation have not started yet.
 
-This estimate is based on runnable project components, tested scripts, generated
-demo evidence, measured training results, and a real Qwen2.5-VL-3B review run.
-The remaining work is mostly full training, event-level validation, and
-hardware/runtime profiling.
+Current positioning: **edge-first traffic incident detection and risk
+prioritization for roadside cameras**. Red-line parking is now a completed event
+case. ACCIDENT-based temporal incident detection is the new training mainline.
 
-## Mainline Checklist
+The platform estimate is based on runnable components, tests, demo evidence,
+measured detector training, and a real Qwen2.5-VL-3B review. The new mainline is
+reported separately so the added research scope is visible.
+
+## Completed Platform Checklist
 
 - [x] Define the project as an application-facing smart-city violation monitoring system.
-- [x] Position red-line parking as the first event case rather than the whole project.
+- [x] Complete red-line parking as the first event case.
 - [x] Support image, video, webcam, image URL, stream URL, and public CCTV page frame sources.
 - [x] Build detector, tracker, scene evidence, rule engine, and event writer pipeline.
 - [x] Emit auditable event artifacts: original frame, annotated frame, crop, masks, and JSON evidence.
@@ -54,6 +57,17 @@ hardware/runtime profiling.
 - [ ] Train full YOLO, RT-DETR, and D-FINE baselines.
 - [ ] Add SAM-assisted pseudo-label workflow for vehicle/curb/red-line masks.
 - [ ] Compare models by event quality, not only detector mAP.
+
+## ACCIDENT Mainline Checklist
+
+- [x] Select a public fixed-CCTV incident benchmark.
+- [x] Verify ACCIDENT access, CC BY-NC-SA 4.0 license, size, and metadata.
+- [x] Download real/synthetic metadata locally.
+- [ ] Download and verify all real and synthetic videos.
+- [ ] Reproduce the official heuristic and VLM smoke baselines.
+- [ ] Train feature-based temporal and VideoMAE models.
+- [ ] Evaluate IID and geographic OOD event quality and latency.
+- [ ] Integrate incident output with the existing SAM/VLM evidence workflow.
 
 ## VLM Checklist
 
@@ -95,8 +109,8 @@ hardware/runtime profiling.
 
 ## Next Best Milestones
 
-1. Build a 20 to 50 image/clip event validation set with labels: violation, no violation, uncertain.
-2. Run offline, Qwen2.5-VL-3B, and one optional cloud VLM over the validation set.
-3. Train or validate D-FINE/RT-DETR/YOLO on the same data slice and report event-level quality.
-4. Add SystemC throughput simulation tied to measured pipeline FPS.
-5. Produce the final report table: detector metrics, VLM review metrics, event metrics, hot-spot reduction estimate, and hardware/runtime cost.
+1. Download and validate the full ACCIDENT CCTV benchmark.
+2. Reproduce heuristic baselines and train a temporal incident model.
+3. Compare detector front ends and a VideoMAE model on IID/OOD event metrics.
+4. Feed measured traces into Verilog triggers and SystemC NPU scheduling.
+5. Join event results with Taiwan A1/A2, violations, VD flow, and CCTV coverage.

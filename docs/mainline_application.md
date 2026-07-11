@@ -1,5 +1,9 @@
 # Smart City Traffic Violation System
 
+> Status: the red-line parking application described here is a completed event
+> case. The active continuation is ACCIDENT-based edge traffic incident
+> detection; see `docs/project_direction.md` and `docs/todo.md`.
+
 ## Goal
 
 Build a smart-city traffic violation monitoring system that can run at an edge
