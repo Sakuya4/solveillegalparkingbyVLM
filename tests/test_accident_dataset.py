@@ -88,6 +88,7 @@ def test_build_temporal_windows_creates_normal_and_incident_examples(tmp_path: P
 
     assert [window.label for window in windows] == ["normal", "incident"]
     assert windows[0].end_frame <= clip.accident_frame - 6
+    assert windows[0].end_frame <= windows[1].start_frame - 6
     assert windows[1].start_frame <= clip.accident_frame < windows[1].end_frame
     assert all(window.end_frame - window.start_frame == 24 for window in windows)
 

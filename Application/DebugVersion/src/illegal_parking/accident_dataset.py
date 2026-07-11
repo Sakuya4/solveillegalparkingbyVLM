@@ -111,16 +111,17 @@ def build_temporal_windows(
     if clip.frame_count < window_frames:
         return []
 
-    windows: list[TemporalWindow] = []
     event_frame = clip.effective_accident_frame
-    normal_end = event_frame - negative_gap_frames
+    incident_start = event_frame - window_frames // 2
+    incident_start = max(0, min(incident_start, clip.frame_count - window_frames))
+    incident_end = incident_start + window_frames
+
+    windows: list[TemporalWindow] = []
+    normal_end = incident_start - negative_gap_frames
     normal_start = normal_end - window_frames
     if normal_start >= 0:
         windows.append(_window(clip, normal_start, normal_end, "normal"))
 
-    incident_start = event_frame - window_frames // 2
-    incident_start = max(0, min(incident_start, clip.frame_count - window_frames))
-    incident_end = incident_start + window_frames
     windows.append(_window(clip, incident_start, incident_end, "incident"))
     return windows
 
