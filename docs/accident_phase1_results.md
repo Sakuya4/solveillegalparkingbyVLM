@@ -86,6 +86,10 @@ The reported false-positive rate is window-level. Normal samples are
 non-overlapping pre-incident windows from accident clips, not independent
 normal CCTV footage, so false alarms per camera-hour cannot yet be claimed.
 
+The TCN layers are causal, but each positive window is centered on the annotated
+accident frame and contains post-event frames. These results measure event
+detection and confirmation, not accident anticipation or early warning.
+
 ## Edge Queue Result
 
 The queue model used four cameras at 15 FPS, an 8-frame NPU queue, 1% candidate

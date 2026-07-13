@@ -16,7 +16,11 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "Application" / "DebugVersion" / "src"
 sys.path.insert(0, str(SRC))
 
-from illegal_parking.incident_baseline import binary_classification_metrics, filter_feature_names
+from illegal_parking.incident_baseline import (
+    binary_classification_metrics,
+    filter_feature_names,
+    has_oracle_roi_features,
+)
 from illegal_parking.incident_tcn import TemporalConvClassifier, fit_sequence_standardizer
 
 
@@ -40,6 +44,11 @@ def main() -> int:
         default=None,
         help="Use sequence channels beginning with this prefix. Defaults to global_ to avoid oracle ROI leakage.",
     )
+    parser.add_argument(
+        "--allow-oracle-roi",
+        action="store_true",
+        help="Explicitly allow annotation-derived accident ROI channels for an upper-bound experiment.",
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--model-output", default="models/accident_tcn.pt")
@@ -55,6 +64,12 @@ def main() -> int:
     all_feature_names = tuple(payload["feature_names"].astype(str).tolist())
     include_prefixes = tuple(args.include_prefix or ("global_",))
     feature_names = filter_feature_names(all_feature_names, include_prefixes)
+    if not args.allow_oracle_roi and has_oracle_roi_features(feature_names):
+        raise SystemExit(
+            "Selected sequence channels contain annotation-derived ROI features. "
+            "Use global_ channels for deployment metrics or --allow-oracle-roi "
+            "for an explicit upper bound."
+        )
     feature_indices = [all_feature_names.index(name) for name in feature_names]
     features = np.asarray(payload["features"], dtype=np.float32)[:, :, feature_indices]
     targets = np.asarray(payload["target"], dtype=np.int64)
@@ -126,6 +141,7 @@ def main() -> int:
         "sequence_shape": list(features.shape[1:]),
         "feature_names": list(feature_names),
         "include_prefixes": list(include_prefixes),
+        "oracle_roi_allowed": args.allow_oracle_roi,
         "train_loss_first": losses[0],
         "train_loss_last": losses[-1],
         "train": binary_classification_metrics(train_targets, train_probabilities, args.threshold),
@@ -144,6 +160,7 @@ def main() -> int:
         ),
         "limitations": [
             "Normal windows are pre-incident segments from accident clips, not independent normal-only CCTV videos.",
+            "Incident windows are centered on the annotated accident frame and include post-event frames; this evaluates event detection, not pre-crash anticipation.",
             "This compact TCN consumes optical-flow/frame-difference sequences and is not a VideoMAE comparison.",
             "False-positive rate is window-level and must not be reported as false alarms per camera-hour.",
         ],

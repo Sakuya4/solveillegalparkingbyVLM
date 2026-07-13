@@ -52,16 +52,12 @@ def main() -> int:
     if not rows:
         raise SystemExit(f"Feature CSV has no rows: {feature_path}")
     available_feature_names = select_numeric_feature_names(rows[0])
-    if (
-        not args.include_prefix
-        and not args.allow_oracle_roi
-        and has_oracle_roi_features(available_feature_names)
-    ):
+    feature_names = filter_feature_names(available_feature_names, tuple(args.include_prefix))
+    if not args.allow_oracle_roi and has_oracle_roi_features(feature_names):
         raise SystemExit(
             "Feature CSV contains annotation-derived ROI columns. Use --include-prefix global_ "
             "for deployment metrics or --allow-oracle-roi for an explicit upper bound."
         )
-    feature_names = filter_feature_names(available_feature_names, tuple(args.include_prefix))
     split_field = "iid_split" if args.split_scheme == "iid" else "geographic_split"
     train_rows = [row for row in rows if row[split_field] == "train"]
     test_rows = [row for row in rows if row[split_field] == "test"]
