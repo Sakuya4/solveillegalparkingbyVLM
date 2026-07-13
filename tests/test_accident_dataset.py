@@ -7,6 +7,7 @@ import pytest
 from illegal_parking.accident_dataset import (
     build_temporal_windows,
     load_accident_manifest,
+    stratified_sample_clips,
     summarize_accident_manifest,
     validate_accident_files,
 )
@@ -131,3 +132,16 @@ def test_validate_accident_files_reports_present_and_missing_clips(tmp_path: Pat
     assert report.present_count == 1
     assert report.missing_count == 1
     assert report.missing_paths == ["real_videos/b.mp4"]
+
+
+def test_stratified_sample_is_bounded_and_reproducible(tmp_path: Path) -> None:
+    manifest = tmp_path / "metadata-real.csv"
+    _write_manifest(manifest)
+    clips = load_accident_manifest(manifest)
+
+    first = stratified_sample_clips(clips, max_clips=1, seed=7)
+    second = stratified_sample_clips(clips, max_clips=1, seed=7)
+
+    assert len(first) == 1
+    assert first == second
+    assert stratified_sample_clips(clips, max_clips=10, seed=7) == clips

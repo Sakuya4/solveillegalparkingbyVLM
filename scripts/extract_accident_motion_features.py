@@ -11,7 +11,11 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "Application" / "DebugVersion" / "src"
 sys.path.insert(0, str(SRC))
 
-from illegal_parking.accident_dataset import build_temporal_windows, load_accident_manifest
+from illegal_parking.accident_dataset import (
+    build_temporal_windows,
+    load_accident_manifest,
+    stratified_sample_clips,
+)
 from illegal_parking.incident_features import extract_video_window_features
 
 
@@ -29,6 +33,7 @@ def main() -> int:
     parser.add_argument("--frame-stride", type=int, default=2)
     parser.add_argument("--target-width", type=int, default=320)
     parser.add_argument("--max-clips", type=int, default=None)
+    parser.add_argument("--sampling-seed", type=int, default=42)
     parser.add_argument("--output", default="data/processed/accident/motion_features.csv")
     parser.add_argument("--report", default="data/processed/accident/motion_feature_report.json")
     args = parser.parse_args()
@@ -42,7 +47,7 @@ def main() -> int:
     if args.split != "all":
         clips = [clip for clip in clips if _split_value(clip, args.split_scheme) == args.split]
     if args.max_clips is not None:
-        clips = clips[: args.max_clips]
+        clips = stratified_sample_clips(clips, args.max_clips, seed=args.sampling_seed)
 
     rows: list[dict] = []
     failures: list[dict[str, str]] = []
@@ -108,6 +113,7 @@ def main() -> int:
         "clips_per_sec": len(clips) / elapsed_sec if elapsed_sec else 0.0,
         "frame_stride": args.frame_stride,
         "target_width": args.target_width,
+        "sampling_seed": args.sampling_seed,
         "failures": failures[:50],
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)

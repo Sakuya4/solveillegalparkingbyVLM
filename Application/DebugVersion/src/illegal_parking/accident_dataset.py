@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import random
 from collections import Counter
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -154,6 +155,37 @@ def validate_accident_files(
         missing_count=len(missing_paths),
         missing_paths=missing_paths,
     )
+
+
+def stratified_sample_clips(
+    clips: list[AccidentClip],
+    max_clips: int,
+    seed: int = 42,
+) -> list[AccidentClip]:
+    if max_clips <= 0:
+        raise ValueError("max_clips must be positive")
+    if max_clips >= len(clips):
+        return list(clips)
+
+    groups: dict[tuple[str, str, str], list[AccidentClip]] = {}
+    for clip in clips:
+        key = (clip.collision_type, clip.iid_split, clip.geographic_split)
+        groups.setdefault(key, []).append(clip)
+    generator = random.Random(seed)
+    for group in groups.values():
+        generator.shuffle(group)
+
+    sampled: list[AccidentClip] = []
+    ordered_keys = sorted(groups)
+    while len(sampled) < max_clips:
+        added = False
+        for key in ordered_keys:
+            if groups[key] and len(sampled) < max_clips:
+                sampled.append(groups[key].pop())
+                added = True
+        if not added:
+            break
+    return sampled
 
 
 def _parse_clip(row: dict[str, str], row_number: int) -> AccidentClip:
