@@ -151,18 +151,27 @@ The Verilog modules model the low-level rule logic. The SystemC model represents
 the transaction-level scheduling question: how many candidate events per second
 can the edge device filter before expensive AI review becomes the bottleneck?
 
-## Next SystemC Task
+## SystemC Scope And Next Extension
 
-The next SystemC slice should add a queue/throughput simulation:
+The current SystemC slice models camera arrivals, a bounded shared-NPU FIFO,
+detector plus temporal service time, candidate generation, and a bounded review
+FIFO. It reports processed, pending, and dropped work at the simulation
+boundary, so frame and candidate accounting can be checked.
+
+Current configurable inputs are:
 
 | Input | Meaning |
 | --- | --- |
+| camera_count | Number of camera streams sharing the NPU. |
 | camera_fps | Effective camera read FPS from live CCTV validation. |
-| detections_per_frame | Detector load from YOLO/RT-DETR/D-FINE. |
-| filter_cycles | Deterministic event-filter cost. |
+| detector_latency_ms | Measured detector service time per frame. |
+| temporal_latency_ms | Incident temporal-stage service time. |
+| npu_queue_capacity | Waiting-frame capacity before dropping. |
+| candidate_stride | Deterministic candidate frequency for the smoke model. |
 | review_latency_ms | VLM or human-review latency per candidate. |
+| review_queue_capacity | Waiting-candidate capacity before dropping. |
 
-Expected output:
+Current output includes:
 
 - candidate events per minute
 - dropped/queued candidates
@@ -171,4 +180,6 @@ Expected output:
 
 This makes the branch useful even without physical NPU hardware. It simulates
 the deployment pressure that a Snapdragon/NPU implementation would need to
-handle later.
+handle later. The next extension is to replace constant service times and
+candidate stride with per-frame traces from the real detector/incident models,
+then add calibrated CPU/VLM stages and power proxies.

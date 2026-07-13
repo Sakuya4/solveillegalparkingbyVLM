@@ -53,6 +53,7 @@ SC_MODULE(NpuWorker) {
     unsigned processed = 0;
     unsigned candidate_count = 0;
     unsigned dropped_candidates = 0;
+    bool busy = false;
 
     SC_HAS_PROCESS(NpuWorker);
 
@@ -64,8 +65,10 @@ SC_MODULE(NpuWorker) {
     void run() {
         while (true) {
             unsigned frame_id = frames->read();
+            busy = true;
             wait(sc_time(profile.detector_latency_ms + profile.temporal_latency_ms, SC_MS));
             ++processed;
+            busy = false;
             if (profile.candidate_stride > 0 && processed % profile.candidate_stride == 0) {
                 ++candidate_count;
                 if (!candidates->nb_write(frame_id)) {
@@ -80,6 +83,7 @@ SC_MODULE(ReviewWorker) {
     sc_fifo_in<unsigned> candidates;
     QueueProfile profile;
     unsigned completed = 0;
+    bool busy = false;
 
     SC_HAS_PROCESS(ReviewWorker);
 
@@ -91,13 +95,19 @@ SC_MODULE(ReviewWorker) {
     void run() {
         while (true) {
             candidates->read();
+            busy = true;
             wait(sc_time(profile.review_latency_ms, SC_MS));
             ++completed;
+            busy = false;
         }
     }
 };
 
 static QueueProfile parse_args(int argc, char* argv[]) {
+    if ((argc - 1) % 2 != 0) {
+        std::cerr << "Every option requires a value" << std::endl;
+        std::exit(2);
+    }
     QueueProfile profile;
     for (int index = 1; index + 1 < argc; index += 2) {
         std::string option = argv[index];
@@ -115,6 +125,15 @@ static QueueProfile parse_args(int argc, char* argv[]) {
             std::cerr << "Unknown option: " << option << std::endl;
             std::exit(2);
         }
+    }
+    if (profile.camera_count == 0 || profile.camera_fps <= 0.0 ||
+        profile.duration_sec <= 0.0 || profile.detector_latency_ms < 0.0 ||
+        profile.temporal_latency_ms < 0.0 || profile.review_latency_ms < 0.0 ||
+        profile.npu_queue_capacity == 0 || profile.review_queue_capacity == 0) {
+        std::cerr << "Counts, rates, duration, and FIFO capacities must be positive; "
+                     "latencies must be non-negative"
+                  << std::endl;
+        std::exit(2);
     }
     return profile;
 }
@@ -134,13 +153,16 @@ int sc_main(int argc, char* argv[]) {
 
     sc_start(sc_time(profile.duration_sec, SC_SEC));
 
+    const unsigned pending_frames = frame_queue.num_available() + (npu.busy ? 1U : 0U);
+    const unsigned pending_reviews = review_queue.num_available() + (reviewer.busy ? 1U : 0U);
+
     std::cout << "generated_frames=" << camera_farm.generated << '\n'
               << "processed_frames=" << npu.processed << '\n'
-              << "queued_frames=" << frame_queue.num_available() << '\n'
+              << "pending_frames=" << pending_frames << '\n'
               << "dropped_frames=" << camera_farm.dropped << '\n'
               << "generated_candidates=" << npu.candidate_count << '\n'
               << "completed_reviews=" << reviewer.completed << '\n'
-              << "queued_reviews=" << review_queue.num_available() << '\n'
+              << "pending_reviews=" << pending_reviews << '\n'
               << "dropped_candidates=" << npu.dropped_candidates << std::endl;
     return 0;
 }
