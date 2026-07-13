@@ -9,6 +9,7 @@ from illegal_parking.incident_features import (
     compute_frame_motion,
     compute_motion_sequence,
     extract_video_window_features,
+    motion_sequence_matrix,
     read_video_window,
 )
 
@@ -44,6 +45,18 @@ def test_compute_motion_sequence_returns_one_record_per_frame_pair() -> None:
     assert len(sequence) == 3
     assert sequence[0]["global_diff_mean"] == pytest.approx(0.0)
     assert sequence[1]["global_diff_mean"] > 0
+
+
+def test_motion_sequence_matrix_has_stable_feature_order() -> None:
+    frames = [np.full((24, 32, 3), value, dtype=np.uint8) for value in (0, 32, 64, 96)]
+
+    matrix = motion_sequence_matrix(
+        compute_motion_sequence(frames, (0.0, 0.0, 1.0, 1.0))
+    )
+
+    assert matrix.shape == (3, 8)
+    assert matrix.dtype == np.float32
+    assert np.all(np.isfinite(matrix))
 
 
 def test_aggregate_motion_features_reports_mean_max_std_and_peak_position() -> None:

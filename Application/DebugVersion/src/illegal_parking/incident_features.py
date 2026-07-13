@@ -69,6 +69,18 @@ def compute_motion_sequence(
     ]
 
 
+def motion_sequence_matrix(sequence: list[dict[str, float]]) -> np.ndarray:
+    if not sequence:
+        raise ValueError("Cannot convert an empty motion sequence")
+    matrix = np.asarray(
+        [[frame[feature_name] for feature_name in MOTION_FEATURE_NAMES] for frame in sequence],
+        dtype=np.float32,
+    )
+    if not np.all(np.isfinite(matrix)):
+        raise ValueError("Motion sequence contains non-finite values")
+    return matrix
+
+
 def aggregate_motion_features(sequence: list[dict[str, float]]) -> dict[str, float]:
     if not sequence:
         raise ValueError("Cannot aggregate an empty motion sequence")
