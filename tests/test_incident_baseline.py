@@ -6,6 +6,7 @@ import pytest
 from illegal_parking.incident_baseline import (
     binary_classification_metrics,
     fit_logistic_regression,
+    select_numeric_feature_names,
 )
 
 
@@ -57,3 +58,19 @@ def test_binary_classification_metrics_reports_false_alarm_rate() -> None:
 def test_fit_logistic_regression_rejects_single_class_training_data() -> None:
     with pytest.raises(ValueError, match="both classes"):
         fit_logistic_regression(np.ones((3, 2)), np.ones(3))
+
+
+def test_select_numeric_features_keeps_ttc_without_label_leakage() -> None:
+    row = {
+        "path": "clip.mp4",
+        "target": "1",
+        "start_frame": "20",
+        "collision_type": "t-bone",
+        "min_ttc_sec_min": "0.25",
+        "risk_peak_position": "0.8",
+    }
+
+    assert select_numeric_feature_names(row) == (
+        "min_ttc_sec_min",
+        "risk_peak_position",
+    )

@@ -12,7 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "Application" / "DebugVersion" / "src"
 sys.path.insert(0, str(SRC))
 
-from illegal_parking.incident_baseline import binary_classification_metrics, fit_logistic_regression
+from illegal_parking.incident_baseline import (
+    binary_classification_metrics,
+    fit_logistic_regression,
+    select_numeric_feature_names,
+)
 
 
 def main() -> int:
@@ -34,11 +38,7 @@ def main() -> int:
     rows = list(csv.DictReader(feature_path.open("r", encoding="utf-8-sig", newline="")))
     if not rows:
         raise SystemExit(f"Feature CSV has no rows: {feature_path}")
-    feature_names = tuple(
-        name
-        for name in rows[0]
-        if name == "motion_peak_position" or name.endswith(("_mean", "_max", "_std"))
-    )
+    feature_names = select_numeric_feature_names(rows[0])
     split_field = "iid_split" if args.split_scheme == "iid" else "geographic_split"
     train_rows = [row for row in rows if row[split_field] == "train"]
     test_rows = [row for row in rows if row[split_field] == "test"]

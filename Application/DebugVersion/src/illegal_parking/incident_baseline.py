@@ -5,6 +5,25 @@ from dataclasses import dataclass
 import numpy as np
 
 
+NON_FEATURE_FIELDS = frozenset(
+    {
+        "path",
+        "label",
+        "target",
+        "collision_type",
+        "region",
+        "quality",
+        "day_time",
+        "iid_split",
+        "geographic_split",
+        "start_frame",
+        "end_frame",
+        "accident_frame",
+        "source_accident_frame",
+    }
+)
+
+
 @dataclass(frozen=True)
 class StandardizedLogisticModel:
     feature_mean: np.ndarray
@@ -119,6 +138,22 @@ def binary_classification_metrics(
         "threshold": threshold,
         "confusion_matrix": {"tn": tn, "fp": fp, "fn": fn, "tp": tp},
     }
+
+
+def select_numeric_feature_names(row: dict[str, str]) -> tuple[str, ...]:
+    feature_names: list[str] = []
+    for name, value in row.items():
+        if name in NON_FEATURE_FIELDS:
+            continue
+        try:
+            numeric_value = float(value)
+        except (TypeError, ValueError):
+            continue
+        if np.isfinite(numeric_value):
+            feature_names.append(name)
+    if not feature_names:
+        raise ValueError("No numeric feature columns were found")
+    return tuple(feature_names)
 
 
 def _feature_matrix(features: np.ndarray) -> np.ndarray:
