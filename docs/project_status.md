@@ -4,9 +4,11 @@
 
 Existing red-line/event platform: **about 70% complete**.
 
-New ACCIDENT incident mainline: **about 10% complete**. Dataset selection,
-license/access checks, and metadata acquisition are complete; video download,
-training, and event evaluation have not started yet.
+New ACCIDENT incident mainline: **about 45% complete**. The full 16.76 GB
+archive is downloaded and checksummed, all 2,027 real clips are validated, and
+a 500-clip real-video IID/geographic smoke benchmark is complete. Dataset
+parsing, temporal windows, motion features, a lightweight baseline, Verilog
+trigger logic, and Python/SystemC queue models are implemented.
 
 Current positioning: **edge-first traffic incident detection and risk
 prioritization for roadside cameras**. Red-line parking is now a completed event
@@ -63,7 +65,11 @@ reported separately so the added research scope is visible.
 - [x] Select a public fixed-CCTV incident benchmark.
 - [x] Verify ACCIDENT access, CC BY-NC-SA 4.0 license, size, and metadata.
 - [x] Download real/synthetic metadata locally.
-- [ ] Download and verify all real and synthetic videos.
+- [x] Download and verify the archive containing all real and synthetic videos.
+- [x] Add validated temporal-window and video-file inventory generation.
+- [x] Add global/ROI motion feature extraction.
+- [x] Add lightweight incident model training and IID/geographic OOD reports.
+- [x] Run a 500-clip real-video smoke benchmark with zero decode failures.
 - [ ] Reproduce the official heuristic and VLM smoke baselines.
 - [ ] Train feature-based temporal and VideoMAE models.
 - [ ] Evaluate IID and geographic OOD event quality and latency.
@@ -91,7 +97,7 @@ reported separately so the added research scope is visible.
 - [x] Add Python golden models and test vectors.
 - [x] Add self-checking Verilog testbenches.
 - [x] Explain how hardware filtering reduces software/VLM review load.
-- [ ] Add SystemC queue and throughput simulation using measured camera FPS.
+- [x] Add SystemC queue and throughput simulation using measured camera FPS.
 - [ ] Connect hardware filter vectors to real event evidence.
 - [ ] Document Snapdragon/QNN export and profiling path.
 
@@ -106,11 +112,15 @@ reported separately so the added research scope is visible.
 - Public data reports for violation hot spots, A1/A2 accident risk, and projected savings.
 - YOLOv8n versus RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
 - Verilog-style deterministic filtering blocks for dwell and overlap logic.
+- A real-video incident smoke benchmark: IID F1 0.838 and geographic OOD F1
+  0.854 on a stratified 500-clip subset.
+- A shared-NPU capacity result showing RT-DETR-L saturation above two 15 FPS
+  camera streams under the measured-latency queue assumptions.
 
 ## Next Best Milestones
 
-1. Download and validate the full ACCIDENT CCTV benchmark.
-2. Reproduce heuristic baselines and train a temporal incident model.
-3. Compare detector front ends and a VideoMAE model on IID/OOD event metrics.
-4. Feed measured traces into Verilog triggers and SystemC NPU scheduling.
+1. Run full-split motion and official heuristic baselines.
+2. Add trajectory/TTC features and train a TCN temporal model.
+3. Compare detector front ends and VideoMAE on IID/OOD event metrics.
+4. Feed real inference traces into Verilog triggers and SystemC scheduling.
 5. Join event results with Taiwan A1/A2, violations, VD flow, and CCTV coverage.

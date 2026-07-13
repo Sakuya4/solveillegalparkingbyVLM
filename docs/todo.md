@@ -14,9 +14,13 @@
 - [x] Select a public fixed-CCTV dataset: ACCIDENT.
 - [x] Verify Kaggle access, license, size, metadata, and split fields.
 - [x] Download real/synthetic metadata and annotation classes locally.
-- [ ] Download and checksum the full 16.76 GB dataset.
-- [ ] Add an ACCIDENT dataset adapter and clip sampler.
-- [ ] Reproduce naive, optical-flow, and bbox-dynamics smoke baselines.
+- [x] Download and checksum the full 16.76 GB dataset.
+- [x] Add an ACCIDENT dataset adapter and clip sampler.
+- [x] Validate official metadata and preserve two end-boundary label corrections.
+- [x] Add ROI/global optical-flow and frame-difference feature extraction.
+- [x] Add a serializable lightweight incident baseline with IID/OOD reporting.
+- [x] Run the optical-flow smoke baseline on 500 real clips.
+- [ ] Reproduce naive and bbox-dynamics smoke baselines.
 - [ ] Extract detector/tracker trajectory features around accident timestamps.
 - [ ] Train TCN/LSTM temporal baselines.
 - [ ] Train or fine-tune a VideoMAE comparison model.
@@ -28,11 +32,14 @@
 ## Phase 2: Edge And Hardware-Aware Validation
 
 - [ ] Export and quantize the selected models for an edge runtime.
-- [ ] Add Verilog motion, acceleration, and time-to-collision trigger logic.
+- [ ] Add Verilog acceleration and time-to-collision trigger logic.
+- [x] Add a Verilog ROI-versus-global motion-spike trigger.
+- [x] Add a shared NPU/review queue golden simulation and camera-capacity sweep.
 - [ ] Feed real model traces into Verilog golden vectors.
-- [ ] Add SystemC camera, CPU, NPU, VLM, and alert queues.
-- [ ] Simulate latency, backpressure, frame dropping, utilization, and power
-  proxies for multiple cameras.
+- [x] Add SystemC camera, shared-NPU, and review/alert queues.
+- [x] Simulate latency, backpressure, frame dropping, and utilization for
+  multiple cameras.
+- [ ] Add CPU/VLM stages and calibrated power proxies to the SystemC model.
 - [ ] Document the Snapdragon QNN/AI Hub compilation and profiling path.
 - [ ] Join alerts with Taiwan A1/A2, violations, VD flow, and CCTV locations.
 - [ ] Run live public-CCTV runtime and domain-shift checks.
