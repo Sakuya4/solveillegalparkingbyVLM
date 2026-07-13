@@ -33,6 +33,15 @@ YOLO做車輛檢測，經過NAFNet的模糊處理，最後提供給VLM去判斷�
 <img width="1108" height="319" alt="image" src="https://github.com/user-attachments/assets/186939f9-38ed-4c36-b833-38ea244dd503" />
 
 ---
+### 延伸任務參考影片
+
+[![ACCIDENT 固定式道路監視器事故片段](docs/assets/accident_reference.gif)](docs/assets/accident_reference.mp4)
+
+點擊預覽可播放 MP4。片段取自
+[ACCIDENT 交通監視器事故資料集](https://github.com/accidentbench/ACCIDENT)，用於測試事件時間、位置與事故類型辨識；此衍生片段依原資料集的
+[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 條款提供。
+
+---
 ### 安裝說明
 
 1. 建立虛擬環境
