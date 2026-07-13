@@ -16,6 +16,7 @@ from illegal_parking.incident_baseline import (
     binary_classification_metrics,
     filter_feature_names,
     fit_logistic_regression,
+    has_oracle_roi_features,
     select_numeric_feature_names,
 )
 
@@ -36,6 +37,11 @@ def main() -> int:
         default=[],
         help="Train only columns beginning with this prefix. Can be repeated.",
     )
+    parser.add_argument(
+        "--allow-oracle-roi",
+        action="store_true",
+        help="Explicitly allow annotation-derived accident ROI features for an upper-bound experiment.",
+    )
     parser.add_argument("--model-output", default="models/accident_motion_baseline.json")
     parser.add_argument("--report-output", default="outputs/accident/motion_baseline_report.json")
     parser.add_argument("--predictions-output", default="outputs/accident/motion_baseline_predictions.csv")
@@ -45,10 +51,17 @@ def main() -> int:
     rows = list(csv.DictReader(feature_path.open("r", encoding="utf-8-sig", newline="")))
     if not rows:
         raise SystemExit(f"Feature CSV has no rows: {feature_path}")
-    feature_names = filter_feature_names(
-        select_numeric_feature_names(rows[0]),
-        tuple(args.include_prefix),
-    )
+    available_feature_names = select_numeric_feature_names(rows[0])
+    if (
+        not args.include_prefix
+        and not args.allow_oracle_roi
+        and has_oracle_roi_features(available_feature_names)
+    ):
+        raise SystemExit(
+            "Feature CSV contains annotation-derived ROI columns. Use --include-prefix global_ "
+            "for deployment metrics or --allow-oracle-roi for an explicit upper bound."
+        )
+    feature_names = filter_feature_names(available_feature_names, tuple(args.include_prefix))
     split_field = "iid_split" if args.split_scheme == "iid" else "geographic_split"
     train_rows = [row for row in rows if row[split_field] == "train"]
     test_rows = [row for row in rows if row[split_field] == "test"]
@@ -74,6 +87,7 @@ def main() -> int:
         "feature_count": len(feature_names),
         "feature_names": list(feature_names),
         "include_prefixes": args.include_prefix,
+        "oracle_roi_allowed": args.allow_oracle_roi,
         "train": binary_classification_metrics(train_targets, train_probabilities, args.threshold),
         "test": binary_classification_metrics(test_targets, test_probabilities, args.threshold),
         "test_by_collision_type": _group_metrics(test_rows, test_targets, test_probabilities, "collision_type", args.threshold),

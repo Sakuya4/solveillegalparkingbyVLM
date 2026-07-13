@@ -7,6 +7,7 @@ from illegal_parking.incident_baseline import (
     binary_classification_metrics,
     filter_feature_names,
     fit_logistic_regression,
+    has_oracle_roi_features,
     select_numeric_feature_names,
 )
 
@@ -89,3 +90,15 @@ def test_filter_feature_names_supports_deployment_safe_global_motion() -> None:
 def test_filter_feature_names_rejects_empty_selection() -> None:
     with pytest.raises(ValueError, match="No feature columns"):
         filter_feature_names(("roi_flow_mean",), ("global_",))
+
+
+@pytest.mark.parametrize(
+    "name",
+    ["roi_flow_mean", "motion_roi_flow_mean", "motion_peak_position", "motion_motion_peak_position"],
+)
+def test_oracle_roi_feature_detection(name: str) -> None:
+    assert has_oracle_roi_features((name,)) is True
+
+
+def test_trajectory_risk_peak_is_not_mistaken_for_oracle_roi() -> None:
+    assert has_oracle_roi_features(("trajectory_risk_peak_position",)) is False

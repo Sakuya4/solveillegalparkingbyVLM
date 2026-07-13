@@ -170,6 +170,16 @@ def filter_feature_names(
     return selected
 
 
+def has_oracle_roi_features(feature_names: tuple[str, ...]) -> bool:
+    return any(
+        name.startswith("roi_")
+        or "_roi_" in name
+        or name == "motion_peak_position"
+        or name.endswith("_motion_peak_position")
+        for name in feature_names
+    )
+
+
 def _feature_matrix(features: np.ndarray) -> np.ndarray:
     matrix = np.asarray(features, dtype=np.float64)
     if matrix.ndim == 1:
