@@ -20,9 +20,13 @@
 - [x] Add ROI/global optical-flow and frame-difference feature extraction.
 - [x] Add a serializable lightweight incident baseline with IID/OOD reporting.
 - [x] Run the optical-flow smoke baseline on 500 real clips.
+- [x] Run full 2,027-clip global motion IID/geographic baselines.
 - [ ] Reproduce naive and bbox-dynamics smoke baselines.
-- [ ] Extract detector/tracker trajectory features around accident timestamps.
-- [ ] Train TCN/LSTM temporal baselines.
+- [x] Extract detector/tracker trajectory and image-plane TTC features.
+- [x] Train a causal TCN temporal baseline on global motion sequences.
+- [ ] Train an LSTM comparison baseline.
+- [x] Measure the gap between deployable global features and oracle accident ROI.
+- [ ] Replace oracle ROI with online tracker/motion/SAM2 candidate proposals.
 - [ ] Train or fine-tune a VideoMAE comparison model.
 - [ ] Compare YOLO, RT-DETR, and D-FINE as detector front ends.
 - [ ] Generate incident evidence with SAM2 and VLM review.

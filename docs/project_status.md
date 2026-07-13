@@ -4,11 +4,11 @@
 
 Existing red-line/event platform: **about 70% complete**.
 
-New ACCIDENT incident mainline: **about 45% complete**. The full 16.76 GB
-archive is downloaded and checksummed, all 2,027 real clips are validated, and
-a 500-clip real-video IID/geographic smoke benchmark is complete. Dataset
-parsing, temporal windows, motion features, a lightweight baseline, Verilog
-trigger logic, and Python/SystemC queue models are implemented.
+New ACCIDENT incident mainline: **about 60% complete**. All 2,027 real clips
+have been processed into 3,387 windows with zero decode failures. Full IID and
+geographic global-motion baselines, a causal TCN, a 500-clip trajectory/TTC
+ablation, feature fusion, Verilog trigger logic, and Python/SystemC queue models
+are implemented.
 
 Current positioning: **edge-first traffic incident detection and risk
 prioritization for roadside cameras**. Red-line parking is now a completed event
@@ -70,8 +70,12 @@ reported separately so the added research scope is visible.
 - [x] Add global/ROI motion feature extraction.
 - [x] Add lightweight incident model training and IID/geographic OOD reports.
 - [x] Run a 500-clip real-video smoke benchmark with zero decode failures.
+- [x] Run full 2,027-clip global motion IID/geographic baselines.
+- [x] Extract YOLOv8n/ByteTrack trajectory and image-plane TTC features.
+- [x] Train a causal TCN on deployment-safe global motion sequences.
+- [x] Separate deployment-safe metrics from oracle accident-ROI upper bounds.
 - [ ] Reproduce the official heuristic and VLM smoke baselines.
-- [ ] Train feature-based temporal and VideoMAE models.
+- [ ] Train VideoMAE and detector-front-end comparison models.
 - [ ] Evaluate IID and geographic OOD event quality and latency.
 - [ ] Integrate incident output with the existing SAM/VLM evidence workflow.
 
@@ -112,15 +116,16 @@ reported separately so the added research scope is visible.
 - Public data reports for violation hot spots, A1/A2 accident risk, and projected savings.
 - YOLOv8n versus RT-DETR-L detector comparison on the same FishEye8K 1K/1K subset.
 - Verilog-style deterministic filtering blocks for dwell and overlap logic.
-- A real-video incident smoke benchmark: IID F1 0.838 and geographic OOD F1
-  0.854 on a stratified 500-clip subset.
+- A full real-video causal TCN benchmark using no oracle ROI: IID F1 0.594 and
+  geographic F1 0.629 over 3,387 windows.
+- A measured oracle-ROI gap and a 500-clip trajectory/TTC fusion ablation.
 - A shared-NPU capacity result showing RT-DETR-L saturation above two 15 FPS
   camera streams under the measured-latency queue assumptions.
 
 ## Next Best Milestones
 
-1. Run full-split motion and official heuristic baselines.
-2. Add trajectory/TTC features and train a TCN temporal model.
+1. Generate online candidate ROIs from tracker/motion/SAM2 without annotations.
+2. Add normal-only CCTV and measure false alerts per camera-hour.
 3. Compare detector front ends and VideoMAE on IID/OOD event metrics.
 4. Feed real inference traces into Verilog triggers and SystemC scheduling.
 5. Join event results with Taiwan A1/A2, violations, VD flow, and CCTV coverage.

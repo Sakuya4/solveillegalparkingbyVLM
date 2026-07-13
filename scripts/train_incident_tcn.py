@@ -147,6 +147,10 @@ def main() -> int:
             "This compact TCN consumes optical-flow/frame-difference sequences and is not a VideoMAE comparison.",
             "False-positive rate is window-level and must not be reported as false alarms per camera-hour.",
         ],
+        "sources": [
+            "https://arxiv.org/abs/1803.01271",
+            "https://github.com/accidentbench/ACCIDENT",
+        ],
     }
 
     model_output = _resolve(args.model_output)
