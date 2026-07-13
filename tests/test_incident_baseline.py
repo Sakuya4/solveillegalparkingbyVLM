@@ -5,6 +5,7 @@ import pytest
 
 from illegal_parking.incident_baseline import (
     binary_classification_metrics,
+    filter_feature_names,
     fit_logistic_regression,
     select_numeric_feature_names,
 )
@@ -74,3 +75,17 @@ def test_select_numeric_features_keeps_ttc_without_label_leakage() -> None:
         "min_ttc_sec_min",
         "risk_peak_position",
     )
+
+
+def test_filter_feature_names_supports_deployment_safe_global_motion() -> None:
+    names = ("global_flow_mean", "roi_flow_mean", "trajectory_min_ttc")
+
+    assert filter_feature_names(names, ("global_", "trajectory_")) == (
+        "global_flow_mean",
+        "trajectory_min_ttc",
+    )
+
+
+def test_filter_feature_names_rejects_empty_selection() -> None:
+    with pytest.raises(ValueError, match="No feature columns"):
+        filter_feature_names(("roi_flow_mean",), ("global_",))

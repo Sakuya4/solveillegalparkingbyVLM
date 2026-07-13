@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SRC = ROOT / "Application" / "DebugVersion" / "src"
 sys.path.insert(0, str(SRC))
 
-from illegal_parking.incident_baseline import binary_classification_metrics
+from illegal_parking.incident_baseline import binary_classification_metrics, filter_feature_names
 from illegal_parking.incident_tcn import TemporalConvClassifier, fit_sequence_standardizer
 
 
@@ -34,6 +34,12 @@ def main() -> int:
     parser.add_argument("--channels", type=int, default=32)
     parser.add_argument("--dropout", type=float, default=0.1)
     parser.add_argument("--threshold", type=float, default=0.5)
+    parser.add_argument(
+        "--include-prefix",
+        action="append",
+        default=None,
+        help="Use sequence channels beginning with this prefix. Defaults to global_ to avoid oracle ROI leakage.",
+    )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", default="auto")
     parser.add_argument("--model-output", default="models/accident_tcn.pt")
@@ -46,7 +52,11 @@ def main() -> int:
     _set_seed(args.seed)
     device = _resolve_device(args.device)
     payload = np.load(_resolve(args.sequences), allow_pickle=False)
-    features = np.asarray(payload["features"], dtype=np.float32)
+    all_feature_names = tuple(payload["feature_names"].astype(str).tolist())
+    include_prefixes = tuple(args.include_prefix or ("global_",))
+    feature_names = filter_feature_names(all_feature_names, include_prefixes)
+    feature_indices = [all_feature_names.index(name) for name in feature_names]
+    features = np.asarray(payload["features"], dtype=np.float32)[:, :, feature_indices]
     targets = np.asarray(payload["target"], dtype=np.int64)
     split_field = "iid_split" if args.split_scheme == "iid" else "geographic_split"
     splits = np.asarray(payload[split_field]).astype(str)
@@ -114,7 +124,8 @@ def main() -> int:
         "channels": args.channels,
         "dropout": args.dropout,
         "sequence_shape": list(features.shape[1:]),
-        "feature_names": payload["feature_names"].astype(str).tolist(),
+        "feature_names": list(feature_names),
+        "include_prefixes": list(include_prefixes),
         "train_loss_first": losses[0],
         "train_loss_last": losses[-1],
         "train": binary_classification_metrics(train_targets, train_probabilities, args.threshold),
@@ -149,7 +160,7 @@ def main() -> int:
             "input_features": features.shape[2],
             "channels": args.channels,
             "dropout": args.dropout,
-            "feature_names": payload["feature_names"].astype(str).tolist(),
+            "feature_names": list(feature_names),
             "standardizer": standardizer.to_dict(),
             "threshold": args.threshold,
         },

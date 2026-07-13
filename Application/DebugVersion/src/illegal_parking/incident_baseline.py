@@ -156,6 +156,20 @@ def select_numeric_feature_names(row: dict[str, str]) -> tuple[str, ...]:
     return tuple(feature_names)
 
 
+def filter_feature_names(
+    feature_names: tuple[str, ...],
+    include_prefixes: tuple[str, ...],
+) -> tuple[str, ...]:
+    if not include_prefixes:
+        return feature_names
+    selected = tuple(
+        name for name in feature_names if any(name.startswith(prefix) for prefix in include_prefixes)
+    )
+    if not selected:
+        raise ValueError(f"No feature columns match prefixes: {include_prefixes}")
+    return selected
+
+
 def _feature_matrix(features: np.ndarray) -> np.ndarray:
     matrix = np.asarray(features, dtype=np.float64)
     if matrix.ndim == 1:

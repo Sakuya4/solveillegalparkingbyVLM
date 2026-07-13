@@ -14,6 +14,7 @@ sys.path.insert(0, str(SRC))
 
 from illegal_parking.incident_baseline import (
     binary_classification_metrics,
+    filter_feature_names,
     fit_logistic_regression,
     select_numeric_feature_names,
 )
@@ -29,6 +30,12 @@ def main() -> int:
     parser.add_argument("--epochs", type=int, default=800)
     parser.add_argument("--learning-rate", type=float, default=0.05)
     parser.add_argument("--threshold", type=float, default=0.5)
+    parser.add_argument(
+        "--include-prefix",
+        action="append",
+        default=[],
+        help="Train only columns beginning with this prefix. Can be repeated.",
+    )
     parser.add_argument("--model-output", default="models/accident_motion_baseline.json")
     parser.add_argument("--report-output", default="outputs/accident/motion_baseline_report.json")
     parser.add_argument("--predictions-output", default="outputs/accident/motion_baseline_predictions.csv")
@@ -38,7 +45,10 @@ def main() -> int:
     rows = list(csv.DictReader(feature_path.open("r", encoding="utf-8-sig", newline="")))
     if not rows:
         raise SystemExit(f"Feature CSV has no rows: {feature_path}")
-    feature_names = select_numeric_feature_names(rows[0])
+    feature_names = filter_feature_names(
+        select_numeric_feature_names(rows[0]),
+        tuple(args.include_prefix),
+    )
     split_field = "iid_split" if args.split_scheme == "iid" else "geographic_split"
     train_rows = [row for row in rows if row[split_field] == "train"]
     test_rows = [row for row in rows if row[split_field] == "test"]
@@ -63,6 +73,7 @@ def main() -> int:
         "split_scheme": args.split_scheme,
         "feature_count": len(feature_names),
         "feature_names": list(feature_names),
+        "include_prefixes": args.include_prefix,
         "train": binary_classification_metrics(train_targets, train_probabilities, args.threshold),
         "test": binary_classification_metrics(test_targets, test_probabilities, args.threshold),
         "test_by_collision_type": _group_metrics(test_rows, test_targets, test_probabilities, "collision_type", args.threshold),
