@@ -20,12 +20,9 @@ from illegal_parking.accident_dataset import (
 )
 from illegal_parking.incident_trajectory import (
     aggregate_trajectory_features,
-    build_track_boxes,
     compute_trajectory_sequence,
 )
-
-
-VEHICLE_CLASS_IDS = (2, 3, 5, 7)
+from illegal_parking.incident_ultralytics import track_vehicle_frames
 
 
 def main() -> int:
@@ -95,7 +92,7 @@ def main() -> int:
                     window.end_frame,
                     args.frame_stride,
                 )
-                observations = _track_frames(
+                tracked_by_frame = track_vehicle_frames(
                     model,
                     frames,
                     frame_indices,
@@ -104,6 +101,11 @@ def main() -> int:
                     image_size=args.image_size,
                     confidence=args.confidence,
                 )
+                observations = [
+                    box
+                    for frame_index in frame_indices
+                    for box in tracked_by_frame[frame_index]
+                ]
                 if not observations:
                     zero_detection_windows += 1
                 sequence = compute_trajectory_sequence(
@@ -131,8 +133,6 @@ def main() -> int:
                 )
             except (OSError, RuntimeError, ValueError) as exc:
                 failures.append({"path": clip.relative_path.as_posix(), "error": str(exc)})
-            finally:
-                _reset_trackers(model)
         if clip_index % 10 == 0:
             print(f"processed {clip_index}/{len(clips)} clips, rows={len(rows)}, failures={len(failures)}")
 
@@ -200,51 +200,6 @@ def _read_window(
     if not frames:
         raise ValueError(f"Video window has no readable frames: {video_path}")
     return frames, frame_indices
-
-
-def _track_frames(
-    model,
-    frames: list,
-    frame_indices: list[int],
-    tracker: str,
-    device: str,
-    image_size: int,
-    confidence: float,
-) -> list:
-    # `persist=True` is the documented Ultralytics contract for sequential frames.
-    results = model.track(
-        source=frames,
-        persist=True,
-        tracker=tracker,
-        device=device,
-        imgsz=image_size,
-        conf=confidence,
-        classes=list(VEHICLE_CLASS_IDS),
-        verbose=False,
-    )
-    observations = []
-    for frame_index, result in zip(frame_indices, results):
-        boxes = result.boxes
-        if boxes is None or boxes.id is None or len(boxes) == 0:
-            continue
-        height, width = result.orig_shape
-        observations.extend(
-            build_track_boxes(
-                frame_index=frame_index,
-                boxes_xyxy=boxes.xyxy.detach().cpu().numpy(),
-                track_ids=boxes.id.detach().cpu().numpy(),
-                confidences=boxes.conf.detach().cpu().numpy(),
-                frame_width=width,
-                frame_height=height,
-            )
-        )
-    return observations
-
-
-def _reset_trackers(model) -> None:
-    predictor = getattr(model, "predictor", None)
-    for tracker in getattr(predictor, "trackers", ()) or ():
-        tracker.reset()
 
 
 def _split_value(clip, split_scheme: str) -> str:
