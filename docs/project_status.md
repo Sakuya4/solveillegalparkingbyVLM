@@ -4,12 +4,13 @@
 
 Existing red-line/event platform: **about 70% complete**.
 
-New ACCIDENT incident mainline: **about 70% complete**. All 2,027 real clips
+New ACCIDENT incident mainline: **about 75% complete**. All 2,027 real clips
 have been processed into 3,387 windows with zero decode failures. Full IID and
 geographic global-motion baselines, a causal TCN, a 500-clip trajectory/TTC
 ablation, annotation-free tracker/motion candidate ROIs, optional SAM2
-refinement, edge traces, Verilog trigger logic, and Python/SystemC queue models
-are implemented.
+refinement, train-holdout threshold calibration, a public-CCTV pilot, a real
+model-output demo, edge-trace replay, Verilog trigger logic, and Python/SystemC
+queue models are implemented.
 
 Current positioning: **edge-first traffic incident detection and risk
 prioritization for roadside cameras**. Red-line parking is now a completed event
@@ -78,6 +79,8 @@ reported separately so the added research scope is visible.
 - [x] Generate online tracker/motion candidate ROIs without accident annotations.
 - [x] Add optional SAM2 box-prompt refinement with an edge-safe fallback.
 - [x] Run a 500-clip candidate ROI logistic/TCN ablation and emit edge traces.
+- [x] Calibrate candidate model thresholds on a grouped training holdout.
+- [x] Render privacy-treated model output without accident bbox input.
 - [ ] Reproduce the official heuristic and VLM smoke baselines.
 - [ ] Train VideoMAE and detector-front-end comparison models.
 - [ ] Evaluate IID and geographic OOD event quality and latency.
@@ -106,7 +109,9 @@ reported separately so the added research scope is visible.
 - [x] Add self-checking Verilog testbenches.
 - [x] Explain how hardware filtering reduces software/VLM review load.
 - [x] Add SystemC queue and throughput simulation using measured camera FPS.
-- [ ] Connect hardware filter vectors to real event evidence.
+- [x] Connect model candidate traces to Python and SystemC queue inputs.
+- [x] Run a short official Taichung CCTV domain-shift pilot.
+- [ ] Compile and run SystemC locally after installing the SystemC SDK.
 - [ ] Document Snapdragon/QNN export and profiling path.
 
 ## What The Project Can Show Today
@@ -127,11 +132,15 @@ reported separately so the added research scope is visible.
   0.581 IID / 0.615 geographic and candidate TCN F1 0.629 / 0.668.
 - A shared-NPU capacity result showing RT-DETR-L saturation above two 15 FPS
   camera streams under the measured-latency queue assumptions.
+- A real annotation-free model-output video and a public-CCTV normal-stream
+  pilot with raw and persistence-gated alerts reported separately.
+- A candidate-trace queue replay showing zero NPU frame drops but 68.3% review
+  queue drops under a four-camera stress profile.
 
 ## Next Best Milestones
 
-1. Calibrate event thresholds under a target false-positive budget.
-2. Add normal-only CCTV and measure false alerts per camera-hour.
-3. Feed candidate ROI traces into Verilog triggers and SystemC scheduling.
-4. Compare detector front ends and VideoMAE on IID/OOD event metrics.
+1. Extend normal-only CCTV validation from seconds to independently reviewed hours.
+2. Compare detector front ends and VideoMAE on IID/OOD event metrics.
+3. Integrate incident candidates with SAM2/VLM evidence review.
+4. Install SystemC and run cross-model trace parity checks.
 5. Join event results with Taiwan A1/A2, violations, VD flow, and CCTV coverage.

@@ -42,6 +42,15 @@ YOLO做車輛檢測，經過NAFNet的模糊處理，最後提供給VLM去判斷�
 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 條款提供。
 
 ---
+### 模型實際輸出
+
+[![YOLO、ByteTrack、motion candidate ROI 與 TCN 事故事件輸出](docs/assets/candidate_incident_model_output.gif)](docs/assets/candidate_incident_model_output.mp4)
+
+這不是示意框。影片由 YOLO/ByteTrack、motion candidate ROI 與校準後的
+causal TCN 實際推論產生，推論時未讀取 ACCIDENT 的事故標註框。連續兩個
+高分視窗才建立審核事件，車輛下半部則做隱私模糊。點擊預覽可播放 MP4。
+
+---
 ### 線上事故候選區域
 
 系統已能在不讀取事故標註框的情況下，以 YOLO/ByteTrack、畫面 motion 與可選的 SAM2 box prompt 產生候選區域。500 支 ACCIDENT 影片共產生 822 個視窗，零處理失敗。
@@ -54,6 +63,10 @@ YOLO做車輛檢測，經過NAFNet的模糊處理，最後提供給VLM去判斷�
 | Online candidate ROI TCN | 0.629 | 0.668 |
 
 完整指標、FPR 與研究限制請見 [ACCIDENT Phase 1 results](docs/accident_phase1_results.md)。開發代理的研究誠信、測試與提交規範記錄於 [AGENTS.md](AGENTS.md)。
+
+以 train-only holdout 將 TCN 門檻校準到 20% window FPR 後，IID 測試 FPR
+由 0.531 降至 0.235，F1 由 0.629 降至 0.473。這是政府場域降低誤報時
+必須揭露的 recall 取捨，不使用 test split 調整門檻。
 
 ---
 ### 安裝說明

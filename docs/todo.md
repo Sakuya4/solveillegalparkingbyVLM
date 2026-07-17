@@ -29,7 +29,7 @@
 - [x] Replace oracle ROI with online tracker/motion candidate proposals.
 - [x] Add optional SAM2 box-prompt refinement with a no-SAM2 fallback.
 - [x] Run a 500-clip online ROI logistic/TCN ablation and export edge traces.
-- [ ] Calibrate model thresholds against a target false-positive budget.
+- [x] Calibrate model thresholds against a target false-positive budget using a grouped train holdout.
 - [ ] Train or fine-tune a VideoMAE comparison model.
 - [ ] Compare YOLO, RT-DETR, and D-FINE as detector front ends.
 - [ ] Generate incident evidence with SAM2 and VLM review.
@@ -44,12 +44,14 @@
 - [x] Add a shared NPU/review queue golden simulation and camera-capacity sweep.
 - [ ] Feed real model traces into Verilog golden vectors.
 - [x] Add SystemC camera, shared-NPU, and review/alert queues.
+- [x] Feed real candidate ROI traces into Python and SystemC queue inputs.
 - [x] Simulate latency, backpressure, frame dropping, and utilization for
   multiple cameras.
 - [ ] Add CPU/VLM stages and calibrated power proxies to the SystemC model.
 - [ ] Document the Snapdragon QNN/AI Hub compilation and profiling path.
 - [ ] Join alerts with Taiwan A1/A2, violations, VD flow, and CCTV locations.
-- [ ] Run live public-CCTV runtime and domain-shift checks.
+- [x] Run an initial live public-CCTV runtime and domain-shift check.
+- [ ] Extend normal-only CCTV validation to independently reviewed camera-hours.
 - [ ] Produce the final accuracy, edge cost, hot-spot coverage, and response-time
   report.
 
