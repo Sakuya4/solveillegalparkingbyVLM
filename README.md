@@ -1,12 +1,33 @@
-# solveillegalparkingbyVLM
-### 2025高通台灣AI黑客松比賽題目
-YOLO做車輛檢測，經過NAFNet的模糊處理，最後提供給VLM去判斷是否違規。
+# TrafficGuard Edge
+## 邊緣智慧交通事件偵測與風險治理平台
 
-如果畫面無法辨識(Bad case)，會由SM3Det介入協助影像處理。
+### 改版動機
 
-本專案目的希望可以將SM3Det的無人機角度，改變成一般監視器之角度，以應用在交通違規處理。
+原始專案以紅線違停辨識為主，但政府實際部署還需要處理連續影像、事故
+事件、跨攝影機場景差異、誤報成本與有限的邊緣運算資源。因此新版將
+單一違規辨識擴展成可訓練、可驗證、可模擬部署的交通事件平台。
 
-目前延續方向：面向智慧城市的交通違規熱區監測、事件審核與邊緣部署系統；紅線違停保留為第一個完整事件案例。
+### 方法
+
+- 以 YOLO、RT-DETR、ByteTrack 與 motion proposal 找出線上候選區域。
+- 以 causal TCN、VideoMAE 與候選特徵融合判斷時間序列事件。
+- 以 SAM2 與 VLM 產生可追溯的視覺證據與事件摘要。
+- 以台灣政府開放資料分析違規熱區、A1/A2 風險與部署優先順序。
+- 以 Python、Verilog 與 SystemC 模擬多攝影機、NPU 佇列、延遲與丟幀。
+
+### 主要功能
+
+- 紅線違停、道路事故與異常交通事件偵測。
+- 圖片、影片、Webcam、串流網址與公開 CCTV 輸入。
+- 車牌與畫面文字隱私處理、before/trigger/after 證據包及 VLM 複核介面。
+- IID/geographic OOD、事件召回率、觸發延遲與 false alerts/hour 評估。
+- 邊緣裝置容量估算、候選事件分流及 Verilog/SystemC 硬體模擬。
+
+### 原始專案背景
+
+本專案源自 2025 高通台灣 AI 黑客松。原始版本使用 YOLO 做車輛檢測，
+經 NAFNet 模糊處理後交由 VLM 判斷是否違規，並規劃以 SM3Det 處理難以
+辨識的監視器畫面。紅線違停現保留為第一個完整事件案例。
 
 ---
 ### 團隊成員資訊
@@ -33,7 +54,7 @@ YOLO做車輛檢測，經過NAFNet的模糊處理，最後提供給VLM去判斷�
 <img width="1108" height="319" alt="image" src="https://github.com/user-attachments/assets/186939f9-38ed-4c36-b833-38ea244dd503" />
 
 ---
-### 延伸任務參考影片
+### TrafficGuard Edge：邊緣智慧交通事件偵測與風險治理平台
 
 [![ACCIDENT 固定式道路監視器事故片段](docs/assets/accident_reference.gif)](docs/assets/accident_reference.mp4)
 
