@@ -36,8 +36,9 @@
 - [ ] Compare YOLO, RT-DETR, and D-FINE as detector front ends.
 - [x] Generate ordered privacy-treated incident evidence for VLM review.
 - [ ] Compare SAM2-assisted evidence and real VLM providers on annotated incidents.
-- [ ] Report IID/OOD event recall, false alarms/hour, temporal error, type
-  accuracy, and latency.
+- [x] Add event recall, trigger-delay, and off-target alert evaluation tooling.
+- [ ] Run representative IID/OOD reports and publish recall, false alarms/hour,
+  temporal error, type accuracy, and latency distributions.
 
 ## Phase 2: Edge And Hardware-Aware Validation
 

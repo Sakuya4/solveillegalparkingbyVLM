@@ -85,6 +85,7 @@ reported separately so the added research scope is visible.
 - [x] Train and evaluate a frozen VideoMAE embedding comparison head.
 - [x] Compare candidate ROI and VideoMAE fusion under fixed/calibrated thresholds.
 - [x] Package confirmed incidents as ordered privacy-treated VLM evidence.
+- [x] Add post-inference event recall and trigger-delay evaluation tooling.
 - [ ] Reproduce the official heuristic and VLM smoke baselines.
 - [ ] Fine-tune the final VideoMAE encoder block and compare detector front ends.
 - [ ] Evaluate IID and geographic OOD event quality and latency.
@@ -145,6 +146,8 @@ reported separately so the added research scope is visible.
   queue drops under a four-camera stress profile.
 - A frozen VideoMAE comparison over 822 windows: fixed-threshold F1 0.646 IID /
   0.610 geographic, plus calibrated candidate/VideoMAE fusion.
+- A one-clip event-timing integration result with a measured +0.792 second
+  trigger delay using the sequence-window end as decision time.
 - An incident evidence package with ordered before/trigger/after frames and a
   task-aware VLM review contract that keeps human review mandatory.
 

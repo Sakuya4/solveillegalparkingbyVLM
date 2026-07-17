@@ -117,3 +117,22 @@ The report includes:
 
 These metrics let the project compare deterministic evidence review,
 Qwen2.5-VL-3B, small local VLMs, and optional cloud VLMs on the same event set.
+
+## ACCIDENT Event Timing Workflow
+
+The temporal incident path uses completed annotation-free model reports rather
+than the image manifest above. Run one or more reports through:
+
+```powershell
+python scripts/evaluate_incident_reports.py `
+  --metadata data/raw/accident/full/extracted/metadata-real.csv `
+  --report-glob "outputs/accident/evaluation/*.json" `
+  --normal-report-glob "outputs/cctv/*_model_output.json" `
+  --output outputs/accident/incident_event_evaluation.json
+```
+
+The evaluator reports event recall, missed clips, collision-type recall,
+early/late alert episodes, and mean/median/p95 trigger delay. Trigger time is
+the sequence-window end because that is when inference can make the decision.
+ACCIDENT labels are used only after inference. False alerts per camera-hour are
+included only when separately reviewed normal-CCTV reports are provided.

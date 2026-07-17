@@ -240,6 +240,30 @@ real VLM comparison requires an annotated incident-review set. Plate redaction
 is currently heuristic inside tracked vehicle boxes and must be upgraded before
 government deployment.
 
+## Event-Level Timing Evaluation
+
+`evaluate_incident_reports.py` evaluates completed annotation-free inference
+reports against ACCIDENT timing metadata. The trigger timestamp is the end of
+the sequence window, when all model inputs are actually available; the center
+frame used for visual evidence is not reported as decision latency. ACCIDENT
+metadata is loaded only by this post-inference evaluator.
+
+```powershell
+python scripts/evaluate_incident_reports.py `
+  --metadata data/raw/accident/full/extracted/metadata-real.csv `
+  --report outputs/accident/candidate_incident_demo.json `
+  --normal-report outputs/cctv/taichung_c000129_model_output.json `
+  --early-tolerance-sec 1.0 `
+  --late-tolerance-sec 3.0 `
+  --output outputs/accident/incident_event_evaluation_demo.json
+```
+
+For the existing t-bone demo, the annotated accident time is 9.208 seconds and
+the first valid two-window trigger becomes available at 9.9998 seconds, giving
+a measured delay of +0.792 seconds. This is a one-clip integration result
+(`n=1`), not a dataset-level recall claim. Normal CCTV false alerts per hour and
+their exposure bound remain a separate section of the same report.
+
 ## Edge Queue Result
 
 The queue model used four cameras at 15 FPS, an 8-frame NPU queue, 1% candidate
@@ -276,7 +300,8 @@ workload with the Python golden model while recording the SystemC build blocker.
   footage measured in camera-hours.
 - Fine-tune the final VideoMAE encoder block and compare detector front ends on
   the same split contract.
-- Measure event localization error and trigger delay, not only window labels.
+- Run the event-level evaluator over a representative IID/geographic report set
+  to measure recall and trigger-delay distributions.
 
 ## Method Sources
 

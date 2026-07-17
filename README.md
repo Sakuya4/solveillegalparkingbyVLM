@@ -50,6 +50,9 @@ YOLO做車輛檢測，經過NAFNet的模糊處理，最後提供給VLM去判斷�
 causal TCN 實際推論產生，推論時未讀取 ACCIDENT 的事故標註框。連續兩個
 高分視窗才建立審核事件，車輛下半部則做隱私模糊。點擊預覽可播放 MP4。
 
+以視窗結束時間計算，這支 Demo 在事故後 `0.792s` 完成觸發。這是單片
+整合測試，不代表完整資料集的事件召回率或延遲分布。
+
 ---
 ### 線上事故候選區域
 
@@ -64,7 +67,7 @@ causal TCN 實際推論產生，推論時未讀取 ACCIDENT 的事故標註框�
 | Frozen VideoMAE-small + linear head | 0.646 | 0.610 |
 | Candidate ROI + frozen VideoMAE | 0.634 | 0.615 |
 
-完整指標、FPR 與研究限制請見 [ACCIDENT Phase 1 results](docs/accident_phase1_results.md)。開發代理的研究誠信、測試與提交規範記錄於 [AGENTS.md](AGENTS.md)。
+完整指標、FPR 與研究限制請見 [ACCIDENT Phase 1 results](docs/accident_phase1_results.md)。
 
 以 train-only holdout 將 TCN 門檻校準到 20% window FPR 後，IID 測試 FPR
 由 0.531 降至 0.235，F1 由 0.629 降至 0.473。這是政府場域降低誤報時
@@ -74,7 +77,7 @@ Frozen VideoMAE 使用 16 幀、384 維 embedding，在 RTX 3060 上完成 822 �
 視窗抽取，零失敗，速度 1.46 windows/s。它在固定門檻的 IID F1 略高於
 candidate TCN，但 geographic F1 較低；目前是 frozen encoder 比較，不宣稱
 已完成 VideoMAE 微調。事故候選也可輸出 before/trigger/after 三幀隱私化
-證據包交給 VLM，離線基線仍強制人工覆核。
+證據包交給 VLM。
 
 ---
 ### 安裝說明
