@@ -51,16 +51,36 @@ class EdgeQueueResult:
 
 
 def simulate_edge_queues(profile: EdgeQueueProfile) -> EdgeQueueResult:
+    return _simulate_edge_queues(profile, candidate_flags=None)
+
+
+def simulate_edge_trace_queues(
+    profile: EdgeQueueProfile,
+    candidate_flags: list[bool] | np.ndarray,
+) -> EdgeQueueResult:
+    flags = np.asarray(candidate_flags, dtype=np.bool_).reshape(-1)
+    return _simulate_edge_queues(profile, candidate_flags=flags)
+
+
+def _simulate_edge_queues(
+    profile: EdgeQueueProfile,
+    candidate_flags: np.ndarray | None,
+) -> EdgeQueueResult:
     profile.validate()
     duration_ms = profile.duration_sec * 1000.0
     arrivals = _frame_arrivals(profile.camera_count, profile.camera_fps, profile.duration_sec)
+    if candidate_flags is not None and len(candidate_flags) != len(arrivals):
+        raise ValueError(
+            f"candidate flags must match generated frames: {len(candidate_flags)} != {len(arrivals)}"
+        )
     service_ms = profile.detector_latency_ms + profile.temporal_latency_ms
 
     npu_finishes: deque[float] = deque()
     accepted_latencies: list[float] = []
     accepted_finishes: list[float] = []
+    accepted_source_indices: list[int] = []
     dropped_frames = 0
-    for arrival in arrivals:
+    for source_index, arrival in enumerate(arrivals):
         _discard_completed(npu_finishes, arrival)
         if len(npu_finishes) >= profile.npu_queue_capacity + 1:
             dropped_frames += 1
@@ -70,11 +90,19 @@ def simulate_edge_queues(profile: EdgeQueueProfile) -> EdgeQueueResult:
         npu_finishes.append(finish)
         accepted_finishes.append(finish)
         accepted_latencies.append(finish - arrival)
+        accepted_source_indices.append(source_index)
 
     completed_indices = [index for index, finish in enumerate(accepted_finishes) if finish <= duration_ms]
     completed_finishes = [accepted_finishes[index] for index in completed_indices]
     frame_latencies = [accepted_latencies[index] for index in completed_indices]
-    candidate_times = _candidate_times(completed_finishes, profile.candidate_probability)
+    if candidate_flags is None:
+        candidate_times = _candidate_times(completed_finishes, profile.candidate_probability)
+    else:
+        candidate_times = [
+            finish
+            for index, finish in zip(completed_indices, completed_finishes)
+            if candidate_flags[accepted_source_indices[index]]
+        ]
     review_finishes: deque[float] = deque()
     accepted_reviews: list[float] = []
     dropped_candidates = 0

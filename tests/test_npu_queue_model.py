@@ -6,6 +6,7 @@ from hardware_sim.python_golden.npu_queue_model import (
     EdgeQueueProfile,
     simulate_camera_capacity_sweep,
     simulate_edge_queues,
+    simulate_edge_trace_queues,
 )
 
 
@@ -96,3 +97,39 @@ def test_capacity_sweep_finds_maximum_zero_drop_camera_count() -> None:
     assert [row["camera_count"] for row in sweep["profiles"]] == [1, 2, 3, 4]
     assert sweep["profiles"][1]["frame_drop_rate"] == pytest.approx(0.0)
     assert sweep["profiles"][2]["frame_drop_rate"] > 0.0
+
+
+def test_trace_queue_uses_explicit_candidate_flags() -> None:
+    profile = EdgeQueueProfile(
+        camera_count=1,
+        camera_fps=5.0,
+        duration_sec=1.0,
+        detector_latency_ms=5.0,
+        temporal_latency_ms=1.0,
+        npu_queue_capacity=4,
+        candidate_probability=0.0,
+        review_latency_ms=10.0,
+        review_queue_capacity=4,
+    )
+
+    result = simulate_edge_trace_queues(profile, [False, True, False, True, False])
+
+    assert result.generated_frames == 5
+    assert result.generated_candidates == 2
+
+
+def test_trace_queue_rejects_flag_count_mismatch() -> None:
+    profile = EdgeQueueProfile(
+        camera_count=1,
+        camera_fps=5.0,
+        duration_sec=1.0,
+        detector_latency_ms=5.0,
+        temporal_latency_ms=1.0,
+        npu_queue_capacity=4,
+        candidate_probability=0.0,
+        review_latency_ms=10.0,
+        review_queue_capacity=4,
+    )
+
+    with pytest.raises(ValueError, match="candidate flags"):
+        simulate_edge_trace_queues(profile, [True, False])

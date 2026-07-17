@@ -1,8 +1,11 @@
 #include <systemc>
 
+#include <cmath>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace sc_core;
 
@@ -14,6 +17,8 @@ struct QueueProfile {
     double temporal_latency_ms = 3.0;
     unsigned npu_queue_capacity = 8;
     unsigned candidate_stride = 100;
+    std::string candidate_flags_path;
+    std::vector<bool> candidate_flags;
     double review_latency_ms = 300.0;
     unsigned review_queue_capacity = 8;
 };
@@ -69,7 +74,10 @@ SC_MODULE(NpuWorker) {
             wait(sc_time(profile.detector_latency_ms + profile.temporal_latency_ms, SC_MS));
             ++processed;
             busy = false;
-            if (profile.candidate_stride > 0 && processed % profile.candidate_stride == 0) {
+            const bool is_candidate = !profile.candidate_flags.empty()
+                ? frame_id < profile.candidate_flags.size() && profile.candidate_flags[frame_id]
+                : profile.candidate_stride > 0 && processed % profile.candidate_stride == 0;
+            if (is_candidate) {
                 ++candidate_count;
                 if (!candidates->nb_write(frame_id)) {
                     ++dropped_candidates;
@@ -119,6 +127,7 @@ static QueueProfile parse_args(int argc, char* argv[]) {
         else if (option == "--temporal-latency-ms") profile.temporal_latency_ms = std::stod(value);
         else if (option == "--npu-queue-capacity") profile.npu_queue_capacity = std::stoul(value);
         else if (option == "--candidate-stride") profile.candidate_stride = std::stoul(value);
+        else if (option == "--candidate-flags") profile.candidate_flags_path = value;
         else if (option == "--review-latency-ms") profile.review_latency_ms = std::stod(value);
         else if (option == "--review-queue-capacity") profile.review_queue_capacity = std::stoul(value);
         else {
@@ -134,6 +143,33 @@ static QueueProfile parse_args(int argc, char* argv[]) {
                      "latencies must be non-negative"
                   << std::endl;
         std::exit(2);
+    }
+    if (!profile.candidate_flags_path.empty()) {
+        std::ifstream input(profile.candidate_flags_path);
+        if (!input) {
+            std::cerr << "Cannot open candidate flags: " << profile.candidate_flags_path << std::endl;
+            std::exit(2);
+        }
+        std::string value;
+        while (input >> value) {
+            if (value == "0") profile.candidate_flags.push_back(false);
+            else if (value == "1") profile.candidate_flags.push_back(true);
+            else {
+                std::cerr << "Candidate flags must contain only 0 or 1" << std::endl;
+                std::exit(2);
+            }
+        }
+        if (profile.candidate_flags.empty()) {
+            std::cerr << "Candidate flags file is empty" << std::endl;
+            std::exit(2);
+        }
+        const auto expected_count = static_cast<std::size_t>(profile.camera_count) *
+            static_cast<std::size_t>(std::lround(profile.camera_fps * profile.duration_sec));
+        if (profile.candidate_flags.size() != expected_count) {
+            std::cerr << "Candidate flag count must match generated frames: "
+                      << profile.candidate_flags.size() << " != " << expected_count << std::endl;
+            std::exit(2);
+        }
     }
     return profile;
 }
@@ -157,6 +193,7 @@ int sc_main(int argc, char* argv[]) {
     const unsigned pending_reviews = review_queue.num_available() + (reviewer.busy ? 1U : 0U);
 
     std::cout << "generated_frames=" << camera_farm.generated << '\n'
+              << "candidate_trace_enabled=" << (!profile.candidate_flags.empty() ? 1 : 0) << '\n'
               << "processed_frames=" << npu.processed << '\n'
               << "pending_frames=" << pending_frames << '\n'
               << "dropped_frames=" << camera_farm.dropped << '\n'
