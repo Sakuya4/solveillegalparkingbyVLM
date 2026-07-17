@@ -4,13 +4,17 @@ import numpy as np
 import pytest
 
 from illegal_parking.incident_candidate_roi import (
+    CANDIDATE_MOTION_FEATURE_NAMES,
     CandidateRegion,
+    aggregate_candidate_motion_features,
+    candidate_motion_sequence_matrix,
     compute_candidate_motion_step,
     evaluate_candidate_proposals,
     fuse_candidate_regions,
     propose_motion_regions,
     propose_track_regions,
 )
+from illegal_parking.incident_baseline import has_oracle_roi_features
 from illegal_parking.incident_trajectory import TrackBox
 
 
@@ -87,6 +91,24 @@ def test_no_candidate_uses_explicit_global_fallback() -> None:
     assert result.features["candidate_score"] == 0.0
     assert result.features["candidate_diff_mean"] == result.features["global_diff_mean"]
     assert "ground_truth_iou" not in result.features
+
+
+def test_candidate_motion_sequence_has_stable_oracle_safe_features() -> None:
+    previous = np.zeros((48, 64, 3), dtype=np.uint8)
+    changed = previous.copy()
+    changed[16:32, 20:44] = 255
+    sequence = [
+        compute_candidate_motion_step(previous, changed, []),
+        compute_candidate_motion_step(changed, previous, []),
+    ]
+
+    matrix = candidate_motion_sequence_matrix(sequence)
+    aggregated = aggregate_candidate_motion_features(sequence)
+
+    assert matrix.shape == (2, len(CANDIDATE_MOTION_FEATURE_NAMES))
+    assert matrix.dtype == np.float32
+    assert "candidate_peak_position" in aggregated
+    assert has_oracle_roi_features(tuple(aggregated)) is False
 
 
 def test_ground_truth_box_is_used_only_by_proposal_diagnostics() -> None:

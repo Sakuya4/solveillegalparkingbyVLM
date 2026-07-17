@@ -12,6 +12,24 @@ from .incident_features import compute_frame_motion
 from .incident_trajectory import TrackBox
 
 
+CANDIDATE_MOTION_FEATURE_NAMES = (
+    "global_diff_mean",
+    "candidate_diff_mean",
+    "global_change_ratio",
+    "candidate_change_ratio",
+    "global_flow_mean",
+    "candidate_flow_mean",
+    "global_flow_p95",
+    "candidate_flow_p95",
+    "candidate_available",
+    "candidate_score",
+    "candidate_area_ratio",
+    "candidate_from_track",
+    "candidate_from_motion",
+    "candidate_from_sam2",
+)
+
+
 @dataclass(frozen=True)
 class CandidateRegion:
     x1: float
@@ -237,9 +255,8 @@ def aggregate_candidate_motion_features(
 ) -> dict[str, float]:
     if not sequence:
         raise ValueError("Cannot aggregate an empty candidate motion sequence")
-    feature_names = tuple(sequence[0].features)
     result: dict[str, float] = {}
-    for feature_name in feature_names:
+    for feature_name in CANDIDATE_MOTION_FEATURE_NAMES:
         values = np.asarray([step.features[feature_name] for step in sequence], dtype=np.float64)
         result[f"{feature_name}_mean"] = float(np.mean(values))
         result[f"{feature_name}_max"] = float(np.max(values))
@@ -247,6 +264,21 @@ def aggregate_candidate_motion_features(
     peak_index = int(np.argmax([step.features["candidate_diff_mean"] for step in sequence]))
     result["candidate_peak_position"] = peak_index / max(1, len(sequence) - 1)
     return result
+
+
+def candidate_motion_sequence_matrix(sequence: list[CandidateMotionStep]) -> np.ndarray:
+    if not sequence:
+        raise ValueError("Cannot convert an empty candidate motion sequence")
+    matrix = np.asarray(
+        [
+            [step.features[feature_name] for feature_name in CANDIDATE_MOTION_FEATURE_NAMES]
+            for step in sequence
+        ],
+        dtype=np.float32,
+    )
+    if not np.all(np.isfinite(matrix)):
+        raise ValueError("Candidate motion sequence contains non-finite values")
+    return matrix
 
 
 def evaluate_candidate_proposals(
