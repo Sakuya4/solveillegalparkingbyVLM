@@ -11,6 +11,7 @@ from illegal_parking.incident_videomae import (
     read_uniform_video_window,
     remap_legacy_attention_biases,
     uniform_frame_indices,
+    videomae_optimizer_groups,
 )
 
 
@@ -142,3 +143,20 @@ def test_configure_videomae_finetuning_rejects_too_many_blocks() -> None:
 
     with pytest.raises(ValueError, match="trainable_encoder_blocks"):
         configure_videomae_finetuning(model, num_labels=2, trainable_encoder_blocks=4)
+
+
+def test_videomae_optimizer_groups_use_discriminative_learning_rates() -> None:
+    model = _TinyVideoMaeClassifier()
+    configure_videomae_finetuning(model, num_labels=2, trainable_encoder_blocks=1)
+
+    groups = videomae_optimizer_groups(model, 1e-5, 1e-3)
+
+    assert [group["name"] for group in groups] == ["encoder", "head"]
+    assert [group["lr"] for group in groups] == [1e-5, 1e-3]
+    assert {id(parameter) for parameter in groups[0]["params"]} == {
+        id(parameter)
+        for parameter in model.videomae.encoder.layer[-1].parameters()
+    }
+    assert {id(parameter) for parameter in groups[1]["params"]} == {
+        id(parameter) for parameter in [*model.fc_norm.parameters(), *model.classifier.parameters()]
+    }

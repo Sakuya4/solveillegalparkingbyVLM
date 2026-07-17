@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import csv
 import hashlib
 import json
@@ -33,6 +34,7 @@ from illegal_parking.incident_videomae import (
     configure_videomae_finetuning,
     load_compatible_videomae_classifier,
     read_uniform_video_window,
+    videomae_optimizer_groups,
 )
 
 
@@ -99,10 +101,12 @@ def main() -> int:
     parser.add_argument("--max-clips", type=int, default=500)
     parser.add_argument("--sampling-seed", type=int, default=42)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--epochs", type=int, default=3)
+    parser.add_argument("--epochs", type=int, default=15)
     parser.add_argument("--batch-size", type=int, default=4)
-    parser.add_argument("--learning-rate", type=float, default=5e-5)
+    parser.add_argument("--learning-rate", type=float, default=1e-5)
+    parser.add_argument("--head-learning-rate", type=float, default=1e-3)
     parser.add_argument("--weight-decay", type=float, default=0.05)
+    parser.add_argument("--early-stopping-patience", type=int, default=4)
     parser.add_argument("--trainable-encoder-blocks", type=int, default=1)
     parser.add_argument("--num-frames", type=int, default=16)
     parser.add_argument("--window-frames", type=int, default=32)
@@ -197,13 +201,21 @@ def main() -> int:
     )
     criterion = nn.CrossEntropyLoss(weight=class_weights)
     optimizer = torch.optim.AdamW(
-        [parameter for parameter in model.parameters() if parameter.requires_grad],
-        lr=args.learning_rate,
+        videomae_optimizer_groups(
+            model,
+            encoder_learning_rate=args.learning_rate,
+            head_learning_rate=args.head_learning_rate,
+        ),
         weight_decay=args.weight_decay,
     )
     amp_enabled = device.type == "cuda" and not args.no_amp
     scaler = torch.amp.GradScaler("cuda", enabled=amp_enabled)
     losses: list[float] = []
+    calibration_losses: list[float] = []
+    best_calibration_loss = float("inf")
+    best_epoch = 0
+    best_state = None
+    epochs_without_improvement = 0
     started = time.perf_counter()
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats(device)
@@ -229,7 +241,32 @@ def main() -> int:
             total_loss += float(loss.detach()) * len(labels)
             total_samples += len(labels)
         losses.append(total_loss / total_samples)
-        print(f"epoch={epoch}/{args.epochs} loss={losses[-1]:.6f}", flush=True)
+        calibration_probabilities = _predict(
+            model, datasets["calibration"], args.batch_size, device, amp_enabled
+        )
+        calibration_loss = _binary_log_loss(
+            targets[calibration_indices], calibration_probabilities
+        )
+        calibration_losses.append(calibration_loss)
+        if calibration_loss < best_calibration_loss - 1e-5:
+            best_calibration_loss = calibration_loss
+            best_epoch = epoch
+            best_state = copy.deepcopy(model.state_dict())
+            epochs_without_improvement = 0
+        else:
+            epochs_without_improvement += 1
+        print(
+            f"epoch={epoch}/{args.epochs} loss={losses[-1]:.6f} "
+            f"calibration_loss={calibration_loss:.6f}",
+            flush=True,
+        )
+        if epochs_without_improvement >= args.early_stopping_patience:
+            print(f"early_stop={epoch} best_epoch={best_epoch}", flush=True)
+            break
+
+    if best_state is None:
+        raise RuntimeError("Training did not produce a checkpoint")
+    model.load_state_dict(best_state)
 
     fit_probabilities = _predict(model, datasets["fit"], args.batch_size, device, amp_enabled)
     calibration_probabilities = _predict(
@@ -257,12 +294,17 @@ def main() -> int:
         "epochs": args.epochs,
         "batch_size": args.batch_size,
         "learning_rate": args.learning_rate,
+        "head_learning_rate": args.head_learning_rate,
         "weight_decay": args.weight_decay,
         "num_frames": args.num_frames,
         "window_frames": args.window_frames,
         "negative_gap_frames": args.negative_gap_frames,
         "parameters": parameter_summary,
         "train_loss": losses,
+        "calibration_loss": calibration_losses,
+        "best_epoch": best_epoch,
+        "epochs_completed": len(losses),
+        "early_stopping_patience": args.early_stopping_patience,
         "decision_threshold": {
             "source": "grouped_train_holdout_fpr_calibration",
             "effective": threshold,
@@ -316,6 +358,9 @@ def main() -> int:
             "num_frames": args.num_frames,
             "window_frames": args.window_frames,
             "trainable_encoder_blocks": args.trainable_encoder_blocks,
+            "head_learning_rate": args.head_learning_rate,
+            "encoder_learning_rate": args.learning_rate,
+            "best_epoch": best_epoch,
         },
         model_output,
     )
@@ -366,6 +411,12 @@ def _predict(
     return np.asarray([by_index[int(index)] for index in dataset.indices], dtype=np.float64)
 
 
+def _binary_log_loss(targets: np.ndarray, probabilities: np.ndarray) -> float:
+    clipped = np.clip(np.asarray(probabilities, dtype=np.float64), 1e-7, 1.0 - 1e-7)
+    labels = np.asarray(targets, dtype=np.float64)
+    return float(-np.mean(labels * np.log(clipped) + (1.0 - labels) * np.log(1.0 - clipped)))
+
+
 def _group_metrics(
     records: list[tuple],
     indices: np.ndarray,
@@ -414,7 +465,10 @@ def _write_predictions(
 
 
 def _validate_args(args) -> None:
-    for name in ("max_clips", "epochs", "batch_size", "num_frames", "window_frames"):
+    for name in (
+        "max_clips", "epochs", "batch_size", "num_frames", "window_frames",
+        "early_stopping_patience",
+    ):
         if getattr(args, name) <= 0:
             raise SystemExit(f"--{name.replace('_', '-')} must be positive")
     if args.num_frames > args.window_frames:

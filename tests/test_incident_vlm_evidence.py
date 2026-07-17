@@ -9,6 +9,7 @@ import numpy as np
 import pytest
 
 from illegal_parking.incident_vlm_evidence import select_review_context
+from scripts.prepare_incident_vlm_review import sampled_source_indices
 
 
 def test_select_review_context_uses_first_confirmed_window() -> None:
@@ -90,4 +91,13 @@ def test_prepare_incident_vlm_review_cli_writes_privacy_evidence(tmp_path) -> No
     assert evidence["privacy_redacted"] is True
     assert evidence["frame_indices"] == [23, 38, 53]
     assert request["task"] == "traffic_incident_review"
-    assert all((output_dir / name).is_file() for name in ("before.jpg", "trigger.jpg", "after.jpg"))
+    assert all(
+        (output_dir / name).is_file()
+        for name in ("before.jpg", "trigger.jpg", "after.jpg")
+    )
+
+
+def test_sampled_source_indices_match_video_sampling_contract() -> None:
+    indices = sampled_source_indices(16, source_fps=8.0, target_fps=4.0)
+
+    assert indices == list(range(0, 16, 2))
