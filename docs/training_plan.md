@@ -241,6 +241,34 @@ slower. This gives the mainline project a real detector comparison: use YOLOv8n
 as the edge-speed baseline, RT-DETR-L as the stronger accuracy baseline, then
 measure which one produces better violation events after rule filtering.
 
+## Frozen VideoMAE Incident Baseline
+
+The first non-YOLO temporal comparison uses the official
+`MCG-NJU/videomae-small-finetuned-kinetics` checkpoint as a frozen encoder.
+It extracts 16 uniformly spaced frames from each 32-frame ACCIDENT window and
+trains the existing standardized logistic head on 384 embedding features.
+
+```powershell
+.venv\Scripts\python.exe scripts\extract_accident_videomae_features.py `
+  --metadata data/raw/accident/full/extracted/metadata-real.csv `
+  --dataset-root data/raw/accident/full/extracted `
+  --max-clips 500 --batch-size 16 --device cuda
+```
+
+The measured RTX 3060 run extracted all 822 windows in 562.42 seconds with zero
+failures, 1.46 windows/s throughput, and 645.97 MB peak allocated CUDA memory.
+Fixed-threshold F1 is 0.646 IID and 0.610 geographic. The candidate ROI plus
+VideoMAE calibrated fusion reaches IID F1 0.489 at FPR 0.162, but geographic
+recall falls to 0.149. This encoder is not yet fine-tuned; the next experiment
+should unfreeze only the final encoder block and retain the same grouped split
+and threshold-calibration contract.
+
+Sources:
+
+- https://huggingface.co/docs/transformers/model_doc/videomae
+- https://huggingface.co/docs/transformers/tasks/video_classification
+- https://huggingface.co/MCG-NJU/videomae-small-finetuned-kinetics
+
 ## Local GPU Setup
 
 The current local training environment uses a project-local virtual environment:

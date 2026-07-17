@@ -102,6 +102,32 @@ therefore useful evidence, while fusion and threshold calibration remain open
 problems. All table values use a fixed 0.5 threshold; the relatively high window
 FPR must be reported alongside F1.
 
+## Frozen VideoMAE Comparison
+
+`MCG-NJU/videomae-small-finetuned-kinetics` was used as a frozen 16-frame
+encoder. A linear classifier was trained on its 384-dimensional embeddings
+under the same IID/geographic split contract. Accident boxes, collision types,
+regions, and test labels were not used as model inputs.
+
+| Feature path | Split | F1 | Window FPR | Precision | Recall |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Frozen VideoMAE | IID | **0.646** | 0.453 | 0.675 | 0.620 |
+| Frozen VideoMAE | Geographic | 0.610 | 0.590 | 0.614 | 0.606 |
+| Candidate ROI + frozen VideoMAE | IID | 0.634 | 0.436 | 0.681 | 0.598 |
+| Candidate ROI + frozen VideoMAE | Geographic | **0.615** | 0.553 | 0.628 | 0.602 |
+
+All 822 windows were extracted with zero failures on the RTX 3060. Extraction
+took 562.42 seconds at 1.46 windows/s with 645.97 MB peak allocated CUDA memory
+and batch size 16. The current Transformers release uses split query/key/value
+bias tensors, so the legacy checkpoint q/v biases are deterministically mapped
+and then loaded with strict state-dict validation.
+
+This is a frozen-feature baseline, not end-to-end VideoMAE fine-tuning. It
+slightly improves fixed-threshold IID F1 over candidate TCN (0.646 versus
+0.629), but is worse on the geographic split (0.610 versus 0.668). The result
+supports a multi-model comparison while rejecting the claim that a larger
+video backbone is automatically more robust to camera-location shift.
+
 ## Train-Holdout Threshold Calibration
 
 The operating threshold is selected only from a group-disjoint 20% holdout of
@@ -114,11 +140,20 @@ calibration FPR, candidate-only results are:
 | Logistic | Geographic | 0.669 | 0.180 | 0.280 | 0.628 | 0.305 | 0.411 |
 | Candidate TCN | IID | 0.855 | 0.179 | 0.235 | 0.698 | 0.358 | 0.473 |
 | Candidate TCN | Geographic | 0.740 | 0.180 | 0.304 | 0.669 | 0.398 | 0.499 |
+| Frozen VideoMAE | IID | 0.865 | 0.179 | 0.196 | 0.715 | 0.325 | 0.447 |
+| Frozen VideoMAE | Geographic | 0.879 | 0.180 | 0.217 | 0.639 | 0.249 | 0.358 |
+| Candidate + VideoMAE | IID | 0.871 | 0.179 | **0.162** | 0.770 | 0.358 | **0.489** |
+| Candidate + VideoMAE | Geographic | 0.976 | 0.180 | 0.118 | 0.661 | 0.149 | 0.243 |
 
 Calibration substantially reduces test FPR compared with the fixed 0.5
 operating point, but also lowers recall and F1. Geographic FPR remains above the
 training budget, which is direct evidence of domain shift rather than a reason
 to retune on the test set.
+
+Candidate/VideoMAE fusion gives the best calibrated IID result in this ablation,
+raising F1 from 0.473 to 0.489 while lowering FPR from 0.235 to 0.162. Its
+geographic threshold becomes over-conservative and recall falls to 0.149, so it
+is not selected as a deployment operating point.
 
 The reported false-positive rate is window-level. Normal samples are
 non-overlapping pre-incident windows from accident clips, not independent
@@ -169,6 +204,42 @@ from 2 raw positive windows to 0 review events. The resulting 0 events over
 false-alert estimate. More normal-only hours and manual incident annotations
 are still required.
 
+For zero observed events, the one-sided 95% Poisson upper bound is 974.52 false
+alerts per camera-hour because the exposure is only 11.07 seconds. The
+multi-session aggregator preserves the model, threshold, and persistence gate
+contract and combines future sessions without presenting `0/hour` as proof of
+low false alarms.
+
+```powershell
+python scripts/aggregate_normal_cctv_reports.py `
+  --report-glob "outputs/cctv/*_model_output.json"
+```
+
+## Incident Evidence And VLM Review
+
+The annotation-free model output can now be converted into an ordered
+before/trigger/after evidence package. The real demo selected frames 53, 68,
+and 83 around the first two-window-confirmed event. The package records model
+probability 0.9990, threshold 0.8547, the privacy method, and the fact that the
+inference path did not read accident annotations.
+
+```powershell
+python scripts/prepare_incident_vlm_review.py `
+  --inference-report outputs/accident/candidate_incident_demo.json `
+  --annotated-video outputs/accident/candidate_incident_demo.mp4 `
+  --output-dir outputs/accident/incident_vlm_evidence
+
+python scripts/run_vlm_review.py `
+  --request-json outputs/accident/incident_vlm_evidence/vlm_review_request.json `
+  --output outputs/accident/incident_vlm_evidence/offline_review_result.json
+```
+
+The deterministic offline reviewer confirms only the score/persistence gate;
+it is not a visual-language model result and always requests human review. A
+real VLM comparison requires an annotated incident-review set. Plate redaction
+is currently heuristic inside tracked vehicle boxes and must be upgraded before
+government deployment.
+
 ## Edge Queue Result
 
 The queue model used four cameras at 15 FPS, an 8-frame NPU queue, 1% candidate
@@ -203,7 +274,8 @@ workload with the Python golden model while recording the SystemC build blocker.
   tradeoff.
 - Extend the 11.07-second public-CCTV pilot to independently reviewed normal
   footage measured in camera-hours.
-- Train VideoMAE and detector-front-end comparisons on the same split contract.
+- Fine-tune the final VideoMAE encoder block and compare detector front ends on
+  the same split contract.
 - Measure event localization error and trigger delay, not only window labels.
 
 ## Method Sources
@@ -214,5 +286,8 @@ workload with the Python golden model while recording the SystemC build blocker.
   https://docs.ultralytics.com/modes/track/
 - Ultralytics SAM2 box-prompt interface:
   https://docs.ultralytics.com/models/sam-2
+- VideoMAE implementation and checkpoint:
+  https://huggingface.co/docs/transformers/model_doc/videomae and
+  https://huggingface.co/MCG-NJU/videomae-small-finetuned-kinetics
 - Causal dilated temporal convolution starting point:
   https://arxiv.org/abs/1803.01271

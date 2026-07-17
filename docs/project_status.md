@@ -4,13 +4,14 @@
 
 Existing red-line/event platform: **about 70% complete**.
 
-New ACCIDENT incident mainline: **about 75% complete**. All 2,027 real clips
+New ACCIDENT incident mainline: **about 80% complete**. All 2,027 real clips
 have been processed into 3,387 windows with zero decode failures. Full IID and
 geographic global-motion baselines, a causal TCN, a 500-clip trajectory/TTC
 ablation, annotation-free tracker/motion candidate ROIs, optional SAM2
-refinement, train-holdout threshold calibration, a public-CCTV pilot, a real
-model-output demo, edge-trace replay, Verilog trigger logic, and Python/SystemC
-queue models are implemented.
+refinement, train-holdout threshold calibration, a frozen VideoMAE comparison,
+a public-CCTV pilot and session aggregator, a real model-output demo, an
+incident VLM evidence package, edge-trace replay, Verilog trigger logic, and
+Python/SystemC queue models are implemented.
 
 Current positioning: **edge-first traffic incident detection and risk
 prioritization for roadside cameras**. Red-line parking is now a completed event
@@ -81,10 +82,14 @@ reported separately so the added research scope is visible.
 - [x] Run a 500-clip candidate ROI logistic/TCN ablation and emit edge traces.
 - [x] Calibrate candidate model thresholds on a grouped training holdout.
 - [x] Render privacy-treated model output without accident bbox input.
+- [x] Train and evaluate a frozen VideoMAE embedding comparison head.
+- [x] Compare candidate ROI and VideoMAE fusion under fixed/calibrated thresholds.
+- [x] Package confirmed incidents as ordered privacy-treated VLM evidence.
 - [ ] Reproduce the official heuristic and VLM smoke baselines.
-- [ ] Train VideoMAE and detector-front-end comparison models.
+- [ ] Fine-tune the final VideoMAE encoder block and compare detector front ends.
 - [ ] Evaluate IID and geographic OOD event quality and latency.
-- [ ] Integrate incident output with the existing SAM/VLM evidence workflow.
+- [x] Integrate incident output with the existing VLM evidence workflow.
+- [ ] Run SAM2-assisted incident evidence and real VLM validation-set comparisons.
 
 ## VLM Checklist
 
@@ -96,6 +101,7 @@ reported separately so the added research scope is visible.
 - [x] Add source-backed Hugging Face Transformers VLM runner.
 - [x] Run a lightweight local LLaVA/Qwen 0.5B VLM smoke test and record schema-following failure.
 - [x] Run Qwen2.5-VL-3B on the privacy-safe red-line demo event.
+- [x] Add ordered before/trigger/after incident requests and offline dispatch.
 - [ ] Add BLIP-2 local runner or retire it if too heavy for the available GPU.
 - [x] Record single-event VLM provider comparison table.
 - [ ] Add optional cloud VLM runner for high-quality comparison.
@@ -111,6 +117,7 @@ reported separately so the added research scope is visible.
 - [x] Add SystemC queue and throughput simulation using measured camera FPS.
 - [x] Connect model candidate traces to Python and SystemC queue inputs.
 - [x] Run a short official Taichung CCTV domain-shift pilot.
+- [x] Add multi-session CCTV aggregation and zero-event 95% exposure bounds.
 - [ ] Compile and run SystemC locally after installing the SystemC SDK.
 - [ ] Document Snapdragon/QNN export and profiling path.
 
@@ -136,11 +143,15 @@ reported separately so the added research scope is visible.
   pilot with raw and persistence-gated alerts reported separately.
 - A candidate-trace queue replay showing zero NPU frame drops but 68.3% review
   queue drops under a four-camera stress profile.
+- A frozen VideoMAE comparison over 822 windows: fixed-threshold F1 0.646 IID /
+  0.610 geographic, plus calibrated candidate/VideoMAE fusion.
+- An incident evidence package with ordered before/trigger/after frames and a
+  task-aware VLM review contract that keeps human review mandatory.
 
 ## Next Best Milestones
 
 1. Extend normal-only CCTV validation from seconds to independently reviewed hours.
-2. Compare detector front ends and VideoMAE on IID/OOD event metrics.
-3. Integrate incident candidates with SAM2/VLM evidence review.
+2. Fine-tune VideoMAE and compare detector front ends on IID/OOD event metrics.
+3. Run SAM2-assisted evidence and real VLM comparisons on annotated incidents.
 4. Install SystemC and run cross-model trace parity checks.
 5. Join event results with Taiwan A1/A2, violations, VD flow, and CCTV coverage.

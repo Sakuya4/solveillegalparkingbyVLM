@@ -61,12 +61,20 @@ causal TCN 實際推論產生，推論時未讀取 ACCIDENT 的事故標註框�
 | Online candidate ROI logistic | 0.581 | 0.615 |
 | Global causal TCN | 0.642 | 0.569 |
 | Online candidate ROI TCN | 0.629 | 0.668 |
+| Frozen VideoMAE-small + linear head | 0.646 | 0.610 |
+| Candidate ROI + frozen VideoMAE | 0.634 | 0.615 |
 
 完整指標、FPR 與研究限制請見 [ACCIDENT Phase 1 results](docs/accident_phase1_results.md)。開發代理的研究誠信、測試與提交規範記錄於 [AGENTS.md](AGENTS.md)。
 
 以 train-only holdout 將 TCN 門檻校準到 20% window FPR 後，IID 測試 FPR
 由 0.531 降至 0.235，F1 由 0.629 降至 0.473。這是政府場域降低誤報時
 必須揭露的 recall 取捨，不使用 test split 調整門檻。
+
+Frozen VideoMAE 使用 16 幀、384 維 embedding，在 RTX 3060 上完成 822 個
+視窗抽取，零失敗，速度 1.46 windows/s。它在固定門檻的 IID F1 略高於
+candidate TCN，但 geographic F1 較低；目前是 frozen encoder 比較，不宣稱
+已完成 VideoMAE 微調。事故候選也可輸出 before/trigger/after 三幀隱私化
+證據包交給 VLM，離線基線仍強制人工覆核。
 
 ---
 ### 安裝說明

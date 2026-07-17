@@ -30,9 +30,12 @@
 - [x] Add optional SAM2 box-prompt refinement with a no-SAM2 fallback.
 - [x] Run a 500-clip online ROI logistic/TCN ablation and export edge traces.
 - [x] Calibrate model thresholds against a target false-positive budget using a grouped train holdout.
-- [ ] Train or fine-tune a VideoMAE comparison model.
+- [x] Train a frozen VideoMAE embedding comparison head.
+- [x] Compare candidate ROI and VideoMAE feature fusion.
+- [ ] Fine-tune the final VideoMAE encoder block.
 - [ ] Compare YOLO, RT-DETR, and D-FINE as detector front ends.
-- [ ] Generate incident evidence with SAM2 and VLM review.
+- [x] Generate ordered privacy-treated incident evidence for VLM review.
+- [ ] Compare SAM2-assisted evidence and real VLM providers on annotated incidents.
 - [ ] Report IID/OOD event recall, false alarms/hour, temporal error, type
   accuracy, and latency.
 
@@ -51,6 +54,7 @@
 - [ ] Document the Snapdragon QNN/AI Hub compilation and profiling path.
 - [ ] Join alerts with Taiwan A1/A2, violations, VD flow, and CCTV locations.
 - [x] Run an initial live public-CCTV runtime and domain-shift check.
+- [x] Aggregate matching CCTV sessions with a zero-event 95% exposure bound.
 - [ ] Extend normal-only CCTV validation to independently reviewed camera-hours.
 - [ ] Produce the final accuracy, edge cost, hot-spot coverage, and response-time
   report.
