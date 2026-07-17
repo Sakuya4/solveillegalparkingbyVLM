@@ -4,8 +4,12 @@ import cv2
 import numpy as np
 import pytest
 
-from illegal_parking.incident_videomae import read_uniform_video_window, uniform_frame_indices
-from illegal_parking.incident_videomae import remap_legacy_attention_biases
+from illegal_parking.incident_videomae import (
+    prepare_videomae_state_dict,
+    read_uniform_video_window,
+    remap_legacy_attention_biases,
+    uniform_frame_indices,
+)
 
 
 def test_uniform_frame_indices_match_left_aligned_tcn_sampling() -> None:
@@ -70,3 +74,38 @@ def test_remap_legacy_attention_biases_creates_strict_qkv_biases() -> None:
     assert mapped[f"{prefix}.query.bias"].tolist() == [1.0, 2.0]
     assert mapped[f"{prefix}.key.bias"].tolist() == [0.0, 0.0]
     assert mapped[f"{prefix}.value.bias"].tolist() == [3.0, 4.0]
+
+
+def test_prepare_videomae_state_dict_preserves_legacy_transformers_keys() -> None:
+    prefix = "videomae.encoder.layer.0.attention.attention"
+    state = {
+        f"{prefix}.q_bias": np.asarray([1.0]),
+        f"{prefix}.v_bias": np.asarray([2.0]),
+    }
+
+    prepared = prepare_videomae_state_dict(
+        state,
+        expected_keys={f"{prefix}.q_bias", f"{prefix}.v_bias"},
+    )
+
+    assert set(prepared) == set(state)
+
+
+def test_prepare_videomae_state_dict_remaps_split_attention_biases() -> None:
+    prefix = "videomae.encoder.layer.0.attention.attention"
+    state = {
+        f"{prefix}.q_bias": np.asarray([1.0]),
+        f"{prefix}.v_bias": np.asarray([2.0]),
+    }
+
+    prepared = prepare_videomae_state_dict(
+        state,
+        expected_keys={
+            f"{prefix}.query.bias",
+            f"{prefix}.key.bias",
+            f"{prefix}.value.bias",
+        },
+    )
+
+    assert f"{prefix}.q_bias" not in prepared
+    assert prepared[f"{prefix}.key.bias"].tolist() == [0.0]

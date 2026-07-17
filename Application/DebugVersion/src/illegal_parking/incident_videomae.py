@@ -23,6 +23,20 @@ def remap_legacy_attention_biases(state_dict: dict[str, Any]) -> dict[str, Any]:
     return mapped
 
 
+def prepare_videomae_state_dict(
+    state_dict: dict[str, Any],
+    expected_keys: set[str],
+) -> dict[str, Any]:
+    has_legacy_biases = any(key.endswith(".attention.attention.q_bias") for key in state_dict)
+    if not has_legacy_biases:
+        return dict(state_dict)
+    if any(key.endswith(".attention.attention.q_bias") for key in expected_keys):
+        return dict(state_dict)
+    if any(key.endswith(".attention.attention.query.bias") for key in expected_keys):
+        return remap_legacy_attention_biases(state_dict)
+    raise ValueError("Installed Transformers model has an unsupported VideoMAE attention layout")
+
+
 def load_compatible_videomae_classifier(model_id: str, device: str):
     import torch
     from huggingface_hub import hf_hub_download
@@ -32,7 +46,8 @@ def load_compatible_videomae_classifier(model_id: str, device: str):
     model = VideoMAEForVideoClassification(config)
     checkpoint_path = Path(hf_hub_download(model_id, "pytorch_model.bin"))
     state_dict = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
-    model.load_state_dict(remap_legacy_attention_biases(state_dict), strict=True)
+    compatible_state = prepare_videomae_state_dict(state_dict, set(model.state_dict()))
+    model.load_state_dict(compatible_state, strict=True)
     model.to(torch.device(device)).eval()
     return model, checkpoint_path.parent.name
 
