@@ -148,6 +148,11 @@ def main() -> int:
                         confidence=args.confidence,
                     )
                     steps = []
+                    window_source_counts: Counter[str] = Counter()
+                    window_incident_best_ious: list[float] = []
+                    window_incident_hits_0_1 = 0
+                    window_incident_hits_0_3 = 0
+                    window_traces: list[dict] = []
                     for index in range(1, len(frames)):
                         frame_index = frame_indices[index]
                         step = compute_candidate_motion_step(
@@ -157,13 +162,10 @@ def main() -> int:
                             mask_refiner=mask_refiner,
                         )
                         steps.append(step)
-                        step_count += 1
-                        proposal_count_total += len(step.candidates)
                         if step.selected is None:
-                            source_counts["global_fallback"] += 1
+                            window_source_counts["global_fallback"] += 1
                         else:
-                            available_step_count += 1
-                            source_counts[step.selected.source] += 1
+                            window_source_counts[step.selected.source] += 1
 
                         if window.label == "incident":
                             diagnostic_candidates = list(step.candidates)
@@ -173,25 +175,22 @@ def main() -> int:
                                 diagnostic_candidates,
                                 clip.bbox_normalized,
                             )
-                            incident_best_ious.append(diagnostics.best_iou)
-                            incident_hits_0_1 += int(diagnostics.hit_at_0_1)
-                            incident_hits_0_3 += int(diagnostics.hit_at_0_3)
+                            window_incident_best_ious.append(diagnostics.best_iou)
+                            window_incident_hits_0_1 += int(diagnostics.hit_at_0_1)
+                            window_incident_hits_0_3 += int(diagnostics.hit_at_0_3)
 
-                        trace_handle.write(json.dumps(
-                            {
-                                "path": clip.relative_path.as_posix(),
-                                "label": window.label,
-                                "frame_index": frame_index,
-                                "candidate_source": (
-                                    step.selected.source if step.selected is not None else "global_fallback"
-                                ),
-                                "candidate_bbox": (
-                                    list(step.selected.bbox) if step.selected is not None else None
-                                ),
-                                **step.features,
-                            },
-                            ensure_ascii=False,
-                        ) + "\n")
+                        window_traces.append({
+                            "path": clip.relative_path.as_posix(),
+                            "label": window.label,
+                            "frame_index": frame_index,
+                            "candidate_source": (
+                                step.selected.source if step.selected is not None else "global_fallback"
+                            ),
+                            "candidate_bbox": (
+                                list(step.selected.bbox) if step.selected is not None else None
+                            ),
+                            **step.features,
+                        })
 
                     tensor = candidate_motion_sequence_matrix(steps)
                     if tensor.shape != (expected_steps, len(CANDIDATE_MOTION_FEATURE_NAMES)):
@@ -209,9 +208,20 @@ def main() -> int:
                         "start_frame": window.start_frame,
                         "end_frame": window.end_frame,
                     }
+                    for trace_record in window_traces:
+                        trace_handle.write(
+                            json.dumps(trace_record, ensure_ascii=False) + "\n"
+                        )
                     rows.append({**record, **aggregate_candidate_motion_features(steps)})
                     records.append(record)
                     tensors.append(tensor)
+                    step_count += len(steps)
+                    proposal_count_total += sum(len(step.candidates) for step in steps)
+                    available_step_count += sum(step.selected is not None for step in steps)
+                    source_counts.update(window_source_counts)
+                    incident_best_ious.extend(window_incident_best_ious)
+                    incident_hits_0_1 += window_incident_hits_0_1
+                    incident_hits_0_3 += window_incident_hits_0_3
                 except (OSError, RuntimeError, ValueError) as exc:
                     failures.append({"path": clip.relative_path.as_posix(), "error": str(exc)})
             if clip_index % 10 == 0:

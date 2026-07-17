@@ -47,6 +47,19 @@ def test_far_tracks_do_not_create_pair_candidate() -> None:
     assert all(candidate.source == "track" for candidate in candidates)
 
 
+def test_track_candidates_bound_pairwise_work_by_confidence() -> None:
+    tracks = [
+        _track(1, 0.20, 0.35, confidence=0.95),
+        _track(2, 0.36, 0.51, confidence=0.90),
+        _track(3, 0.52, 0.67, confidence=0.10),
+    ]
+
+    candidates = propose_track_regions(tracks, max_tracks=2)
+
+    assert all(3 not in candidate.track_ids for candidate in candidates)
+    assert any(candidate.track_ids == (1, 2) for candidate in candidates)
+
+
 def test_frame_change_creates_normalized_motion_candidate() -> None:
     previous = np.zeros((80, 100, 3), dtype=np.uint8)
     current = previous.copy()

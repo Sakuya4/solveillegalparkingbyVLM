@@ -88,11 +88,19 @@ def propose_track_regions(
     tracks: list[TrackBox],
     pair_distance_threshold: float = 0.35,
     expansion_ratio: float = 0.1,
+    max_tracks: int = 32,
 ) -> list[CandidateRegion]:
     if pair_distance_threshold <= 0:
         raise ValueError("pair_distance_threshold must be positive")
     if expansion_ratio < 0:
         raise ValueError("expansion_ratio must be non-negative")
+    if max_tracks <= 0:
+        raise ValueError("max_tracks must be positive")
+
+    selected_tracks = sorted(
+        tracks,
+        key=lambda track: (-track.confidence, track.track_id),
+    )[:max_tracks]
 
     candidates = [
         _candidate_from_bbox(
@@ -101,9 +109,9 @@ def propose_track_regions(
             source="track",
             track_ids=(track.track_id,),
         )
-        for track in tracks
+        for track in selected_tracks
     ]
-    for first, second in combinations(sorted(tracks, key=lambda track: track.track_id), 2):
+    for first, second in combinations(sorted(selected_tracks, key=lambda track: track.track_id), 2):
         distance = hypot(first.center[0] - second.center[0], first.center[1] - second.center[1])
         if distance > pair_distance_threshold and _bbox_iou(
             (first.x1, first.y1, first.x2, first.y2),
