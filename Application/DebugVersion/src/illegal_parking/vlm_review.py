@@ -89,6 +89,25 @@ def build_redline_parking_review_request(
     )
 
 
+def build_traffic_incident_review_request(
+    evidence: dict[str, Any],
+    image_dir: str | Path,
+) -> VlmReviewRequest:
+    image_root = Path(image_dir)
+    artifacts = evidence.get("artifacts", {})
+    image_paths = [
+        str(image_root / artifacts[name])
+        for name in ("before", "trigger", "after")
+        if name in artifacts
+    ]
+    return VlmReviewRequest(
+        task="traffic_incident_review",
+        prompt=_build_incident_prompt(evidence),
+        image_paths=image_paths,
+        evidence=evidence,
+    )
+
+
 def review_redline_parking_offline(
     request: VlmReviewRequest,
     thresholds: OfflineReviewThresholds = OfflineReviewThresholds(),
@@ -126,6 +145,54 @@ def review_redline_parking_offline(
         human_review_needed=human_review_needed,
         provider="offline_evidence_reviewer",
     )
+
+
+def review_traffic_incident_offline(request: VlmReviewRequest) -> VlmReviewResult:
+    evidence = request.evidence
+    probability = float(evidence.get("model_probability", 0.0))
+    threshold = float(evidence.get("decision_threshold", 1.0))
+    positive_windows = int(evidence.get("consecutive_positive_windows", 0))
+    required_windows = int(evidence.get("required_consecutive_windows", 1))
+    missing_evidence = _find_incident_missing_evidence(request)
+
+    score_confirmed = probability >= threshold
+    persistence_confirmed = positive_windows >= required_windows
+    likely_incident = score_confirmed and persistence_confirmed
+
+    if not score_confirmed:
+        missing_evidence.append(
+            f"Model probability {probability:.4f} is below decision threshold {threshold:.4f}."
+        )
+    if not persistence_confirmed:
+        missing_evidence.append(
+            f"Temporal persistence is {positive_windows} windows; {required_windows} are required."
+        )
+
+    if likely_incident:
+        confidence = min(0.95, max(0.5, probability))
+    else:
+        confidence = min(0.49, max(0.1, probability * 0.5))
+
+    visual_reasons = [
+        f"Incident candidate model probability is {probability:.4f} at threshold {threshold:.4f}.",
+        f"Candidate persists for {positive_windows} consecutive windows; {required_windows} are required.",
+    ]
+    return VlmReviewResult(
+        likely_violation=likely_incident,
+        confidence=round(confidence, 4),
+        visual_reasons=visual_reasons,
+        missing_evidence=missing_evidence,
+        human_review_needed=True,
+        provider="offline_incident_evidence_reviewer",
+    )
+
+
+def review_request_offline(request: VlmReviewRequest) -> VlmReviewResult:
+    if request.task == "redline_parking_review":
+        return review_redline_parking_offline(request)
+    if request.task == "traffic_incident_review":
+        return review_traffic_incident_offline(request)
+    raise ValueError(f"Unsupported offline review task: {request.task}")
 
 
 def parse_vlm_review_result_text(text: str, provider: str) -> VlmReviewResult:
@@ -187,6 +254,24 @@ def _build_prompt(evidence: dict[str, Any]) -> str:
     )
 
 
+def _build_incident_prompt(evidence: dict[str, Any]) -> str:
+    probability = float(evidence.get("model_probability", 0.0))
+    threshold = float(evidence.get("decision_threshold", 1.0))
+    positive_windows = int(evidence.get("consecutive_positive_windows", 0))
+    required_windows = int(evidence.get("required_consecutive_windows", 1))
+    return (
+        "You are reviewing an ordered, privacy-redacted traffic event: before, trigger, and after. "
+        "Do not infer or recover license plates, hidden timestamps, faces, or location text. "
+        "Assess only visible temporal evidence of a collision, abrupt road conflict, stopped hazard, "
+        "or another abnormal road incident that requires operator attention. "
+        f"The candidate model probability is {probability:.4f}, threshold {threshold:.4f}, and the "
+        f"candidate persists for {positive_windows} windows out of {required_windows} required. "
+        "These model values select evidence and are not ground truth. For this task, likely_violation means "
+        "a likely traffic incident that requires operator review. Return a JSON object with keys: "
+        "likely_violation, confidence, visual_reasons, missing_evidence, and human_review_needed."
+    )
+
+
 def _build_visual_reasons(evidence: dict[str, Any]) -> list[str]:
     footprint_ratio = float(evidence.get("footprint_overlap_ratio", 0.0))
     footprint_pixels = int(evidence.get("footprint_overlap_pixels", 0))
@@ -212,6 +297,19 @@ def _find_missing_evidence(request: VlmReviewRequest) -> list[str]:
         missing.append("Restricted zone geometry.")
     if not request.image_paths:
         missing.append("Review image paths.")
+    return missing
+
+
+def _find_incident_missing_evidence(request: VlmReviewRequest) -> list[str]:
+    missing: list[str] = []
+    artifacts = request.evidence.get("artifacts", {})
+    for artifact_name in ("before", "trigger", "after"):
+        if artifact_name not in artifacts:
+            missing.append(f"{artifact_name.title()} event image artifact.")
+    if not bool(request.evidence.get("privacy_redacted", False)):
+        missing.append("Verified privacy redaction for review images.")
+    if len(request.image_paths) < 3:
+        missing.append("Ordered before, trigger, and after image paths.")
     return missing
 
 

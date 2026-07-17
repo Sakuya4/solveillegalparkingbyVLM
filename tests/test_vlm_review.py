@@ -5,10 +5,12 @@ from pathlib import Path
 
 from illegal_parking.vlm_review import (
     VlmReviewRequest,
+    build_traffic_incident_review_request,
     build_unparsed_vlm_review_result,
     compare_vlm_review_results,
     build_redline_parking_review_request,
     parse_vlm_review_result_text,
+    review_traffic_incident_offline,
     review_redline_parking_offline,
 )
 
@@ -32,6 +34,68 @@ def test_build_redline_parking_review_request_includes_privacy_instruction(tmp_p
     assert "Do not infer or recover the license plate" in request.prompt
     assert "0.1628" in request.prompt
     assert str(tmp_path / "overlap_overlay.jpg") in request.image_paths
+
+
+def test_build_traffic_incident_review_request_uses_temporal_privacy_evidence(tmp_path):
+    evidence = {
+        "model_probability": 0.93,
+        "decision_threshold": 0.85,
+        "consecutive_positive_windows": 2,
+        "required_consecutive_windows": 2,
+        "privacy_redacted": True,
+        "artifacts": {
+            "before": "before.jpg",
+            "trigger": "trigger.jpg",
+            "after": "after.jpg",
+        },
+    }
+
+    request = build_traffic_incident_review_request(evidence, tmp_path)
+
+    assert request.task == "traffic_incident_review"
+    assert len(request.image_paths) == 3
+    assert "Do not infer or recover" in request.prompt
+    assert "likely_violation means" in request.prompt
+    assert "0.9300" in request.prompt
+
+
+def test_offline_incident_review_confirms_persistent_model_event(tmp_path):
+    request = build_traffic_incident_review_request(
+        {
+            "model_probability": 0.93,
+            "decision_threshold": 0.85,
+            "consecutive_positive_windows": 2,
+            "required_consecutive_windows": 2,
+            "privacy_redacted": True,
+            "artifacts": {"before": "a.jpg", "trigger": "b.jpg", "after": "c.jpg"},
+        },
+        tmp_path,
+    )
+
+    result = review_traffic_incident_offline(request)
+
+    assert result.likely_violation is True
+    assert result.human_review_needed is True
+    assert result.provider == "offline_incident_evidence_reviewer"
+
+
+def test_offline_incident_review_rejects_unconfirmed_single_window(tmp_path):
+    request = build_traffic_incident_review_request(
+        {
+            "model_probability": 0.93,
+            "decision_threshold": 0.85,
+            "consecutive_positive_windows": 1,
+            "required_consecutive_windows": 2,
+            "privacy_redacted": True,
+            "artifacts": {"before": "a.jpg", "trigger": "b.jpg", "after": "c.jpg"},
+        },
+        tmp_path,
+    )
+
+    result = review_traffic_incident_offline(request)
+
+    assert result.likely_violation is False
+    assert any("persistence" in item.lower() for item in result.missing_evidence)
 
 
 def test_prepare_vlm_review_cli_writes_request(tmp_path):
@@ -155,6 +219,53 @@ def test_run_vlm_review_cli_writes_result(tmp_path):
     assert result["likely_violation"] is True
     assert result["provider"] == "offline_evidence_reviewer"
     assert "visual_reasons" in result
+
+
+def test_run_vlm_review_cli_dispatches_incident_request(tmp_path):
+    request_path = tmp_path / "incident_request.json"
+    output_path = tmp_path / "incident_result.json"
+    request_path.write_text(
+        json.dumps(
+            {
+                "task": "traffic_incident_review",
+                "prompt": "review",
+                "image_paths": ["before.jpg", "trigger.jpg", "after.jpg"],
+                "evidence": {
+                    "model_probability": 0.93,
+                    "decision_threshold": 0.85,
+                    "consecutive_positive_windows": 2,
+                    "required_consecutive_windows": 2,
+                    "privacy_redacted": True,
+                    "artifacts": {
+                        "before": "before.jpg",
+                        "trigger": "trigger.jpg",
+                        "after": "after.jpg",
+                    },
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    subprocess.run(
+        [
+            sys.executable,
+            "scripts/run_vlm_review.py",
+            "--request-json",
+            str(request_path),
+            "--output",
+            str(output_path),
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    result = json.loads(output_path.read_text(encoding="utf-8"))
+
+    assert result["likely_violation"] is True
+    assert result["provider"] == "offline_incident_evidence_reviewer"
+    assert result["human_review_needed"] is True
 
 
 def test_parse_vlm_review_result_text_normalizes_json_fence():

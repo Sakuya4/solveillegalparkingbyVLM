@@ -13,7 +13,7 @@ from illegal_parking.vlm_review import (
     VlmReviewRequest,
     build_unparsed_vlm_review_result,
     parse_vlm_review_result_text,
-    review_redline_parking_offline,
+    review_request_offline,
 )
 
 
@@ -35,7 +35,7 @@ def main() -> int:
     payload = json.loads(Path(args.request_json).read_text(encoding="utf-8"))
     request = VlmReviewRequest.from_dict(payload)
     if args.provider == "offline":
-        result = review_redline_parking_offline(request)
+        result = review_request_offline(request)
     else:
         if not args.vlm_response_text:
             raise SystemExit("--vlm-response-text is required when --provider vlm-json")
