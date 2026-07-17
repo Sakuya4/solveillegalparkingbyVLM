@@ -2,16 +2,19 @@
 
 ## Current Completion
 
-Existing red-line/event platform: **about 70% complete**.
+Existing red-line/event platform: **about 85% complete**.
 
-New ACCIDENT incident mainline: **about 80% complete**. All 2,027 real clips
+New ACCIDENT incident mainline: **about 90% complete**. All 2,027 real clips
 have been processed into 3,387 windows with zero decode failures. Full IID and
 geographic global-motion baselines, a causal TCN, a 500-clip trajectory/TTC
 ablation, annotation-free tracker/motion candidate ROIs, optional SAM2
 refinement, train-holdout threshold calibration, a frozen VideoMAE comparison,
 a public-CCTV pilot and session aggregator, a real model-output demo, an
 incident VLM evidence package, edge-trace replay, Verilog trigger logic, and
-Python/SystemC queue models are implemented.
+Python/SystemC queue models are implemented. A formal 100-clip event batch,
+partial VideoMAE fine-tuning, same-sample SAM2 ablation, clean-blind VLM case,
+five-minute government CCTV session, ONNX parity check, and A1/A2 camera-site
+coverage report are now complete.
 
 Current positioning: **edge-first traffic incident detection and risk
 prioritization for roadside cameras**. Red-line parking is now a completed event
@@ -87,10 +90,12 @@ reported separately so the added research scope is visible.
 - [x] Package confirmed incidents as ordered privacy-treated VLM evidence.
 - [x] Add post-inference event recall and trigger-delay evaluation tooling.
 - [ ] Reproduce the official heuristic and VLM smoke baselines.
-- [ ] Fine-tune the final VideoMAE encoder block and compare detector front ends.
-- [ ] Evaluate IID and geographic OOD event quality and latency.
+- [x] Fine-tune the final VideoMAE encoder block with train-holdout early stopping.
+- [x] Evaluate a representative IID event batch for recall and latency.
+- [ ] Run the same event-level batch on the geographic OOD split.
 - [x] Integrate incident output with the existing VLM evidence workflow.
-- [ ] Run SAM2-assisted incident evidence and real VLM validation-set comparisons.
+- [x] Run a 10-clip SAM2 proposal ablation and a clean-blind real VLM case comparison.
+- [ ] Expand the VLM comparison to a labeled validation set.
 
 ## VLM Checklist
 
@@ -119,8 +124,9 @@ reported separately so the added research scope is visible.
 - [x] Connect model candidate traces to Python and SystemC queue inputs.
 - [x] Run a short official Taichung CCTV domain-shift pilot.
 - [x] Add multi-session CCTV aggregation and zero-event 95% exposure bounds.
-- [ ] Compile and run SystemC locally after installing the SystemC SDK.
-- [ ] Document Snapdragon/QNN export and profiling path.
+- [x] Compile and run SystemC 3.0.2 against a real candidate trace.
+- [x] Export TCN ONNX, verify parity, and document the QNN submission path.
+- [ ] Profile latency and power after QAI Hub credentials or hardware are available.
 
 ## What The Project Can Show Today
 

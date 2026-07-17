@@ -32,17 +32,18 @@
 - [x] Calibrate model thresholds against a target false-positive budget using a grouped train holdout.
 - [x] Train a frozen VideoMAE embedding comparison head.
 - [x] Compare candidate ROI and VideoMAE feature fusion.
-- [ ] Fine-tune the final VideoMAE encoder block.
+- [x] Fine-tune the final VideoMAE encoder block with grouped-holdout early stopping.
 - [ ] Compare YOLO, RT-DETR, and D-FINE as detector front ends.
 - [x] Generate ordered privacy-treated incident evidence for VLM review.
-- [ ] Compare SAM2-assisted evidence and real VLM providers on annotated incidents.
+- [x] Run a same-sample SAM2 proposal ablation and clean-blind VLM case comparison.
 - [x] Add event recall, trigger-delay, and off-target alert evaluation tooling.
-- [ ] Run representative IID/OOD reports and publish recall, false alarms/hour,
-  temporal error, type accuracy, and latency distributions.
+- [x] Publish a 100-clip IID event recall, trigger-delay, type, and off-target alert report.
+- [ ] Add a matching geographic OOD event-level batch report.
 
 ## Phase 2: Edge And Hardware-Aware Validation
 
-- [ ] Export and quantize the selected models for an edge runtime.
+- [x] Export the calibrated TCN to ONNX and verify 128-sample runtime parity.
+- [ ] Quantize and profile the model on an authenticated QNN target.
 - [ ] Add Verilog acceleration and time-to-collision trigger logic.
 - [x] Add a Verilog ROI-versus-global motion-spike trigger.
 - [x] Add a shared NPU/review queue golden simulation and camera-capacity sweep.
@@ -52,13 +53,21 @@
 - [x] Simulate latency, backpressure, frame dropping, and utilization for
   multiple cameras.
 - [ ] Add CPU/VLM stages and calibrated power proxies to the SystemC model.
-- [ ] Document the Snapdragon QNN/AI Hub compilation and profiling path.
-- [ ] Join alerts with Taiwan A1/A2, violations, VD flow, and CCTV locations.
+- [x] Document the Snapdragon QNN/AI Hub compilation path and credential boundary.
+- [x] Spatially join Taiwan A1/A2 risk grids with public enforcement-camera locations.
+- [ ] Add VD flow and event-alert coordinates to the same spatial join.
 - [x] Run an initial live public-CCTV runtime and domain-shift check.
 - [x] Aggregate matching CCTV sessions with a zero-event 95% exposure bound.
 - [ ] Extend normal-only CCTV validation to independently reviewed camera-hours.
-- [ ] Produce the final accuracy, edge cost, hot-spot coverage, and response-time
-  report.
+- [x] Produce the accuracy, edge cost, hot-spot coverage, and response-time report.
+
+## Difficult-Image And Review Validation
+
+- [x] Run an official NAFNet checkpoint on privacy-safe synthetic motion blur.
+- [x] Audit the official SM3Det release, configuration, domain, compute, and license.
+- [x] Separate annotated VLM evidence from clean blinded visual review.
+- [x] Compare Qwen2.5-VL-3B and LLaVA/Qwen-0.5B schema behavior on one incident.
+- [ ] Expand clean-blind VLM evaluation from one event to an annotated set.
 
 ## Final Claim Gate
 

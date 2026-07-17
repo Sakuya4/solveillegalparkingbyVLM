@@ -1,0 +1,6 @@
+stage,method,samples,decision_or_recall,secondary_metric,elapsed_sec,result
+proposal,YOLO+ByteTrack+motion,10 clips / 270 steps,recall_at_0.1=0.667,recall_at_0.3=0.453,10.855,baseline
+proposal,YOLO+ByteTrack+motion+SAM2.1-t,10 clips / 270 steps,recall_at_0.1=0.680,recall_at_0.3=0.453,37.213,small_IoU_gain_3.43x_cost
+review,Qwen2.5-VL-3B with model context,1 event,incident=true,schema_valid=true,50.019,agrees_but_repeats_model_scores
+review,Qwen2.5-VL-3B clean blind,1 event,incident=false,schema_valid=true,32.962,missed_visible_collision
+review,LLaVA-Qwen-0.5B clean blind,1 event,untrusted_fallback,schema_valid=false,32.417,mentions_collision_but_invalid_and_hallucinatory

@@ -1,0 +1,313 @@
+{
+  "scope": {
+    "spatial_join": "New Taipei A1/A2 top-risk grids versus New Taipei public illegal-parking camera sites",
+    "violation_scenario": "Taoyuan violations are a separate municipality-level prioritization and cost scenario"
+  },
+  "government_records": {
+    "taiwan_a1_a2": 393854,
+    "taoyuan_violations": 309493,
+    "new_taipei_camera_sites": 17,
+    "national_top_hotspots": 30,
+    "new_taipei_hotspots_joined": 27,
+    "out_of_city_hotspots_excluded": 3
+  },
+  "risk_camera_coverage": {
+    "hotspot_count": 27,
+    "camera_site_count": 17,
+    "total_top_hotspot_risk_score": 4400.0,
+    "coverage_by_radius_m": {
+      "500": {
+        "covered_hotspots": 4,
+        "hotspot_coverage_rate": 0.14814814814814814,
+        "covered_risk_score": 473.0,
+        "risk_weighted_coverage_rate": 0.1075
+      },
+      "1000": {
+        "covered_hotspots": 6,
+        "hotspot_coverage_rate": 0.2222222222222222,
+        "covered_risk_score": 834.0,
+        "risk_weighted_coverage_rate": 0.18954545454545454
+      },
+      "2000": {
+        "covered_hotspots": 8,
+        "hotspot_coverage_rate": 0.2962962962962963,
+        "covered_risk_score": 1093.0,
+        "risk_weighted_coverage_rate": 0.2484090909090909
+      }
+    },
+    "nearest_camera_matches": [
+      {
+        "risk_rank": 1,
+        "grid_id": "25.036,121.453",
+        "representative_location": "新北市新莊區中正路 / 新北市新莊區思源路",
+        "risk_score": 492.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2751.8324246290517
+      },
+      {
+        "risk_rank": 2,
+        "grid_id": "25.072,121.499",
+        "representative_location": "新北市三重區忠孝橋機車道路前0.0公尺",
+        "risk_score": 427.0,
+        "nearest_camera_id": "1",
+        "nearest_camera_location": "五股區成泰路2段與工商路口",
+        "distance_m": 6201.716264656693
+      },
+      {
+        "risk_rank": 3,
+        "grid_id": "25.007,121.468",
+        "representative_location": "新北市板橋區浮洲橋機車專用道前0.0公尺",
+        "risk_score": 222.0,
+        "nearest_camera_id": "8",
+        "nearest_camera_location": "板橋區捷運府中站1號出口旁(縣民大道1段)",
+        "distance_m": 890.9399035192607
+      },
+      {
+        "risk_rank": 4,
+        "grid_id": "25.022,121.486",
+        "representative_location": "新北市板橋區環河西路5段前0.0公尺",
+        "risk_score": 196.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2258.2721347802344
+      },
+      {
+        "risk_rank": 5,
+        "grid_id": "25.034,121.454",
+        "representative_location": "新北市新莊區重新堤外道路前0.0公尺",
+        "risk_score": 194.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2420.2924171697846
+      },
+      {
+        "risk_rank": 6,
+        "grid_id": "25.004,121.496",
+        "representative_location": "新北市中和區景平路 / 新北市中和區成功路",
+        "risk_score": 186.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 3370.6435774386546
+      },
+      {
+        "risk_rank": 7,
+        "grid_id": "24.994,121.499",
+        "representative_location": "新北市中和區中正路 / 新北市中和區板南路",
+        "risk_score": 174.0,
+        "nearest_camera_id": "16",
+        "nearest_camera_location": "新店區中央路216-1號前",
+        "distance_m": 3895.4723857219988
+      },
+      {
+        "risk_rank": 8,
+        "grid_id": "25.033,121.450",
+        "representative_location": "新北市新莊區新北大道 / 新北市新莊區中原路",
+        "risk_score": 169.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2605.3651518551596
+      },
+      {
+        "risk_rank": 10,
+        "grid_id": "25.057,121.634",
+        "representative_location": "新北市汐止區大同路1段 / 新北市汐止區新台五路1段",
+        "risk_score": 139.0,
+        "nearest_camera_id": "4",
+        "nearest_camera_location": "汐止區中興路與福德二路口",
+        "distance_m": 926.133749140443
+      },
+      {
+        "risk_rank": 11,
+        "grid_id": "25.007,121.460",
+        "representative_location": "新北市板橋區中山路 / 新北市板橋區漢生東路",
+        "risk_score": 138.0,
+        "nearest_camera_id": "8",
+        "nearest_camera_location": "板橋區捷運府中站1號出口旁(縣民大道1段)",
+        "distance_m": 130.84436091675113
+      },
+      {
+        "risk_rank": 12,
+        "grid_id": "24.997,121.515",
+        "representative_location": "新北市永和區中正路 / 新北市永和區中正路",
+        "risk_score": 137.0,
+        "nearest_camera_id": "16",
+        "nearest_camera_location": "新店區中央路216-1號前",
+        "distance_m": 3003.0667173283996
+      },
+      {
+        "risk_rank": 13,
+        "grid_id": "25.009,121.481",
+        "representative_location": "新北市中和區中正路1167號前0.0公尺",
+        "risk_score": 137.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 1737.1535656595286
+      },
+      {
+        "risk_rank": 14,
+        "grid_id": "24.981,121.439",
+        "representative_location": "新北市土城區擺接堡路前0.0公尺",
+        "risk_score": 137.0,
+        "nearest_camera_id": "8",
+        "nearest_camera_location": "板橋區捷運府中站1號出口旁(縣民大道1段)",
+        "distance_m": 3624.7425505707292
+      },
+      {
+        "risk_rank": 15,
+        "grid_id": "25.075,121.458",
+        "representative_location": "新北市五股區疏洪一路前0.0公尺",
+        "risk_score": 136.0,
+        "nearest_camera_id": "1",
+        "nearest_camera_location": "五股區成泰路2段與工商路口",
+        "distance_m": 2244.8078208518536
+      },
+      {
+        "risk_rank": 16,
+        "grid_id": "25.018,121.515",
+        "representative_location": "新北市永和區中正橋道路前0.0公尺",
+        "risk_score": 134.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 5084.638920437208
+      },
+      {
+        "risk_rank": 17,
+        "grid_id": "25.067,121.500",
+        "representative_location": "新北市三重區重新堤外道路前0.0公尺",
+        "risk_score": 129.0,
+        "nearest_camera_id": "1",
+        "nearest_camera_location": "五股區成泰路2段與工商路口",
+        "distance_m": 6497.379382993886
+      },
+      {
+        "risk_rank": 18,
+        "grid_id": "25.063,121.504",
+        "representative_location": "新北市三重區環河南路 / 新北市三重區成功路",
+        "risk_score": 124.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 6652.206778372774
+      },
+      {
+        "risk_rank": 19,
+        "grid_id": "24.968,121.515",
+        "representative_location": "新北市新店區祥和路前0.0公尺",
+        "risk_score": 122.0,
+        "nearest_camera_id": "16",
+        "nearest_camera_location": "新店區中央路216-1號前",
+        "distance_m": 1583.30050658523
+      },
+      {
+        "risk_rank": 20,
+        "grid_id": "25.061,121.466",
+        "representative_location": "新北市泰山區新北大道 / 新北市泰山區泰林路",
+        "risk_score": 122.0,
+        "nearest_camera_id": "1",
+        "nearest_camera_location": "五股區成泰路2段與工商路口",
+        "distance_m": 3768.632337994323
+      },
+      {
+        "risk_rank": 21,
+        "grid_id": "25.007,121.458",
+        "representative_location": "新北市板橋區縣民大道1段前0.0公尺",
+        "risk_score": 116.0,
+        "nearest_camera_id": "8",
+        "nearest_camera_location": "板橋區捷運府中站1號出口旁(縣民大道1段)",
+        "distance_m": 140.60128059387847
+      },
+      {
+        "risk_rank": 22,
+        "grid_id": "25.015,121.431",
+        "representative_location": "新北市新莊區新樹路 / 新北市新莊區建國二路",
+        "risk_score": 116.0,
+        "nearest_camera_id": "8",
+        "nearest_camera_location": "板橋區捷運府中站1號出口旁(縣民大道1段)",
+        "distance_m": 2909.7698877689554
+      },
+      {
+        "risk_rank": 23,
+        "grid_id": "25.062,121.653",
+        "representative_location": "新北市汐止區新台五路1段前0.0公尺",
+        "risk_score": 113.0,
+        "nearest_camera_id": "6",
+        "nearest_camera_location": "汐止區新台五路1段158至162號前",
+        "distance_m": 83.29954957554158
+      },
+      {
+        "risk_rank": 24,
+        "grid_id": "25.040,121.442",
+        "representative_location": "新北市新莊區中環路 / 新北市新莊區景德路",
+        "risk_score": 113.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 3660.926041344521
+      },
+      {
+        "risk_rank": 25,
+        "grid_id": "25.014,121.488",
+        "representative_location": "新北市中和區環河西路 / 新北市中和區立業路",
+        "risk_score": 108.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2275.715772180081
+      },
+      {
+        "risk_rank": 27,
+        "grid_id": "24.902,121.720",
+        "representative_location": "新北市坪林區北宜公路前0.0公尺",
+        "risk_score": 108.0,
+        "nearest_camera_id": "2",
+        "nearest_camera_location": "平溪區靜安路三段與十分街口",
+        "distance_m": 16705.034474169308
+      },
+      {
+        "risk_rank": 28,
+        "grid_id": "25.019,121.465",
+        "representative_location": "新北市板橋區文化路1段 / 新北市板橋區民權路",
+        "risk_score": 106.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 488.62356535792253
+      },
+      {
+        "risk_rank": 29,
+        "grid_id": "25.083,121.476",
+        "representative_location": "新北市蘆洲區三民路 / 新北市蘆洲區復興路",
+        "risk_score": 105.0,
+        "nearest_camera_id": "1",
+        "nearest_camera_location": "五股區成泰路2段與工商路口",
+        "distance_m": 3739.6779721854577
+      }
+    ]
+  },
+  "scenario_only_not_measured_outcome": {
+    "a1_a2": {
+      "baseline_risk_score": 4761.0,
+      "projected_risk_score": 4417.6,
+      "reduced_risk_score": 343.39999999999964,
+      "reduction_rate": 0.07212770426381004,
+      "baseline_cases": 4697,
+      "projected_cases": 4356.8,
+      "reduced_cases": 340.1999999999998
+    },
+    "violations": {
+      "baseline_violations": 19280,
+      "projected_violations": 16560,
+      "reduced_violations": 2720,
+      "reduction_rate": 0.14107883817427386,
+      "manual_cost_before": 1413866.6666666665,
+      "manual_cost_after": 1214400.0,
+      "gross_savings": 199466.6666666665,
+      "system_cost": 50000.0,
+      "net_savings": 149466.6666666665,
+      "savings_rate": 0.10571482459449255
+    },
+    "warning": "Projected reductions and savings are planning assumptions. They require before/after field observations and are not measured causal outcomes."
+  },
+  "sources": [
+    "https://data.gov.tw/dataset/172969",
+    "https://data.ntpc.gov.tw/datasets/bb59a616-3572-4e92-9d09-01bf422057a6",
+    "https://data.gov.tw/dataset/168176"
+  ]
+}
