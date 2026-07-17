@@ -42,6 +42,20 @@ YOLO做車輛檢測，經過NAFNet的模糊處理，最後提供給VLM去判斷�
 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 條款提供。
 
 ---
+### 線上事故候選區域
+
+系統已能在不讀取事故標註框的情況下，以 YOLO/ByteTrack、畫面 motion 與可選的 SAM2 box prompt 產生候選區域。500 支 ACCIDENT 影片共產生 822 個視窗，零處理失敗。
+
+| 500-clip 模型 | IID F1 | Geographic F1 |
+| --- | ---: | ---: |
+| Global motion logistic | 0.405 | 0.516 |
+| Online candidate ROI logistic | 0.581 | 0.615 |
+| Global causal TCN | 0.642 | 0.569 |
+| Online candidate ROI TCN | 0.629 | 0.668 |
+
+完整指標、FPR 與研究限制請見 [ACCIDENT Phase 1 results](docs/accident_phase1_results.md)。開發代理的研究誠信、測試與提交規範記錄於 [AGENTS.md](AGENTS.md)。
+
+---
 ### 安裝說明
 
 1. 建立虛擬環境

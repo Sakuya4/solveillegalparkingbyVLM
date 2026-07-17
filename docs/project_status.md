@@ -4,10 +4,11 @@
 
 Existing red-line/event platform: **about 70% complete**.
 
-New ACCIDENT incident mainline: **about 60% complete**. All 2,027 real clips
+New ACCIDENT incident mainline: **about 70% complete**. All 2,027 real clips
 have been processed into 3,387 windows with zero decode failures. Full IID and
 geographic global-motion baselines, a causal TCN, a 500-clip trajectory/TTC
-ablation, feature fusion, Verilog trigger logic, and Python/SystemC queue models
+ablation, annotation-free tracker/motion candidate ROIs, optional SAM2
+refinement, edge traces, Verilog trigger logic, and Python/SystemC queue models
 are implemented.
 
 Current positioning: **edge-first traffic incident detection and risk
@@ -74,6 +75,9 @@ reported separately so the added research scope is visible.
 - [x] Extract YOLOv8n/ByteTrack trajectory and image-plane TTC features.
 - [x] Train a causal TCN on deployment-safe global motion sequences.
 - [x] Separate deployment-safe metrics from oracle accident-ROI upper bounds.
+- [x] Generate online tracker/motion candidate ROIs without accident annotations.
+- [x] Add optional SAM2 box-prompt refinement with an edge-safe fallback.
+- [x] Run a 500-clip candidate ROI logistic/TCN ablation and emit edge traces.
 - [ ] Reproduce the official heuristic and VLM smoke baselines.
 - [ ] Train VideoMAE and detector-front-end comparison models.
 - [ ] Evaluate IID and geographic OOD event quality and latency.
@@ -119,13 +123,15 @@ reported separately so the added research scope is visible.
 - A full real-video causal TCN benchmark using no oracle ROI: IID F1 0.594 and
   geographic F1 0.629 over 3,387 windows.
 - A measured oracle-ROI gap and a 500-clip trajectory/TTC fusion ablation.
+- An annotation-free 500-clip online ROI benchmark: candidate-only logistic F1
+  0.581 IID / 0.615 geographic and candidate TCN F1 0.629 / 0.668.
 - A shared-NPU capacity result showing RT-DETR-L saturation above two 15 FPS
   camera streams under the measured-latency queue assumptions.
 
 ## Next Best Milestones
 
-1. Generate online candidate ROIs from tracker/motion/SAM2 without annotations.
+1. Calibrate event thresholds under a target false-positive budget.
 2. Add normal-only CCTV and measure false alerts per camera-hour.
-3. Compare detector front ends and VideoMAE on IID/OOD event metrics.
-4. Feed real inference traces into Verilog triggers and SystemC scheduling.
+3. Feed candidate ROI traces into Verilog triggers and SystemC scheduling.
+4. Compare detector front ends and VideoMAE on IID/OOD event metrics.
 5. Join event results with Taiwan A1/A2, violations, VD flow, and CCTV coverage.

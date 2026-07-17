@@ -26,7 +26,10 @@
 - [x] Train a causal TCN temporal baseline on global motion sequences.
 - [ ] Train an LSTM comparison baseline.
 - [x] Measure the gap between deployable global features and oracle accident ROI.
-- [ ] Replace oracle ROI with online tracker/motion/SAM2 candidate proposals.
+- [x] Replace oracle ROI with online tracker/motion candidate proposals.
+- [x] Add optional SAM2 box-prompt refinement with a no-SAM2 fallback.
+- [x] Run a 500-clip online ROI logistic/TCN ablation and export edge traces.
+- [ ] Calibrate model thresholds against a target false-positive budget.
 - [ ] Train or fine-tune a VideoMAE comparison model.
 - [ ] Compare YOLO, RT-DETR, and D-FINE as detector front ends.
 - [ ] Generate incident evidence with SAM2 and VLM review.

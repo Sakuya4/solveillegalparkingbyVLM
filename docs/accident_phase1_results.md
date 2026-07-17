@@ -30,15 +30,17 @@ clips remain in the verified archive until the domain-gap experiment.
 ACCIDENT metadata + video
   -> validated temporal windows
   -> global frame difference / optical flow sequence
-  -> causal TCN deployment baseline
-  -> optional YOLO + ByteTrack trajectory / image-plane TTC features
+  -> YOLO + ByteTrack and motion candidate ROI
+  -> optional SAM2 box-prompt refinement
+  -> aggregate logistic or causal TCN deployment baseline
+  -> optional trajectory / image-plane TTC features
   -> accident-annotation ROI only as an oracle upper bound
   -> IID or geographic OOD metrics and per-quality breakdown
 ```
 
-All deployment-facing results use only global image features available at
-runtime. The ACCIDENT accident bounding box is never available before an event,
-so ROI-based results are reported only as an oracle upper bound.
+Deployment-facing results use only global or online candidate features available
+at runtime. The ACCIDENT accident bounding box is never available before an
+event, so annotation-ROI features remain an explicit oracle upper bound.
 
 ## Full Real-Video Benchmark
 
@@ -73,6 +75,11 @@ distribution-weighted ACCIDENT benchmark.
 | Global motion | 0.405 | 0.515 | Deployable |
 | YOLOv8n + ByteTrack trajectory/TTC | 0.532 | 0.575 | Deployable proxy |
 | Global motion + trajectory/TTC | **0.562** | 0.569 | Deployable fusion |
+| Online candidate ROI logistic | 0.581 | 0.615 | Deployable |
+| Global + candidate ROI logistic | 0.569 | 0.603 | Deployable fusion |
+| Global causal TCN | **0.642** | 0.569 | Deployable |
+| Online candidate ROI TCN | 0.629 | **0.668** | Deployable |
+| Global + candidate ROI TCN | 0.628 | 0.597 | Deployable fusion |
 | Oracle accident ROI motion | 0.838 | 0.854 | Upper bound only |
 | Oracle ROI + trajectory/TTC | 0.854 | **0.872** | Upper bound only |
 
@@ -82,6 +89,19 @@ Image-plane TTC is therefore useful as complementary evidence, not a physical
 TTC measurement or a replacement for motion. On IID data it raises the
 deployment-safe global baseline from F1 0.405 to 0.562.
 
+The annotation-free candidate ROI extractor processed the same 500 clips into
+822 windows and `822 x 15 x 14` tensors in 407.00 seconds on the RTX 3060, with
+zero failures. Candidate availability was 96.82%, with 4.41 proposals per step.
+Ground-truth boxes were used only after extraction for proposal diagnostics:
+recall@0.1 was 0.672 and recall@0.3 was 0.417. These diagnostics are absent from
+the CSV, NPZ, and edge trace model inputs.
+
+Candidate-only temporal features improve geographic TCN F1 from 0.569 to 0.668,
+but simple global/candidate concatenation reaches only 0.597. The online ROI is
+therefore useful evidence, while fusion and threshold calibration remain open
+problems. All table values use a fixed 0.5 threshold; the relatively high window
+FPR must be reported alongside F1.
+
 The reported false-positive rate is window-level. Normal samples are
 non-overlapping pre-incident windows from accident clips, not independent
 normal CCTV footage, so false alarms per camera-hour cannot yet be claimed.
@@ -89,6 +109,33 @@ normal CCTV footage, so false alarms per camera-hour cannot yet be claimed.
 The TCN layers are causal, but each positive window is centered on the annotated
 accident frame and contains post-event frames. These results measure event
 detection and confirmation, not accident anticipation or early warning.
+
+## Reproduce Online Candidate ROI
+
+The local archive used here is extracted under
+`data/raw/accident/full/extracted`. Ultralytics accepts GPU index `0`, while the
+PyTorch TCN CLI uses `auto` or `cuda`.
+
+```powershell
+& .\.venv\Scripts\python.exe scripts/extract_accident_candidate_roi_features.py `
+  --metadata data/raw/accident/full/extracted/metadata-real.csv `
+  --dataset-root data/raw/accident/full/extracted `
+  --max-clips 500 --device 0 `
+  --output data/processed/accident/candidate_roi_features_500.csv `
+  --sequence-output data/processed/accident/candidate_roi_sequences_500.npz
+
+& .\.venv\Scripts\python.exe scripts/train_incident_motion_baseline.py `
+  --features data/processed/accident/candidate_roi_features_500.csv `
+  --include-prefix candidate_
+
+& .\.venv\Scripts\python.exe scripts/train_incident_tcn.py `
+  --sequences data/processed/accident/candidate_roi_sequences_500.npz `
+  --include-prefix candidate_ --device auto
+```
+
+Add `--sam2-model sam2.1_t.pt --sam2-device 0` to extraction only when SAM2
+latency and proposal quality are being measured. The default benchmark keeps
+SAM2 disabled so tracker/motion remains the edge baseline.
 
 ## Edge Queue Result
 
@@ -108,7 +155,8 @@ for motion-triggered inference, model quantization, and multi-rate scheduling.
 
 ## Remaining Before Model Claims
 
-- Replace oracle accident ROIs with online tracker/motion/SAM2 candidate ROIs.
+- Improve online candidate localization and calibrate thresholds against a
+  deployment false-positive budget.
 - Add normal-only CCTV footage before reporting false alarms per camera-hour.
 - Train VideoMAE and detector-front-end comparisons on the same split contract.
 - Measure event localization error and trigger delay, not only window labels.
@@ -119,5 +167,7 @@ for motion-triggered inference, model quantization, and multi-rate scheduling.
   https://github.com/accidentbench/ACCIDENT
 - Ultralytics tracking and ByteTrack configuration:
   https://docs.ultralytics.com/modes/track/
+- Ultralytics SAM2 box-prompt interface:
+  https://docs.ultralytics.com/models/sam-2
 - Causal dilated temporal convolution starting point:
   https://arxiv.org/abs/1803.01271
