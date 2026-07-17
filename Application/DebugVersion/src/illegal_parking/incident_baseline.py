@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import random
 from dataclasses import dataclass
 
 import numpy as np
@@ -138,6 +139,58 @@ def binary_classification_metrics(
         "threshold": threshold,
         "confusion_matrix": {"tn": tn, "fp": fp, "fn": fn, "tp": tp},
     }
+
+
+def select_threshold_for_target_fpr(
+    targets: np.ndarray,
+    probabilities: np.ndarray,
+    target_fpr: float,
+) -> float:
+    labels = np.asarray(targets, dtype=np.int64).reshape(-1)
+    scores = np.asarray(probabilities, dtype=np.float64).reshape(-1)
+    if labels.shape != scores.shape or labels.size == 0:
+        raise ValueError("targets and probabilities must be non-empty and have the same shape")
+    if set(np.unique(labels)) != {0, 1}:
+        raise ValueError("threshold calibration requires both target classes")
+    if not np.all(np.isfinite(scores)) or np.any((scores < 0.0) | (scores > 1.0)):
+        raise ValueError("probabilities must be finite and between zero and one")
+    if not 0.0 <= target_fpr <= 1.0:
+        raise ValueError("target_fpr must be between zero and one")
+
+    candidates = np.unique(np.concatenate((
+        np.asarray([0.0]),
+        scores,
+        np.asarray([np.nextafter(float(np.max(scores)), np.inf)]),
+    )))
+    negative_scores = scores[labels == 0]
+    for threshold in candidates:
+        false_positive_rate = float(np.mean(negative_scores >= threshold))
+        if false_positive_rate <= target_fpr + 1e-12:
+            return float(threshold)
+    raise RuntimeError("No threshold satisfies the requested false-positive rate")
+
+
+def grouped_calibration_indices(
+    groups: np.ndarray,
+    fraction: float = 0.2,
+    seed: int = 42,
+) -> tuple[np.ndarray, np.ndarray]:
+    values = np.asarray(groups).astype(str).reshape(-1)
+    if values.size == 0:
+        raise ValueError("groups must not be empty")
+    if not 0.0 < fraction < 1.0:
+        raise ValueError("fraction must be between zero and one")
+    unique_groups = sorted(set(values.tolist()))
+    if len(unique_groups) < 2:
+        raise ValueError("at least two groups are required for calibration")
+
+    generator = random.Random(seed)
+    generator.shuffle(unique_groups)
+    calibration_count = max(1, min(len(unique_groups) - 1, round(len(unique_groups) * fraction)))
+    calibration_groups = set(unique_groups[:calibration_count])
+    calibration_indices = np.flatnonzero(np.isin(values, list(calibration_groups)))
+    fit_indices = np.flatnonzero(~np.isin(values, list(calibration_groups)))
+    return fit_indices, calibration_indices
 
 
 def select_numeric_feature_names(row: dict[str, str]) -> tuple[str, ...]:

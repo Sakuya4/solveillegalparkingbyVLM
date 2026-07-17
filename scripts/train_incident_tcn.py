@@ -19,7 +19,9 @@ sys.path.insert(0, str(SRC))
 from illegal_parking.incident_baseline import (
     binary_classification_metrics,
     filter_feature_names,
+    grouped_calibration_indices,
     has_oracle_roi_features,
+    select_threshold_for_target_fpr,
 )
 from illegal_parking.incident_tcn import TemporalConvClassifier, fit_sequence_standardizer
 
@@ -38,6 +40,13 @@ def main() -> int:
     parser.add_argument("--channels", type=int, default=32)
     parser.add_argument("--dropout", type=float, default=0.1)
     parser.add_argument("--threshold", type=float, default=0.5)
+    parser.add_argument(
+        "--target-train-fpr",
+        type=float,
+        default=None,
+        help="Choose the lowest threshold meeting this FPR on a grouped train holdout; overrides --threshold.",
+    )
+    parser.add_argument("--calibration-fraction", type=float, default=0.2)
     parser.add_argument(
         "--include-prefix",
         action="append",
@@ -58,6 +67,12 @@ def main() -> int:
 
     if args.epochs <= 0 or args.batch_size <= 0 or args.learning_rate <= 0:
         raise SystemExit("epochs, batch size, and learning rate must be positive")
+    if not 0.0 <= args.threshold <= 1.0:
+        raise SystemExit("--threshold must be between zero and one")
+    if args.target_train_fpr is not None and not 0.0 <= args.target_train_fpr <= 1.0:
+        raise SystemExit("--target-train-fpr must be between zero and one")
+    if args.target_train_fpr is not None and not 0.0 < args.calibration_fraction < 1.0:
+        raise SystemExit("--calibration-fraction must be between zero and one")
     _set_seed(args.seed)
     device = _resolve_device(args.device)
     payload = np.load(_resolve(args.sequences), allow_pickle=False)
@@ -79,9 +94,26 @@ def main() -> int:
     test_indices = np.flatnonzero(splits == "test")
     _validate_split(targets, train_indices, test_indices, split_field)
 
-    standardizer = fit_sequence_standardizer(features[train_indices])
+    fit_indices = train_indices
+    calibration_indices = np.asarray([], dtype=np.int64)
+    if args.target_train_fpr is not None:
+        fit_local, calibration_local = grouped_calibration_indices(
+            payload["path"][train_indices].astype(str),
+            fraction=args.calibration_fraction,
+            seed=args.seed,
+        )
+        fit_indices = train_indices[fit_local]
+        calibration_indices = train_indices[calibration_local]
+        if set(np.unique(targets[fit_indices])) != {0, 1}:
+            raise SystemExit("Fit partition must contain normal and incident windows")
+        if set(np.unique(targets[calibration_indices])) != {0, 1}:
+            raise SystemExit("Calibration partition must contain normal and incident windows")
+
+    standardizer = fit_sequence_standardizer(features[fit_indices])
+    fit_features = standardizer.transform(features[fit_indices])
     train_features = standardizer.transform(features[train_indices])
     test_features = standardizer.transform(features[test_indices])
+    fit_targets = targets[fit_indices]
     train_targets = targets[train_indices]
     test_targets = targets[test_indices]
 
@@ -90,8 +122,8 @@ def main() -> int:
         channels=args.channels,
         dropout=args.dropout,
     ).to(device)
-    positive_count = int(np.sum(train_targets == 1))
-    negative_count = int(np.sum(train_targets == 0))
+    positive_count = int(np.sum(fit_targets == 1))
+    negative_count = int(np.sum(fit_targets == 0))
     positive_weight = torch.tensor([negative_count / positive_count], dtype=torch.float32, device=device)
     criterion = nn.BCEWithLogitsLoss(pos_weight=positive_weight)
     optimizer = torch.optim.AdamW(
@@ -102,8 +134,8 @@ def main() -> int:
     generator = torch.Generator().manual_seed(args.seed)
     loader = DataLoader(
         TensorDataset(
-            torch.from_numpy(train_features),
-            torch.from_numpy(train_targets.astype(np.float32)),
+            torch.from_numpy(fit_features),
+            torch.from_numpy(fit_targets.astype(np.float32)),
         ),
         batch_size=args.batch_size,
         shuffle=True,
@@ -128,8 +160,28 @@ def main() -> int:
         if epoch == 1 or epoch % 10 == 0 or epoch == args.epochs:
             print(f"epoch={epoch}/{args.epochs} loss={losses[-1]:.6f}")
 
+    fit_probabilities = _predict(model, fit_features, args.batch_size, device)
     train_probabilities = _predict(model, train_features, args.batch_size, device)
     test_probabilities = _predict(model, test_features, args.batch_size, device)
+    calibration_targets = np.asarray([], dtype=np.int64)
+    calibration_probabilities = np.asarray([], dtype=np.float64)
+    effective_threshold = args.threshold
+    threshold_source = "fixed"
+    if args.target_train_fpr is not None:
+        calibration_features = standardizer.transform(features[calibration_indices])
+        calibration_targets = targets[calibration_indices]
+        calibration_probabilities = _predict(
+            model,
+            calibration_features,
+            args.batch_size,
+            device,
+        )
+        effective_threshold = select_threshold_for_target_fpr(
+            calibration_targets,
+            calibration_probabilities,
+            args.target_train_fpr,
+        )
+        threshold_source = "train_holdout_fpr_calibration"
     report = {
         "model": "causal_temporal_convolutional_network",
         "device": str(device),
@@ -142,21 +194,45 @@ def main() -> int:
         "feature_names": list(feature_names),
         "include_prefixes": list(include_prefixes),
         "oracle_roi_allowed": args.allow_oracle_roi,
+        "decision_threshold": {
+            "source": threshold_source,
+            "effective": effective_threshold,
+            "fixed_request": args.threshold,
+            "target_train_fpr": args.target_train_fpr,
+            "calibration_fraction": (
+                args.calibration_fraction if len(calibration_indices) else None
+            ),
+            "seed": args.seed if len(calibration_indices) else None,
+        },
         "train_loss_first": losses[0],
         "train_loss_last": losses[-1],
-        "train": binary_classification_metrics(train_targets, train_probabilities, args.threshold),
-        "test": binary_classification_metrics(test_targets, test_probabilities, args.threshold),
+        "fit": binary_classification_metrics(
+            fit_targets,
+            fit_probabilities,
+            effective_threshold,
+        ),
+        "calibration": (
+            binary_classification_metrics(
+                calibration_targets,
+                calibration_probabilities,
+                effective_threshold,
+            )
+            if len(calibration_indices)
+            else None
+        ),
+        "train": binary_classification_metrics(train_targets, train_probabilities, effective_threshold),
+        "test": binary_classification_metrics(test_targets, test_probabilities, effective_threshold),
         "test_by_collision_type": _group_metrics(
             payload["collision_type"][test_indices].astype(str),
             test_targets,
             test_probabilities,
-            args.threshold,
+            effective_threshold,
         ),
         "test_by_quality": _group_metrics(
             payload["quality"][test_indices].astype(str),
             test_targets,
             test_probabilities,
-            args.threshold,
+            effective_threshold,
         ),
         "limitations": [
             "Normal windows are pre-incident segments from accident clips, not independent normal-only CCTV videos.",
@@ -183,12 +259,12 @@ def main() -> int:
             "dropout": args.dropout,
             "feature_names": list(feature_names),
             "standardizer": standardizer.to_dict(),
-            "threshold": args.threshold,
+            "threshold": effective_threshold,
         },
         model_output,
     )
     report_output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    _write_predictions(predictions_output, payload, test_indices, test_probabilities, args.threshold)
+    _write_predictions(predictions_output, payload, test_indices, test_probabilities, effective_threshold)
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0
 

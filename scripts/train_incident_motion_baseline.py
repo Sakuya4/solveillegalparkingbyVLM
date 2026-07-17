@@ -4,6 +4,7 @@ import argparse
 import csv
 import json
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -16,7 +17,9 @@ from illegal_parking.incident_baseline import (
     binary_classification_metrics,
     filter_feature_names,
     fit_logistic_regression,
+    grouped_calibration_indices,
     has_oracle_roi_features,
+    select_threshold_for_target_fpr,
     select_numeric_feature_names,
 )
 
@@ -32,6 +35,14 @@ def main() -> int:
     parser.add_argument("--learning-rate", type=float, default=0.05)
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument(
+        "--target-train-fpr",
+        type=float,
+        default=None,
+        help="Choose the lowest threshold meeting this FPR on a grouped train holdout; overrides --threshold.",
+    )
+    parser.add_argument("--calibration-fraction", type=float, default=0.2)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
         "--include-prefix",
         action="append",
         default=[],
@@ -46,6 +57,13 @@ def main() -> int:
     parser.add_argument("--report-output", default="outputs/accident/motion_baseline_report.json")
     parser.add_argument("--predictions-output", default="outputs/accident/motion_baseline_predictions.csv")
     args = parser.parse_args()
+
+    if not 0.0 <= args.threshold <= 1.0:
+        raise SystemExit("--threshold must be between zero and one")
+    if args.target_train_fpr is not None and not 0.0 <= args.target_train_fpr <= 1.0:
+        raise SystemExit("--target-train-fpr must be between zero and one")
+    if args.target_train_fpr is not None and not 0.0 < args.calibration_fraction < 1.0:
+        raise SystemExit("--calibration-fraction must be between zero and one")
 
     feature_path = _resolve(args.features)
     rows = list(csv.DictReader(feature_path.open("r", encoding="utf-8-sig", newline="")))
@@ -64,18 +82,47 @@ def main() -> int:
     if not train_rows or not test_rows:
         raise SystemExit(f"Feature CSV must contain train and test rows for {split_field}")
 
+    fit_rows = train_rows
+    calibration_rows: list[dict[str, str]] = []
+    if args.target_train_fpr is not None:
+        fit_indices, calibration_indices = grouped_calibration_indices(
+            np.asarray([row["path"] for row in train_rows]),
+            fraction=args.calibration_fraction,
+            seed=args.seed,
+        )
+        fit_rows = [train_rows[index] for index in fit_indices]
+        calibration_rows = [train_rows[index] for index in calibration_indices]
+
+    fit_features, fit_targets = _matrix(fit_rows, feature_names)
+    if set(np.unique(fit_targets)) != {0, 1}:
+        raise SystemExit("Fit partition must contain normal and incident windows")
     train_features, train_targets = _matrix(train_rows, feature_names)
     test_features, test_targets = _matrix(test_rows, feature_names)
     model = fit_logistic_regression(
-        train_features,
-        train_targets,
+        fit_features,
+        fit_targets,
         epochs=args.epochs,
         learning_rate=args.learning_rate,
         threshold=args.threshold,
         feature_names=feature_names,
     )
+    fit_probabilities = model.predict_proba(fit_features)
     train_probabilities = model.predict_proba(train_features)
     test_probabilities = model.predict_proba(test_features)
+    effective_threshold = args.threshold
+    threshold_source = "fixed"
+    if args.target_train_fpr is not None:
+        calibration_features, calibration_targets = _matrix(calibration_rows, feature_names)
+        if set(np.unique(calibration_targets)) != {0, 1}:
+            raise SystemExit("Calibration partition must contain normal and incident windows")
+        calibration_probabilities = model.predict_proba(calibration_features)
+        effective_threshold = select_threshold_for_target_fpr(
+            calibration_targets,
+            calibration_probabilities,
+            args.target_train_fpr,
+        )
+        threshold_source = "train_holdout_fpr_calibration"
+        model = replace(model, threshold=effective_threshold)
 
     report = {
         "model": "standardized_logistic_regression",
@@ -84,10 +131,28 @@ def main() -> int:
         "feature_names": list(feature_names),
         "include_prefixes": args.include_prefix,
         "oracle_roi_allowed": args.allow_oracle_roi,
-        "train": binary_classification_metrics(train_targets, train_probabilities, args.threshold),
-        "test": binary_classification_metrics(test_targets, test_probabilities, args.threshold),
-        "test_by_collision_type": _group_metrics(test_rows, test_targets, test_probabilities, "collision_type", args.threshold),
-        "test_by_quality": _group_metrics(test_rows, test_targets, test_probabilities, "quality", args.threshold),
+        "decision_threshold": {
+            "source": threshold_source,
+            "effective": effective_threshold,
+            "fixed_request": args.threshold,
+            "target_train_fpr": args.target_train_fpr,
+            "calibration_fraction": args.calibration_fraction if calibration_rows else None,
+            "seed": args.seed if calibration_rows else None,
+        },
+        "fit": binary_classification_metrics(fit_targets, fit_probabilities, effective_threshold),
+        "calibration": (
+            binary_classification_metrics(
+                calibration_targets,
+                calibration_probabilities,
+                effective_threshold,
+            )
+            if calibration_rows
+            else None
+        ),
+        "train": binary_classification_metrics(train_targets, train_probabilities, effective_threshold),
+        "test": binary_classification_metrics(test_targets, test_probabilities, effective_threshold),
+        "test_by_collision_type": _group_metrics(test_rows, test_targets, test_probabilities, "collision_type", effective_threshold),
+        "test_by_quality": _group_metrics(test_rows, test_targets, test_probabilities, "quality", effective_threshold),
         "limitations": [
             "Normal windows are pre-incident segments from accident clips, not independent normal-only CCTV videos.",
             "False-positive rate is window-level and must not be reported as false alarms per camera-hour.",
@@ -101,7 +166,7 @@ def main() -> int:
         output.parent.mkdir(parents=True, exist_ok=True)
     model_output.write_text(json.dumps(model.to_dict(), indent=2), encoding="utf-8")
     report_output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    _write_predictions(predictions_output, test_rows, test_probabilities, args.threshold)
+    _write_predictions(predictions_output, test_rows, test_probabilities, effective_threshold)
     print(json.dumps(report, ensure_ascii=False, indent=2))
     return 0
 
