@@ -8,6 +8,8 @@
 - [x] Add SAM mask evidence and local Qwen2.5-VL review.
 - [x] Compare YOLOv8n and RT-DETR-L detector baselines.
 - [x] Add event evaluation, hot-spot analysis, and A1/A2 risk analysis.
+- [x] Integrate measured results, evidence media, hardware status, and
+  government deployment analysis in one runnable Dashboard.
 
 ## Phase 1: Public-Dataset Incident Model
 
@@ -71,6 +73,6 @@
 
 ## Final Claim Gate
 
-- [ ] Do not claim reduced A1/A2 casualties without before/after field data.
-- [ ] Claim only measured detection delay, event quality, camera-hour false
+- [x] Do not claim reduced A1/A2 casualties without before/after field data.
+- [x] Claim only measured detection delay, event quality, camera-hour false
   alarms, risk coverage, throughput, and review-cost savings.

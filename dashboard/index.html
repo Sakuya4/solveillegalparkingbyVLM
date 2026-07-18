@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>道路交通事件偵測與風險評估系統</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-block">
+      <span class="brand-signal" aria-hidden="true"></span>
+      <div>
+        <strong>道路交通事件偵測與風險評估系統</strong>
+        <span>Edge research console</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span id="snapshot-status">載入成果快照</span>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <nav class="side-nav" aria-label="主要功能">
+      <button class="nav-item active" data-view="overview">總覽</button>
+      <button class="nav-item" data-view="models">模型評估</button>
+      <button class="nav-item" data-view="evidence">證據審查</button>
+      <button class="nav-item" data-view="deployment">邊緣與部署</button>
+      <button class="nav-item" data-view="readiness">完成度</button>
+    </nav>
+
+    <main id="main-content" tabindex="-1">
+      <section class="view active" id="overview-view" aria-labelledby="overview-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">RESEARCH SNAPSHOT</p>
+            <h1 id="overview-title">從 CCTV 到風險治理的完整驗證鏈</h1>
+            <p>紅線違停是完整規則案例，ACCIDENT 事故資料是公開訓練與時序評估主線。</p>
+          </div>
+          <a class="report-link" href="../docs/final_evaluation_report.md" target="_blank" rel="noreferrer">正式報告</a>
+        </div>
+
+        <div class="metric-strip" id="overview-metrics" aria-label="主要量測指標"></div>
+
+        <section class="content-band" aria-labelledby="pipeline-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">END-TO-END PIPELINE</p>
+              <h2 id="pipeline-title">事件處理流程</h2>
+            </div>
+            <div class="legend">
+              <span><i class="state-dot verified"></i>已驗證</span>
+              <span><i class="state-dot pilot"></i>試驗完成</span>
+            </div>
+          </div>
+          <div class="pipeline" id="pipeline"></div>
+        </section>
+
+        <div class="two-column">
+          <section class="tool-panel media-panel" aria-labelledby="demo-title">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">MODEL OUTPUT</p>
+                <h2 id="demo-title">事故事件實際輸出</h2>
+              </div>
+              <span class="status-label verified">實際推論</span>
+            </div>
+            <video id="overview-video" controls muted playsinline preload="metadata"></video>
+            <div class="media-caption">
+              <strong>YOLO / ByteTrack / motion ROI / causal TCN</strong>
+              <span>推論不讀取事故標註框，連續兩個高分視窗建立事件。</span>
+            </div>
+          </section>
+
+          <section class="tool-panel" aria-labelledby="profile-title">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">EVENT-LEVEL EVALUATION</p>
+                <h2 id="profile-title">100 支事故影片</h2>
+              </div>
+              <span class="dataset-tag">IID test</span>
+            </div>
+            <div id="event-profiles"></div>
+            <p class="limit-note">Responsive 偏向安全分流；conservative 降低離題警報，但會犧牲召回。</p>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="models-view" aria-labelledby="models-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">FAIR MODEL COMPARISON</p>
+            <h1 id="models-title">相同資料、切分與 FPR 校準</h1>
+            <p>比較 edge TCN、frozen VideoMAE 與部分微調 VideoMAE，不用單一漂亮 threshold 包裝結果。</p>
+          </div>
+          <div class="segmented" role="group" aria-label="資料切分">
+            <button class="segment active" data-split="iid">IID</button>
+            <button class="segment" data-split="geographic">Geographic</button>
+          </div>
+        </div>
+        <section class="content-band">
+          <div class="model-head" aria-hidden="true"><span>模型</span><span>F1</span><span>Recall</span><span>FPR</span></div>
+          <div id="model-comparison"></div>
+        </section>
+        <div class="two-column model-notes">
+          <section class="tool-panel">
+            <p class="eyebrow">DEPLOYMENT DECISION</p>
+            <h2>TCN 留在 edge trigger</h2>
+            <p>Geographic split 下 TCN 的校準後 F1 最高。Frozen VideoMAE 適合作為較重的交叉驗證器；部分微調在 500 clips 下尚不穩定。</p>
+          </section>
+          <section class="tool-panel">
+            <p class="eyebrow">WHY NOT 0.9</p>
+            <h2>事件品質不等於單張 mAP</h2>
+            <p>本系統同時報告事件召回、trigger delay、正常 CCTV 誤報暴露與 edge queue 壓力，避免只呈現較容易取得的單張偵測分數。</p>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="evidence-view" aria-labelledby="evidence-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">MULTIMODAL EVIDENCE</p>
+            <h1 id="evidence-title">候選事件的視覺證據與覆核</h1>
+            <p>SAM2 細化困難候選，VLM 整理證據與排序人工佇列，不取代時序 detector。</p>
+          </div>
+        </div>
+        <div class="evidence-layout">
+          <div class="evidence-tabs" role="tablist" aria-label="證據類型">
+            <button class="evidence-tab active" data-evidence="output" role="tab">事故輸出</button>
+            <button class="evidence-tab" data-evidence="reference" role="tab">原始事故</button>
+            <button class="evidence-tab" data-evidence="vlm" role="tab">VLM 證據</button>
+            <button class="evidence-tab" data-evidence="nafnet" role="tab">NAFNet</button>
+            <button class="evidence-tab" data-evidence="sm3det" role="tab">SM3Det</button>
+          </div>
+          <section class="evidence-stage" id="evidence-stage" aria-live="polite"></section>
+          <aside class="evidence-inspector" id="evidence-inspector"></aside>
+        </div>
+        <section class="content-band ablation-band" aria-labelledby="ablation-title">
+          <div class="section-heading compact">
+            <div>
+              <p class="eyebrow">SAME-SAMPLE ABLATION</p>
+              <h2 id="ablation-title">SAM2 / VLM 實驗紀錄</h2>
+            </div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>階段</th><th>方法</th><th>樣本</th><th>主要結果</th><th>耗時</th><th>判讀</th></tr></thead><tbody id="ablation-rows"></tbody></table></div>
+        </section>
+      </section>
+
+      <section class="view" id="deployment-view" aria-labelledby="deployment-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">EDGE AND GOVERNMENT DATA</p>
+            <h1 id="deployment-title">多攝影機容量與部署優先序</h1>
+            <p>硬體模擬回答系統跑不跑得動，政府資料回答應該先架在哪裡。</p>
+          </div>
+        </div>
+        <div class="metric-strip" id="edge-metrics"></div>
+        <div class="two-column deployment-grid">
+          <section class="tool-panel" aria-labelledby="hardware-title">
+            <div class="section-heading compact">
+              <div><p class="eyebrow">HARDWARE VALIDATION</p><h2 id="hardware-title">Verilog / SystemC / ONNX / QNN</h2></div>
+            </div>
+            <div id="hardware-status" class="status-list"></div>
+          </section>
+          <section class="tool-panel" aria-labelledby="coverage-title">
+            <div class="section-heading compact">
+              <div><p class="eyebrow">RISK-WEIGHTED COVERAGE</p><h2 id="coverage-title">新北高風險網格覆蓋</h2></div>
+            </div>
+            <div id="coverage-bars"></div>
+          </section>
+        </div>
+        <section class="content-band" aria-labelledby="hotspots-title">
+          <div class="section-heading compact">
+            <div><p class="eyebrow">CAMERA GAP ANALYSIS</p><h2 id="hotspots-title">事故熱點與最近公開攝影機</h2></div>
+            <span class="dataset-tag">A1/A2 113 年</span>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>風險順位</th><th>代表位置</th><th>Risk score</th><th>最近攝影機</th><th>距離</th></tr></thead><tbody id="hotspot-rows"></tbody></table></div>
+        </section>
+      </section>
+
+      <section class="view" id="readiness-view" aria-labelledby="readiness-title">
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">RESEARCH READINESS</p>
+            <h1 id="readiness-title">完成度不是單一百分比</h1>
+            <p>依證據強度分為已驗證、試驗完成與需外部條件，避免把研究原型誤寫成正式上線。</p>
+          </div>
+          <div class="segmented" role="group" aria-label="完成度篩選">
+            <button class="readiness-filter active" data-state="all">全部</button>
+            <button class="readiness-filter" data-state="verified">已驗證</button>
+            <button class="readiness-filter" data-state="pilot">試驗</button>
+            <button class="readiness-filter" data-state="external">待外部</button>
+          </div>
+        </div>
+        <div class="readiness-summary" id="readiness-summary"></div>
+        <section class="content-band readiness-band">
+          <div id="readiness-list" class="readiness-list"></div>
+        </section>
+        <section class="report-index" aria-label="專案文件">
+          <a href="../spec.md" target="_blank" rel="noreferrer"><strong>系統規格</strong><span>範圍、Phase 與驗收條件</span></a>
+          <a href="../docs/final_evaluation_report.md" target="_blank" rel="noreferrer"><strong>正式評估</strong><span>模型、VLM、edge 與政府資料</span></a>
+          <a href="../docs/project_status.md" target="_blank" rel="noreferrer"><strong>執行狀態</strong><span>已完成與後續外部驗證</span></a>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="load-error" id="load-error" hidden>無法載入成果快照，請由本機 Dashboard 啟動腳本開啟。</div>
+  <script src="app.js" defer></script>
+</body>
+</html>

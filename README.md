@@ -23,6 +23,21 @@
 - IID/geographic OOD、事件召回率、觸發延遲與 false alerts/hour 評估。
 - 邊緣裝置容量估算、候選事件分流與 Verilog/SystemC 硬體模擬。
 
+### 整合成果 Dashboard
+
+![道路交通事件偵測與風險評估 Dashboard](docs/assets/project_dashboard.png)
+
+Dashboard 將事故事件輸出、TCN/VideoMAE 公平比較、SAM2/VLM 證據、
+NAFNet/SM3Det 實驗、SystemC/QNN 狀態與政府 A1/A2 熱區整合在同一入口。
+它會從版本控制中的正式結果重建資料快照，不需要另裝 Web framework。
+
+```powershell
+python scripts/run_project_dashboard.py
+```
+
+啟動後開啟 `http://127.0.0.1:8000/dashboard/`。若 8000 已被占用，腳本會
+自動使用下一個可用連接埠。
+
 ### 原始專案背景
 
 本專案源自 2025 高通台灣 AI 黑客松。原始版本使用 YOLO 做車輛檢測，
