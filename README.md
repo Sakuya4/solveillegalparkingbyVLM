@@ -23,11 +23,47 @@
 - IID/geographic OOD、事件召回率、觸發延遲與 false alerts/hour 評估。
 - 邊緣裝置容量估算、候選事件分流與 Verilog/SystemC 硬體模擬。
 
+### 整合成果 Dashboard
+
+![道路交通事件偵測與風險評估 Dashboard](docs/assets/project_dashboard.png)
+
+Dashboard 將事故事件輸出、TCN/VideoMAE 公平比較、SAM2/VLM 證據、
+NAFNet/SM3Det 實驗、SystemC/QNN 狀態與政府 A1/A2 熱區整合在同一入口。
+它會從版本控制中的正式結果重建資料快照，不需要另裝 Web framework。
+
+```powershell
+python scripts/run_project_dashboard.py
+```
+
+啟動後開啟 `http://127.0.0.1:8000/dashboard/`。若 8000 已被占用，腳本會
+自動使用下一個可用連接埠。
+
 ### 原始專案背景
 
 本專案源自 2025 高通台灣 AI 黑客松。原始版本使用 YOLO 做車輛檢測，
-經 NAFNet 模糊處理後交由 VLM 判斷是否違規，並規劃以 SM3Det 處理難以
-辨識的監視器畫面。紅線違停現保留為第一個完整事件案例。
+經 NAFNet 影像復原後交由 VLM 判斷是否違規，並以 SM3Det 評估難以辨識的
+多來源監視器畫面。紅線違停現保留為第一個完整事件案例。
+
+### 困難監視器畫面處理實驗
+
+![NAFNet privacy-safe CCTV deblurring result](docs/assets/nafnet_cctv_demo/comparison.jpg)
+
+使用官方 `NAFNet-REDS-width64` 權重，在先移除車牌與右下角日期地址的圖片
+上加入固定 motion blur，再執行真實 GPU restoration。PSNR 由 `21.91dB`
+提升至 `23.41dB`，SSIM 由 `0.517` 提升至 `0.636`；RTX 3060 單張延遲
+為 `2.45s`。這是困難畫面復原實驗，不是事故辨識準確率。
+
+SM3Det 官方 release、config 與論文結果也已完成可重現檢查：RGB/SAR/IR
+三來源、8 experts、top-k 3、487G FLOPs、178M parameters。其官方成績來自
+遙測目標偵測而非道路 CCTV，因此本專案將它定位為雲端 hard-frame 或未來
+多感測器研究分支，不放進即時 edge 主路徑。稽核結果見
+[sm3det_transfer_audit.json](docs/assets/sm3det_transfer_audit.json)。
+
+![SM3Det official multi-modal architecture](docs/assets/sm3det_architecture.png)
+
+SM3Det 架構圖取自[官方 repository](https://github.com/zcablii/SM3Det)，依其
+CC BY-NC 4.0 授權標示；圖中展示的是遙測多模態方法，不是本專案的 CCTV
+推論輸出。
 
 ---
 ### 團隊成員資訊
@@ -90,15 +126,35 @@ causal TCN 實際推論產生，推論時未讀取 ACCIDENT 的事故標註框�
 
 完整指標、FPR 與研究限制請見 [ACCIDENT Phase 1 results](docs/accident_phase1_results.md)。
 
-以 train-only holdout 將 TCN 門檻校準到 20% window FPR 後，IID 測試 FPR
-由 0.531 降至 0.235，F1 由 0.629 降至 0.473。這是政府場域降低誤報時
-必須揭露的 recall 取捨，不使用 test split 調整門檻。
+### 正式事件與模型結果
 
-Frozen VideoMAE 使用 16 幀、384 維 embedding，在 RTX 3060 上完成 822 個
-視窗抽取，零失敗，速度 1.46 windows/s。它在固定門檻的 IID F1 略高於
-candidate TCN，但 geographic F1 較低；目前是 frozen encoder 比較，不宣稱
-已完成 VideoMAE 微調。事故候選也可輸出 before/trigger/after 三幀隱私化
-證據包交給 VLM。
+100 支 IID test 事故影片的 responsive profile event recall 為 `0.750`，
+trigger delay median `0.394s`、p95 `2.251s`；連續兩窗的 conservative
+profile recall 為 `0.440`。完整 type breakdown 與離題警報數見
+[正式實驗與部署整合報告](docs/final_evaluation_report.md)。
+
+VideoMAE 已完成最後一個 encoder block 的部分微調。以相同 500 clips、
+相同 split 與 train-holdout FPR 校準比較，edge TCN 的 IID/geographic F1
+為 `0.473/0.499`，frozen VideoMAE 為 `0.447/0.358`，部分微調 VideoMAE
+為 `0.260/0.382`。微調版 fixed-threshold IID F1 雖達 `0.746`，FPR 也高達
+`0.860`，因此不採用該 operating point。
+
+### SAM2、VLM 與 Edge 驗證
+
+![Clean privacy-safe VLM evidence](docs/assets/incident_vlm_clean_evidence.jpg)
+
+- SAM2.1-t 在共同 10 clips 將 proposal recall@0.1 由 `0.667` 提升至
+  `0.680`，recall@0.3 不變，耗時為基線的 3.43 倍。
+- Qwen2.5-VL-3B 可輸出合法 review JSON，但 clean blind test 漏掉遠距碰撞；
+  VLM 用於事件摘要、證據缺口與人工排序，不取代 TCN。
+- 政府正常 CCTV 累積 `0.0867 camera-hours`，連續兩窗 gate 為 0 alerts，
+  但零事件 95% 上限仍為 `34.55 alerts/hour`。
+- Verilog 三個 testbench 全數通過；SystemC 3.0.2 與 Python 對 49,320 個
+  processed frames、6,808 candidates、2,156 reviews 完成 trace parity。
+- TCN ONNX 128 samples 最大誤差 `1.79e-7`；QNN/QAI Hub compile command
+  已產生，實體 Snapdragon latency 需有 QAI Hub credential 後量測。
+- 113 年 A1/A2 與新北公開攝影機空間整合顯示，既有 17 點對新北 top-risk
+  grids 的 1km 風險加權覆蓋率為 `18.95%`。
 
 ---
 ### 安裝說明

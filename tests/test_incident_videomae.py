@@ -3,12 +3,15 @@ from __future__ import annotations
 import cv2
 import numpy as np
 import pytest
+from torch import nn
 
 from illegal_parking.incident_videomae import (
+    configure_videomae_finetuning,
     prepare_videomae_state_dict,
     read_uniform_video_window,
     remap_legacy_attention_biases,
     uniform_frame_indices,
+    videomae_optimizer_groups,
 )
 
 
@@ -109,3 +112,51 @@ def test_prepare_videomae_state_dict_remaps_split_attention_biases() -> None:
 
     assert f"{prefix}.q_bias" not in prepared
     assert prepared[f"{prefix}.key.bias"].tolist() == [0.0]
+
+
+class _TinyVideoMaeClassifier(nn.Module):
+    def __init__(self) -> None:
+        super().__init__()
+        self.videomae = nn.Module()
+        self.videomae.encoder = nn.Module()
+        self.videomae.encoder.layer = nn.ModuleList([nn.Linear(2, 2) for _ in range(3)])
+        self.fc_norm = nn.LayerNorm(2)
+        self.classifier = nn.Linear(2, 400)
+        self.config = type("Config", (), {"hidden_size": 2})()
+
+
+def test_configure_videomae_finetuning_only_unfreezes_requested_tail_blocks() -> None:
+    model = _TinyVideoMaeClassifier()
+
+    configure_videomae_finetuning(model, num_labels=2, trainable_encoder_blocks=1)
+
+    assert model.classifier.out_features == 2
+    assert all(not parameter.requires_grad for parameter in model.videomae.encoder.layer[0].parameters())
+    assert all(not parameter.requires_grad for parameter in model.videomae.encoder.layer[1].parameters())
+    assert all(parameter.requires_grad for parameter in model.videomae.encoder.layer[2].parameters())
+    assert all(parameter.requires_grad for parameter in model.fc_norm.parameters())
+    assert all(parameter.requires_grad for parameter in model.classifier.parameters())
+
+
+def test_configure_videomae_finetuning_rejects_too_many_blocks() -> None:
+    model = _TinyVideoMaeClassifier()
+
+    with pytest.raises(ValueError, match="trainable_encoder_blocks"):
+        configure_videomae_finetuning(model, num_labels=2, trainable_encoder_blocks=4)
+
+
+def test_videomae_optimizer_groups_use_discriminative_learning_rates() -> None:
+    model = _TinyVideoMaeClassifier()
+    configure_videomae_finetuning(model, num_labels=2, trainable_encoder_blocks=1)
+
+    groups = videomae_optimizer_groups(model, 1e-5, 1e-3)
+
+    assert [group["name"] for group in groups] == ["encoder", "head"]
+    assert [group["lr"] for group in groups] == [1e-5, 1e-3]
+    assert {id(parameter) for parameter in groups[0]["params"]} == {
+        id(parameter)
+        for parameter in model.videomae.encoder.layer[-1].parameters()
+    }
+    assert {id(parameter) for parameter in groups[1]["params"]} == {
+        id(parameter) for parameter in [*model.fc_norm.parameters(), *model.classifier.parameters()]
+    }

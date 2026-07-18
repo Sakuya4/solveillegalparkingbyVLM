@@ -92,6 +92,7 @@ def build_redline_parking_review_request(
 def build_traffic_incident_review_request(
     evidence: dict[str, Any],
     image_dir: str | Path,
+    include_model_context: bool = True,
 ) -> VlmReviewRequest:
     image_root = Path(image_dir)
     artifacts = evidence.get("artifacts", {})
@@ -100,11 +101,20 @@ def build_traffic_incident_review_request(
         for name in ("before", "trigger", "after")
         if name in artifacts
     ]
+    request_evidence = dict(evidence)
+    if not include_model_context:
+        for key in (
+            "model_probability",
+            "decision_threshold",
+            "consecutive_positive_windows",
+            "required_consecutive_windows",
+        ):
+            request_evidence.pop(key, None)
     return VlmReviewRequest(
         task="traffic_incident_review",
-        prompt=_build_incident_prompt(evidence),
+        prompt=_build_incident_prompt(evidence, include_model_context),
         image_paths=image_paths,
-        evidence=evidence,
+        evidence=request_evidence,
     )
 
 
@@ -254,19 +264,30 @@ def _build_prompt(evidence: dict[str, Any]) -> str:
     )
 
 
-def _build_incident_prompt(evidence: dict[str, Any]) -> str:
+def _build_incident_prompt(
+    evidence: dict[str, Any], include_model_context: bool = True
+) -> str:
     probability = float(evidence.get("model_probability", 0.0))
     threshold = float(evidence.get("decision_threshold", 1.0))
     positive_windows = int(evidence.get("consecutive_positive_windows", 0))
     required_windows = int(evidence.get("required_consecutive_windows", 1))
-    return (
+    visual_task = (
         "You are reviewing an ordered, privacy-redacted traffic event: before, trigger, and after. "
         "Do not infer or recover license plates, hidden timestamps, faces, or location text. "
         "Assess only visible temporal evidence of a collision, abrupt road conflict, stopped hazard, "
         "or another abnormal road incident that requires operator attention. "
+    )
+    model_context = (
         f"The candidate model probability is {probability:.4f}, threshold {threshold:.4f}, and the "
         f"candidate persists for {positive_windows} windows out of {required_windows} required. "
-        "These model values select evidence and are not ground truth. For this task, likely_violation means "
+        "These model values select evidence and are not ground truth. "
+        if include_model_context
+        else "This is a blinded visual review; model scores and thresholds are intentionally hidden. "
+    )
+    return (
+        visual_task
+        + model_context
+        + "For this task, likely_violation means "
         "a likely traffic incident that requires operator review. Return a JSON object with keys: "
         "likely_violation, confidence, visual_reasons, missing_evidence, and human_review_needed."
     )

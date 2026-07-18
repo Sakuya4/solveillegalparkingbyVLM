@@ -1,0 +1,42 @@
+{
+  "release_verified": true,
+  "config": "configs/SM3Det/SM3Det_convnext_t.py",
+  "modalities": [
+    "RGB",
+    "SAR",
+    "infrared"
+  ],
+  "source_ratio": [
+    2,
+    1,
+    1
+  ],
+  "num_classes": 26,
+  "mixture_of_experts": {
+    "num_experts": 8,
+    "top_k": 3
+  },
+  "official_release_metrics": {
+    "benchmark": "SOI-Det remote sensing",
+    "flops_g": 487,
+    "parameters_m": 178,
+    "rgb_map": 80.68,
+    "sar_map": 50.2,
+    "infrared_map": 51.31
+  },
+  "official_environment": {
+    "python": "3.10",
+    "pytorch": "1.12.0+cu113",
+    "mmcv_full": "1.6.1"
+  },
+  "license": "CC BY-NC 4.0",
+  "cctv_transfer_assessment": {
+    "direct_cctv_metric_available": false,
+    "reason": "The official benchmark is multi-modal remote-sensing object detection, not temporal roadside-CCTV incident recognition.",
+    "recommended_role": "Optional cloud-side hard-frame routing or a separately fine-tuned multi-sensor research branch; exclude it from the real-time edge path."
+  },
+  "sources": [
+    "https://github.com/zcablii/SM3Det",
+    "https://arxiv.org/abs/2412.20665"
+  ]
+}

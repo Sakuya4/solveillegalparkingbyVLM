@@ -7,6 +7,64 @@ import cv2
 import numpy as np
 
 
+def configure_videomae_finetuning(
+    model,
+    num_labels: int,
+    trainable_encoder_blocks: int,
+) -> dict[str, int]:
+    import torch.nn as nn
+
+    if num_labels <= 1:
+        raise ValueError("num_labels must be greater than one")
+    blocks = model.videomae.encoder.layer
+    if not 0 <= trainable_encoder_blocks <= len(blocks):
+        raise ValueError("trainable_encoder_blocks exceeds the encoder depth")
+
+    for parameter in model.parameters():
+        parameter.requires_grad = False
+    if trainable_encoder_blocks:
+        for block in blocks[-trainable_encoder_blocks:]:
+            for parameter in block.parameters():
+                parameter.requires_grad = True
+    for parameter in model.fc_norm.parameters():
+        parameter.requires_grad = True
+    model.classifier = nn.Linear(model.config.hidden_size, num_labels)
+    model.config.num_labels = num_labels
+    model.config.id2label = {0: "normal", 1: "incident"}
+    model.config.label2id = {"normal": 0, "incident": 1}
+
+    return {
+        "total_parameters": sum(parameter.numel() for parameter in model.parameters()),
+        "trainable_parameters": sum(
+            parameter.numel() for parameter in model.parameters() if parameter.requires_grad
+        ),
+        "trainable_encoder_blocks": trainable_encoder_blocks,
+    }
+
+
+def videomae_optimizer_groups(
+    model,
+    encoder_learning_rate: float,
+    head_learning_rate: float,
+) -> list[dict[str, Any]]:
+    if encoder_learning_rate <= 0 or head_learning_rate <= 0:
+        raise ValueError("learning rates must be positive")
+    head_parameters = [
+        *model.fc_norm.parameters(),
+        *model.classifier.parameters(),
+    ]
+    head_ids = {id(parameter) for parameter in head_parameters}
+    encoder_parameters = [
+        parameter
+        for parameter in model.parameters()
+        if parameter.requires_grad and id(parameter) not in head_ids
+    ]
+    return [
+        {"params": encoder_parameters, "lr": encoder_learning_rate, "name": "encoder"},
+        {"params": head_parameters, "lr": head_learning_rate, "name": "head"},
+    ]
+
+
 def remap_legacy_attention_biases(state_dict: dict[str, Any]) -> dict[str, Any]:
     mapped = dict(state_dict)
     query_bias_keys = [key for key in mapped if key.endswith(".attention.attention.q_bias")]

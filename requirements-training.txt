@@ -11,3 +11,8 @@ pyyaml>=6.0.0
 # Optional for local VLM review adapters:
 transformers>=4.57.0
 accelerate>=1.0.0
+
+# Optional deployment validation and Qualcomm AI Hub submission:
+onnx>=1.22.0
+onnxruntime>=1.27.0
+qai-hub>=0.52.0

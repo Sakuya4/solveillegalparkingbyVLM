@@ -1,0 +1,448 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "基於多模態時序感知與邊緣運算之道路交通事件偵測與風險評估系統",
+    "positioning": "edge-first traffic incident detection and risk prioritization",
+    "dataset": "ACCIDENT fixed-CCTV benchmark"
+  },
+  "readiness": {
+    "verified": 9,
+    "pilot": 3,
+    "external": 3,
+    "items": [
+      {
+        "name": "紅線違停事件案例",
+        "state": "verified",
+        "detail": "規則、隱私處理與證據輸出已整合"
+      },
+      {
+        "name": "事故候選與時序觸發",
+        "state": "verified",
+        "detail": "100 clips 正式事件評估"
+      },
+      {
+        "name": "TCN / VideoMAE 比較",
+        "state": "verified",
+        "detail": "相同 500 clips 與 FPR 校準"
+      },
+      {
+        "name": "SAM2 proposal evidence",
+        "state": "pilot",
+        "detail": "10 clips 同樣本消融"
+      },
+      {
+        "name": "VLM evidence review",
+        "state": "pilot",
+        "detail": "clean-blind 限制已量測"
+      },
+      {
+        "name": "政府正常 CCTV",
+        "state": "pilot",
+        "detail": "0.0867 camera-hours"
+      },
+      {
+        "name": "政府 A1/A2 空間整合",
+        "state": "verified",
+        "detail": "393,854 records 與 17 camera sites"
+      },
+      {
+        "name": "Verilog trigger modules",
+        "state": "verified",
+        "detail": "3 / 3 testbenches 通過"
+      },
+      {
+        "name": "SystemC multi-camera queue",
+        "state": "verified",
+        "detail": "49,320 frames 與 Python parity"
+      },
+      {
+        "name": "TCN ONNX 匯出",
+        "state": "verified",
+        "detail": "128 samples parity"
+      },
+      {
+        "name": "NAFNet 困難畫面復原",
+        "state": "verified",
+        "detail": "真實 GPU restoration"
+      },
+      {
+        "name": "SM3Det 多感測器適用性",
+        "state": "verified",
+        "detail": "官方 release 與 transfer audit"
+      },
+      {
+        "name": "獨立正常 CCTV 長時驗證",
+        "state": "external",
+        "detail": "需累積更多 camera-hours"
+      },
+      {
+        "name": "實體 Snapdragon profile",
+        "state": "external",
+        "detail": "需 QAI Hub credential 或裝置"
+      },
+      {
+        "name": "部署前後成效驗證",
+        "state": "external",
+        "detail": "需政府重複月份資料"
+      }
+    ]
+  },
+  "pipeline": [
+    {
+      "name": "CCTV ingest",
+      "state": "verified",
+      "detail": "video / stream / public CCTV"
+    },
+    {
+      "name": "Candidate proposal",
+      "state": "verified",
+      "detail": "YOLO + ByteTrack + motion"
+    },
+    {
+      "name": "Temporal trigger",
+      "state": "verified",
+      "detail": "causal TCN on edge"
+    },
+    {
+      "name": "Mask evidence",
+      "state": "pilot",
+      "detail": "SAM2 on difficult candidates"
+    },
+    {
+      "name": "Evidence review",
+      "state": "pilot",
+      "detail": "VLM summary and triage"
+    },
+    {
+      "name": "Risk deployment",
+      "state": "verified",
+      "detail": "A1/A2 hotspot prioritization"
+    }
+  ],
+  "event_profiles": [
+    {
+      "profile": "responsive",
+      "min_positive_windows": 1,
+      "clips": 100,
+      "detected": 75,
+      "event_recall": 0.75,
+      "early_alert_episodes": 90,
+      "late_alert_episodes": 238,
+      "delay_mean_sec": 0.546,
+      "delay_median_sec": 0.394,
+      "delay_p95_sec": 2.251
+    },
+    {
+      "profile": "conservative",
+      "min_positive_windows": 2,
+      "clips": 100,
+      "detected": 44,
+      "event_recall": 0.44,
+      "early_alert_episodes": 24,
+      "late_alert_episodes": 68,
+      "delay_mean_sec": 0.689,
+      "delay_median_sec": 0.608,
+      "delay_p95_sec": 2.674
+    }
+  ],
+  "model_comparison": [
+    {
+      "model": "Candidate ROI TCN",
+      "training": "trained",
+      "split": "iid",
+      "operating_point": "train_holdout_fpr20",
+      "precision": 0.698,
+      "recall": 0.358,
+      "f1": 0.473,
+      "false_positive_rate": 0.235
+    },
+    {
+      "model": "Candidate ROI TCN",
+      "training": "trained",
+      "split": "geographic",
+      "operating_point": "train_holdout_fpr20",
+      "precision": 0.669,
+      "recall": 0.398,
+      "f1": 0.499,
+      "false_positive_rate": 0.304
+    },
+    {
+      "model": "Frozen VideoMAE + linear head",
+      "training": "frozen_encoder",
+      "split": "iid",
+      "operating_point": "train_holdout_fpr20",
+      "precision": 0.715,
+      "recall": 0.325,
+      "f1": 0.447,
+      "false_positive_rate": 0.196
+    },
+    {
+      "model": "Frozen VideoMAE + linear head",
+      "training": "frozen_encoder",
+      "split": "geographic",
+      "operating_point": "train_holdout_fpr20",
+      "precision": 0.639,
+      "recall": 0.249,
+      "f1": 0.358,
+      "false_positive_rate": 0.217
+    },
+    {
+      "model": "Partial fine-tuned VideoMAE",
+      "training": "last_block_500_clips",
+      "split": "iid",
+      "operating_point": "train_holdout_fpr20",
+      "precision": 0.717,
+      "recall": 0.159,
+      "f1": 0.26,
+      "false_positive_rate": 0.095
+    },
+    {
+      "model": "Partial fine-tuned VideoMAE",
+      "training": "last_block_500_clips",
+      "split": "geographic",
+      "operating_point": "train_holdout_fpr20",
+      "precision": 0.657,
+      "recall": 0.269,
+      "f1": 0.382,
+      "false_positive_rate": 0.217
+    }
+  ],
+  "ablations": [
+    {
+      "stage": "proposal",
+      "method": "YOLO+ByteTrack+motion",
+      "samples": "10 clips / 270 steps",
+      "decision_or_recall": "recall_at_0.1=0.667",
+      "secondary_metric": "recall_at_0.3=0.453",
+      "elapsed_sec": 10.855,
+      "result": "baseline"
+    },
+    {
+      "stage": "proposal",
+      "method": "YOLO+ByteTrack+motion+SAM2.1-t",
+      "samples": "10 clips / 270 steps",
+      "decision_or_recall": "recall_at_0.1=0.680",
+      "secondary_metric": "recall_at_0.3=0.453",
+      "elapsed_sec": 37.213,
+      "result": "small_IoU_gain_3.43x_cost"
+    },
+    {
+      "stage": "review",
+      "method": "Qwen2.5-VL-3B with model context",
+      "samples": "1 event",
+      "decision_or_recall": "incident=true",
+      "secondary_metric": "schema_valid=true",
+      "elapsed_sec": 50.019,
+      "result": "agrees_but_repeats_model_scores"
+    },
+    {
+      "stage": "review",
+      "method": "Qwen2.5-VL-3B clean blind",
+      "samples": "1 event",
+      "decision_or_recall": "incident=false",
+      "secondary_metric": "schema_valid=true",
+      "elapsed_sec": 32.962,
+      "result": "missed_visible_collision"
+    },
+    {
+      "stage": "review",
+      "method": "LLaVA-Qwen-0.5B clean blind",
+      "samples": "1 event",
+      "decision_or_recall": "untrusted_fallback",
+      "secondary_metric": "schema_valid=false",
+      "elapsed_sec": 32.417,
+      "result": "mentions_collision_but_invalid_and_hallucinatory"
+    }
+  ],
+  "deployment": {
+    "normal_cctv": {
+      "session_count": 2,
+      "observed_camera_hours": 0.08670609318996415,
+      "evaluated_windows": 21,
+      "raw_positive_windows": 3,
+      "false_alert_episodes": 0,
+      "false_alerts_per_camera_hour": 0.0,
+      "zero_event_95pct_upper_per_camera_hour": 34.55042388994103
+    },
+    "edge_queue": {
+      "camera_count": 4,
+      "camera_fps": 7.5,
+      "processed_frames": 49320,
+      "frame_drop_rate": 0.0,
+      "mean_frame_latency_ms": 17.25,
+      "p95_frame_latency_ms": 27.6,
+      "generated_candidates": 6808,
+      "completed_reviews": 2156,
+      "dropped_candidates": 4652,
+      "review_drop_rate": 0.6833137485311398
+    },
+    "systemc": {
+      "version": "3.0.2",
+      "processed_frames": 49320,
+      "dropped_frames": 0,
+      "generated_candidates": 6808,
+      "completed_reviews": 2156,
+      "review_drops": 4652,
+      "python_parity": true
+    },
+    "verilog": {
+      "simulator": "Icarus Verilog",
+      "passed_testbenches": 3,
+      "total_testbenches": 3,
+      "modules": [
+        "dwell_fsm",
+        "bbox_overlap_counter",
+        "motion_trigger"
+      ]
+    },
+    "onnx_qnn": {
+      "parity_samples": 128,
+      "max_absolute_error": 1.7881393432617188e-07,
+      "onnx_check_passed": true,
+      "qnn_target": "Samsung Galaxy S23 NPU",
+      "qnn_status": "ready_for_authenticated_submission",
+      "measured_snapdragon_latency": false
+    }
+  },
+  "government": {
+    "records": {
+      "taiwan_a1_a2": 393854,
+      "taoyuan_violations": 309493,
+      "new_taipei_camera_sites": 17,
+      "national_top_hotspots": 30,
+      "new_taipei_hotspots_joined": 27,
+      "out_of_city_hotspots_excluded": 3
+    },
+    "coverage": {
+      "500": {
+        "covered_hotspots": 4,
+        "hotspot_coverage_rate": 0.14814814814814814,
+        "covered_risk_score": 473.0,
+        "risk_weighted_coverage_rate": 0.1075
+      },
+      "1000": {
+        "covered_hotspots": 6,
+        "hotspot_coverage_rate": 0.2222222222222222,
+        "covered_risk_score": 834.0,
+        "risk_weighted_coverage_rate": 0.18954545454545454
+      },
+      "2000": {
+        "covered_hotspots": 8,
+        "hotspot_coverage_rate": 0.2962962962962963,
+        "covered_risk_score": 1093.0,
+        "risk_weighted_coverage_rate": 0.2484090909090909
+      }
+    },
+    "nearest_camera_matches": [
+      {
+        "risk_rank": 1,
+        "grid_id": "25.036,121.453",
+        "representative_location": "新北市新莊區中正路 / 新北市新莊區思源路",
+        "risk_score": 492.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2751.8324246290517
+      },
+      {
+        "risk_rank": 2,
+        "grid_id": "25.072,121.499",
+        "representative_location": "新北市三重區忠孝橋機車道路前0.0公尺",
+        "risk_score": 427.0,
+        "nearest_camera_id": "1",
+        "nearest_camera_location": "五股區成泰路2段與工商路口",
+        "distance_m": 6201.716264656693
+      },
+      {
+        "risk_rank": 3,
+        "grid_id": "25.007,121.468",
+        "representative_location": "新北市板橋區浮洲橋機車專用道前0.0公尺",
+        "risk_score": 222.0,
+        "nearest_camera_id": "8",
+        "nearest_camera_location": "板橋區捷運府中站1號出口旁(縣民大道1段)",
+        "distance_m": 890.9399035192607
+      },
+      {
+        "risk_rank": 4,
+        "grid_id": "25.022,121.486",
+        "representative_location": "新北市板橋區環河西路5段前0.0公尺",
+        "risk_score": 196.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2258.2721347802344
+      },
+      {
+        "risk_rank": 5,
+        "grid_id": "25.034,121.454",
+        "representative_location": "新北市新莊區重新堤外道路前0.0公尺",
+        "risk_score": 194.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 2420.2924171697846
+      },
+      {
+        "risk_rank": 6,
+        "grid_id": "25.004,121.496",
+        "representative_location": "新北市中和區景平路 / 新北市中和區成功路",
+        "risk_score": 186.0,
+        "nearest_camera_id": "7",
+        "nearest_camera_location": "板橋區縣民大道二段7號(板橋車站南門前)",
+        "distance_m": 3370.6435774386546
+      }
+    ],
+    "scenarios": {
+      "a1_a2": {
+        "baseline_risk_score": 4761.0,
+        "projected_risk_score": 4417.6,
+        "reduced_risk_score": 343.39999999999964,
+        "reduction_rate": 0.07212770426381004,
+        "baseline_cases": 4697,
+        "projected_cases": 4356.8,
+        "reduced_cases": 340.1999999999998
+      },
+      "violations": {
+        "baseline_violations": 19280,
+        "projected_violations": 16560,
+        "reduced_violations": 2720,
+        "reduction_rate": 0.14107883817427386,
+        "manual_cost_before": 1413866.6666666665,
+        "manual_cost_after": 1214400.0,
+        "gross_savings": 199466.6666666665,
+        "system_cost": 50000.0,
+        "net_savings": 149466.6666666665,
+        "savings_rate": 0.10571482459449255
+      },
+      "warning": "Projected reductions and savings are planning assumptions. They require before/after field observations and are not measured causal outcomes."
+    }
+  },
+  "restoration": {
+    "method": "NAFNet-REDS-width64 pretrained deblurring",
+    "latency_ms": 2454.2714999988675,
+    "degraded_psnr_db": 21.905958140148336,
+    "restored_psnr_db": 23.41018038598409,
+    "degraded_ssim": 0.5170001027249923,
+    "restored_ssim": 0.636369470595397
+  },
+  "sm3det": {
+    "release_verified": true,
+    "modalities": [
+      "RGB",
+      "SAR",
+      "infrared"
+    ],
+    "parameters_m": 178,
+    "flops_g": 487,
+    "role": "Optional cloud-side hard-frame routing or a separately fine-tuned multi-sensor research branch; exclude it from the real-time edge path."
+  },
+  "media": {
+    "reference_video": "../docs/assets/accident_reference.mp4",
+    "model_output_video": "../docs/assets/candidate_incident_model_output.mp4",
+    "vlm_evidence": "../docs/assets/incident_vlm_clean_evidence.jpg",
+    "nafnet_comparison": "../docs/assets/nafnet_cctv_demo/comparison.jpg",
+    "sm3det_architecture": "../docs/assets/sm3det_architecture.png"
+  },
+  "reports": {
+    "final": "../docs/final_evaluation_report.md",
+    "status": "../docs/project_status.md",
+    "spec": "../spec.md"
+  }
+}
