@@ -9,10 +9,11 @@ pytest.importorskip("onnxruntime")
 from illegal_parking.onnx_runtime import OnnxIncidentPredictor
 
 
-def test_versioned_desktop_model_hash_and_portable_inference():
+@pytest.mark.parametrize("basename", ["incident_tcn", "incident_tcn.qdq"])
+def test_versioned_desktop_model_hash_and_portable_inference(basename):
     bundle = Path(__file__).resolve().parents[1] / "Application/desktop/models"
-    model_path = bundle / "incident_tcn.onnx"
-    metadata_path = bundle / "incident_tcn.json"
+    model_path = bundle / f"{basename}.onnx"
+    metadata_path = bundle / f"{basename}.json"
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     assert hashlib.sha256(model_path.read_bytes()).hexdigest() == metadata["sha256"]
     predictor = OnnxIncidentPredictor(model_path, metadata_path)

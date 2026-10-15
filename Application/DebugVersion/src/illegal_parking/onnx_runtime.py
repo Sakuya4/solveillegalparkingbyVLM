@@ -28,6 +28,7 @@ class OnnxIncidentPredictor:
         if provider == "QNNExecutionProvider":
             options.add_session_config_entry("session.disable_cpu_ep_fallback", "1")
             provider_options = {"backend_path": backend_path} if backend_path else {"backend_type": "htp"}
+            provider_options["offload_graph_io_quantization"] = "0"
         self.session = ort.InferenceSession(str(model_path), sess_options=options, providers=[provider], provider_options=[provider_options])
         self.session.disable_fallback()
         self.input = self.session.get_inputs()[0]
@@ -46,6 +47,9 @@ class OnnxIncidentPredictor:
             raise ValueError("features must be finite (batch, time, features) values matching model metadata")
         if isinstance(self.input.shape[1], int) and values.shape[1] != self.input.shape[1]:
             raise ValueError(f"Expected {self.input.shape[1]} time steps")
+        if self.input.shape[0] == 1:
+            outputs = [self.session.run(None, {self.input.name: window[None]})[0] for window in values]
+            return np.asarray(outputs, dtype=np.float64).reshape(-1)
         return np.asarray(self.session.run(None, {self.input.name: values})[0], dtype=np.float64).reshape(-1)
 
 

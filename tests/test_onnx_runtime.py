@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -16,6 +17,35 @@ def test_capabilities_report_installed_providers():
     capabilities = runtime_capabilities()
     assert "CPUExecutionProvider" in capabilities["available_providers"]
     assert capabilities["qnn_available"] == ("QNNExecutionProvider" in capabilities["available_providers"])
+
+
+def test_qnn_request_disables_cpu_and_io_quantization_fallback(monkeypatch, tmp_path):
+    import onnxruntime as ort
+
+    metadata = tmp_path / "metadata.json"
+    metadata.write_text(json.dumps({"feature_names": ["x"], "threshold": 0.5}), encoding="utf-8")
+    observed = {}
+
+    class Session:
+        def disable_fallback(self):
+            observed["fallback_disabled"] = True
+
+        def get_inputs(self):
+            return [SimpleNamespace(name="raw_features", shape=[1, 15, 1])]
+
+        def get_providers(self):
+            return ["QNNExecutionProvider"]
+
+    def create_session(path, **kwargs):
+        observed.update(kwargs)
+        return Session()
+
+    monkeypatch.setattr(ort, "get_available_providers", lambda: ["CPUExecutionProvider", "QNNExecutionProvider"])
+    monkeypatch.setattr(ort, "InferenceSession", create_session)
+    OnnxIncidentPredictor(tmp_path / "model.onnx", metadata, provider="QNNExecutionProvider")
+    assert observed["sess_options"].get_session_config_entry("session.disable_cpu_ep_fallback") == "1"
+    assert observed["provider_options"][0]["offload_graph_io_quantization"] == "0"
+    assert observed["fallback_disabled"] is True
 
 
 def test_onnx_predictions_match_torch_checkpoint_when_artifacts_are_present():
