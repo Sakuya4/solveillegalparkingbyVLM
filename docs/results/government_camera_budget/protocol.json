@@ -1,0 +1,45 @@
+{
+  "research_question": "Can historical severity-weighted crash demand improve proximity coverage under a fixed monitoring-camera budget?",
+  "city": "新北市",
+  "train_period": [
+    "20240101",
+    "20240930"
+  ],
+  "holdout_period": [
+    "20241001",
+    "20241231"
+  ],
+  "raw_records": 393854,
+  "city_records": 46957,
+  "train_records": 34108,
+  "holdout_records": 12849,
+  "train_geocoded_records": 34106,
+  "holdout_geocoded_records": 12846,
+  "camera_sites": 17,
+  "grid_precision_degrees": 3,
+  "a1_weights": [
+    1,
+    5,
+    10
+  ],
+  "a2_weight": 1,
+  "radii_m": [
+    500,
+    1000,
+    2000
+  ],
+  "random_seeds": [
+    0,
+    199
+  ],
+  "coverage_endpoint": "Proximity coverage of held-out crash severity within a fixed radius; camera orientation and visibility are separate operational attributes.",
+  "camera_inventory_design": "Fixed current inventory used for retrospective temporal generalization; camera installation dates are not inferred.",
+  "source_sha256": {
+    "taiwan_accidents_a1_a2_113.zip": "6cf80b63272f57cd2072b478999c6b057e890ae8df18c4dc39bda1416bba86ed",
+    "new_taipei_illegal_parking_camera_sites.csv": "c966acac2f168aee075adf2a2f603f205f03818efd44b04a8285f212f97cfb5f"
+  },
+  "sources": [
+    "https://data.gov.tw/dataset/172969",
+    "https://data.ntpc.gov.tw/datasets/bb59a616-3572-4e92-9d09-01bf422057a6"
+  ]
+}
