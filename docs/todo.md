@@ -10,10 +10,16 @@
 - [x] Record execution providers and disable CPU fallback for requested QNN HTP execution.
 - [x] Align video overlays with causal window-end decisions.
 - [x] Rewrite the primary README and evaluation report in academic English.
-- [ ] Expand per-event visual evidence and VLM review inside the desktop workflow.
-- [ ] Add paired uncertainty estimates and publication-ready allocation figures.
-- [ ] Complete geographic event-level validation and target-compatible QNN quantization.
-- [ ] Produce the manuscript outline and end-to-end demonstration recording.
+- [x] Expand per-event visual evidence and optional VLM review inside the desktop workflow.
+- [x] Add paired uncertainty estimates and publication-ready allocation figures.
+- [x] Prepare fixed-shape QNN A16W8 with training-only calibration and test-set agreement.
+- [x] Complete geographic event-level validation and target-compatible QNN quantization.
+- [x] Produce a manuscript outline with research questions, endpoints, and source artifacts.
+- [x] Produce an end-to-end native demonstration recording.
+- [x] Compare matched greedy Qwen/LLaVA decoding and three/eight-frame evidence.
+- [x] Replay candidate queues using measured Qwen review-service time.
+- [ ] Complete full-cohort candidate/global TCN training and controlled reporting.
+- [ ] Evaluate event-deduplicated and budgeted review routing.
 
 ## Completed Case: Red-Line Parking
 
@@ -55,7 +61,7 @@
 - [x] Run a same-sample SAM2 proposal ablation and clean-blind VLM case comparison.
 - [x] Add event recall, trigger-delay, and off-target alert evaluation tooling.
 - [x] Publish a 100-clip IID event recall, trigger-delay, type, and off-target alert report.
-- [ ] Add a matching geographic OOD event-level batch report.
+- [x] Add a matching geographic OOD event-level batch report.
 
 ## Phase 2: Edge And Hardware-Aware Validation
 
@@ -84,7 +90,7 @@
 - [x] Audit the official SM3Det release, configuration, domain, compute, and license.
 - [x] Separate annotated VLM evidence from clean blinded visual review.
 - [x] Compare Qwen2.5-VL-3B and LLaVA/Qwen-0.5B schema behavior on one incident.
-- [ ] Expand clean-blind VLM evaluation from one event to an annotated set.
+- [x] Expand clean-blind VLM evaluation to 20 paired sequences from ten annotated test clips.
 
 ## Final Claim Gate
 

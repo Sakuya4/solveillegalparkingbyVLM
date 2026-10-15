@@ -1,0 +1,105 @@
+# Risk-Aware Edge Intelligence for Traffic Incident Detection and Camera Allocation
+
+## Abstract
+
+Roadside video intelligence requires timely incident recognition and effective
+allocation of limited monitoring resources. This study presents a native
+desktop framework integrating causal temporal inference, multimodal evidence,
+hardware-aware execution, and government-informed camera allocation. A public
+fixed-CCTV benchmark supports event evaluation and matched-cohort comparisons.
+Taiwan government records support a temporal allocation experiment that selects
+camera subsets from historical demand and evaluates subsequent geographic
+coverage. On 100 IID incident clips, the responsive profile achieves 0.750
+event recall with a median trigger delay of 0.394 s. Ten-camera coverage-aware
+selection captures 15.49% of held-out New Taipei crash risk, compared with
+13.69% for independent ranking and 11.38% for randomized allocation.
+Training-calibrated A16W8 quantization preserves float32 threshold decisions
+over all 450 test windows. The framework connects incident evidence, allocation
+efficiency, and resource accounting through reproducible research artifacts.
+
+## 1. Introduction
+
+The original red-line parking application addressed a rule-based event.
+Continuous roadside monitoring adds temporal ambiguity, geographic shift,
+operator-review load, and heterogeneous compute constraints. Public crash
+records provide geographic safety priorities that extend model-only evaluation.
+
+Research questions:
+
+- RQ1: How do compact temporal features and pretrained video representations
+  trade sensitivity against false-positive burden under common calibration?
+- RQ2: Can historical crash demand improve monitoring coverage under a fixed
+  camera budget on a subsequent temporal partition?
+- RQ3: How do quantization, persistence gating, and review capacity affect the
+  executable incident-to-evidence workflow?
+
+The contribution connects temporal perception and public-sector allocation
+through availability-aligned evidence, temporal government validation, and an
+explicit execution/resource contract. Compare this combination with the closest
+systems identified in [the literature matrix](literature_basis.md).
+
+## 2. Related Work
+
+Organize prior work by accident detection/anticipation, edge video analytics,
+road-safety network screening, and coverage optimization. Discuss assumptions
+about time, geography, and resource availability. Use primary papers for
+VideoMAE, SAM2, Qwen-VL, NAFNet, and SM3Det; use journal literature for the
+system formulation and evaluation design.
+
+## 3. Methods
+
+For window x[t-L+1:t], the temporal model produces p[t] after the final sample
+is available. Persistence generates a review event after the required positive
+run. Event logs and display share this timing convention. Clean temporal
+evidence is exported independently of model-score overlays.
+
+For demand weights w[i], camera subset S, and proximity indicator a[i,j]:
+
+```text
+maximize F(S) = sum_i w[i] * 1{exists j in S: a[i,j] = 1}
+subject to |S| <= k.
+```
+
+Greedy selection maximizes uncovered marginal demand. Its approximation
+guarantee concerns historical coverage; later-period coverage is measured.
+
+The native UI uses a separate inference worker. Feature standardization is
+embedded in ONNX. QNN preparation uses fixed shape and training-only A16W8
+calibration. Every run retains providers, model hashes, and processing times.
+Verilog tests deterministic triggers; SystemC replays camera/review queues
+using candidate traces and explicit latency assumptions.
+
+## 4. Experimental Protocol
+
+Use common incident cohorts and splits. Select thresholds on clip-grouped
+training holdout. Report event recall/delay separately from window F1/FPR,
+alongside off-target episodes and normal-stream exposure.
+
+For allocation, select on January--September 2024 and evaluate
+October--December. Preserve all severity/radius/budget settings and matched
+inventories. Use district blocks for paired allocation uncertainty and
+clip-level Wilson intervals for recall. Record random seeds and source hashes.
+
+## 5. Results
+
+Primary tables and figures cover event timing; calibrated temporal models;
+camera-budget curves and district uncertainty; SAM2/VLM evidence quality;
+ONNX/QDQ agreement; queue capacity; and native event inspection. Numeric
+sources are linked from the [evaluation report](final_evaluation_report.md).
+Include geographic event recall of 0.630 and the controlled 20-sequence VLM
+comparison. The three/eight-frame ablation and measured-service queue replay
+test the relationship between evidence cost and downstream review capacity.
+
+## 6. Discussion
+
+Explain camera overlap and the gap between independent and marginal-gain
+selection. Discuss when severity and count strategies coincide. Interpret
+district variation, temporal shift, proximity versus visibility, and review
+bottlenecks. Design subsequent intervention evaluation with traffic exposure
+and regression-to-the-mean controls.
+
+## 7. Reproducibility
+
+Provide source manifests, model/archive hashes, split definitions, seeds,
+calibration scope, complete sweeps, launch commands, tests, figure scripts,
+software versions, and target specifications for hardware measurements.

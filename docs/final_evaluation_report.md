@@ -29,6 +29,19 @@ collisions. Persistence reduces off-target episodes and lowers recall. These
 results motivate operating-point selection based on the monitoring objective
 and available review capacity. Data: [event metrics](results/accident_event_metrics.csv).
 
+Clip-level 95% Wilson intervals are 0.657--0.825 for the responsive profile and
+0.347--0.538 for the conservative profile. The interval calculation is retained
+in [the uncertainty artifact](results/research_uncertainty.json).
+
+The geographic evaluation uses its corresponding geographically trained model
+and 100 stratified test clips (sampling seed 42), with zero inference failures.
+Responsive recall is 0.630 (95% Wilson interval 0.532--0.718), median delay
+0.625 s, and p95 delay 2.530 s. Conservative recall is 0.300 (0.219--0.396),
+median delay 1.057 s, and p95 2.771 s. Early/late episode counts are 48/127 and
+8/54, respectively. The batch completes in 1,305.4 s on the local GPU workflow.
+
+[Geographic protocol, per-type results, and per-clip decisions](results/geographic_event_evaluation.json)
+
 ## 3. Temporal-Model Comparison
 
 Candidate ROI TCN, frozen VideoMAE, and partial fine-tuned VideoMAE use the same
@@ -64,10 +77,42 @@ Qwen2.5-VL-3B produces schema-valid review JSON with model context. Its
 clean-blind case misses the distant collision. LLaVA/Qwen-0.5B mentions a
 collision but produces invalid schema and an unsupported traffic-light
 description. The measured role of VLM review is structured summarization and
-evidence inspection; broader event-level evaluation will characterize visual
+evidence inspection; the expanded paired evaluation below characterizes visual
 grounding and operator-review outcomes.
 
 Data: [SAM2/VLM study](results/sam2_vlm_ablation.csv).
+
+An expanded paired study evaluates ten IID test clips, each contributing a
+collision sequence and a pre-event sequence. Both models receive identical
+privacy-treated frames, a collision-specific prompt, and a 192-token budget.
+Labels derive from ACCIDENT event timestamps and remain separate from requests.
+The controlled comparison uses greedy decoding (`do_sample=False`) and seed 42.
+
+| Model | Cases | Schema validity | Correct structured outputs / all cases | Mean review time |
+| --- | ---: | ---: | ---: | ---: |
+| Qwen2.5-VL-3B | 20 | 100% | 70% | 8.27 s |
+| LLaVA/Qwen-0.5B | 20 | 40% | 30% | 7.76 s |
+
+Qwen's schema-valid confusion matrix is TP=6, FP=2, FN=4, TN=8. LLaVA's is
+TP=0, FP=0, FN=2, TN=6. Reporting all-case structured correctness accounts for
+schema failures; valid-case accuracy alone would favor selective subsets.
+The paired sequences are clustered within ten source clips.
+
+Data: [Qwen greedy batch](results/incident_vlm_qwen_greedy_batch.json),
+[LLaVA greedy batch](results/incident_vlm_llava_greedy_batch.json). Earlier
+upstream-decoding runs are retained separately as
+[Qwen replication](results/incident_vlm_qwen_batch.json) and
+[LLaVA replication](results/incident_vlm_llava_batch.json).
+
+An eight-frame Qwen ablation preserves the same clips, positive/negative
+interval endpoints, prompt, greedy decoding, and token budget. Schema validity
+is 95%, all-case structured correctness is 60%, and mean service time is
+10.123 s. The valid-case confusion matrix is TP=3, FP=1, FN=6, TN=9. Relative
+to three frames, denser sampling does not improve this small paired cohort;
+temporal localization and evidence selection remain separate design factors.
+The protocol was specified in [ADR 004](decisions/004-temporal-evidence-density.md).
+
+Data: [eight-frame ablation](results/incident_vlm_qwen_dense8_greedy_batch.json).
 
 ## 5. Government CCTV Monitoring
 
@@ -95,6 +140,25 @@ stage. Its 68.33% candidate-drop rate identifies downstream review as the
 capacity bottleneck. The temporal ONNX graph passes checker validation and
 128-sample parity with a maximum absolute difference of 1.79e-7.
 
+Replacing the configured review service time with Qwen's measured mean of
+8.274 s produces 198 completed reviews, nine pending candidates, and 6,601
+dropped candidates (96.96%) from the same 6,808 proposals. Frame drops remain
+zero. This trace-replay scenario isolates review-stage capacity: proposal
+arrivals are replicated across four streams, detector/temporal service costs
+remain configured, and the review worker uses a constant measured mean. It
+concatenates sampled benchmark windows at a nominal 7.5 FPS; the workload
+therefore represents sampled proposal demand rather than traffic prevalence. It
+motivates event deduplication and budgeted review routing rather than sending
+every proposal to a VLM.
+
+Data: [measured review-service scenario](results/measured_review_queue.json).
+
+QNN preparation fixes the input to `(1, 15, 10)` and calibrates A16W8 QDQ using
+128 training windows from 112 clips. Calibration/test clip overlap is zero.
+On 450 test windows, probability MAE is 0.00201 and decisions match float32 on
+all windows at the unchanged threshold. The graph uses ONNX opset 21.
+Data: [quantization protocol and results](results/qnn_quantization.json).
+
 The native application executes ONNX inference in a separate worker and
 records provider configuration, model hash, and processing duration. QNN HTP
 uses explicit provider selection and disabled CPU fallback. Hardware-specific
@@ -113,6 +177,11 @@ the mean of 200 random selections is 11.38%. Risk and count greedy are equal
 at this setting. The full 180-row experiment varies severity weights, radius,
 and budget. These endpoints measure allocation efficiency and geographic
 proximity; site visibility is assessed separately.
+
+A paired district bootstrap over 29 districts and 2,000 resamples estimates
+the greedy-minus-independent difference as 1.80 percentage points, with a 95%
+interval of -1.01 to 5.64 points. The coverage curve and sensitivity table
+describe allocation behavior across budgets and neighborhoods.
 
 The earlier descriptive top-risk-grid analysis yields 10.75%, 18.95%, and
 24.84% risk coverage within 500 m, 1 km, and 2 km using the complete inventory.
@@ -133,5 +202,5 @@ evidence generation, compute capacity, and public-sector allocation. The
 government-data study demonstrates the value of accounting for redundant
 camera coverage under a fixed budget. The native implementation makes these
 results inspectable alongside executable video inference. Subsequent work
-extends geographic event evaluation, normal-stream exposure, labeled VLM
-review, and target-device profiling.
+extends cadence-consistent temporal training, normal-stream exposure,
+multimodal evidence routing, and target-device profiling.

@@ -1,0 +1,46 @@
+import json
+import sys
+
+import pytest
+
+from scripts import run_overnight_research as runner
+
+
+def test_deadline_prevents_starting_new_work(monkeypatch, tmp_path):
+    (tmp_path / "worker.py").write_text("print('work')", encoding="utf-8")
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    monkeypatch.setattr(runner, "workflow_steps", lambda: [("first", ["worker.py"])])
+    monkeypatch.setattr(sys, "argv", ["runner", "--deadline", "2000-01-01T00:00:00+00:00"])
+    monkeypatch.setattr(runner.subprocess, "Popen", lambda *args, **kwargs: pytest.fail("Work started after deadline"))
+    runner.main()
+    state = json.loads((tmp_path / "outputs/research_runs/overnight_status.json").read_text())
+    assert state["status"] == "deadline_reached"
+    assert not state["completed_steps"]
+
+
+def test_failed_step_stops_downstream_work_and_preserves_status(monkeypatch, tmp_path):
+    (tmp_path / "worker.py").write_text("raise RuntimeError('failed')", encoding="utf-8")
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    monkeypatch.setattr(runner, "workflow_steps", lambda: [("first", ["worker.py"]), ("second", ["worker.py"])])
+    monkeypatch.setattr(sys, "argv", ["runner", "--deadline", "2099-01-01T00:00:00+00:00"])
+    calls = []
+
+    class FailedProcess:
+        pid = 123
+        returncode = 1
+
+        def poll(self):
+            return 1
+
+    def launch(*args, **kwargs):
+        calls.append(args)
+        return FailedProcess()
+
+    monkeypatch.setattr(runner.subprocess, "Popen", launch)
+    with pytest.raises(RuntimeError, match="first"):
+        runner.main()
+    state = json.loads((tmp_path / "outputs/research_runs/overnight_status.json").read_text())
+    assert len(calls) == 1
+    assert state["status"] == "failed"
+    assert state["current_step"] == "first"
+    assert state["child_pid"] is None

@@ -34,17 +34,17 @@ government coverage experiments reproduce from downloaded source records.
 
 ## Phase 2: Evaluation, Hardware Integration, and Scholarly Presentation
 
-- [ ] Complete geographic event-level evaluation using the geographic model.
-- [ ] Expand clean-blind VLM evaluation with independent event labels.
+- [x] Complete geographic event-level evaluation using the geographic model.
+- [x] Expand clean-blind VLM evaluation with annotation-defined paired event labels.
 - [ ] Compare review-routing strategies under a fixed latency/queue budget.
 - [ ] Connect measured traces and desktop runtime diagnostics to the existing
   Verilog/SystemC workflow and Qualcomm deployment preparation.
-- [ ] Present bootstrap confidence intervals and operating-point tradeoffs.
+- [x] Present bootstrap confidence intervals and operating-point tradeoffs.
 - [x] Rewrite the main README and current research report in academic English;
   preserve team attribution, original images, licensing, and historical context.
-- [ ] Produce desktop screenshots, a reproducible demonstration, and a compact
+- [x] Produce desktop screenshots, a reproducible demonstration, and a compact
   manuscript outline with research questions and evidence-backed contributions.
-- [ ] Run appropriate regression tests and review changes before checkpointing.
+- [x] Run appropriate regression tests and review changes before checkpointing.
 
 Acceptance: every reported number links to an experiment artifact and protocol;
 model comparison separates event/window endpoints; the desktop demonstration
@@ -72,3 +72,33 @@ Resume unfinished Phase 1 tasks first. Inspect active jobs before launching new
 work. After each substantive experiment or feature, update this checklist and
 `docs/todo.md`, record actual validation, and create a focused checkpoint.
 At the deadline, report delivered artifacts and remaining external requirements.
+
+## Current Research Queue
+
+1. Completed: 100-clip geographic event batch and both persistence profiles.
+2. Completed: controlled greedy Qwen/LLaVA comparison and eight-frame Qwen
+   evidence-density ablation on 20 paired sequences. Preserve all replications.
+3. Audit temporal sampling: source FPS spans 3.92--49.70, while the existing
+   frame-stride training rate has median 7.49 steps/s and the deployment target
+   is 7.5. Test cadence-consistent extraction as a controlled ablation.
+4. Scale candidate training to the full real-video cohort with fixed protocols,
+   preserving the current 500-clip deployed model as the reference version.
+5. Integrate budgeted evidence routing and native CCTV input. Native
+   demonstration recording is complete and reproducible from saved results.
+
+The sequential runner is `scripts/run_overnight_research.py`. Its active
+process and child PID, current step, log path, and completed checkpoints are
+recorded atomically in `outputs/research_runs/overnight_status.json`. Inspect
+that file before starting another GPU workload. The queue starts with controlled
+greedy-decoding VLM replications, then a matched eight-frame evidence ablation,
+full-cohort candidate extraction, and four fixed-protocol temporal fits.
+Current 500-clip desktop model bundles remain the reference deployment version.
+
+Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
+(native desktop and portable runtime). Current full regression: 235 tests pass.
+Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
+(geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
+and `18f63b3` (native evidence and demonstration).
+The full 2,027-clip candidate extractor is active; inspect its log for progress.
+Measured VLM service time has been incorporated into queue
+replay; routing-policy comparisons remain the next hardware-aware experiment.

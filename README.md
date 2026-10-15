@@ -9,6 +9,9 @@ deployment priorities derived from Taiwan government crash and camera records.
 
 ![Native traffic research workbench](docs/assets/desktop_workbench.png)
 
+[Native application walkthrough](docs/assets/desktop_walkthrough.mp4) ·
+[Causal incident-model output](docs/assets/candidate_incident_model_output.mp4)
+
 ### Research Motivation
 
 Roadside monitoring must balance timely incident recognition, nuisance alerts,
@@ -59,6 +62,8 @@ and target-compatible model are installed.
 
 [Desktop architecture and deployment protocol](docs/desktop_application.md)
 
+On Windows, `RunTrafficWorkbench.cmd` launches the installed native application.
+
 ### System Architecture
 
 ```mermaid
@@ -92,12 +97,16 @@ coverage at this reference setting.
 [180-setting comparison](docs/results/government_camera_budget/comparison.csv) ·
 [Source hashes and temporal partitions](docs/results/government_camera_budget/protocol.json)
 
+![Camera allocation performance](docs/assets/government_camera_budget.png)
+
 ### Incident Detection Results
 
-| Event profile | IID test clips | Event recall | Median trigger delay | p95 delay |
-| --- | ---: | ---: | ---: | ---: |
-| Responsive | 100 | 0.750 | 0.394 s | 2.251 s |
-| Conservative | 100 | 0.440 | 0.608 s | 2.674 s |
+| Split | Event profile | Test clips | Event recall | Median trigger delay | p95 delay |
+| --- | --- | ---: | ---: | ---: | ---: |
+| IID | Responsive | 100 | 0.750 | 0.394 s | 2.251 s |
+| IID | Conservative | 100 | 0.440 | 0.608 s | 2.674 s |
+| Geographic | Responsive | 100 | 0.630 | 0.625 s | 2.530 s |
+| Geographic | Conservative | 100 | 0.300 | 1.057 s | 2.771 s |
 
 Temporal-model comparisons use the same 500-clip cohort and grouped training
 holdout calibration. At the calibrated operating point:
@@ -120,6 +129,16 @@ SAM2 refines difficult spatial candidates; VLMs produce structured evidence
 reviews. The same-sample SAM2 study compares proposal recall and processing
 cost. Clean-blind VLM cases examine schema validity and visual grounding.
 
+In a paired 20-sequence study with matched greedy decoding, Qwen2.5-VL-3B
+achieves 100% schema validity and 70% correct structured outputs across all
+cases; LLaVA/Qwen-0.5B achieves 40% and 30%. Mean review times are 8.27 s and
+7.76 s. The native workbench exports
+event-specific temporal evidence and can attach Qwen review results directly.
+Temporal/visual disagreement retains the event for operator inspection.
+An eight-frame evidence-density ablation produces 60% correct structured
+outputs at 10.12 s per review, compared with 70% at 8.27 s for three frames.
+The paired protocol isolates evidence density from clip selection and decoding.
+
 ![NAFNet restoration](docs/assets/nafnet_cctv_demo/comparison.jpg)
 
 The official NAFNet REDS model improves PSNR from 21.91 to 23.41 dB and SSIM
@@ -133,11 +152,13 @@ architecture and computation requirements recorded in the
 | Component | Measurement |
 | --- | --- |
 | TCN ONNX parity | 128 samples; maximum absolute error 1.79e-7 |
+| QNN A16W8 preparation | 450 test windows; 100% float32 decision agreement; probability MAE 0.00201 |
 | Native CPU reference analysis | Complete 30-second clip; one review event |
 | Verilog | Three self-checking trigger testbenches passed |
 | SystemC / Python trace parity | 49,320 frames, 6,808 candidates, 2,156 completed reviews |
 | Four-camera workload | Zero frame drops at 7.5 FPS per camera |
 | Review-stage pressure | 68.33% candidate drops at the 300 ms review-stage setting |
+| Measured Qwen service-time scenario | 96.96% candidate drops; 8.27 s per review on four replicated streams |
 
 The Qualcomm deployment workflow records the requested provider and enforces
 explicit HTP execution. Target profiling is documented in the
@@ -159,6 +180,7 @@ browser-based result viewer remains available with `scripts/run_project_dashboar
 ### Research Artifacts
 
 - [Methodological foundations](docs/literature_basis.md)
+- [Manuscript structure and research questions](docs/manuscript_outline.md)
 - [Government camera allocation study](docs/government_camera_study.md)
 - [Formal evaluation report](docs/final_evaluation_report.md)
 - [Native desktop application](docs/desktop_application.md)

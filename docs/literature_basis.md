@@ -18,12 +18,10 @@ documentation specify implementation details.
 | Persaud and Lyon, 2007, [Empirical Bayes before-after safety studies: Lessons learned from two decades of experience and future directions](https://doi.org/10.1016/j.aap.2006.09.009) | Accident Analysis & Prevention | Address regression to the mean, traffic exposure, and temporal changes when estimating intervention effects | Temporal government-data holdout; a future controlled intervention protocol |
 | Nemhauser, Wolsey, and Fisher, 1978, [An analysis of approximations for maximizing submodular set functions-I](https://doi.org/10.1007/BF01588971) | Mathematical Programming | Monotone nonnegative coverage permits a greedy cardinality-constrained approximation | Marginal-gain camera selection with matched-budget baselines |
 
-The matrix identifies how published methods affect experimental design; it does
-not transfer a source paper's benchmark performance to this system. Journal
-quartiles depend on the indexing database, metric year, and subject category.
-The references above were selected by topic and peer-reviewed venue. Any
-submission-specific quartile table should record those three attributes using
-the relevant JCR or Scopus edition.
+The matrix links published methods to experimental design and executable
+components. References were selected for methodological relevance and
+peer-reviewed venue. Venue profiles identify the indexing database, metric
+year, and subject category when reporting JCR or Scopus quartiles.
 
 The [official IEEE CASS journal page](https://ieee-cas.org/publication/tcsvt)
 documents TCSVT's scope across video acquisition, analysis, understanding, and
