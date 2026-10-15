@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 import pytest
 
-from illegal_parking.incident_vlm_evidence import select_review_context
+from illegal_parking.incident_vlm_evidence import select_review_context, write_clean_review_package, review_disposition
 from scripts.prepare_incident_vlm_review import sampled_source_indices
 
 
@@ -101,3 +101,23 @@ def test_sampled_source_indices_match_video_sampling_contract() -> None:
     indices = sampled_source_indices(16, source_fps=8.0, target_fps=4.0)
 
     assert indices == list(range(0, 16, 2))
+
+
+def test_clean_review_package_preserves_order_and_hides_model_scores(tmp_path):
+    frames = tuple(np.full((24, 32, 3), value, dtype=np.uint8) for value in (10, 100, 200))
+    paths = write_clean_review_package(frames, (1.0, 3.0, 5.0), tmp_path, privacy_method="Vehicle lower-region blur")
+    request = json.loads((tmp_path / "vlm_review_request.json").read_text(encoding="utf-8"))
+    assert "model_probability" not in request["evidence"]
+    assert request["evidence"]["evidence_available_time_sec"] == 5.0
+    assert [path.rsplit("/", 1)[-1].rsplit("\\", 1)[-1] for path in request["image_paths"]] == ["before.jpg", "trigger.jpg", "after.jpg"]
+    assert cv2.imread(paths["contact_sheet"]).shape == (24, 96, 3)
+    with pytest.raises(ValueError, match="ordered"):
+        write_clean_review_package(frames, (5.0, 3.0, 1.0), tmp_path, privacy_method="blur")
+
+
+def test_visual_disagreement_retains_temporal_event_for_review():
+    review = {"schema_valid": True, "likely_violation": False, "confidence": 0.9, "human_review_needed": False}
+    assert review_disposition(True, review) == "temporal_visual_disagreement"
+    assert review_disposition(False, review) == "consistent_background"
+    assert review_disposition(True, {**review, "schema_valid": False}) == "response_contract_review"
+    assert review_disposition(True, {**review, "likely_violation": True, "confidence": 0.3}) == "low_confidence_review"

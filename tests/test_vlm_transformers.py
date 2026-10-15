@@ -52,6 +52,7 @@ def test_run_transformers_image_text_to_text_uses_pipeline_contract():
     assert calls["pipeline_kwargs"] == {"task": "image-text-to-text", "model": "test/model", "device": 0}
     assert calls["pipe_kwargs"]["max_new_tokens"] == 32
     assert calls["pipe_kwargs"]["return_full_text"] is False
+    assert calls["pipe_kwargs"]["do_sample"] is False
     assert '"likely_violation": true' in text
 
 

@@ -28,12 +28,21 @@ def main() -> int:
     parser.add_argument("--temporal-latency-ms", type=float, default=3.0)
     parser.add_argument("--npu-queue-capacity", type=int, default=8)
     parser.add_argument("--review-latency-ms", type=float, default=300.0)
+    parser.add_argument("--review-report", help="Use mean_review_sec from a measured VLM report.")
     parser.add_argument("--review-queue-capacity", type=int, default=8)
     parser.add_argument("--output", default="outputs/hardware/candidate_trace_queue_report.json")
     parser.add_argument("--flags-output", default="outputs/hardware/candidate_trace_flags.txt")
     args = parser.parse_args()
     if args.trace_fps <= 0:
         raise SystemExit("--trace-fps must be positive")
+    review_source = None
+    if args.review_report:
+        import math
+        review_source = _resolve(args.review_report)
+        measured = json.loads(review_source.read_text(encoding="utf-8"))
+        args.review_latency_ms = float(measured["mean_review_sec"]) * 1000.0
+        if not math.isfinite(args.review_latency_ms) or args.review_latency_ms <= 0:
+            raise ValueError("Measured review time must be finite and positive")
 
     trace_path = _resolve(args.trace)
     records = load_candidate_trace(trace_path)
@@ -55,7 +64,7 @@ def main() -> int:
     result = simulate_edge_trace_queues(profile, queue_flags)
     payload = {
         "workload": {
-            "source": str(trace_path),
+            "source": trace_path.relative_to(ROOT).as_posix() if trace_path.is_relative_to(ROOT) else str(trace_path),
             "semantics": "annotation-free YOLO/ByteTrack plus motion candidate proposal score",
             "trace_records": len(records),
             "score_threshold": args.score_threshold,
@@ -65,6 +74,10 @@ def main() -> int:
         },
         "profile": profile.__dict__,
         "result": result.to_dict(),
+        "review_latency_source": (
+            review_source.relative_to(ROOT).as_posix() if review_source and review_source.is_relative_to(ROOT)
+            else str(review_source) if review_source else "configured service-time scenario"
+        ),
     }
 
     output_path = _resolve(args.output)
