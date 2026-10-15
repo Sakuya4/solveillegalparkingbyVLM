@@ -21,6 +21,14 @@ The repository includes a compact ONNX temporal-model bundle and a complete
 upstream Ultralytics distribution. The default desktop runtime uses two CPU
 threads for proposal tracking and ONNX temporal inference.
 
+`RunTrafficWorkbench.cmd` provides a Windows double-click entry point after
+installation. The native application does not require a browser or local web
+server.
+
+The **Open results** action restores a completed `report.json`, including its
+annotated video, event navigation, and event-specific visual evidence. Analysis
+need not be repeated to inspect a saved result.
+
 ## Workspaces
 
 1. Incident workspace: video playback, seek controls, asynchronous analysis,
@@ -28,7 +36,9 @@ threads for proposal tracking and ONNX temporal inference.
 2. Model evaluation: event-level recall/delay and matched-cohort temporal-model
    comparisons at holdout-calibrated operating points.
 3. Visual evidence: before/trigger/after context, NAFNet restoration, and
-   SM3Det architecture/transfer analysis.
+   SM3Det architecture/transfer analysis. New events export their own clean
+   contact sheet and structured VLM request; optional Qwen review attaches
+   schema validity, visual reasons, confidence, and review duration.
 4. Government risk: camera-budget performance on temporal holdout records and
    crash-hotspot proximity to public-camera locations.
 5. Edge deployment: available ONNX providers and Verilog/SystemC validation.
@@ -60,6 +70,17 @@ the temporal model's execution-provider configuration. Target profiling should
 record device, runtime version, graph precision, warmup, repetitions, latency
 distribution, and energy measurement method.
 
+The bundled QNN preparation uses fixed input shape `(1, 15, 10)`, uint16
+activations, uint8 weights, and training-only calibration. Over 450 windows in
+the IID test partition, QDQ probability MAE is 0.00201 and thresholded decisions agree
+with float32 on all windows. The operating threshold remains fixed. The
+[quantization report](results/qnn_quantization.json) records the split, hashes,
+precision, and validation provider.
+
+```powershell
+python scripts/quantize_incident_tcn_qnn.py
+```
+
 ```powershell
 python scripts/analyze_desktop_video.py --input docs/assets/incident_input.mp4 --output-dir outputs/desktop/qnn_trial --provider QNNExecutionProvider --model path/to/incident_tcn.qdq.onnx --metadata Application/desktop/models/incident_tcn.json --qnn-backend path/to/QnnHtp.dll
 ```
@@ -70,8 +91,20 @@ Reference: [ONNX Runtime QNN documentation](https://onnxruntime.ai/docs/executio
 
 ```powershell
 python scripts/run_desktop.py --analyze --screenshot docs/assets/desktop_workbench.png
+python scripts/run_desktop.py --report outputs/desktop/RUN_ID/report.json --page 2 --screenshot outputs/desktop/evidence.png
 python -m pytest tests/test_desktop_app.py tests/test_onnx_runtime.py tests/test_incident_causal_rendering.py
 ```
 
 The screenshot command renders the native Qt window, executes reference-video
 analysis, selects the first event when present, saves the result, and exits.
+
+The [native walkthrough](assets/desktop_walkthrough.mp4) records completed
+analysis in the actual application. To produce a new recording:
+
+```powershell
+python scripts/record_desktop_demo.py --report outputs/desktop/RUN_ID/report.json
+```
+
+The script records window pixels and writes capture metadata alongside its
+video. Recording reuses completed inference rather than launching another GPU
+workload.

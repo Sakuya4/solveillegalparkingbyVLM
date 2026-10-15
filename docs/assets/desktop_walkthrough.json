@@ -1,0 +1,19 @@
+{
+  "source_report_sha256": "9b32842576867d2708195ff8b06bde1e3581aa7a9443679b385bef101348ee73",
+  "capture": "Native PySide6 window rendering with recorded analysis and video playback",
+  "pages": [
+    "incident",
+    "evidence",
+    "model_comparison",
+    "government_coverage",
+    "edge_runtime"
+  ],
+  "fps": 8,
+  "frames": 235,
+  "duration_sec": 29.375,
+  "resolution": [
+    1400,
+    900
+  ],
+  "source_media_license": "CC BY-NC-SA 4.0"
+}

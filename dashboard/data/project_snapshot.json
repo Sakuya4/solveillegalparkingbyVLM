@@ -155,6 +155,36 @@
       "delay_p95_sec": 2.674
     }
   ],
+  "geographic_event_profiles": [
+    {
+      "profile": "responsive",
+      "min_positive_windows": 1,
+      "clips": 100,
+      "detected": 63,
+      "event_recall": 0.63,
+      "recall_lower_95": 0.5322052958094291,
+      "recall_upper_95": 0.7181763946567546,
+      "early_alert_episodes": 48,
+      "late_alert_episodes": 127,
+      "delay_mean_sec": 0.7370940299008499,
+      "delay_median_sec": 0.625,
+      "delay_p95_sec": 2.529915344247788
+    },
+    {
+      "profile": "conservative",
+      "min_positive_windows": 2,
+      "clips": 100,
+      "detected": 30,
+      "event_recall": 0.3,
+      "recall_lower_95": 0.2189488529493276,
+      "recall_upper_95": 0.3958485463334666,
+      "early_alert_episodes": 8,
+      "late_alert_episodes": 54,
+      "delay_mean_sec": 1.1290609974680883,
+      "delay_median_sec": 1.0569772485047904,
+      "delay_p95_sec": 2.771349557522122
+    }
+  ],
   "model_comparison": [
     {
       "model": "Candidate ROI TCN",
@@ -312,6 +342,89 @@
       "qnn_target": "Samsung Galaxy S23 NPU",
       "qnn_status": "ready_for_authenticated_submission",
       "measured_snapdragon_latency": false
+    },
+    "qnn_quantization": {
+      "precision": "uint16 activations / uint8 weights",
+      "input_shape": [
+        1,
+        15,
+        10
+      ],
+      "opset": 21,
+      "split_scheme": "iid",
+      "calibration_partition": "train",
+      "test_partition": "test",
+      "calibration_samples": 128,
+      "calibration_seed": 42,
+      "calibration_clip_count": 112,
+      "test_samples": 450,
+      "calibration_test_clip_overlap": 0,
+      "frozen_threshold": 0.8547053337097168,
+      "probability_mae": 0.002011843588617113,
+      "probability_max_error": 0.01273876428604126,
+      "decision_agreement": 1.0,
+      "float32_test": {
+        "tp": 97,
+        "fp": 42,
+        "fn": 174,
+        "tn": 137,
+        "f1": 0.47317073170731705,
+        "fpr": 0.2346368715083799
+      },
+      "qdq_test": {
+        "tp": 97,
+        "fp": 42,
+        "fn": 174,
+        "tn": 137,
+        "f1": 0.47317073170731705,
+        "fpr": 0.2346368715083799
+      },
+      "source_model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+      "quantized_model_sha256": "c704ec2c602eaa9837720afa966d995d207fd1746dfb70490c8e498cdb3c07fc",
+      "sequence_archive_sha256": "2451690c2b5a4035cedee9235ea82a27951463ccd61f739d1209d3c8e0f5e92a",
+      "onnxruntime_version": "1.27.0",
+      "validation_provider": "CPUExecutionProvider",
+      "target_profile_status": "QNN HTP target execution is the next deployment stage",
+      "source": "https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html"
+    },
+    "measured_review_queue": {
+      "workload": {
+        "source": "outputs/accident/candidate_roi_trace_500.jsonl",
+        "semantics": "annotation-free YOLO/ByteTrack plus motion candidate proposal score",
+        "trace_records": 12330,
+        "score_threshold": 0.95,
+        "source_candidate_count": 1702,
+        "source_candidate_rate": 0.13803730738037306,
+        "camera_replication": 4
+      },
+      "profile": {
+        "camera_count": 4,
+        "camera_fps": 7.5,
+        "duration_sec": 1644.0,
+        "detector_latency_ms": 3.9,
+        "temporal_latency_ms": 3.0,
+        "npu_queue_capacity": 8,
+        "candidate_probability": 0.13803730738037306,
+        "review_latency_ms": 8273.610775003908,
+        "review_queue_capacity": 8
+      },
+      "result": {
+        "generated_frames": 49320,
+        "processed_frames": 49320,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999941895,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 6808,
+        "completed_reviews": 198,
+        "pending_reviews": 9,
+        "dropped_candidates": 6601,
+        "review_drop_rate": 0.9695945945945946,
+        "review_utilization": 1.0
+      },
+      "review_latency_source": "docs/results/incident_vlm_qwen_greedy_batch.json"
     }
   },
   "government": {

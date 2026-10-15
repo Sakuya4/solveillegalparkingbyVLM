@@ -25,3 +25,13 @@ license. Unlike the reference files, these are repository model outputs:
 - Transformation: 4-16 second excerpt, candidate overlay, model score/status,
   audio removal, resize, and heuristic lower-vehicle privacy blur.
 - Ground-truth accident boxes are not model inputs or overlays.
+
+The current output media use availability-aligned window scores: a temporal
+decision first appears after its input window completes.
+
+`desktop_workbench.png`, `desktop_evidence.png`, and `desktop_walkthrough.mp4`
+capture the native PySide6 application with a completed reference analysis.
+The walkthrough includes actual output-video playback, event evidence, model
+tables, government coverage, and runtime diagnostics. It is reproduced with
+`scripts/record_desktop_demo.py` and H.264 transcoding; no additional inference
+is performed during recording. Source ACCIDENT media retain CC BY-NC-SA 4.0.

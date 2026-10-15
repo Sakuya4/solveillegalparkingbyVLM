@@ -36,6 +36,8 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
     model_rows = _typed_rows(results / "model_fair_comparison.csv")
     ablations = _typed_rows(results / "sam2_vlm_ablation.csv")
     deployment = _load_json(results / "deployment_metrics.json")
+    deployment["qnn_quantization"] = _load_json(results / "qnn_quantization.json")
+    deployment["measured_review_queue"] = _load_json(results / "measured_review_queue.json")
     government = _load_json(assets / "government_risk_integration.json")
     nafnet = _load_json(assets / "nafnet_cctv_demo" / "report.json")
     sm3det = _load_json(assets / "sm3det_transfer_audit.json")
@@ -89,6 +91,7 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
             {"name": "Risk deployment", "state": "verified", "detail": "A1/A2 hotspot prioritization"}
         ],
         "event_profiles": event_profiles,
+        "geographic_event_profiles": _load_json(results / "geographic_event_evaluation.json")["profiles"],
         "model_comparison": deployment_models,
         "ablations": ablations,
         "deployment": deployment,
