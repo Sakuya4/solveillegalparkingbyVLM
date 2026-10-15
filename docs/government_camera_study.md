@@ -37,7 +37,7 @@ studied by [Nemhauser et al.](https://doi.org/10.1007/BF01588971). The compariso
 includes crash-count greedy selection, independent risk ranking, and random
 selection over seeds 0--199. Each strategy uses the same budget and inventory.
 
-## Results at the Prespecified Reference Setting
+## Results at the Reference Configuration
 
 Reference setting: A1:A2 = 5:1, radius = 1 km.
 
@@ -51,9 +51,20 @@ Reference setting: A1:A2 = 5:1, radius = 1 km.
 At a ten-camera budget, marginal-gain selection improves held-out coverage by
 1.80 percentage points over independent ranking and 4.12 points over random
 selection. Risk and count greedy select equally effective sets at this setting;
-the incremental benefit comes from coverage-aware allocation rather than a
-demonstrated advantage of severity weighting. The complete 180-row table
+the marginal-gain objective captures nonredundant coverage. The complete 180-row table
 preserves all weight/radius/budget settings.
+
+![Camera budget and held-out risk coverage](assets/government_camera_budget.png)
+
+A paired bootstrap resamples the 29 New Taipei districts (2,000 repetitions,
+seed 42). The greedy-minus-independent difference is 1.80 percentage points,
+with a 95% percentile interval of -1.01 to 5.64 points. This interval captures
+heterogeneity across districts; random-baseline error bars describe one standard
+deviation across camera-selection seeds. The two uncertainty measures address
+different sources of variation.
+
+[Uncertainty estimates](results/research_uncertainty.json) ·
+[Vector figure](assets/government_camera_budget.pdf)
 
 ## Interpretation
 

@@ -28,6 +28,7 @@ def main() -> int:
     parser.add_argument("--max-clips", type=int)
     parser.add_argument("--sampling-seed", type=int, default=42)
     parser.add_argument("--device", default="0")
+    parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--target-fps", type=float, default=7.5)
     parser.add_argument("--target-width", type=int, default=640)
     parser.add_argument("--image-size", type=int, default=320)
@@ -40,8 +41,15 @@ def main() -> int:
     args = parser.parse_args()
     if args.max_clips is not None and args.max_clips <= 0:
         raise SystemExit("--max-clips must be positive")
+    if args.threads <= 0:
+        raise SystemExit("--threads must be positive")
 
+    import cv2
+    import torch
     from ultralytics import YOLO
+
+    torch.set_num_threads(args.threads)
+    cv2.setNumThreads(args.threads)
 
     metadata_path = _resolve(args.metadata)
     dataset_root = _resolve(args.dataset_root)
@@ -101,6 +109,7 @@ def main() -> int:
     summary = {
         "split_scheme": args.split_scheme,
         "sampling_seed": args.sampling_seed,
+        "threads": args.threads,
         "requested_clips": len(clips),
         "completed_clips": completed,
         "resumed_clips": skipped,
