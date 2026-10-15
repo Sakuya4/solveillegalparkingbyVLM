@@ -114,6 +114,7 @@ def main() -> int:
     parser.add_argument("--target-train-fpr", type=float, default=0.2)
     parser.add_argument("--calibration-fraction", type=float, default=0.2)
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--no-amp", action="store_true")
     parser.add_argument("--no-cache", action="store_true")
     parser.add_argument(
@@ -129,6 +130,11 @@ def main() -> int:
         default="outputs/accident/videomae_finetuned_iid_predictions.csv",
     )
     args = parser.parse_args()
+    if args.threads <= 0:
+        parser.error("--threads must be positive")
+    import cv2
+    torch.set_num_threads(args.threads)
+    cv2.setNumThreads(args.threads)
     _validate_args(args)
     _set_seed(args.seed)
 

@@ -37,6 +37,7 @@ def main() -> int:
     parser.add_argument("--dataset-root", default="data/raw/accident/full/extracted")
     parser.add_argument("--model-id", default="MCG-NJU/videomae-small-finetuned-kinetics")
     parser.add_argument("--device", default="cuda")
+    parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--num-frames", type=int, default=16)
     parser.add_argument("--window-frames", type=int, default=32)
@@ -52,6 +53,11 @@ def main() -> int:
         default="data/processed/accident/videomae_small_feature_report_500.json",
     )
     args = parser.parse_args()
+    if args.threads <= 0:
+        parser.error("--threads must be positive")
+    import cv2
+    torch.set_num_threads(args.threads)
+    cv2.setNumThreads(args.threads)
     if args.batch_size <= 0 or args.num_frames <= 0 or args.window_frames <= 1:
         raise SystemExit("batch size, num frames, and window frames must be positive")
     if args.num_frames > args.window_frames:

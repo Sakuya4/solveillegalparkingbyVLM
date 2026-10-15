@@ -6,6 +6,18 @@ import pytest
 from scripts import run_overnight_research as runner
 
 
+def test_representation_phase_keeps_full_cohort_and_frozen_calibration_protocol():
+    steps = runner.representation_steps()
+    assert len(steps) == 5
+    assert len({name for name, _ in steps}) == 5
+    for name, arguments in steps:
+        if "--max-clips" in arguments:
+            assert arguments[arguments.index("--max-clips") + 1] == "2027"
+        if "frozen" in name:
+            assert arguments[arguments.index("--target-train-fpr") + 1] == "0.2"
+        assert not any("_500" in part for part in arguments)
+
+
 def test_deadline_prevents_starting_new_work(monkeypatch, tmp_path):
     (tmp_path / "worker.py").write_text("print('work')", encoding="utf-8")
     monkeypatch.setattr(runner, "ROOT", tmp_path)

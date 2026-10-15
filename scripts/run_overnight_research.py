@@ -30,22 +30,45 @@ def workflow_steps() -> list[tuple[str, list[str]]]:
     return steps
 
 
+def representation_steps() -> list[tuple[str, list[str]]]:
+    features = "data/processed/accident/videomae_small_features_full.csv"
+    steps = [("videomae_full_features", ["scripts/extract_accident_videomae_features.py", "--max-clips", "2027", "--batch-size", "8", "--threads", "2", "--output", features, "--report", "outputs/accident/videomae_full_features_report.json"])]
+    for split in ("iid", "geographic"):
+        stem = f"videomae_full_frozen_{split}_fpr20"
+        steps.append((stem, ["scripts/train_incident_motion_baseline.py", "--features", features, "--include-prefix", "videomae_", "--split-scheme", split, "--target-train-fpr", "0.2", "--seed", "42", "--model-output", f"models/{stem}.json", "--report-output", f"outputs/accident/{stem}_report.json", "--predictions-output", f"outputs/accident/{stem}_predictions.csv"]))
+    for split in ("iid", "geographic"):
+        stem = f"videomae_full_finetuned_{split}_fpr20"
+        steps.append((stem, ["scripts/finetune_incident_videomae.py", "--max-clips", "2027", "--split-scheme", split, "--epochs", "15", "--batch-size", "8", "--threads", "2", "--seed", "42", "--cache-dir", "data/processed/accident/videomae_pixel_cache_full", "--model-output", f"models/{stem}.pt", "--report-output", f"outputs/accident/{stem}_report.json", "--predictions-output", f"outputs/accident/{stem}_predictions.csv"]))
+    return steps
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the bounded, sequential research queue with resumable checkpoints.")
     parser.add_argument("--deadline", required=True, help="Timezone-aware ISO deadline, e.g. 2026-10-17T04:00:00+00:00")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--keep-awake-until-deadline", action="store_true")
+    parser.add_argument("--phase", choices=("initial", "representations"), default="initial")
     args = parser.parse_args()
     deadline = datetime.fromisoformat(args.deadline)
     if deadline.tzinfo is None:
         parser.error("--deadline must include a timezone")
-    steps = workflow_steps()
+    steps = workflow_steps() if args.phase == "initial" else representation_steps()
     if args.dry_run:
         print(json.dumps(steps, indent=2))
         return
     directory = ROOT / "outputs/research_runs"
     directory.mkdir(parents=True, exist_ok=True)
-    state_path = directory / "overnight_status.json"
+    state_path = directory / ("overnight_status.json" if args.phase == "initial" else "representations_status.json")
+    import psutil
+    for other_path in directory.glob("*status.json"):
+        if other_path == state_path:
+            continue
+        other = json.loads(other_path.read_text(encoding="utf-8"))
+        child_pid = other.get("child_pid")
+        if other.get("status") == "running" and child_pid and psutil.pid_exists(child_pid):
+            expected = Path(other["command"][1]).name
+            if any(Path(part).name == expected for part in psutil.Process(child_pid).cmdline()[1:]):
+                raise RuntimeError(f"Research child {child_pid} is already active; inspect {other_path}")
     previous = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
     if previous.get("status") == "running":
         import psutil
