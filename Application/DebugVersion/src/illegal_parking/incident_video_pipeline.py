@@ -173,13 +173,10 @@ def expand_window_probabilities(
     sequence_steps: int,
 ) -> np.ndarray:
     expanded = np.full(frame_count, np.nan, dtype=np.float64)
-    for start, probability in zip(starts, probabilities):
-        first_frame = int(start) + 1
-        end_frame = min(frame_count, first_frame + sequence_steps)
-        current = expanded[first_frame:end_frame]
-        expanded[first_frame:end_frame] = np.where(
-            np.isnan(current), probability, np.maximum(current, probability)
-        )
+    decisions = np.asarray(starts, dtype=np.int64) + sequence_steps
+    for index, (decision, probability) in enumerate(zip(decisions, probabilities)):
+        end = int(decisions[index + 1]) if index + 1 < len(decisions) else frame_count
+        expanded[int(decision):min(frame_count, end)] = probability
     return expanded
 
 
@@ -190,7 +187,8 @@ def expand_window_flags(
     sequence_steps: int,
 ) -> np.ndarray:
     expanded = np.zeros(frame_count, dtype=np.bool_)
-    for start, flag in zip(starts, flags):
-        first_frame = int(start) + 1
-        expanded[first_frame : min(frame_count, first_frame + sequence_steps)] = flag
+    decisions = np.asarray(starts, dtype=np.int64) + sequence_steps
+    for index, (decision, flag) in enumerate(zip(decisions, flags)):
+        end = int(decisions[index + 1]) if index + 1 < len(decisions) else frame_count
+        expanded[int(decision):min(frame_count, end)] = flag
     return expanded

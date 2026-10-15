@@ -1,5 +1,20 @@
 # Project TODO
 
+## Research and Native Desktop Revision
+
+- [x] Map peer-reviewed methods to the research questions and implementation.
+- [x] Implement government camera allocation with temporal holdout and source hashes.
+- [x] Compare severity/count greedy, independent ranking, and randomized allocation.
+- [x] Build a native laptop workbench with asynchronous inference and cancellation.
+- [x] Bundle a portable ONNX model and full-context reference clip.
+- [x] Record execution providers and disable CPU fallback for requested QNN HTP execution.
+- [x] Align video overlays with causal window-end decisions.
+- [x] Rewrite the primary README and evaluation report in academic English.
+- [ ] Expand per-event visual evidence and VLM review inside the desktop workflow.
+- [ ] Add paired uncertainty estimates and publication-ready allocation figures.
+- [ ] Complete geographic event-level validation and target-compatible QNN quantization.
+- [ ] Produce the manuscript outline and end-to-end demonstration recording.
+
 ## Completed Case: Red-Line Parking
 
 - [x] Build edge simulation from image, video, webcam, URL, and CCTV sources.

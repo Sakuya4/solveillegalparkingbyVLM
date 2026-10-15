@@ -30,7 +30,7 @@ def test_project_snapshot_exposes_honest_readiness_states_and_portable_assets() 
     states = {item["state"] for item in snapshot["readiness"]["items"]}
 
     assert states == {"verified", "pilot", "external"}
-    assert snapshot["readiness"]["verified"] == 9
+    assert snapshot["readiness"]["verified"] == 11
     assert snapshot["readiness"]["pilot"] == 3
     assert snapshot["readiness"]["external"] == 3
     for asset in snapshot["media"].values():

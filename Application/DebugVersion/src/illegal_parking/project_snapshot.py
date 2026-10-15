@@ -46,6 +46,8 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
     coverage = government["risk_camera_coverage"]["coverage_by_radius_m"]
     scenarios = government["scenario_only_not_measured_outcome"]
     readiness_items = [
+        {"name": "Native desktop research workbench", "state": "verified", "detail": "Video analysis, event navigation, cancellation, and ONNX execution"},
+        {"name": "Temporal government camera allocation", "state": "verified", "detail": "180 comparisons; 34,108 training / 12,849 holdout records"},
         {"name": "紅線違停事件案例", "state": "verified", "detail": "規則、隱私處理與證據輸出已整合"},
         {"name": "事故候選與時序觸發", "state": "verified", "detail": "100 clips 正式事件評估"},
         {"name": "TCN / VideoMAE 比較", "state": "verified", "detail": "相同 500 clips 與 FPR 校準"},

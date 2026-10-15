@@ -6,10 +6,20 @@
     "dataset": "ACCIDENT fixed-CCTV benchmark"
   },
   "readiness": {
-    "verified": 9,
+    "verified": 11,
     "pilot": 3,
     "external": 3,
     "items": [
+      {
+        "name": "Native desktop research workbench",
+        "state": "verified",
+        "detail": "Video analysis, event navigation, cancellation, and ONNX execution"
+      },
+      {
+        "name": "Temporal government camera allocation",
+        "state": "verified",
+        "detail": "180 comparisons; 34,108 training / 12,849 holdout records"
+      },
       {
         "name": "紅線違停事件案例",
         "state": "verified",

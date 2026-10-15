@@ -1,105 +1,137 @@
-# 正式實驗與部署整合報告
+# Traffic Incident Detection and Risk-Aware Deployment: Evaluation Report
 
-## 1. 實驗範圍
+## 1. Study Design
 
-本輪完成 ACCIDENT 事故事件批次評估、VideoMAE 部分微調、TCN/VideoMAE/
-SAM2/VLM 分層比較、正常政府 CCTV 試驗、Verilog/SystemC 驗證、ONNX/QNN
-部署前檢查，以及政府事故、違規與攝影機地點的空間整合。紅線違停保留為
-第一個完整規則事件案例，事故偵測則是目前的公開資料訓練主線。
+The evaluation connects candidate generation, temporal incident recognition,
+multimodal evidence analysis, normal-stream monitoring, and constrained edge
+deployment. ACCIDENT provides fixed-CCTV incident video. Taiwan government
+records support camera allocation and geographic risk analysis. The native
+desktop application integrates inference and artifact inspection.
 
-## 2. 事故事件召回與延遲
+The [methodological literature matrix](literature_basis.md) documents the
+relationship between prior work and the experimental design.
 
-正式批次使用 ACCIDENT IID test split 的 100 支影片，每種碰撞類型各 20 支。
-推論階段只使用 YOLO/ByteTrack、motion candidate ROI 與 causal TCN；事故時間
-標註只在推論後計算事件召回與 trigger delay。
+## 2. Event Recall and Trigger Delay
 
-| Profile | 連續正窗 | Event recall | Delay mean | Delay median | Delay p95 | Early / late episodes |
+The IID evaluation contains 100 test clips, balanced across five collision
+types. Inference uses vehicle tracking, motion proposals, and a causal TCN.
+Accident timing annotations enter the post-inference evaluator. Decisions are
+assigned to the end of each input window. Event matching uses a one-second
+early and three-second late tolerance.
+
+| Profile | Consecutive positive windows | Recall | Mean delay | Median delay | p95 delay | Early / late episodes |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Responsive | 1 | 0.750 | 0.546s | 0.394s | 2.251s | 90 / 238 |
-| Conservative | 2 | 0.440 | 0.689s | 0.608s | 2.674s | 24 / 68 |
+| Responsive | 1 | 0.750 | 0.546 s | 0.394 s | 2.251 s | 90 / 238 |
+| Conservative | 2 | 0.440 | 0.689 s | 0.608 s | 2.674 s | 24 / 68 |
 
-Responsive profile 對 rear-end recall 為 0.95，head-on 為 0.60；其高召回伴隨
-大量事故時間窗外的 alert episodes。Conservative profile 可降低離題警報，但
-也漏掉 31 支原本可偵測的事故。因此目前適合做安全事件分流，不適合直接
-自動執法。完整表格位於 [accident_event_metrics.csv](results/accident_event_metrics.csv)。
+Responsive recall ranges from 0.60 for head-on collisions to 0.95 for rear-end
+collisions. Persistence reduces off-target episodes and lowers recall. These
+results motivate operating-point selection based on the monitoring objective
+and available review capacity. Data: [event metrics](results/accident_event_metrics.csv).
 
-## 3. TCN 與 VideoMAE 公平比較
+## 3. Temporal-Model Comparison
 
-三種模型使用相同 500 clips、相同 temporal windows、IID/geographic split，
-且 test split 不參與 threshold 選擇。固定 0.5 threshold 便於觀察原始分數，
-主要部署比較則使用 grouped train holdout 校準到 20% window FPR。
+Candidate ROI TCN, frozen VideoMAE, and partial fine-tuned VideoMAE use the same
+500 clips, temporal windows, and IID/geographic partitions. Operating thresholds
+are selected on a clip-grouped training holdout with a target window FPR of
+0.20. The test partition remains separate from calibration.
 
-| 模型 | IID F1 / FPR | Geographic F1 / FPR |
+| Model | IID F1 / FPR | Geographic F1 / FPR |
 | --- | ---: | ---: |
-| Candidate ROI TCN | 0.473 / 0.235 | **0.499 / 0.304** |
-| Frozen VideoMAE + linear head | **0.447 / 0.196** | 0.358 / 0.217 |
-| Partial fine-tuned VideoMAE | 0.260 / **0.095** | 0.382 / **0.217** |
+| Candidate ROI TCN | 0.473 / 0.235 | 0.499 / 0.304 |
+| Frozen VideoMAE + linear head | 0.447 / 0.196 | 0.358 / 0.217 |
+| Partial fine-tuned VideoMAE | 0.260 / 0.095 | 0.382 / 0.217 |
 
-VideoMAE 解凍最後一個 encoder block，使用 encoder `1e-5`、head `1e-3`、
-class-weighted loss 與 train-holdout early stopping。IID 在 epoch 3、geographic
-在 epoch 10 取得最佳 holdout loss。雖然 fixed 0.5 的 IID F1 為 0.746，但
-FPR 高達 0.860，不能當成部署優勢；在公平 FPR 約束下微調版低於 frozen
-encoder，顯示 500 clips 不足以穩定 fine-tune。現階段選 TCN 為 edge trigger，
-frozen VideoMAE 為較重的交叉驗證器。完整數字位於
-[model_fair_comparison.csv](results/model_fair_comparison.csv)。
+Partial fine-tuning updates the final encoder block using learning rates of
+1e-5 for the encoder and 1e-3 for the head, class-weighted loss, and holdout
+early stopping. Selected IID and geographic checkpoints occur at epochs
+3 and 10. At threshold 0.5, IID F1 is 0.746 with FPR 0.860; the calibrated
+comparison identifies the recall/false-positive tradeoff under the specified
+monitoring budget. TCN serves as the compact trigger and frozen VideoMAE as a
+complementary video representation.
 
-## 4. SAM2 與 VLM 的實際用途
+Data: [matched-cohort comparison](results/model_fair_comparison.csv).
 
-SAM2 與 VLM 不是和 TCN 相同任務的事故分類器，因此分成 proposal 與 review
-兩階段評估。SAM2.1-t 在共同 10 clips 的 recall@0.1 從 0.667 增至 0.680，
-recall@0.3 不變為 0.453，耗時由 10.855s 增至 37.213s。它適合保留為困難
-候選的 mask evidence，不適合每幀啟用。
+## 4. Spatial Evidence and Multimodal Review
 
-![Clean before-trigger-after evidence](assets/incident_vlm_clean_evidence.jpg)
+On ten matched clips, SAM2.1-t increases proposal recall at IoU 0.1 from 0.667
+to 0.680. Recall at IoU 0.3 is 0.453 for both methods. Processing time changes
+from 10.855 to 37.213 seconds, supporting selective spatial evidence refinement.
 
-Qwen2.5-VL-3B 在有 TCN context 時判為事件並遵守 JSON schema，但理由主要
-複述模型分數；移除 overlay 與模型分數的 clean blind test 則漏掉畫面中的
-碰撞。0.5B LLaVA/Qwen 有提到碰撞，卻輸出無效 schema 並加入畫面不存在的
-紅燈敘述。VLM 的可用角色因此是候選摘要、缺失證據檢查與人工佇列排序，不能
-取代時序 detector。原始結果位於 [sam2_vlm_ablation.csv](results/sam2_vlm_ablation.csv)。
+![Temporal evidence](assets/incident_vlm_clean_evidence.jpg)
 
-## 5. 正常 CCTV 與即時性
+Qwen2.5-VL-3B produces schema-valid review JSON with model context. Its
+clean-blind case misses the distant collision. LLaVA/Qwen-0.5B mentions a
+collision but produces invalid schema and an unsupported traffic-light
+description. The measured role of VLM review is structured summarization and
+evidence inspection; broader event-level evaluation will characterize visual
+grounding and operator-review outcomes.
 
-臺中市政府公開 CCTV 連續擷取 300.26 秒，得到 252 幀、有效 0.837 FPS，
-其中 63.1% 為端點重複畫面。人工 contact-sheet 檢查未見事故。16 個 windows
-有 1 個 raw positive，但連續兩窗 gate 後為 0 false-alert episodes。合併前一
-session 共 0.0867 camera-hours、21 windows，觀察值為 0 alerts/hour；零事件
-Poisson 95% 上限仍為 34.55 alerts/hour。這是 domain-shift pilot，不是足夠的
-政府部署誤報率證明。
+Data: [SAM2/VLM study](results/sam2_vlm_ablation.csv).
 
-## 6. Verilog、SystemC 與 QNN
+## 5. Government CCTV Monitoring
 
-- Icarus Verilog：`dwell_fsm_tb`、`bbox_overlap_counter_tb`、
-  `motion_trigger_tb` 全部通過。
-- Accellera SystemC 3.0.2：以 12,330 筆真實 candidate trace 複製成 4 路
-  camera workload。Python/SystemC 都得到 49,320 processed frames、0 drops、
-  6,808 candidates、2,156 completed reviews、4,652 review drops。SystemC 在
-  模擬終點多產生 4 個尚未處理的 arrival，屬終點事件記帳差異。
-- TCN ONNX：128 samples 的最大絕對誤差 `1.79e-7`，ONNX checker 通過。
-- QNN：已產生 `qnn_dlc` / NPU / Samsung Galaxy S23 的 QAI Hub compile
-  command；本機沒有 QAI Hub credential，因此不能宣稱已取得 Snapdragon
-  latency 或功耗數字。
+A Taichung public-CCTV endpoint was sampled for 300.26 seconds, yielding 252
+frames at an effective 0.837 FPS. Repeated endpoint images account for 63.1%
+of samples. Contact-sheet inspection identified normal traffic. Across the
+two recorded sessions, 21 windows cover 0.0867 camera-hours. Three raw positive
+windows produce zero persistence-gated alert episodes. The one-sided 95%
+Poisson exposure bound is 34.55 alerts per camera-hour. Additional exposure
+will tighten that interval and characterize site-to-site variation.
 
-此壓力情境的 NPU frame queue 沒有掉幀，但 300ms review stage 丟棄 68.33%
-候選，證明昂貴 VLM 不應同步處理每個 proposal，必須使用 persistence、去重、
-priority queue 或雲端批次覆核。
+Data: [deployment measurements](results/deployment_metrics.json).
 
-## 7. 政府資料整合
+## 6. Edge Runtime and Hardware Evaluation
 
-使用 393,854 筆 113 年 A1/A2、309,493 筆桃園違規紀錄與 17 個新北公開
-違停攝影機地點。全國 top-30 事故網格中有 27 個位於新北；既有攝影機在
-500m、1km、2km 的風險加權覆蓋率分別為 10.75%、18.95%、24.84%。這個
-結果可直接形成「先補哪裡的 edge camera」排序。
+Three Icarus Verilog testbenches validate dwell logic, bounding-box overlap,
+and motion triggering. SystemC 3.0.2 replays 12,330 real candidate-trace records
+replicated across four camera streams. Python and SystemC agree on 49,320
+processed frames, zero frame drops, 6,808 candidates, 2,156 completed reviews,
+and 4,652 review drops. Four pending arrivals at the SystemC endpoint reflect
+event-boundary accounting.
 
-桃園違規情境假設高熱點降低 35%，推估 top-30 違規由 19,280 降至 16,560，
-月淨節省 149,467 元；A1/A2 情境假設高風險網格可降低 20% detectable
-precursors，推估整體 top-30 risk score 降幅 7.21%。兩者都是規劃情境，必須
-由部署前後的重複月份資料驗證，不能表述為本系統已造成的因果結果。空間明細
-位於 [government_risk_integration.json](assets/government_risk_integration.json)。
+The four-camera configuration uses 7.5 FPS per camera and a 300 ms review
+stage. Its 68.33% candidate-drop rate identifies downstream review as the
+capacity bottleneck. The temporal ONNX graph passes checker validation and
+128-sample parity with a maximum absolute difference of 1.79e-7.
 
-## 8. 結論
+The native application executes ONNX inference in a separate worker and
+records provider configuration, model hash, and processing duration. QNN HTP
+uses explicit provider selection and disabled CPU fallback. Hardware-specific
+profiling follows the target protocol in [desktop_application.md](desktop_application.md).
 
-目前最可辯護的貢獻不是單一模型達到 0.9，而是把候選生成、時序偵測、
-VLM evidence review、正常流量誤報、edge queue、硬體模擬與政府風險部署
-接成可重現評估鏈。下一個主要缺口是累積獨立正常 CCTV camera-hours、擴大
-clean blind VLM validation set，以及取得實體 Snapdragon/QAI Hub profile。
+## 7. Government-Informed Camera Allocation
+
+The expanded allocation experiment uses all 46,957 dated New Taipei A1/A2
+records. January--September supplies historical demand; October--December
+provides temporal holdout. Coordinate validation retains 34,106 training and
+12,846 holdout records. The fixed inventory contains 17 camera sites.
+
+At A1:A2 = 5:1, radius 1 km, and budget ten, marginal-gain camera selection
+achieves 15.49% held-out risk coverage. Independent ranking achieves 13.69%;
+the mean of 200 random selections is 11.38%. Risk and count greedy are equal
+at this setting. The full 180-row experiment varies severity weights, radius,
+and budget. These endpoints measure allocation efficiency and geographic
+proximity; site visibility is assessed separately.
+
+The earlier descriptive top-risk-grid analysis yields 10.75%, 18.95%, and
+24.84% risk coverage within 500 m, 1 km, and 2 km using the complete inventory.
+Its denominator differs from the all-record temporal allocation study.
+
+The Taoyuan violation analysis uses 309,493 records. Its intervention-cost
+scenario assumes a 35% reduction at high-ranked locations and yields monthly
+net savings of NTD 149,467. Scenario parameters remain explicit for subsequent
+longitudinal evaluation of observed operational effects.
+
+Data: [temporal allocation study](government_camera_study.md),
+[descriptive integration](assets/government_risk_integration.json).
+
+## 8. Research Implications
+
+The system establishes an auditable connection between incident timing,
+evidence generation, compute capacity, and public-sector allocation. The
+government-data study demonstrates the value of accounting for redundant
+camera coverage under a fixed budget. The native implementation makes these
+results inspectable alongside executable video inference. Subsequent work
+extends geographic event evaluation, normal-stream exposure, labeled VLM
+review, and target-device profiling.

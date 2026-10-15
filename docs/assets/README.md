@@ -1,5 +1,10 @@
 # Reference Media Attribution
 
+`incident_input.mp4` preserves the complete 30-second
+`real_videos/ig4k6LEEMy0_00.mp4` ACCIDENT clip for native desktop analysis.
+Source: https://github.com/accidentbench/ACCIDENT. License: CC BY-NC-SA 4.0.
+The complete temporal context supports reproducible persistence-gated inference.
+
 `accident_reference.mp4` and `accident_reference.gif` are six-second derived
 clips from `real_videos/ig4k6LEEMy0_00.mp4` in the ACCIDENT benchmark.
 

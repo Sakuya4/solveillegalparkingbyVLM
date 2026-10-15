@@ -2,8 +2,8 @@
 
 ## Current Position
 
-The repository is an integrated, demo-ready research prototype for edge-first
-traffic incident detection and risk prioritization. Red-line parking is the
+The repository provides a native desktop research workbench for edge-first
+traffic incident detection and government-informed camera allocation. Red-line parking is the
 completed rule-based event case. ACCIDENT-based temporal incident detection is
 the public-dataset training and evaluation mainline.
 
@@ -11,7 +11,7 @@ Completion is reported by evidence strength instead of a single percentage:
 
 | State | Count | Meaning |
 | --- | ---: | --- |
-| Verified | 9 | Reproducible implementation with checked-in result or executable test |
+| Verified | 11 | Reproducible implementation with checked-in result or executable test |
 | Pilot | 3 | Real execution completed, but sample or exposure is still limited |
 | External | 3 | Requires hardware, credentials, long-duration video, or field data |
 
@@ -20,6 +20,10 @@ The same matrix is generated from checked-in artifacts for the integrated
 
 ## Verified
 
+- [x] Native PySide6 application: playback, asynchronous analysis, cancellation,
+  event navigation, export, and portable ONNX execution.
+- [x] Temporal government-data allocation: 180 matched-budget comparisons with
+  January--September selection and October--December evaluation.
 - [x] Red-line parking rule, two-sided curb interpretation, privacy treatment,
   SAM evidence, and event artifacts.
 - [x] Annotation-free accident candidate proposal and causal TCN event trigger.
@@ -49,6 +53,8 @@ The same matrix is generated from checked-in artifacts for the integrated
 
 ## Measured Results
 
+- Ten-camera held-out risk coverage: greedy `15.49%`, independent ranking
+  `13.69%`, and random mean `11.38%` at A1:A2 5:1 and radius 1 km.
 - Responsive event recall: `0.750` over 100 IID accident clips.
 - Trigger delay: median `0.394s`, p95 `2.251s`.
 - Holdout-calibrated geographic F1: TCN `0.499`, frozen VideoMAE `0.358`,
