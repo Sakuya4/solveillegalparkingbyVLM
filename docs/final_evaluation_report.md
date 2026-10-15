@@ -65,6 +65,30 @@ complementary video representation.
 
 Data: [matched-cohort comparison](results/model_fair_comparison.csv).
 
+### 3.1 Full-Cohort Extension
+
+All 2,027 source clips are processed without extraction failures. Six clips
+have fewer than 32 frames and therefore contribute no eligible window. The
+remaining 2,021 clips produce 3,387 windows. IID partitions contain 503 training
+and 1,518 test clips; geographic partitions contain 449 training and 1,572 test
+clips. Grouped calibration reserves 101 and 90 training clips, respectively.
+
+| TCN features | IID F1 / FPR | Geographic F1 / FPR |
+| --- | ---: | ---: |
+| Candidate motion | 0.346 / 0.139 | 0.395 / 0.146 |
+| Global motion | 0.521 / 0.290 | 0.357 / 0.131 |
+
+Each TCN is trained for 40 epochs with seed 42, 32 channels, and dropout 0.1.
+Calibration targets a training-holdout FPR of 0.20. Candidate features improve
+geographic F1 relative to global motion, while global motion has higher IID
+recall and F1 at a higher test FPR. Training/calibration behavior and changed
+cohort composition motivate regularization and cadence-controlled analysis.
+The 500-clip reference model remains unchanged in the desktop bundle.
+
+The publisher reconstructs all test metrics from stored predictions, verifies
+exact test-set membership and targets, and records source/model hashes.
+Data: [full-cohort temporal study](results/full_cohort_temporal.json).
+
 ## 4. Spatial Evidence and Multimodal Review
 
 On ten matched clips, SAM2.1-t increases proposal recall at IoU 0.1 from 0.667
@@ -132,8 +156,8 @@ Three Icarus Verilog testbenches validate dwell logic, bounding-box overlap,
 and motion triggering. SystemC 3.0.2 replays 12,330 real candidate-trace records
 replicated across four camera streams. Python and SystemC agree on 49,320
 processed frames, zero frame drops, 6,808 candidates, 2,156 completed reviews,
-and 4,652 review drops. Four pending arrivals at the SystemC endpoint reflect
-event-boundary accounting.
+and 4,652 review drops. The current finite-arrival generator uses an explicit
+frame count to align simulation boundaries with the Python workload.
 
 The four-camera configuration uses 7.5 FPS per camera and a 300 ms review
 stage. Its 68.33% candidate-drop rate identifies downstream review as the
@@ -152,6 +176,17 @@ motivates event deduplication and budgeted review routing rather than sending
 every proposal to a VLM.
 
 Data: [measured review-service scenario](results/measured_review_queue.json).
+
+Five routing-policy replays preserve complete proposal accounting. Causal
+overlap merging consolidates 5,240 of 6,808 proposal arrivals. At full measured
+service capacity, merging plus strict token-bucket admission yields 198
+completed reviews, three pending requests, 1,367 budget denials, and zero queue
+drops. Four-camera admissions are 51/50/50/50. The 80% budget yields 161
+completed reviews and one pending request. All eight frame/review counters
+match between Python and SystemC 3.0.2 in every policy.
+
+Data: [routing study](review_routing_study.md),
+[five-policy artifact](results/review_routing.json).
 
 QNN preparation fixes the input to `(1, 15, 10)` and calibrates A16W8 QDQ using
 128 training windows from 112 clips. Calibration/test clip overlap is zero.

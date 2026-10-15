@@ -32,6 +32,7 @@ The same matrix is generated from checked-in artifacts for the integrated
 - [x] Taiwan A1/A2, violation, and public-camera spatial integration.
 - [x] Three self-checking Verilog trigger testbenches.
 - [x] SystemC 3.0.2 multi-camera queue replay with Python parity.
+  The measured-service extension verifies all five routing policies locally.
 - [x] TCN ONNX export and 128-sample parity verification.
 - [x] Official NAFNet restoration on a privacy-safe difficult-frame case.
 - [x] Official SM3Det release, compute, license, and CCTV transfer audit.
@@ -39,7 +40,8 @@ The same matrix is generated from checked-in artifacts for the integrated
 ## Pilot Complete
 
 - [x] SAM2.1-t same-sample proposal ablation on 10 clips.
-- [x] Qwen2.5-VL-3B and LLaVA/Qwen clean-blind evidence review cases.
+- [x] Qwen2.5-VL-3B and LLaVA/Qwen review on 20 paired evidence sequences,
+  with matched greedy decoding and three/eight-frame density analysis.
 - [x] Two normal government CCTV sessions totaling 0.0867 camera-hours.
 
 ## External Validation Required
@@ -59,8 +61,12 @@ The same matrix is generated from checked-in artifacts for the integrated
 - Trigger delay: median `0.394s`, p95 `2.251s`.
 - Holdout-calibrated geographic F1: TCN `0.499`, frozen VideoMAE `0.358`,
   partial fine-tuned VideoMAE `0.382`.
-- SystemC workload: 49,320 frames, zero frame drops, 6,808 candidates, and
-  2,156 completed VLM reviews.
+- SystemC configured 300 ms workload: 49,320 frames, zero frame drops,
+  6,808 candidates, and 2,156 completed reviews.
+- Measured Qwen service-time routing: 198 completed, three pending, zero queue
+  drops, and 1,367 budget denials after coalescing; Python/SystemC agree.
+- Full cohort: 2,021 eligible clips; candidate/global TCN IID F1 0.346/0.521
+  and geographic F1 0.395/0.357. Full-cohort VideoMAE extraction is active.
 - Existing New Taipei camera sites cover `18.95%` of joined top-risk score
   within 1 km.
 

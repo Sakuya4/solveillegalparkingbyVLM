@@ -36,8 +36,8 @@ government coverage experiments reproduce from downloaded source records.
 
 - [x] Complete geographic event-level evaluation using the geographic model.
 - [x] Expand clean-blind VLM evaluation with annotation-defined paired event labels.
-- [ ] Compare review-routing strategies under a fixed latency/queue budget.
-- [ ] Connect measured traces and desktop runtime diagnostics to the existing
+- [x] Compare review-routing strategies under a fixed latency/queue budget.
+- [x] Connect measured traces and desktop runtime diagnostics to the existing
   Verilog/SystemC workflow and Qualcomm deployment preparation.
 - [x] Present bootstrap confidence intervals and operating-point tradeoffs.
 - [x] Rewrite the main README and current research report in academic English;
@@ -81,9 +81,12 @@ At the deadline, report delivered artifacts and remaining external requirements.
 3. Audit temporal sampling: source FPS spans 3.92--49.70, while the existing
    frame-stride training rate has median 7.49 steps/s and the deployment target
    is 7.5. Test cadence-consistent extraction as a controlled ablation.
-4. Scale candidate training to the full real-video cohort with fixed protocols,
-   preserving the current 500-clip deployed model as the reference version.
-5. Integrate budgeted evidence routing and native CCTV input. Native
+4. Completed: full-cohort candidate/global TCN fits and prediction-verified
+   publication. All 2,027 clips were processed; 2,021 meet window eligibility.
+   The 500-clip desktop model remains the reference version.
+5. Completed: five-policy routing comparison with exact SystemC/Python parity.
+   Extend routing to independently labeled event-retention evaluation.
+6. Integrate native CCTV input. Native
    demonstration recording is complete and reproducible from saved results.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
@@ -93,12 +96,21 @@ that file before starting another GPU workload. The queue starts with controlled
 greedy-decoding VLM replications, then a matched eight-frame evidence ablation,
 full-cohort candidate extraction, and four fixed-protocol temporal fits.
 Current 500-clip desktop model bundles remain the reference deployment version.
+The second queue uses `--phase representations` and records its live state in
+`outputs/research_runs/representations_status.json`. It extracts full-cohort
+VideoMAE features, fits frozen heads, and fine-tunes the last encoder block for
+both splits. Inspect both state files and their actual child processes before
+any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 235 tests pass.
+(native desktop and portable runtime). Current full regression: 250 tests pass,
+including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
 and `18f63b3` (native evidence and demonstration).
-The full 2,027-clip candidate extractor is active; inspect its log for progress.
-Measured VLM service time has been incorporated into queue
-replay; routing-policy comparisons remain the next hardware-aware experiment.
+Subsequent checkpoints are `369f5ef` (measured-service SystemC routing),
+`573c8d9` (full-cohort TCN publication), and `d7ae6e3` (VideoMAE queue).
+The initial queue is complete. Full-cohort VideoMAE extraction is active;
+inspect its dedicated log for progress. Three Icarus testbenches were rerun
+successfully. SystemC 3.0.2 was built locally with MSVC 19.44 and verified on
+all five measured-service routing workloads.

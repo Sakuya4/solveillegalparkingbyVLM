@@ -18,8 +18,11 @@
 - [x] Produce an end-to-end native demonstration recording.
 - [x] Compare matched greedy Qwen/LLaVA decoding and three/eight-frame evidence.
 - [x] Replay candidate queues using measured Qwen review-service time.
-- [ ] Complete full-cohort candidate/global TCN training and controlled reporting.
-- [ ] Evaluate event-deduplicated and budgeted review routing.
+- [x] Complete full-cohort candidate/global TCN training and controlled reporting.
+- [x] Evaluate proposal coalescing and budgeted review routing with SystemC parity.
+- [ ] Complete full-cohort frozen and fine-tuned VideoMAE comparison.
+- [ ] Measure incident retention after admission control.
+- [ ] Add native CCTV ingestion and independently reviewed normal exposure.
 
 ## Completed Case: Red-Line Parking
 

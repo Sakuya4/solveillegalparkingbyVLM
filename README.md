@@ -121,6 +121,19 @@ These endpoints characterize complementary operating choices. The
 [evaluation report](docs/final_evaluation_report.md) specifies data partitions,
 threshold selection, event matching, and review-load measurements.
 
+The full-data extension processes all 2,027 input clips. Six clips are shorter
+than the 32-frame eligibility requirement, leaving 2,021 clips and 3,387 windows.
+Candidate/global TCNs share these windows and fixed training-holdout calibration:
+
+| TCN features | IID F1 / FPR | Geographic F1 / FPR |
+| --- | ---: | ---: |
+| Candidate motion | 0.346 / 0.139 | 0.395 / 0.146 |
+| Global motion | 0.521 / 0.290 | 0.357 / 0.131 |
+
+This extension has a different class and geographic composition from the
+balanced reference cohort. [Verified full-cohort results](docs/results/full_cohort_temporal.json)
+include fitting, calibration, and test counts, model hashes, and exclusion records.
+
 ### Multimodal Evidence and Restoration
 
 ![Privacy-treated temporal evidence](docs/assets/incident_vlm_clean_evidence.jpg)
@@ -159,6 +172,12 @@ architecture and computation requirements recorded in the
 | Four-camera workload | Zero frame drops at 7.5 FPS per camera |
 | Review-stage pressure | 68.33% candidate drops at the 300 ms review-stage setting |
 | Measured Qwen service-time scenario | 96.96% candidate drops; 8.27 s per review on four replicated streams |
+| Capacity-aware review routing | Five Python/SystemC policy replays agree on all frame/review counters |
+
+Causal overlap merging consolidates 6,808 proposal arrivals into 1,568 requests.
+At the measured service budget, admission control completes 198 reviews with
+zero queue overflow, three pending requests, and 1,367 explicit budget denials.
+[Routing protocol and complete accounting](docs/review_routing_study.md)
 
 The Qualcomm deployment workflow records the requested provider and enforces
 explicit HTP execution. Target profiling is documented in the
@@ -186,6 +205,7 @@ browser-based result viewer remains available with `scripts/run_project_dashboar
 - [Native desktop application](docs/desktop_application.md)
 - [Project status](docs/project_status.md) and [development tasks](docs/todo.md)
 - [Hardware simulation](hardware_sim/README.md)
+- [Capacity-aware evidence routing](docs/review_routing_study.md)
 
 ### Attribution and Licensing
 

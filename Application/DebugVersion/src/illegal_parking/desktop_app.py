@@ -259,10 +259,13 @@ class TrafficResearchWindow(QMainWindow):
         return page
 
     def _model_page(self):
-        page, layout = self._page("Temporal model evaluation", "Matched 500-clip cohort, clip-grouped holdout calibration, and IID / geographic evaluation")
+        page, layout = self._page("Temporal model evaluation", "500-clip reference and 2,021-clip extended cohorts; grouped calibration and IID / geographic evaluation")
         profiles = [("IID", row) for row in self.snapshot["event_profiles"]] + [("Geographic", row) for row in self.snapshot["geographic_event_profiles"]]
         layout.addWidget(make_table(["Split", "Profile", "Clips", "Event recall", "Median delay", "p95 delay", "Early / late episodes"], [[split, p["profile"], p["clips"], f'{p["event_recall"]:.3f}', f'{p["delay_median_sec"]:.3f} s', f'{p["delay_p95_sec"]:.3f} s', f'{p["early_alert_episodes"]} / {p["late_alert_episodes"]}'] for split, p in profiles]))
-        layout.addWidget(make_table(["Model", "Split", "Precision", "Recall", "F1", "FPR"], [[r["model"], r["split"], *(f'{r[key]:.3f}' for key in ("precision", "recall", "f1", "false_positive_rate"))] for r in self.snapshot["model_comparison"]]), 1)
+        tabs = QTabWidget()
+        tabs.addTab(make_table(["Model", "Split", "Precision", "Recall", "F1", "FPR"], [[r["model"], r["split"], *(f'{r[key]:.3f}' for key in ("precision", "recall", "f1", "false_positive_rate"))] for r in self.snapshot["model_comparison"]]), "500-clip reference")
+        tabs.addTab(make_table(["TCN features", "Split", "Fit clips", "Calibration clips", "Test clips", "F1", "FPR"], [[r["feature_set"], r["split"], r["fit_clips"], r["calibration_clips"], r["test_clips"], f'{r["test"]["f1"]:.3f}', f'{r["test"]["false_positive_rate"]:.3f}'] for r in self.snapshot["full_cohort_models"]]), "2,021-clip extension")
+        layout.addWidget(tabs, 1)
         return page
 
     def _evidence_page(self):
@@ -352,6 +355,8 @@ class TrafficResearchWindow(QMainWindow):
             ["Measured Qwen review", f'{measured_queue["profile"]["review_latency_ms"] / 1000:.2f} s / review', f'{measured_queue["result"]["review_drop_rate"]:.2%} candidate drops; four replicated streams'],
             ["Qualcomm QNN HTP", "Available" if caps["qnn_available"] else "Install target runtime", "Explicit provider selection; CPU fallback disabled"],
         ]), 1)
+        routing = self.snapshot["deployment"]["review_routing"]
+        layout.addWidget(make_table(["Review policy", "Merged", "Budget denied", "Completed", "Pending", "Queue drops"], [[r["label"], r["coalesced_proposals"], r["budget_denied"], r["queue"]["completed_reviews"], r["queue"]["pending_reviews"], r["queue"]["dropped_candidates"]] for r in routing["policies"]]), 1)
         return page
 
     def open_video(self):

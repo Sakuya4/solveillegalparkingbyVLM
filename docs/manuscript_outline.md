@@ -16,6 +16,9 @@ selection captures 15.49% of held-out New Taipei crash risk, compared with
 Training-calibrated A16W8 quantization preserves float32 threshold decisions
 over all 450 test windows. The framework connects incident evidence, allocation
 efficiency, and resource accounting through reproducible research artifacts.
+An extended 2,021-clip cohort identifies domain-dependent tradeoffs between
+candidate and global motion representations. Measured-service routing separates
+proposal coalescing, admission decisions, and downstream queue loss.
 
 ## 1. Introduction
 
@@ -89,6 +92,9 @@ sources are linked from the [evaluation report](final_evaluation_report.md).
 Include geographic event recall of 0.630 and the controlled 20-sequence VLM
 comparison. The three/eight-frame ablation and measured-service queue replay
 test the relationship between evidence cost and downstream review capacity.
+The full-cohort temporal study and five-policy SystemC-verified routing results
+are retained separately from the 500-clip reference comparison. Report explicit
+budget denials alongside completed reviews and queue drops.
 
 ## 6. Discussion
 

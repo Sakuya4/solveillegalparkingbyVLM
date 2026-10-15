@@ -38,6 +38,7 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
     deployment = _load_json(results / "deployment_metrics.json")
     deployment["qnn_quantization"] = _load_json(results / "qnn_quantization.json")
     deployment["measured_review_queue"] = _load_json(results / "measured_review_queue.json")
+    deployment["review_routing"] = _load_json(results / "review_routing.json")
     government = _load_json(assets / "government_risk_integration.json")
     nafnet = _load_json(assets / "nafnet_cctv_demo" / "report.json")
     sm3det = _load_json(assets / "sm3det_transfer_audit.json")
@@ -93,6 +94,7 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
         "event_profiles": event_profiles,
         "geographic_event_profiles": _load_json(results / "geographic_event_evaluation.json")["profiles"],
         "model_comparison": deployment_models,
+        "full_cohort_models": _load_json(results / "full_cohort_temporal.json")["models"],
         "ablations": ablations,
         "deployment": deployment,
         "government": {

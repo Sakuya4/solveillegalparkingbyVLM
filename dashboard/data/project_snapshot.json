@@ -247,6 +247,320 @@
       "false_positive_rate": 0.217
     }
   ],
+  "full_cohort_models": [
+    {
+      "feature_set": "candidate",
+      "split": "iid",
+      "model_sha256": "c17852703b0ae0578cd438e755ebd712875ab60836e08cd6775579709db15842",
+      "report_sha256": "dd4bfea57206b76ff093682b8090c8778379b51336966835ae092c581d0f6375",
+      "fit_clips": 402,
+      "calibration_clips": 101,
+      "test_clips": 1518,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.9385212659835815,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "feature_names": [
+        "candidate_diff_mean",
+        "candidate_change_ratio",
+        "candidate_flow_mean",
+        "candidate_flow_p95",
+        "candidate_available",
+        "candidate_score",
+        "candidate_area_ratio",
+        "candidate_from_track",
+        "candidate_from_motion",
+        "candidate_from_sam2"
+      ],
+      "seed": 42,
+      "epochs": 40,
+      "channels": 32,
+      "dropout": 0.1,
+      "fit": {
+        "sample_count": 665,
+        "accuracy": 0.6135338345864662,
+        "precision": 1.0,
+        "recall": 0.36069651741293535,
+        "f1": 0.5301645338208409,
+        "false_positive_rate": 0.0,
+        "specificity": 1.0,
+        "threshold": 0.9385212659835815,
+        "confusion_matrix": {
+          "tn": 263,
+          "fp": 0,
+          "fn": 257,
+          "tp": 145
+        }
+      },
+      "calibration": {
+        "sample_count": 160,
+        "accuracy": 0.4125,
+        "precision": 0.6206896551724138,
+        "recall": 0.1782178217821782,
+        "f1": 0.2769230769230769,
+        "false_positive_rate": 0.1864406779661017,
+        "specificity": 0.8135593220338984,
+        "threshold": 0.9385212659835815,
+        "confusion_matrix": {
+          "tn": 48,
+          "fp": 11,
+          "fn": 83,
+          "tp": 18
+        }
+      },
+      "test": {
+        "sample_count": 2562,
+        "accuracy": 0.48672911787665885,
+        "precision": 0.7058823529411765,
+        "recall": 0.22924901185770752,
+        "f1": 0.34609646941819994,
+        "false_positive_rate": 0.1388888888888889,
+        "specificity": 0.8611111111111112,
+        "threshold": 0.9385212659835815,
+        "confusion_matrix": {
+          "tn": 899,
+          "fp": 145,
+          "fn": 1170,
+          "tp": 348
+        }
+      }
+    },
+    {
+      "feature_set": "candidate",
+      "split": "geographic",
+      "model_sha256": "e4c31f9a3667345f9ad44c3ae1a5485a4168a288f9157585fcc0de62d15d207f",
+      "report_sha256": "65c9df1f61805f483994dfbc2a590276a728630503ba252b63f4993d4348dc58",
+      "fit_clips": 359,
+      "calibration_clips": 90,
+      "test_clips": 1572,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.9262804388999939,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "feature_names": [
+        "candidate_diff_mean",
+        "candidate_change_ratio",
+        "candidate_flow_mean",
+        "candidate_flow_p95",
+        "candidate_available",
+        "candidate_score",
+        "candidate_area_ratio",
+        "candidate_from_track",
+        "candidate_from_motion",
+        "candidate_from_sam2"
+      ],
+      "seed": 42,
+      "epochs": 40,
+      "channels": 32,
+      "dropout": 0.1,
+      "fit": {
+        "sample_count": 600,
+        "accuracy": 0.71,
+        "precision": 1.0,
+        "recall": 0.5153203342618384,
+        "f1": 0.6801470588235294,
+        "false_positive_rate": 0.0,
+        "specificity": 1.0,
+        "threshold": 0.9262804388999939,
+        "confusion_matrix": {
+          "tn": 241,
+          "fp": 0,
+          "fn": 174,
+          "tp": 185
+        }
+      },
+      "calibration": {
+        "sample_count": 149,
+        "accuracy": 0.4899328859060403,
+        "precision": 0.6944444444444444,
+        "recall": 0.2777777777777778,
+        "f1": 0.3968253968253968,
+        "false_positive_rate": 0.1864406779661017,
+        "specificity": 0.8135593220338984,
+        "threshold": 0.9262804388999939,
+        "confusion_matrix": {
+          "tn": 48,
+          "fp": 11,
+          "fn": 65,
+          "tp": 25
+        }
+      },
+      "test": {
+        "sample_count": 2638,
+        "accuracy": 0.5060652009097801,
+        "precision": 0.7314974182444062,
+        "recall": 0.2703562340966921,
+        "f1": 0.3947979563399907,
+        "false_positive_rate": 0.14634146341463414,
+        "specificity": 0.8536585365853658,
+        "threshold": 0.9262804388999939,
+        "confusion_matrix": {
+          "tn": 910,
+          "fp": 156,
+          "fn": 1147,
+          "tp": 425
+        }
+      }
+    },
+    {
+      "feature_set": "global",
+      "split": "iid",
+      "model_sha256": "a231e2ad83c93db4df8e8e225eb7d39b3dc35dea10f72559c0dec2fceb65c175",
+      "report_sha256": "04ef1b9ef5fa8703eb50f978602824c5621b78b6671d3cfb23dbb072d8d170ef",
+      "fit_clips": 402,
+      "calibration_clips": 101,
+      "test_clips": 1518,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.6215882301330566,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "feature_names": [
+        "global_diff_mean",
+        "global_change_ratio",
+        "global_flow_mean",
+        "global_flow_p95"
+      ],
+      "seed": 42,
+      "epochs": 40,
+      "channels": 32,
+      "dropout": 0.1,
+      "fit": {
+        "sample_count": 665,
+        "accuracy": 0.6676691729323309,
+        "precision": 0.905829596412556,
+        "recall": 0.5024875621890548,
+        "f1": 0.6464,
+        "false_positive_rate": 0.07984790874524715,
+        "specificity": 0.9201520912547528,
+        "threshold": 0.6215882301330566,
+        "confusion_matrix": {
+          "tn": 242,
+          "fp": 21,
+          "fn": 200,
+          "tp": 202
+        }
+      },
+      "calibration": {
+        "sample_count": 160,
+        "accuracy": 0.60625,
+        "precision": 0.8166666666666667,
+        "recall": 0.48514851485148514,
+        "f1": 0.6086956521739131,
+        "false_positive_rate": 0.1864406779661017,
+        "specificity": 0.8135593220338984,
+        "threshold": 0.6215882301330566,
+        "confusion_matrix": {
+          "tn": 48,
+          "fp": 11,
+          "fn": 52,
+          "tp": 49
+        }
+      },
+      "test": {
+        "sample_count": 2562,
+        "accuracy": 0.5394223263075723,
+        "precision": 0.6790254237288136,
+        "recall": 0.42226613965744403,
+        "f1": 0.5207148659626321,
+        "false_positive_rate": 0.29022988505747127,
+        "specificity": 0.7097701149425287,
+        "threshold": 0.6215882301330566,
+        "confusion_matrix": {
+          "tn": 741,
+          "fp": 303,
+          "fn": 877,
+          "tp": 641
+        }
+      }
+    },
+    {
+      "feature_set": "global",
+      "split": "geographic",
+      "model_sha256": "f606e50b8c5a3b7f0ec50014650c5dfb61a105bf8eeb1d75e6452d94b06f8ac6",
+      "report_sha256": "2895ad0099d34af32fb63b3a36431a5bad3e0fc83a295f9bf80c1082651e5c75",
+      "fit_clips": 359,
+      "calibration_clips": 90,
+      "test_clips": 1572,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.7594678401947021,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "feature_names": [
+        "global_diff_mean",
+        "global_change_ratio",
+        "global_flow_mean",
+        "global_flow_p95"
+      ],
+      "seed": 42,
+      "epochs": 40,
+      "channels": 32,
+      "dropout": 0.1,
+      "fit": {
+        "sample_count": 600,
+        "accuracy": 0.595,
+        "precision": 0.9754098360655737,
+        "recall": 0.33147632311977715,
+        "f1": 0.49480249480249483,
+        "false_positive_rate": 0.012448132780082987,
+        "specificity": 0.9875518672199171,
+        "threshold": 0.7594678401947021,
+        "confusion_matrix": {
+          "tn": 238,
+          "fp": 3,
+          "fn": 240,
+          "tp": 119
+        }
+      },
+      "calibration": {
+        "sample_count": 149,
+        "accuracy": 0.44966442953020136,
+        "precision": 0.6333333333333333,
+        "recall": 0.2111111111111111,
+        "f1": 0.31666666666666665,
+        "false_positive_rate": 0.1864406779661017,
+        "specificity": 0.8135593220338984,
+        "threshold": 0.7594678401947021,
+        "confusion_matrix": {
+          "tn": 48,
+          "fp": 11,
+          "fn": 71,
+          "tp": 19
+        }
+      },
+      "test": {
+        "sample_count": 2638,
+        "accuracy": 0.4920394238059136,
+        "precision": 0.7265625,
+        "recall": 0.2366412213740458,
+        "f1": 0.3570057581573896,
+        "false_positive_rate": 0.13133208255159476,
+        "specificity": 0.8686679174484052,
+        "threshold": 0.7594678401947021,
+        "confusion_matrix": {
+          "tn": 926,
+          "fp": 140,
+          "fn": 1200,
+          "tp": 372
+        }
+      }
+    }
+  ],
   "ablations": [
     {
       "stage": "proposal",
@@ -425,6 +739,272 @@
         "review_utilization": 1.0
       },
       "review_latency_source": "docs/results/incident_vlm_qwen_greedy_batch.json"
+    },
+    "review_routing": {
+      "protocol": "Causal source-local overlap coalescing and strict shared token-bucket admission",
+      "trace_sha256": "752bad69140cd64c60d2d606b3e87d4eada005479a6524d8b6627963591d9af0",
+      "review_report_sha256": "159a74a6948994e30f4cd417c50135e64ba4b7bd968341a4496fc2412fad4832",
+      "routing_inputs": [
+        "candidate_available",
+        "candidate_score",
+        "candidate_bbox",
+        "path",
+        "frame_index"
+      ],
+      "source_window_selection": "Concatenated sampled benchmark windows; replay is a capacity workload, not continuous traffic exposure",
+      "nominal_camera_fps": 7.5,
+      "camera_replication": 4,
+      "duration_sec": 1644.0,
+      "review_seconds": 8.273610775003908,
+      "front_end_service_ms": {
+        "detector": 3.9,
+        "temporal": 3.0
+      },
+      "candidate_threshold": 0.95,
+      "merge_gap_steps": 15,
+      "minimum_iou": 0.1,
+      "source_frame_stride": 2,
+      "token_burst": 4,
+      "queue_capacity": 8,
+      "endpoint": "Proposal routing and queue accounting; incident recall is evaluated separately",
+      "policies": [
+        {
+          "policy": "all_proposals",
+          "label": "All proposals",
+          "meter_capacity_fraction": null,
+          "raw_proposals": 6808,
+          "coalesced_proposals": 0,
+          "budget_denied": 0,
+          "admitted_proposals": 6808,
+          "admitted_per_camera": [
+            1702,
+            1702,
+            1702,
+            1702
+          ],
+          "queue": {
+            "generated_frames": 49320,
+            "processed_frames": 49320,
+            "pending_frames": 0,
+            "dropped_frames": 0,
+            "frame_drop_rate": 0.0,
+            "npu_utilization": 0.207,
+            "mean_frame_latency_ms": 17.249999999941895,
+            "p95_frame_latency_ms": 27.600000000093132,
+            "generated_candidates": 6808,
+            "completed_reviews": 198,
+            "pending_reviews": 9,
+            "dropped_candidates": 6601,
+            "review_drop_rate": 0.9695945945945946,
+            "review_utilization": 1.0
+          },
+          "systemc": {
+            "version": "3.0.2",
+            "counters": {
+              "generated_frames": 49320,
+              "candidate_trace_enabled": 1,
+              "processed_frames": 49320,
+              "pending_frames": 0,
+              "dropped_frames": 0,
+              "generated_candidates": 6808,
+              "completed_reviews": 198,
+              "pending_reviews": 9,
+              "dropped_candidates": 6601
+            },
+            "python_parity": true
+          }
+        },
+        {
+          "policy": "causal_overlap_merge",
+          "label": "Overlap merge",
+          "meter_capacity_fraction": null,
+          "raw_proposals": 6808,
+          "coalesced_proposals": 5240,
+          "budget_denied": 0,
+          "admitted_proposals": 1568,
+          "admitted_per_camera": [
+            392,
+            392,
+            392,
+            392
+          ],
+          "queue": {
+            "generated_frames": 49320,
+            "processed_frames": 49320,
+            "pending_frames": 0,
+            "dropped_frames": 0,
+            "frame_drop_rate": 0.0,
+            "npu_utilization": 0.207,
+            "mean_frame_latency_ms": 17.249999999941895,
+            "p95_frame_latency_ms": 27.600000000093132,
+            "generated_candidates": 1568,
+            "completed_reviews": 198,
+            "pending_reviews": 8,
+            "dropped_candidates": 1362,
+            "review_drop_rate": 0.8686224489795918,
+            "review_utilization": 1.0
+          },
+          "systemc": {
+            "version": "3.0.2",
+            "counters": {
+              "generated_frames": 49320,
+              "candidate_trace_enabled": 1,
+              "processed_frames": 49320,
+              "pending_frames": 0,
+              "dropped_frames": 0,
+              "generated_candidates": 1568,
+              "completed_reviews": 198,
+              "pending_reviews": 8,
+              "dropped_candidates": 1362
+            },
+            "python_parity": true
+          }
+        },
+        {
+          "policy": "all_proposals_metered",
+          "label": "Metered proposals",
+          "meter_capacity_fraction": 1.0,
+          "raw_proposals": 6808,
+          "coalesced_proposals": 0,
+          "budget_denied": 6607,
+          "admitted_proposals": 201,
+          "admitted_per_camera": [
+            51,
+            50,
+            50,
+            50
+          ],
+          "queue": {
+            "generated_frames": 49320,
+            "processed_frames": 49320,
+            "pending_frames": 0,
+            "dropped_frames": 0,
+            "frame_drop_rate": 0.0,
+            "npu_utilization": 0.207,
+            "mean_frame_latency_ms": 17.249999999941895,
+            "p95_frame_latency_ms": 27.600000000093132,
+            "generated_candidates": 201,
+            "completed_reviews": 198,
+            "pending_reviews": 3,
+            "dropped_candidates": 0,
+            "review_drop_rate": 0.0,
+            "review_utilization": 1.0
+          },
+          "systemc": {
+            "version": "3.0.2",
+            "counters": {
+              "generated_frames": 49320,
+              "candidate_trace_enabled": 1,
+              "processed_frames": 49320,
+              "pending_frames": 0,
+              "dropped_frames": 0,
+              "generated_candidates": 201,
+              "completed_reviews": 198,
+              "pending_reviews": 3,
+              "dropped_candidates": 0
+            },
+            "python_parity": true
+          }
+        },
+        {
+          "policy": "merge_metered_80pct",
+          "label": "Merge + 80% capacity",
+          "meter_capacity_fraction": 0.8,
+          "raw_proposals": 6808,
+          "coalesced_proposals": 5240,
+          "budget_denied": 1406,
+          "admitted_proposals": 162,
+          "admitted_per_camera": [
+            41,
+            41,
+            40,
+            40
+          ],
+          "queue": {
+            "generated_frames": 49320,
+            "processed_frames": 49320,
+            "pending_frames": 0,
+            "dropped_frames": 0,
+            "frame_drop_rate": 0.0,
+            "npu_utilization": 0.207,
+            "mean_frame_latency_ms": 17.249999999941895,
+            "p95_frame_latency_ms": 27.600000000093132,
+            "generated_candidates": 162,
+            "completed_reviews": 161,
+            "pending_reviews": 1,
+            "dropped_candidates": 0,
+            "review_drop_rate": 0.0,
+            "review_utilization": 0.8152828135952757
+          },
+          "systemc": {
+            "version": "3.0.2",
+            "counters": {
+              "generated_frames": 49320,
+              "candidate_trace_enabled": 1,
+              "processed_frames": 49320,
+              "pending_frames": 0,
+              "dropped_frames": 0,
+              "generated_candidates": 162,
+              "completed_reviews": 161,
+              "pending_reviews": 1,
+              "dropped_candidates": 0
+            },
+            "python_parity": true
+          }
+        },
+        {
+          "policy": "merge_metered_100pct",
+          "label": "Merge + 100% capacity",
+          "meter_capacity_fraction": 1.0,
+          "raw_proposals": 6808,
+          "coalesced_proposals": 5240,
+          "budget_denied": 1367,
+          "admitted_proposals": 201,
+          "admitted_per_camera": [
+            51,
+            50,
+            50,
+            50
+          ],
+          "queue": {
+            "generated_frames": 49320,
+            "processed_frames": 49320,
+            "pending_frames": 0,
+            "dropped_frames": 0,
+            "frame_drop_rate": 0.0,
+            "npu_utilization": 0.207,
+            "mean_frame_latency_ms": 17.249999999941895,
+            "p95_frame_latency_ms": 27.600000000093132,
+            "generated_candidates": 201,
+            "completed_reviews": 198,
+            "pending_reviews": 3,
+            "dropped_candidates": 0,
+            "review_drop_rate": 0.0,
+            "review_utilization": 1.0
+          },
+          "systemc": {
+            "version": "3.0.2",
+            "counters": {
+              "generated_frames": 49320,
+              "candidate_trace_enabled": 1,
+              "processed_frames": 49320,
+              "pending_frames": 0,
+              "dropped_frames": 0,
+              "generated_candidates": 201,
+              "completed_reviews": 198,
+              "pending_reviews": 3,
+              "dropped_candidates": 0
+            },
+            "python_parity": true
+          }
+        }
+      ],
+      "sources": [
+        "https://www.rfc-editor.org/rfc/rfc3290.html",
+        "https://www.cs.princeton.edu/~ravian/publications/reducto_sigcomm20.pdf"
+      ],
+      "systemc_executable_sha256": "7a0bedf8a917a3d8667205c58670a55615d4caaeb42a05946a236cadd9763c6b",
+      "systemc_source_sha256": "dd3fd514f37a754798edb90cc468a2be6fe45727fa65e2cd2407c2067cee64c5"
     }
   },
   "government": {

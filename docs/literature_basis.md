@@ -43,6 +43,12 @@ provides the publisher's journal information.
   target backend selection, quantized HTP models, and CPU-fallback control.
 - [Qt QProcess](https://doc.qt.io/qtforpython-6/PySide6/QtCore/QProcess.html):
   asynchronous native application jobs and process lifecycle management.
+- [Reducto, SIGCOMM 2020](https://www.cs.princeton.edu/~ravian/publications/reducto_sigcomm20.pdf):
+  early filtering and downstream resource efficiency in video analytics.
+- [RFC 3290, Appendix A](https://www.rfc-editor.org/rfc/rfc3290.html#appendix-A):
+  strict token-bucket conformance for measured-service review admission.
+- [Accellera SystemC 3.0.2](https://github.com/accellera-official/systemc/releases/tag/3.0.2):
+  transaction-level camera, inference, and evidence-queue simulation.
 
 DOI titles for the five journal references were checked against Crossref during
 this implementation. Source access date: 16 October 2026.
