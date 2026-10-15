@@ -180,6 +180,26 @@ Current output includes:
 
 This makes the branch useful even without physical NPU hardware. It simulates
 the deployment pressure that a Snapdragon/NPU implementation would need to
-handle later. The next extension is to replace constant service times and
-candidate stride with per-frame traces from the real detector/incident models,
-then add calibrated CPU/VLM stages and power proxies.
+handle later. Candidate flags now support model-produced traces and routed
+proposal workloads. Review service time can be sourced from measured VLM runs;
+variable service distributions and calibrated power proxies remain subsequent
+extensions.
+
+## Measured-Service Routing Study
+
+The [capacity-aware routing study](../docs/review_routing_study.md) compares five
+causal policies on 49,320 replayed frames. All frame and review counters agree
+between Python and SystemC 3.0.2. Coalescing, deliberate admission denial, and
+queue overflow are recorded separately. The finite camera generator uses an
+explicit frame count to align terminal accounting across implementations.
+
+Windows builds use the verified official SystemC 3.0.2 source with Visual Studio
+2022 C++ Build Tools and CMake:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_systemc_windows.ps1
+python scripts/evaluate_review_routing.py --systemc-executable outputs/toolchain/traffic-systemc-msvc-build/Release/npu_queue_sim.exe
+```
+
+The build script limits parallel jobs to two and restores its temporary drive
+alias on exit. [Reproducible counters and hashes](../docs/results/review_routing.json)

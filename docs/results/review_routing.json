@@ -1,0 +1,266 @@
+{
+  "protocol": "Causal source-local overlap coalescing and strict shared token-bucket admission",
+  "trace_sha256": "752bad69140cd64c60d2d606b3e87d4eada005479a6524d8b6627963591d9af0",
+  "review_report_sha256": "159a74a6948994e30f4cd417c50135e64ba4b7bd968341a4496fc2412fad4832",
+  "routing_inputs": [
+    "candidate_available",
+    "candidate_score",
+    "candidate_bbox",
+    "path",
+    "frame_index"
+  ],
+  "source_window_selection": "Concatenated sampled benchmark windows; replay is a capacity workload, not continuous traffic exposure",
+  "nominal_camera_fps": 7.5,
+  "camera_replication": 4,
+  "duration_sec": 1644.0,
+  "review_seconds": 8.273610775003908,
+  "front_end_service_ms": {
+    "detector": 3.9,
+    "temporal": 3.0
+  },
+  "candidate_threshold": 0.95,
+  "merge_gap_steps": 15,
+  "minimum_iou": 0.1,
+  "source_frame_stride": 2,
+  "token_burst": 4,
+  "queue_capacity": 8,
+  "endpoint": "Proposal routing and queue accounting; incident recall is evaluated separately",
+  "policies": [
+    {
+      "policy": "all_proposals",
+      "label": "All proposals",
+      "meter_capacity_fraction": null,
+      "raw_proposals": 6808,
+      "coalesced_proposals": 0,
+      "budget_denied": 0,
+      "admitted_proposals": 6808,
+      "admitted_per_camera": [
+        1702,
+        1702,
+        1702,
+        1702
+      ],
+      "queue": {
+        "generated_frames": 49320,
+        "processed_frames": 49320,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999941895,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 6808,
+        "completed_reviews": 198,
+        "pending_reviews": 9,
+        "dropped_candidates": 6601,
+        "review_drop_rate": 0.9695945945945946,
+        "review_utilization": 1.0
+      },
+      "systemc": {
+        "version": "3.0.2",
+        "counters": {
+          "generated_frames": 49320,
+          "candidate_trace_enabled": 1,
+          "processed_frames": 49320,
+          "pending_frames": 0,
+          "dropped_frames": 0,
+          "generated_candidates": 6808,
+          "completed_reviews": 198,
+          "pending_reviews": 9,
+          "dropped_candidates": 6601
+        },
+        "python_parity": true
+      }
+    },
+    {
+      "policy": "causal_overlap_merge",
+      "label": "Overlap merge",
+      "meter_capacity_fraction": null,
+      "raw_proposals": 6808,
+      "coalesced_proposals": 5240,
+      "budget_denied": 0,
+      "admitted_proposals": 1568,
+      "admitted_per_camera": [
+        392,
+        392,
+        392,
+        392
+      ],
+      "queue": {
+        "generated_frames": 49320,
+        "processed_frames": 49320,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999941895,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 1568,
+        "completed_reviews": 198,
+        "pending_reviews": 8,
+        "dropped_candidates": 1362,
+        "review_drop_rate": 0.8686224489795918,
+        "review_utilization": 1.0
+      },
+      "systemc": {
+        "version": "3.0.2",
+        "counters": {
+          "generated_frames": 49320,
+          "candidate_trace_enabled": 1,
+          "processed_frames": 49320,
+          "pending_frames": 0,
+          "dropped_frames": 0,
+          "generated_candidates": 1568,
+          "completed_reviews": 198,
+          "pending_reviews": 8,
+          "dropped_candidates": 1362
+        },
+        "python_parity": true
+      }
+    },
+    {
+      "policy": "all_proposals_metered",
+      "label": "Metered proposals",
+      "meter_capacity_fraction": 1.0,
+      "raw_proposals": 6808,
+      "coalesced_proposals": 0,
+      "budget_denied": 6607,
+      "admitted_proposals": 201,
+      "admitted_per_camera": [
+        51,
+        50,
+        50,
+        50
+      ],
+      "queue": {
+        "generated_frames": 49320,
+        "processed_frames": 49320,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999941895,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 201,
+        "completed_reviews": 198,
+        "pending_reviews": 3,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 1.0
+      },
+      "systemc": {
+        "version": "3.0.2",
+        "counters": {
+          "generated_frames": 49320,
+          "candidate_trace_enabled": 1,
+          "processed_frames": 49320,
+          "pending_frames": 0,
+          "dropped_frames": 0,
+          "generated_candidates": 201,
+          "completed_reviews": 198,
+          "pending_reviews": 3,
+          "dropped_candidates": 0
+        },
+        "python_parity": true
+      }
+    },
+    {
+      "policy": "merge_metered_80pct",
+      "label": "Merge + 80% capacity",
+      "meter_capacity_fraction": 0.8,
+      "raw_proposals": 6808,
+      "coalesced_proposals": 5240,
+      "budget_denied": 1406,
+      "admitted_proposals": 162,
+      "admitted_per_camera": [
+        41,
+        41,
+        40,
+        40
+      ],
+      "queue": {
+        "generated_frames": 49320,
+        "processed_frames": 49320,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999941895,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 162,
+        "completed_reviews": 161,
+        "pending_reviews": 1,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.8152828135952757
+      },
+      "systemc": {
+        "version": "3.0.2",
+        "counters": {
+          "generated_frames": 49320,
+          "candidate_trace_enabled": 1,
+          "processed_frames": 49320,
+          "pending_frames": 0,
+          "dropped_frames": 0,
+          "generated_candidates": 162,
+          "completed_reviews": 161,
+          "pending_reviews": 1,
+          "dropped_candidates": 0
+        },
+        "python_parity": true
+      }
+    },
+    {
+      "policy": "merge_metered_100pct",
+      "label": "Merge + 100% capacity",
+      "meter_capacity_fraction": 1.0,
+      "raw_proposals": 6808,
+      "coalesced_proposals": 5240,
+      "budget_denied": 1367,
+      "admitted_proposals": 201,
+      "admitted_per_camera": [
+        51,
+        50,
+        50,
+        50
+      ],
+      "queue": {
+        "generated_frames": 49320,
+        "processed_frames": 49320,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999941895,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 201,
+        "completed_reviews": 198,
+        "pending_reviews": 3,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 1.0
+      },
+      "systemc": {
+        "version": "3.0.2",
+        "counters": {
+          "generated_frames": 49320,
+          "candidate_trace_enabled": 1,
+          "processed_frames": 49320,
+          "pending_frames": 0,
+          "dropped_frames": 0,
+          "generated_candidates": 201,
+          "completed_reviews": 198,
+          "pending_reviews": 3,
+          "dropped_candidates": 0
+        },
+        "python_parity": true
+      }
+    }
+  ],
+  "sources": [
+    "https://www.rfc-editor.org/rfc/rfc3290.html",
+    "https://www.cs.princeton.edu/~ravian/publications/reducto_sigcomm20.pdf"
+  ],
+  "systemc_executable_sha256": "7a0bedf8a917a3d8667205c58670a55615d4caaeb42a05946a236cadd9763c6b",
+  "systemc_source_sha256": "dd3fd514f37a754798edb90cc468a2be6fe45727fa65e2cd2407c2067cee64c5"
+}

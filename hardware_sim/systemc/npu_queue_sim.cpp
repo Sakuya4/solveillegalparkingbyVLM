@@ -38,8 +38,9 @@ SC_MODULE(CameraFarm) {
 
     void run() {
         const sc_time frame_period(1000.0 / profile.camera_fps, SC_MS);
+        const auto frame_count = static_cast<unsigned>(std::lround(profile.camera_fps * profile.duration_sec));
         unsigned frame_id = 0;
-        while (sc_time_stamp() < sc_time(profile.duration_sec, SC_SEC)) {
+        for (unsigned frame_index = 0; frame_index < frame_count; ++frame_index) {
             for (unsigned camera = 0; camera < profile.camera_count; ++camera) {
                 ++generated;
                 if (!frames->nb_write(frame_id++)) {
