@@ -60,3 +60,7 @@ docs/results/positive_context_scores.csv text eol=crlf
 docs/results/positive_context_trace.json text eol=lf
 docs/results/positive_context_audit.json text eol=lf
 docs/assets/positive_context_tradeoffs.json text eol=lf
+scripts/prepare_event_discrimination.py text eol=lf
+docs/results/event_discrimination_protocol.json text eol=lf
+docs/results/event_discrimination_calibration_inventory.csv text eol=crlf
+docs/results/event_discrimination_calibration_scores.csv text eol=crlf
