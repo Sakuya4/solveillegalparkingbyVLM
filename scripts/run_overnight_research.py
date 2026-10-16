@@ -42,23 +42,33 @@ def representation_steps() -> list[tuple[str, list[str]]]:
     return steps
 
 
+def resolution_steps() -> list[tuple[str, list[str]]]:
+    steps = []
+    for split, suffix in (("iid", "iid"), ("geographic", "geo")):
+        directory = f"outputs/accident/event_resolution320_{split}_100"
+        steps.append((f"resolution320_{split}", ["scripts/run_accident_event_batch.py", "--split-scheme", split, "--model", f"models/candidate500_tcn_only_{suffix}_fpr20.pt", "--max-clips", "100", "--sampling-seed", "42", "--threads", "2", "--device", "0", "--feature-width", "320", "--output-dir", directory]))
+        for profile, gate in (("responsive", "1"), ("conservative", "2")):
+            steps.append((f"resolution320_{split}_{profile}", ["scripts/evaluate_incident_reports.py", "--metadata", "data/raw/accident/full/extracted/metadata-real.csv", "--report-glob", directory + "/reports/*.json", "--min-positive-windows", gate, "--output", directory + f"/{profile}_evaluation.json"]))
+    return steps
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the bounded, sequential research queue with resumable checkpoints.")
     parser.add_argument("--deadline", required=True, help="Timezone-aware ISO deadline, e.g. 2026-10-17T04:00:00+00:00")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--keep-awake-until-deadline", action="store_true")
-    parser.add_argument("--phase", choices=("initial", "representations"), default="initial")
+    parser.add_argument("--phase", choices=("initial", "representations", "resolution"), default="initial")
     args = parser.parse_args()
     deadline = datetime.fromisoformat(args.deadline)
     if deadline.tzinfo is None:
         parser.error("--deadline must include a timezone")
-    steps = workflow_steps() if args.phase == "initial" else representation_steps()
+    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps}[args.phase]()
     if args.dry_run:
         print(json.dumps(steps, indent=2))
         return
     directory = ROOT / "outputs/research_runs"
     directory.mkdir(parents=True, exist_ok=True)
-    state_path = directory / ("overnight_status.json" if args.phase == "initial" else "representations_status.json")
+    state_path = directory / ("overnight_status.json" if args.phase == "initial" else f"{args.phase}_status.json")
     import psutil
     for other_path in directory.glob("*status.json"):
         if other_path == state_path:

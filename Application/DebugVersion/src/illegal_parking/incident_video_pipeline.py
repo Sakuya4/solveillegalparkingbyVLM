@@ -47,15 +47,17 @@ def run_candidate_incident_inference(
     sequence_steps: int,
     hop_steps: int,
     min_positive_windows: int,
+    feature_width: int | None = None,
 ) -> CandidateIncidentInference:
-    frames, source_indices, source_fps = read_sampled_video(
+    frames, feature_frames, source_indices, source_fps = _read_sampled_video_views(
         input_path,
         target_fps=target_fps,
         target_width=target_width,
+        feature_width=feature_width,
     )
     tracked = track_vehicle_frames(
         detector,
-        frames,
+        feature_frames,
         source_indices,
         device=device,
         image_size=image_size,
@@ -66,8 +68,8 @@ def run_candidate_incident_inference(
     source_counts: Counter[str] = Counter()
     for index in range(1, len(frames)):
         step = compute_candidate_motion_step(
-            frames[index - 1],
-            frames[index],
+            feature_frames[index - 1],
+            feature_frames[index],
             tracked[source_indices[index]],
         )
         steps.append(step)
@@ -105,6 +107,10 @@ def run_candidate_incident_inference(
         "annotation_free_inference": True,
         "source_fps": source_fps,
         "target_fps": target_fps,
+        "display_width": target_width,
+        "feature_width_limit": feature_width,
+        "feature_frame_width": feature_frames[0].shape[1],
+        "feature_resolution_protocol": "legacy_display_resolution" if feature_width is None else "source_downsample_no_upscale",
         "sampled_fps": sampled_fps,
         "sampled_frames": len(frames),
         "observed_duration_sec": sampled_duration_sec,
@@ -134,6 +140,18 @@ def read_sampled_video(
     target_fps: float,
     target_width: int,
 ) -> tuple[list[np.ndarray], list[int], float]:
+    frames, _, indices, source_fps = _read_sampled_video_views(path, target_fps, target_width)
+    return frames, indices, source_fps
+
+
+def _read_sampled_video_views(
+    path: Path,
+    target_fps: float,
+    target_width: int,
+    feature_width: int | None = None,
+) -> tuple[list[np.ndarray], list[np.ndarray], list[int], float]:
+    if not math.isfinite(target_fps) or target_fps <= 0 or target_width <= 0 or (feature_width is not None and feature_width <= 0):
+        raise ValueError("Sampling cadence and frame widths must be positive")
     capture = cv2.VideoCapture(str(path))
     if not capture.isOpened():
         raise ValueError(f"Cannot open video: {path}")
@@ -144,6 +162,7 @@ def read_sampled_video(
     sample_period = 1.0 / min(target_fps, source_fps)
     next_sample_sec = 0.0
     frames: list[np.ndarray] = []
+    feature_frames: list[np.ndarray] = []
     indices: list[int] = []
     frame_index = 0
     try:
@@ -156,6 +175,13 @@ def read_sampled_video(
                 height, width = frame.shape[:2]
                 target_height = max(1, round(height * target_width / width))
                 frames.append(cv2.resize(frame, (target_width, target_height), interpolation=cv2.INTER_AREA))
+                if feature_width is None:
+                    feature_frames.append(frames[-1])
+                elif width <= feature_width:
+                    feature_frames.append(frame)
+                else:
+                    feature_height = max(1, round(height * feature_width / width))
+                    feature_frames.append(cv2.resize(frame, (feature_width, feature_height), interpolation=cv2.INTER_AREA))
                 indices.append(frame_index)
                 next_sample_sec += sample_period
             frame_index += 1
@@ -163,7 +189,7 @@ def read_sampled_video(
         capture.release()
     if len(frames) < 16:
         raise ValueError("Video must provide at least 16 sampled frames")
-    return frames, indices, source_fps
+    return frames, feature_frames, indices, source_fps
 
 
 def expand_window_probabilities(

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 import time
@@ -31,6 +32,7 @@ def main() -> int:
     parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--target-fps", type=float, default=7.5)
     parser.add_argument("--target-width", type=int, default=640)
+    parser.add_argument("--feature-width", type=int, help="Separate source-downsampled feature width; omitted preserves legacy resolution")
     parser.add_argument("--image-size", type=int, default=320)
     parser.add_argument("--confidence", type=float, default=0.15)
     parser.add_argument("--sequence-steps", type=int, default=15)
@@ -95,6 +97,7 @@ def main() -> int:
                 sequence_steps=args.sequence_steps,
                 hop_steps=args.hop_steps,
                 min_positive_windows=args.min_positive_windows,
+                feature_width=args.feature_width,
             )
             report_path.write_text(
                 json.dumps(result.report, ensure_ascii=False, indent=2), encoding="utf-8"
@@ -119,6 +122,10 @@ def main() -> int:
         "clips_per_minute": completed / elapsed_sec * 60.0 if elapsed_sec else None,
         "model": str(model_path),
         "detector": str(detector_path),
+        "model_sha256": hashlib.sha256(model_path.read_bytes()).hexdigest(),
+        "detector_sha256": hashlib.sha256(detector_path.read_bytes()).hexdigest(),
+        "metadata_sha256": hashlib.sha256(metadata_path.read_bytes()).hexdigest(),
+        "inference_protocol": {key: getattr(args, key) for key in ("target_fps", "target_width", "feature_width", "image_size", "confidence", "sequence_steps", "hop_steps", "min_positive_windows")},
         "report_paths": report_paths,
     }
     (output_dir / "batch_summary.json").write_text(

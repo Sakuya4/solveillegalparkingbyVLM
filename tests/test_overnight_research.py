@@ -6,6 +6,18 @@ import pytest
 from scripts import run_overnight_research as runner
 
 
+def test_resolution_phase_preserves_reference_models_and_matched_event_selection():
+    steps = runner.resolution_steps()
+    batches = [arguments for _, arguments in steps if arguments[0].endswith("run_accident_event_batch.py")]
+    assert len(steps) == 6 and len(batches) == 2
+    for arguments in batches:
+        assert arguments[arguments.index("--feature-width") + 1] == "320"
+        assert arguments[arguments.index("--sampling-seed") + 1] == "42"
+        assert arguments[arguments.index("--max-clips") + 1] == "100"
+        assert arguments[arguments.index("--threads") + 1] == "2"
+        assert "candidate500_tcn_only" in arguments[arguments.index("--model") + 1]
+
+
 def test_representation_phase_keeps_full_cohort_and_frozen_calibration_protocol():
     steps = runner.representation_steps()
     assert len(steps) == 5
