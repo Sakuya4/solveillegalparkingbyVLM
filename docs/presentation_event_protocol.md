@@ -122,8 +122,86 @@ All eight model-minus-clock recall contrasts are reported, with pointwise
 paired source-clip intervals and the fraction of positive context decisions.
 Zero-threshold models must agree exactly with the clock-only positive control.
 
+The benchmark's [official naive baseline](https://github.com/accidentbench/ACCIDENT/blob/main/baselines/heuristic/naive.py)
+also evaluates nonvisual timing priors, including a clip-midpoint prediction
+and an explicitly oracle-aided median. The present clock control differs:
+it requires neither final clip duration nor a fitted event-time median and
+can emit only after a complete eligible persistence context has arrived.
+It is a causal warm-up control, not a reproduction of the midpoint baseline.
+
+Public per-clip calibration/test outcome traces preserve source hashes,
+annotation PTS, selected thresholds, matched/missed events, signed delays,
+rejected contexts and early/late episodes for every model and both controls.
+Undefined delays remain empty rather than being replaced with zero.
+
 ```powershell
 python scripts/run_presentation_event_reporting.py calibrate
 python scripts/run_overnight_research.py --phase pts_events --deadline 2026-10-17T04:00:00+00:00
 python scripts/audit_presentation_event_predictions.py publish
+python scripts/publish_presentation_event_trace.py
+python scripts/plot_presentation_events.py
 ```
+
+## Completed Event Results
+
+Calibration replays 170 distinct sources and testing replays 169, with a
+318-source union across the two official split schemes. Model-specific
+calibration/test memberships remain 94/88 IID and 83/90 geographic clips.
+The complete queue finishes on 16 October 2026. Recomputing all 21,608 saved
+probabilities from checkpoint weights and per-clip features gives maximum
+absolute error zero: 8,744 calibration and 12,864 test probabilities.
+
+| Training / features | Split | Threshold | Event recall | Median delay, s | Off-target / clip | Budget exceeded |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| Source-frame / candidate | IID | 0.00 | 0.568 | 0.779 | 0.455 | No |
+| Source-frame / global | IID | 0.16 | 0.545 | 0.763 | 0.568 | Yes |
+| Fixed-time / candidate | IID | 0.00 | 0.568 | 0.779 | 0.455 | No |
+| Fixed-time / global | IID | 0.00 | 0.568 | 0.779 | 0.455 | No |
+| Source-frame / candidate | Geographic | 0.08 | 0.567 | 0.833 | 0.978 | Yes |
+| Source-frame / global | Geographic | 0.06 | 0.622 | 0.750 | 0.433 | No |
+| Fixed-time / candidate | Geographic | 0.00 | 0.600 | 0.646 | 0.444 | No |
+| Fixed-time / global | Geographic | 0.01 | 0.600 | 0.646 | 0.444 | No |
+
+The clock-only positive control reaches recall 0.568/0.600 and off-target
+demand 0.455/0.444 for IID/geographic testing, respectively. Four selected
+zero-threshold models reproduce it exactly. The fixed-time geographic global
+model also labels every valid test context positive at threshold 0.01 and
+reproduces its event outcomes. Neither control introduces visual evidence.
+
+The source-frame geographic global model exceeds the clock control by
+2.22 pp [0.00, 5.56], while source-frame geographic candidate differs by
+-3.33 pp [-12.25, 6.67]. Source-frame IID global differs by -2.27 pp
+[-5.68, 0.00]. No model-minus-clock pointwise interval lies strictly above
+zero. These findings do not establish a positive visual contribution under
+this episode-budget operating rule; they suggest sensitivity to event-time
+placement and persistence warm-up in the accident-clip cohort.
+
+The episode budget constrains alert onsets rather than the fraction or
+duration of positive contexts. A sustained positive sequence can therefore
+emit few episodes while accepting nearly every context. All models accept
+between 85.7% and 100% of valid test contexts at their selected thresholds.
+Future operating-point studies should additionally constrain pre-event
+positive exposure, then validate on independent continuous normal sessions
+and newly declared event cohorts. The current outcomes and desktop reference
+defaults remain unchanged.
+
+Testing rejects 45 IID and 28 geographic contexts under the predeclared
+cadence/lateness rule; all test clips retain at least one valid context.
+One geographic calibration clip has no valid contexts and remains a miss
+in its fixed denominator. Two of eight test policies exceed their 0.5
+episode calibration budget. Delay summaries condition on detected clips;
+they do not count misses as zero delay or measure hardware service time.
+
+![Common-clock event recall and off-target demand](assets/presentation_event_controls.png)
+
+[Eight-model results and paired recall intervals](results/presentation_event_comparison.json) ·
+[Full training-only curves and selections](results/presentation_event_selection.json) ·
+[Nonvisual controls and prediction verification](results/presentation_event_controls.json) ·
+[2,130 public per-clip outcomes](results/presentation_event_outcomes.csv) ·
+[Trace provenance](results/presentation_event_outcomes.json).
+
+The native workbench presents PTS window, event and clock-control tables in
+separate tabs, preserving the original benchmark profiles and their clocks.
+
+![Native PTS event results](assets/desktop_pts_events.png)
+![Native nonvisual controls](assets/desktop_pts_controls.png)

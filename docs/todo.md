@@ -51,11 +51,14 @@
 - [x] Recompute all paired window results from prediction CSVs and verify byte-identical publication.
 - [x] Implement and CPU-test continuous PTS contexts, missing-hop persistence resets and annotation-time event evaluation.
 - [x] Implement a separate model/source-hashed event protocol and calibration-before-test queue.
-- [ ] Complete continuous PTS replay and publish eight-model event recall, delay and alert-budget outcomes.
+- [x] Complete continuous PTS replay and publish eight-model event recall, delay and alert-budget outcomes.
 - [x] Complete 170-source calibration replay and preserve/recover a format-only reporting failure without changing frozen scientific implementations.
 - [x] Freeze nonvisual temporal controls after calibration and before test replay.
-- [ ] Verify all continuous probabilities from saved features and publish clock-control contrasts.
-- [ ] Display completed PTS window/event/control results in the native workbench.
+- [x] Verify all 21,608 continuous probabilities from saved features and publish clock-control contrasts.
+- [x] Display completed PTS window/event/control results in the native workbench.
+- [x] Publish full train-only calibration curves, 2,130 per-clip outcomes and independently recomputable aggregate/paired-interval tests.
+- [ ] Verify real TCN confidence/persistence traces in a bit-accurate RTL controller, with an explicit quantization audit.
+- [ ] Predeclare a positive-exposure-aware calibration follow-up and a new event validation cohort; retain current findings and defaults.
 
 ## Completed Case: Red-Line Parking
 

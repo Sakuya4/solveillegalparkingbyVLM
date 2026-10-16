@@ -1,0 +1,12 @@
+{
+  "inputs": {
+    "docs/results/presentation_event_comparison.json": "db7d20d96def9f1d3574a3dbe4e9ad88fef7d239253c03e79940ba046a8e57b0",
+    "docs/results/presentation_event_controls.json": "74a570c6cf3db7a5cce290b496594e005ff90337454d47c9129f1e5e895b3bfb"
+  },
+  "plotter_sha256": "0b9f467d3f08021586cf16d2bebe286186f2421e03f93b1f7c176e0f5b8af81e",
+  "outputs": {
+    "presentation_event_controls.png": "efdcac00e7e776184b5fc1b7c9a2eb72005e80bfd62d53bc9f3b2710f5211197",
+    "presentation_event_controls.pdf": "ce65a9ff31504b9515aa0571b5342e6d348bb775c96ffaef0fffbd652bf675ee"
+  },
+  "scope": "Point estimates on fixed event cohorts; model-minus-clock uncertainty is in the linked numerical study"
+}

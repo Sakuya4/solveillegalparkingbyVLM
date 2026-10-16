@@ -1,0 +1,21 @@
+{
+  "protocol_sha256": "f8725a5e20f5d6ac04c55f15b37e88f8e2ae8555eb3599f8ed903768ab77b131",
+  "selection_sha256": "18b50009e6bc4d161ff686803311e59b6692bf105167b54109074aec83ef6e00",
+  "prediction_audit_sha256": "74a570c6cf3db7a5cce290b496594e005ff90337454d47c9129f1e5e895b3bfb",
+  "outcomes_sha256": "b655847520e2984d40066c1585372726085a7b0ff087d4a626d6d6aef4705766",
+  "rows": 2130,
+  "publisher_sha256": "040ebb563ee18c195e1510b500df7dfa04b0ba16b7233b0c6051593d98433fc7",
+  "model_sha256": {
+    "legacy_candidate_iid": "10b11c32038166981a366bde3906dbc5701930138e81d2775575bc5202cafd92",
+    "legacy_global_iid": "a38f298b562c425afa505622aa0754404c496ed9957d6fef0cb103f5b2631c16",
+    "legacy_candidate_geographic": "13c8bfd11dbb1559f496ca6aeb9c2742e6d105ed5e8add3f74d74ba6110b0242",
+    "legacy_global_geographic": "61d44157c076cb1851fee28aebd196e30ba38f0b5fc56478357e44a102599d3e",
+    "fixed_candidate_iid": "bfe22b248c86f16325beaa8db79e9842a5723dfdd05ca2c90ab840df709feb9b",
+    "fixed_global_iid": "d80b482f4e7c2c3b3be5a3b3536b169e174f0afc89259f6022a71f1d3f632173",
+    "fixed_candidate_geographic": "367c5e239d699420924da1729c56310de832637c317c857475b95adbd6683349",
+    "fixed_global_geographic": "52ea91aff3233780d9a47c850c29df5ef7199f1494a9461149aedc24f5751575"
+  },
+  "clock": "Normalized video presentation timestamps; supplied annotation frame, no legacy clamp",
+  "missing_values": "Empty delay/trigger fields indicate no matched detection; empty outcome fields with empty threshold indicate an infeasible policy, not a negative prediction",
+  "scope": "Calibration and test accident clips, source identities retained; not reviewed-normal CCTV exposure"
+}

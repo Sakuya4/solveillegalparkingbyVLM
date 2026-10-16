@@ -369,6 +369,17 @@ metrics, all eight model hashes and pointwise source-clip intervals. Its
 [continuous PTS follow-up](presentation_event_protocol.md) uses a separate
 common-clock, training-calibrated event contract.
 
+The completed PTS follow-up evaluates all eight variants on 88 IID and 90
+geographic event clips. Clock-only recall is 0.568/0.600, with off-target demand
+0.455/0.444 per clip. Four zero-threshold selections and one saturated test
+policy reproduce these event outcomes. No model-minus-clock pointwise
+interval lies strictly above zero. Two learned policies exceed the test
+episode budget. These results motivate separating alert-onset constraints
+from positive-context exposure before promoting an operating policy.
+The complete study publishes 2,130 per-clip outcomes, full train-only curves,
+native comparison tables and exact recomputation of 21,608 probabilities.
+All legacy results retain their original cohorts and clocks.
+
 Continuous-event calibration uses 101 IID and 90 geographic held-out training
 clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating
 settings are evaluated on separate 100-clip test batches after threshold

@@ -153,6 +153,14 @@ geographic testing; global changes are -6.68 pp [-9.72, -3.64] and -8.24 pp
 AUROC. Retain both directions and distinguish ranking from threshold effects.
 The separate event follow-up uses common PTS inputs for both fitted arms,
 two-window persistence, missing-hop resets and training-only episode budgets.
+That event follow-up is complete: two of eight policies exceed their test
+episode budget. Four threshold-zero models and one saturated test policy
+reproduce a nonvisual same-grid control with recall 0.568/0.600. No pointwise
+model-minus-clock interval lies strictly above zero. Interpret this as a
+diagnostic of event-placement and operating-objective sensitivity, not a
+visual-detection improvement. Distinguish onset budgets from positive-context
+exposure. Publish 2,130 per-clip outcomes and the exact 21,608-probability
+checkpoint/feature verification alongside full training-only selection curves.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and

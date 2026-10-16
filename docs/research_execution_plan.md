@@ -183,6 +183,18 @@ At the deadline, report delivered artifacts and remaining external requirements.
     zero. Freeze nonvisual positive/negative diagnostic controls before test
     replay and audit saved probabilities against all eight checkpoints.
     The recovered queue resumes at selection and test, not calibration.
+21. Completed: all PTS event replay, eight-model reporting and a separate
+    probability/control audit. All 21,608 probabilities reproduce exactly.
+    Clock-only recall is 0.568/0.600; five test policies produce identical
+    event outcomes, and no model-minus-clock interval is strictly positive.
+    Two of eight policies exceed the test episode budget. Publish full
+    calibration curves, 2,130 per-clip records, figures and native tables.
+22. Next: connect frozen real-score traces to a bit-accurate RTL persistence
+    controller with explicit probability quantization checks. Study a
+    positive-exposure-aware calibration objective on training holdouts and
+    freeze a new event cohort before further evaluation. Episode onset
+    budgets alone admit near-always-positive policies; preserve this result
+    rather than changing thresholds or defaults after seeing test scores.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -198,7 +210,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 416 tests pass,
+(native desktop and portable runtime). Current full regression: 426 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

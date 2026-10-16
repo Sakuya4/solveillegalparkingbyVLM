@@ -184,6 +184,17 @@ Candidate gains accompany increased test FPR. The
 all eight models, ranking metrics and paired uncertainty; continuous event
 evaluation uses a separately frozen common-clock contract.
 
+Continuous PTS replay evaluates 88 IID and 90 geographic event clips across
+all eight training-calibrated variants. A nonvisual, same-grid warm-up control
+achieves recall **0.568 / 0.600**; four zero-threshold policies reproduce it
+exactly. This comparison separates visual contribution from event-time priors.
+The [complete event/control study](docs/presentation_event_protocol.md)
+reports alert budgets, paired intervals and 2,130 source-hashed per-clip
+outcomes. All 21,608 saved probabilities reproduce exactly from their models
+and feature tensors. Native evaluation tabs display the same measurements.
+
+![Presentation-time event evaluation and nonvisual controls](docs/assets/presentation_event_controls.png)
+
 ### Multimodal Evidence and Restoration
 
 ![Privacy-treated temporal evidence](docs/assets/incident_vlm_clean_evidence.jpg)

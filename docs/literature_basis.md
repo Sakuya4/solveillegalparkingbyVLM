@@ -47,6 +47,10 @@ before computing this interval; they are not resolved by the interval itself.
 
 - [ACCIDENT benchmark](https://github.com/accidentbench/ACCIDENT): fixed-CCTV
   incident metadata and official data partitions.
+- [ACCIDENT nonvisual timing baseline](https://github.com/accidentbench/ACCIDENT/blob/main/baselines/heuristic/naive.py):
+  midpoint and explicitly oracle-aided median controls. The PTS event follow-up
+  instead adds a causal, same-grid warm-up control before test replay to
+  distinguish learned visual decisions from event-placement structure.
 - [VideoMAE](https://github.com/MCG-NJU/VideoMAE): pretrained video encoder and
   fine-tuning design.
 - [SAM 2](https://github.com/facebookresearch/sam2): prompted spatial evidence.
