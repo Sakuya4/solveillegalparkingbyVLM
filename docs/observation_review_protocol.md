@@ -26,6 +26,21 @@ Playback duration at 7.5 FPS is not substituted for source-clock exposure.
 The limit defines an acquisition-coverage rule, not continuous visibility
 between every pair of frames.
 
+The initial 120-second acquisition request terminated after 30.303 s with a
+source-read failure; its original record is retained. The subsequent transport
+protocol allows three consecutive reconnect attempts, with interruptible
+0.25/0.5/1-second backoff. A successful frame resets the consecutive-failure
+budget. Source indices and decoder observation time remain monotonic across
+connections. The main worker polls the mailbox every 0.5 s so duration and
+cancellation checks continue while reconnecting.
+
+When adjacent sampled frames differ by more than one second, motion features,
+tracker state and persistence are reset. Pending event evidence is finalized
+with the last available pre-gap image and marked truncated. A new causal
+window requires fresh post-gap features; no artificial frames or continuous
+exposure are inserted across the interruption. Gap records and reconnect
+counters accompany subsequent acquisition reports.
+
 Primary normal exposure requires label `normal`, complete available-frame review,
 and a declaration that model outputs were not consulted. Uncertain, incomplete,
 and model-informed records are excluded. Contradictory eligible labels exclude

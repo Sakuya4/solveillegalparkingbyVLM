@@ -49,6 +49,7 @@ class StreamingIncidentProcessor:
         self.positive_count = 0
         self.probability = None
         self.review_active = False
+        self.segment_start_index = 0
 
     def process(self, frame, source_index: int, source_time_sec: float) -> StreamingUpdate:
         if source_index <= self.previous_source_index or not math.isfinite(source_time_sec) or source_time_sec < 0 or source_time_sec <= self.previous_source_time:
@@ -65,7 +66,7 @@ class StreamingIncidentProcessor:
             step = compute_candidate_motion_step(self.previous_frame, feature_frame, tracks)
             values = np.asarray([step.features[name] for name in CANDIDATE_MOTION_FEATURE_NAMES], dtype=np.float32)
             self.features.append(values[self.feature_indices])
-            if len(self.features) == self.sequence_steps and (self.sampled_index - self.sequence_steps) % self.hop_steps == 0:
+            if len(self.features) == self.sequence_steps and (self.sampled_index - self.segment_start_index - self.sequence_steps) % self.hop_steps == 0:
                 window_start = self.sampled_index - self.sequence_steps
                 probability = float(self.predictor.predict_probabilities(np.asarray([self.features], dtype=np.float32))[0])
                 if not math.isfinite(probability) or not 0 <= probability <= 1:
@@ -79,32 +80,53 @@ class StreamingIncidentProcessor:
         self.previous_source_index, self.previous_source_time = source_index, source_time_sec
         return StreamingUpdate(self.sampled_index, source_index, source_time_sec, self.probability, self.review_active, new_event, window_start, tracks, step, time.perf_counter() - started)
 
-    def close(self):
+    def reset_temporal_context(self):
         reset_ultralytics_trackers(self.detector)
         self.previous_frame = None
         self.features.clear()
+        self.positive_count = 0
+        self.probability = None
+        self.review_active = False
+        self.segment_start_index = self.sampled_index + 1
+
+    def close(self):
+        self.reset_temporal_context()
 
 
 class LatestFrameReader:
     """A one-frame mailbox drains the source independently of inference latency."""
 
-    def __init__(self, source):
+    def __init__(self, source, *, max_retries=0, retry_delay_sec=0.25):
+        if not isinstance(max_retries, int) or max_retries < 0 or not math.isfinite(retry_delay_sec) or retry_delay_sec <= 0:
+            raise ValueError("Retry count must be nonnegative and retry delay positive")
         self.source = source
+        self.max_retries, self.retry_delay_sec = max_retries, retry_delay_sec
         self.condition = threading.Condition()
         self.latest = None
         self.stopped = threading.Event()
         self.error = None
         self.decoded_frames = self.overwritten_frames = 0
+        self.read_failures = self.retry_attempts = 0
         self.started = time.perf_counter()
         self.thread = threading.Thread(target=self._run, name="camera-reader", daemon=True)
         self.thread.start()
 
     def _run(self):
         try:
+            consecutive_failures = 0
             while not self.stopped.is_set():
                 ok, frame = self.source.read()
                 if not ok or frame is None:
-                    raise ConnectionError("Streaming camera read failed")
+                    self.read_failures += 1
+                    if consecutive_failures >= self.max_retries:
+                        raise ConnectionError("Streaming camera read failed; retry budget exhausted")
+                    self.retry_attempts += 1
+                    self.source.release()
+                    if self.stopped.wait(min(1.0, self.retry_delay_sec * 2 ** consecutive_failures)):
+                        break
+                    consecutive_failures += 1
+                    continue
+                consecutive_failures = 0
                 observed = time.perf_counter() - self.started
                 with self.condition:
                     self.overwritten_frames += int(self.latest is not None)

@@ -42,6 +42,7 @@ def main():
     from illegal_parking.incident_streaming import StreamingIncidentProcessor, LatestFrameReader
     from illegal_parking.onnx_runtime import OnnxIncidentPredictor
     from illegal_parking.incident_vlm_evidence import write_clean_review_package
+    from illegal_parking.observation_review import MAX_OBSERVATION_GAP_SEC
     from run_candidate_incident_video import _blur_plate_region, _pixel_bbox
 
     cv2.setNumThreads(2)
@@ -57,6 +58,7 @@ def main():
     reader = capture = writer = clean_writer = None
     context = deque(maxlen=16)
     pending, events, windows, frame_times, processing_times = [], [], [], [], []
+    context_gaps = []
     source = redacted_camera_url(args.input) if camera else str(Path(args.input).resolve())
     started_utc = datetime.now(timezone.utc).isoformat()
     started = time.perf_counter()
@@ -86,7 +88,7 @@ def main():
                 raise ValueError("No camera endpoint found")
             redacted_camera_url(media)
             transport = HTTPImageSource(media, max_frames=None, timeout_sec=5, poll_interval_sec=0.5) if args.source_mode == "snapshot" else MJPEGFrameSource(media, timeout_sec=5)
-            reader = LatestFrameReader(transport)
+            reader = LatestFrameReader(transport, max_retries=3)
         else:
             capture = cv2.VideoCapture(args.input)
             fps = float(capture.get(cv2.CAP_PROP_FPS))
@@ -102,8 +104,10 @@ def main():
                     if time.perf_counter() - reader.started >= args.duration_sec:
                         break
                     try:
-                        source_index, timestamp, frame = reader.read()
-                    except (ConnectionError, TimeoutError) as exc:
+                        source_index, timestamp, frame = reader.read(timeout_sec=0.5)
+                    except TimeoutError:
+                        continue
+                    except ConnectionError as exc:
                         end_reason, source_error = "source_error", str(exc)
                         break
                 else:
@@ -118,6 +122,13 @@ def main():
                 if timestamp + 1e-9 < next_sample:
                     continue
                 next_sample += (math.floor(max(0, timestamp - next_sample) * 7.5) + 1) / 7.5
+                if frame_times and timestamp - frame_times[-1] > MAX_OBSERVATION_GAP_SEC:
+                    for item in pending:
+                        finish_evidence(item, context[-1][0], context[-1][1], True)
+                    pending.clear()
+                    context.clear()
+                    processor.reset_temporal_context()
+                    context_gaps.append({"before_sec": frame_times[-1], "after_sec": timestamp, "duration_sec": timestamp - frame_times[-1], "temporal_context_reset": True})
                 update = processor.process(frame, source_index, timestamp)
                 available = time.perf_counter() - started
                 height, width = frame.shape[:2]
@@ -185,6 +196,7 @@ def main():
     if not processed:
         raise ValueError("No frames were processed")
     report = {"input": source, "output_video": str(output_video.resolve()), "source_mode": args.source_mode,
+              "requested_duration_sec": args.duration_sec, "context_gap_limit_sec": MAX_OBSERVATION_GAP_SEC, "context_gaps": context_gaps,
               "clean_video": str(clean_video.resolve()), "clean_video_sha256": hashlib.sha256(clean_video.read_bytes()).hexdigest(),
               "clean_video_contract": "Privacy-treated sampled frames without model boxes, probabilities, event state, or artificial timestamp overlays",
               "annotation_free_inference": True, "streaming_inference": True, "started_at_utc": started_utc,
@@ -203,7 +215,11 @@ def main():
               "decisions_sha256": hashlib.sha256((args.output_dir / "decisions.jsonl").read_bytes()).hexdigest(),
               "privacy": privacy, "vlm_requested": False, "review_architecture": "Immediate event notification; post-event evidence export is deferred until context arrives, independently of subsequent VLM review"}
     if reader is not None:
-        report["acquisition"] = {"decoded_frames": reader.decoded_frames, "mailbox_overwrites": reader.overwritten_frames, "clock": "Local decoder observation, not a source-camera sensor timestamp"}
+        report["acquisition"] = {"decoded_frames": reader.decoded_frames, "mailbox_overwrites": reader.overwritten_frames,
+                                 "read_failures": reader.read_failures, "retry_attempts": reader.retry_attempts,
+                                 "max_consecutive_retries": reader.max_retries,
+                                 "connections": transport.get_metadata().get("connections"),
+                                 "clock": "Local decoder observation, not a source-camera sensor timestamp"}
         arrivals = [item["arrival_to_decision_sec"] for item in windows]
         report["arrival_to_decision_sec"] = {"median": float(np.median(arrivals)) if arrivals else None, "p95": float(np.percentile(arrivals, 95)) if arrivals else None}
     publish_json(args.output_dir / "report.json", report)

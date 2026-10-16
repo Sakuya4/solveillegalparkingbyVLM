@@ -87,3 +87,61 @@ def test_latest_frame_reader_reports_source_failure_without_hanging():
     with pytest.raises(ConnectionError, match="read failed"):
         reader.read(timeout_sec=1)
     reader.close()
+
+
+def test_streaming_context_reset_requires_fresh_features_and_persistence():
+    class Positive(Predictor):
+        def predict_probabilities(self, windows):
+            return np.ones(len(windows))
+
+    processor = StreamingIncidentProcessor(Detector(), Positive(), display_width=32, sequence_steps=3, hop_steps=3, min_positive_windows=1)
+    frame = np.zeros((24, 32, 3), dtype=np.uint8)
+    before = [processor.process(frame, index, index / 7.5) for index in range(4)]
+    assert before[-1].new_event
+    processor.reset_temporal_context()
+    after = [processor.process(frame, index, 10 + index / 7.5) for index in range(4, 8)]
+    assert after[0].step is None
+    assert all(item.probability is None and not item.review_active for item in after[:3])
+    assert after[-1].new_event and after[-1].window_start == 4
+    processor.close()
+
+
+def test_reader_recovers_transient_failure_and_retains_monotonic_source_clock():
+    class Source:
+        calls = 0
+        releases = 0
+
+        def read(self):
+            self.calls += 1
+            time.sleep(0.003)
+            return (False, None) if self.calls == 1 else (True, np.zeros((8, 8, 3), dtype=np.uint8))
+
+        def release(self):
+            self.releases += 1
+
+    source = Source()
+    reader = LatestFrameReader(source, max_retries=3, retry_delay_sec=0.001)
+    first, second = reader.read(), reader.read()
+    reader.close()
+    assert reader.read_failures == reader.retry_attempts == 1
+    assert source.releases >= 2
+    assert second[0] > first[0] and second[1] > first[1]
+
+
+def test_reader_permanent_failure_is_bounded_and_backoff_is_cancellable():
+    class Source:
+        def read(self):
+            return False, None
+
+        def release(self):
+            pass
+
+    reader = LatestFrameReader(Source(), max_retries=3, retry_delay_sec=0.001)
+    with pytest.raises(ConnectionError, match="retry budget exhausted"):
+        reader.read(timeout_sec=1)
+    reader.close()
+    assert reader.read_failures == 4 and reader.retry_attempts == 3
+    slow = LatestFrameReader(Source(), max_retries=3, retry_delay_sec=1)
+    started = time.perf_counter()
+    slow.close()
+    assert time.perf_counter() - started < 0.5

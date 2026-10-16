@@ -24,6 +24,8 @@ def main():
                              "detector_sha256": report["detector_sha256"], "started_at_utc": report["started_at_utc"],
                              "source_mode": report["source_mode"], "source_clock": report["event_clock"],
                              "sampled_frames": report["sampled_frames"], "source_span_sec": times[-1] - times[0],
+                             "requested_duration_sec": report.get("requested_duration_sec"), "end_reason": report["end_reason"], "source_error": report["source_error"],
+                             "context_gaps": report.get("context_gaps", []),
                              "observable_sec_at_gap_limit": sum(value for value in differences if value <= MAX_OBSERVATION_GAP_SEC),
                              "excluded_gap_sec": sum(value for value in differences if value > MAX_OBSERVATION_GAP_SEC),
                              "model_alert_episodes": len(report["events"]), "acquisition": report.get("acquisition"),
