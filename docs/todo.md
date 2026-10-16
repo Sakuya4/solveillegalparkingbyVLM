@@ -26,9 +26,13 @@
 - [x] Add native persistent CCTV observations, preview, cancellation, and source-clock analysis.
 - [x] Add continuous streaming inference with bounded buffers and real-detector replay parity.
 - [x] Complete paired 320/640-pixel event preprocessing audit with common window hops.
-- [ ] Calibrate continuous-event thresholds on held-out training clips under a fixed preprocessing contract.
+- [x] Calibrate continuous-event thresholds on held-out training clips under a fixed preprocessing contract.
+- [x] Publish all 24 frozen event operating settings and paired recall intervals.
+- [x] Test empirical VLM service variability in 176 scenarios with 32 SystemC parity checks.
 - [x] Replay TCN-gated demand with source-event identities and 24 SystemC parity checks.
 - [ ] Extend independently reviewed normal-camera exposure and adjudicate streaming alerts.
+- [x] Preserve VLM evidence gaps and operator-review requests in native review routing.
+- [x] Reanalyze selective visual support separately from raw VLM classification.
 
 ## Completed Case: Red-Line Parking
 

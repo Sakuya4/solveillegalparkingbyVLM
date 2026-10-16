@@ -102,13 +102,21 @@ At the deadline, report delivered artifacts and remaining external requirements.
    hop-15 inference. No deployment default is selected by test performance.
    `--phase resolution` records progress
    in `outputs/research_runs/resolution_status.json`; inspect all status files.
-10. Next: train-only continuous-event calibration with fixed spatial/cadence/hop
-    contracts, reviewed streaming alerts, longer normal exposure, and
-    heterogeneous service-time scenarios. Preserve all reference artifacts.
+10. Completed: train-only continuous-event calibration with fixed spatial/cadence/hop
+    contracts and all 24 operating settings. Five of twelve IID and nine of
+    twelve geographic test settings exceed their calibration alert budget.
+    The reference deployment remains unchanged.
     The [frozen calibration protocol](continuous_event_calibration.md) uses
     101 IID and 90 geographic model-fitting holdout clips. The separate
     `--phase calibration` queue records `calibration_status.json`; selection
     must complete before each corresponding 100-clip test replay starts.
+11. Completed: evidence-aware VLM disposition, including all declared evidence
+    gaps and review requests, and 176 variable-service scenarios with 32
+    exact SystemC/Python counter comparisons.
+12. Next: review the two unlabeled streaming alerts, extend independently
+    reviewed normal exposure, and connect saved streaming evidence to the
+    native optional-review workflow without rerunning the detector. Add
+    exclusive GPU-job checks before any new multimodal inference.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -124,7 +132,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 282 tests pass,
+(native desktop and portable runtime). Current full regression: 297 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
@@ -139,4 +147,5 @@ all five measured-service routing workloads.
 The spatial-resolution queue is also complete. Its publisher verifies common
 window grids and prevents confounding decision hops with feature resolution.
 Native continuous inference and 24 TCN-gated SystemC replays are published;
-train-only event calibration and reviewed stream exposure are next.
+train-only event calibration is complete; reviewed stream exposure and native
+post-stream review remain next.

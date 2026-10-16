@@ -187,6 +187,15 @@ The protocol was specified in [ADR 004](decisions/004-temporal-evidence-density.
 
 Data: [eight-frame ablation](results/incident_vlm_qwen_dense8_greedy_batch.json).
 
+Evidence-aware disposition additionally honors the VLM's evidence gaps and
+operator-review request. In the fixed greedy Qwen cohort, confidence-only
+support accepts eight sequences (six positive, two negative). All eight
+declare evidence gaps and are therefore unresolved under the complete-evidence
+policy. Twelve other sequences produce temporal/visual disagreement. Raw
+classification remains 14/20 correct; selective support precision is undefined
+when no cases are supported. [Review-routing analysis](vlm_evidence_routing.md)
+separates these endpoints and preserves every temporal event.
+
 ## 5. Government CCTV Monitoring
 
 A Taichung public-CCTV endpoint was sampled for 300.26 seconds, yielding 252
@@ -211,8 +220,8 @@ separately from the normal-exposure cohort above.
 
 The application previews acquisition, preserves source-frame timestamps,
 verifies the captured-video hash, and maps exported events back to observation
-time. Acquisition precedes batch analysis in this workflow; continuous inference
-is specified in [ADR 005](decisions/005-observation-clock-and-live-inference.md).
+time. Acquisition precedes batch analysis in this workflow; the subsequent
+continuous implementation is documented in [ADR 005](decisions/005-observation-clock-and-live-inference.md).
 
 Data: [native camera observations](results/native_cctv_observations.json).
 
@@ -316,6 +325,26 @@ Data: [temporal allocation study](government_camera_study.md),
 [descriptive integration](assets/government_risk_integration.json).
 
 ## 8. Research Implications
+
+Continuous-event calibration uses 101 IID and 90 geographic held-out training
+clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating
+settings are evaluated on separate 100-clip test batches after threshold
+selection. At hop 15 and a calibration budget of 0.5 off-target episodes/clip,
+two-window recall changes from 0.02 to 0.47 (IID) and 0.05 to 0.53 (geographic).
+Test off-target demand is 0.65 and 0.87 episodes/clip, exceeding that budget.
+One-window recall instead decreases from 0.34 to 0.19 and 0.36 to 0.24.
+Five of twelve IID and nine of twelve geographic settings exceed their
+calibration budgets. These results preserve the full tradeoff rather than
+selecting a replacement default from test scores.
+[Complete calibration study](continuous_event_calibration.md).
+
+Review-service sensitivity replaces constant mean service with source-bound
+empirical draws from twenty measured Qwen durations in 176 scenarios. All 32
+constant/first-assignment SystemC comparisons agree on eight integer counters.
+For four-camera responsive metered replay, p95 completion latency changes from
+32.96 to a median of 39.06 s (IID) and 32.95 to 36.91 s (geographic). Matched
+event completions remain 62 and 78 in those conditions. Assignment ranges are
+not population confidence intervals. [Service study](review_service_variability.md).
 
 The system establishes an auditable connection between incident timing,
 evidence generation, compute capacity, and public-sector allocation. The

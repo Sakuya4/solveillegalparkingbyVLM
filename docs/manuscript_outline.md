@@ -102,6 +102,15 @@ Continuous inference verifies batch parity and reports decoder-arrival latency
 with a bounded mailbox. The 24-condition TCN-gated hardware replay measures
 annotation-matched event retention, demonstrating why queue-drop reduction
 alone is not a sufficient endpoint for evidence routing.
+Evidence-aware VLM routing distinguishes schema compliance, classification,
+and declared evidence sufficiency. Retain the zero-supported-case result under
+the complete-evidence policy, with undefined support precision and explicit
+unresolved coverage, alongside unchanged raw model classification results.
+The fixed-contract event-calibration study reports all 24 settings selected
+on held-out training clips. Distinguish improvements in two-window event recall
+from test budget exceedance and changes in one-window recall. The 176-scenario
+service study adds empirical review-time variability and 32 SystemC counter
+checks; assignment ranges are sensitivity summaries, not confidence intervals.
 
 ## 6. Discussion
 

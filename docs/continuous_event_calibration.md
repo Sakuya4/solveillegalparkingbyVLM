@@ -63,6 +63,47 @@ python scripts/run_overnight_research.py --phase calibration --deadline 2026-10-
 python -m pytest tests/test_incident_event_calibration.py tests/test_continuous_calibration_cli.py tests/test_overnight_research.py
 ```
 
-The protocol is committed before the new continuous-event inference run. It
-is a reproducible benchmark continuation, not an externally preregistered field
-trial. Result publication follows successful verification of both stages.
+## Test Results
+
+The protocol was committed at `83a9ff8` before continuous-event inference.
+All eight queue stages completed with selection preceding test
+inference and all provenance checks satisfied. The table shows the predeclared
+0.5-episode budget at hop 15; all 24 settings are retained in the linked tables.
+
+| Split | Gate | Threshold | Calibration off-target/clip | Test recall | Test off-target/clip | Median delay (s) | Recall difference from window threshold (95% interval) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| IID | 1 | 0.98 | 0.406 | 0.19 | 0.48 | 0.797 | -0.15 (-0.23, -0.08) |
+| IID | 2 | 0.03 | 0.495 | 0.47 | 0.65 | 0.842 | +0.45 (+0.35, +0.55) |
+| Geographic | 1 | 0.95 | 0.389 | 0.24 | 0.96 | 0.962 | -0.12 (-0.19, -0.06) |
+| Geographic | 2 | 0.04 | 0.389 | 0.53 | 0.87 | 0.946 | +0.48 (+0.38, +0.58) |
+
+The corresponding original full-cohort window thresholds give hop-15 recall
+0.34/0.02 for IID gates 1/2 and 0.36/0.05 for geographic gates 1/2. Event-level
+selection changes the persistence tradeoff substantially. Five of twelve IID
+settings and nine of twelve geographic settings exceed their nominal
+calibration budget on test clips. Thresholds of 1.00 selected under tight
+hop-five/gate-one budgets yield zero test recall. This is a substantive
+operating constraint, not a missing result.
+
+Neither off-target episode count nor episode-level recall must vary monotonically
+with threshold: changing a threshold can split or merge positive runs and move
+an episode's first alert outside the matching interval. Test budget exceedance
+therefore motivates explicit demand monitoring and new, independently reviewed
+normal exposure rather than a test-selected threshold replacement. Conditional
+delay describes detected events only. The two test cohorts overlap in source
+clips and are not pooled as independent replications.
+
+![All predeclared operating settings](assets/continuous_event_calibration.png)
+
+Circles/squares denote persistence gates 1/2; crosses W1/W2 denote the original
+window threshold for the corresponding gate. Coincident selected settings
+overlap. Colors identify calibration budgets, not achieved test budgets.
+
+[IID complete table](results/continuous_event_calibration_iid.csv) ·
+[Geographic complete table](results/continuous_event_calibration_geographic.csv) ·
+[IID provenance and intervals](results/continuous_event_calibration_iid.json) ·
+[Geographic provenance and intervals](results/continuous_event_calibration_geographic.json)
+
+```powershell
+python scripts/plot_continuous_event_calibration.py
+```
