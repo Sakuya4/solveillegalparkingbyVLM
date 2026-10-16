@@ -355,6 +355,13 @@ Data: [temporal allocation study](government_camera_study.md),
 
 ## 8. Research Implications
 
+The [temporal source audit](cadence_source_audit.md) distinguishes nominal
+frame-index timing from presentation timestamps before cadence-controlled
+training. All 2,027 media inputs are hashed; seven train-only decoded traces
+show nominal-clock deviations up to 1.36 s. Existing event results retain their
+original clock contract. Presentation-time sampling and label-frame support
+will define the separate controlled extension.
+
 Continuous-event calibration uses 101 IID and 90 geographic held-out training
 clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating
 settings are evaluated on separate 100-clip test batches after threshold

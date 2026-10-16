@@ -137,6 +137,10 @@ and regression-to-the-mean controls.
 Provide source manifests, model/archive hashes, split definitions, seeds,
 calibration scope, complete sweeps, launch commands, tests, figure scripts,
 software versions, and target specifications for hardware measurements.
+Distinguish presentation timestamps from frame-index/container-FPS clocks.
+The corpus clock audit hashes 2,027 sources and decodes seven train-only
+traces before the cadence/context ablation. Preserve annotation-frame support
+and specify physical-time cohorts before fitting additional models.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and

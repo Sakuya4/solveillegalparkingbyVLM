@@ -149,6 +149,12 @@ At the deadline, report delivered artifacts and remaining external requirements.
     develop a predeclared cadence-consistent training ablation. Hold physical
     sampling duration, fit/calibration splits and test contracts explicit;
     preserve current model binaries and do not tune defaults on test scores.
+    Source audit complete: all 2,027 inputs are hashed; 2,021 containers have
+    one additional terminal frame relative to metadata. Seven train-only
+    traces expose nominal frame-index/FPS versus presentation-time differences
+    up to 1.36 s. Freeze a presentation-time and annotation-support contract
+    before fitting; do not equate the legacy source-index clock with PTS.
+    [Source audit and controlled continuation](cadence_source_audit.md).
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -164,7 +170,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 338 tests pass,
+(native desktop and portable runtime). Current full regression: 359 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

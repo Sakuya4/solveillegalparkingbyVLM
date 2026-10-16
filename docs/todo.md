@@ -43,6 +43,9 @@
 - [x] Validate real public-camera reconnects over 120 seconds and preserve the earlier source-failure record.
 - [x] Verify native MJPEG closure recovery and temporal warm-up after source gaps.
 - [x] Rerun the complete reference clip, retain actual VLM disagreement, and publish source-hashed detection/native videos with visible media attribution.
+- [x] Audit all source-container frame counts/hashes and verify presentation clocks on seven train-only decoded traces.
+- [ ] Freeze presentation-time sampling, annotation-frame support and paired cohorts before cadence-consistent training.
+- [ ] Train and evaluate matched cadence/context TCN ablations without replacing reference models.
 
 ## Completed Case: Red-Line Parking
 

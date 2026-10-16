@@ -27,7 +27,10 @@ The protocol fixes source-downsampled feature width at 320, display width at
 640, target cadence at 7.5 Hz, and sequence length at 15 feature steps. Dense
 inference uses five-step hops; 15-step decisions are obtained by selecting the
 corresponding existing windows and recomputing persistence. Decision times use
-the actual sampled source-frame clock, not average-FPS approximation.
+the sampled source-frame index divided by container FPS, rather than an
+average resampled-playback timestamp. This is a frame-index clock, not decoded
+presentation time. The [presentation-clock audit](cadence_source_audit.md)
+keeps these timing contracts distinct; legacy measurements remain unchanged.
 
 For each one/two-window persistence gate and five/15-step hop, evaluate the
 threshold grid 0.00, 0.01, ..., 1.00 plus the model's original window-calibrated
