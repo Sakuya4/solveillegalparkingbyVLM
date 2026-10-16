@@ -20,12 +20,15 @@ def main():
     parser.add_argument("--report", type=Path, help="Open a previously completed analysis report.")
     parser.add_argument("--capture-page", help="Observe a public MJPEG camera page before optional analysis.")
     parser.add_argument("--capture-duration", type=float, default=30)
+    parser.add_argument("--continuous", action="store_true", help="Run causal streaming inference instead of capture followed by analysis")
     parser.add_argument("--seek-sec", type=float, default=0)
     args = parser.parse_args()
-    if not 0 <= args.tab < {1: 2, 3: 3}.get(args.page, 1):
+    if not 0 <= args.tab < {1: 2, 3: 3, 4: 2}.get(args.page, 1):
         parser.error("Select an available tab for this page")
     if args.report and args.capture_page:
         parser.error("Choose a saved report or a camera source")
+    if args.continuous and not args.capture_page:
+        parser.error("--continuous requires --capture-page")
     if not 0 < args.capture_duration <= 120:
         parser.error("Camera observations must be at most 120 seconds")
     if not math.isfinite(args.seek_sec) or args.seek_sec < 0:
@@ -62,7 +65,7 @@ def main():
             app.quit()
         if args.analyze or args.capture_page:
             def check_finished():
-                ready = window.report is not None if args.analyze else window.capture_report_path is not None
+                ready = window.report is not None if args.analyze or args.continuous else window.capture_report_path is not None
                 if ready:
                     if window.report is not None and window.report["events"]:
                         window.events.selectRow(0)
@@ -76,7 +79,7 @@ def main():
                 else:
                     QTimer.singleShot(100, check_finished)
             if args.capture_page:
-                QTimer.singleShot(100, lambda: window.capture_camera(args.capture_page, "page", args.capture_duration, args.analyze))
+                QTimer.singleShot(100, lambda: window.capture_camera(args.capture_page, "page", args.capture_duration, args.analyze, continuous=args.continuous))
             else:
                 QTimer.singleShot(100, window.analyze_video)
             QTimer.singleShot(300, check_finished)
@@ -84,7 +87,7 @@ def main():
         else:
             QTimer.singleShot(500, capture)
     elif args.capture_page:
-        QTimer.singleShot(100, lambda: window.capture_camera(args.capture_page, "page", args.capture_duration, args.analyze))
+        QTimer.singleShot(100, lambda: window.capture_camera(args.capture_page, "page", args.capture_duration, args.analyze, continuous=args.continuous))
     elif args.analyze:
         QTimer.singleShot(100, window.analyze_video)
     exit_code = app.exec()

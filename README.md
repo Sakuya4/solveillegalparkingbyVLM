@@ -61,8 +61,11 @@ uses two CPU threads. Qualcomm QNN HTP is selectable when its execution provider
 and target-compatible model are installed.
 
 The camera action supports public MJPEG pages, direct MJPEG streams, and
-snapshot URLs, with preview, bounded acquisition, cancellation, and subsequent
-analysis. Observation timestamps and source hashes accompany the exported events.
+snapshot URLs, with continuous causal inference, preview, bounded acquisition,
+cancellation, and optional capture-then-analysis. Source clocks, model hashes,
+and decision-availability timestamps accompany exported events. A one-frame
+acquisition mailbox and bounded temporal buffers prevent growing inference
+backlog. [Streaming protocol and measured latency](docs/streaming_inference.md).
 
 [Desktop architecture and deployment protocol](docs/desktop_application.md)
 
@@ -75,8 +78,9 @@ flowchart LR
     A["Camera or video input"] --> B["Vehicle tracking and motion proposals"]
     B --> C["Causal temporal inference"]
     C --> D["Persistence-gated event evidence"]
+    C --> F["Native operator workspace"]
     D --> E["SAM2 / VLM evidence analysis"]
-    E --> F["Native operator workspace"]
+    E --> F
     G["Taiwan A1/A2 and camera records"] --> H["Budgeted coverage allocation"]
     H --> F
     C --> I["ONNX / QNN deployment"]

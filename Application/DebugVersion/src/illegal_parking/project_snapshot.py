@@ -39,6 +39,7 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
     deployment["qnn_quantization"] = _load_json(results / "qnn_quantization.json")
     deployment["measured_review_queue"] = _load_json(results / "measured_review_queue.json")
     deployment["review_routing"] = _load_json(results / "review_routing.json")
+    deployment["incident_review_routing"] = {split: _load_json(results / f"incident_review_routing_{split}.json") for split in ("iid", "geographic")}
     government = _load_json(assets / "government_risk_integration.json")
     nafnet = _load_json(assets / "nafnet_cctv_demo" / "report.json")
     sm3det = _load_json(assets / "sm3det_transfer_audit.json")

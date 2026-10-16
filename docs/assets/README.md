@@ -35,3 +35,9 @@ The walkthrough includes actual output-video playback, event evidence, model
 tables, government coverage, and runtime diagnostics. It is reproduced with
 `scripts/record_desktop_demo.py` and H.264 transcoding; no additional inference
 is performed during recording. Source ACCIDENT media retain CC BY-NC-SA 4.0.
+
+`desktop_model_comparison.png` and `desktop_event_retention.png` render native
+result tables from checked-in numerical studies. `full_cohort_model_curves.png`
+and `.pdf` are generated from verified full-cohort test predictions using
+`scripts/plot_full_model_comparison.py`. Camera observation payloads are retained
+locally; public camera-session artifacts contain numerical measurements only.

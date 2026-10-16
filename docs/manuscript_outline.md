@@ -98,6 +98,10 @@ budget denials alongside completed reviews and queue drops.
 The full VideoMAE comparison includes eight model/split results, AUROC/AP,
 source-clip bootstrap intervals, and test-prevalence baselines. Persistent
 public-camera observations report source cadence and analysis time separately.
+Continuous inference verifies batch parity and reports decoder-arrival latency
+with a bounded mailbox. The 24-condition TCN-gated hardware replay measures
+annotation-matched event retention, demonstrating why queue-drop reduction
+alone is not a sufficient endpoint for evidence routing.
 
 ## 6. Discussion
 

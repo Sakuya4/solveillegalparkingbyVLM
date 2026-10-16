@@ -22,6 +22,7 @@ The same matrix is generated from checked-in artifacts for the integrated
 
 - [x] Native PySide6 application: playback, asynchronous analysis, cancellation,
   event navigation, export, portable ONNX execution, and camera observations.
+  Continuous inference includes bounded buffers and real-detector batch parity.
 - [x] Temporal government-data allocation: 180 matched-budget comparisons with
   January--September selection and October--December evaluation.
 - [x] Red-line parking rule, two-sided curb interpretation, privacy treatment,
@@ -70,6 +71,10 @@ The same matrix is generated from checked-in artifacts for the integrated
   0.444/0.450 and geographic F1 is 0.373/0.378, with paired clip-level intervals.
 - Native public-camera observation: 223 frames at 7.446 FPS, zero read failures,
   one persistent connection, and 17.613 s of CPU analysis for the 30 s capture.
+- Continuous native camera inference: 202 frames at 6.74 FPS; median/p95
+  decoder-arrival-to-window-decision latency 98/135 ms on the local CPU.
+- TCN-gated review routing: all 24 SystemC counter comparisons pass; admission
+  improves latency but can reduce retained annotated events, depending on load.
 - Existing New Taipei camera sites cover `18.95%` of joined top-risk score
   within 1 km.
 

@@ -85,13 +85,26 @@ At the deadline, report delivered artifacts and remaining external requirements.
    publication. All 2,027 clips were processed; 2,021 meet window eligibility.
    The 500-clip desktop model remains the reference version.
 5. Completed: five-policy routing comparison with exact SystemC/Python parity.
-   Extend routing to independently labeled event-retention evaluation.
+   Completed extension: TCN-gated event retention on IID/geographic 100-clip
+   batches with 24 Python/SystemC parity checks.
 6. Completed: native camera preview, bounded persistent observations, cooperative
    cancellation, and automatic subsequent analysis with source-clock provenance.
-7. Implement continuous streaming inference with bounded frame/feature buffers,
-   immediate window-end decisions, and replay parity; see ADR 005.
-8. Replay TCN-gated event demand through the measured-service hardware model;
-   keep the existing proposal-level workloads as stress tests.
+7. Completed: continuous native streaming inference with a one-frame mailbox,
+   bounded frame/feature buffers, window-end decisions and real-detector replay
+   parity. Taichung session measures 98/135 ms median/p95 core decision latency.
+8. Completed: TCN-gated demand and annotation-matched event retention through
+   measured-service hardware replay; proposal workloads remain stress tests.
+9. Completed: a matched 100-clip-per-split spatial preprocessing audit.
+   Training uses a 320-pixel width limit without upscaling; legacy continuous
+   event replay uses 640-pixel frames. Farneback flow retains pixel units.
+   Paired recall/delay/off-target changes use a common 15-step hop. IID legacy
+   hop-five probabilities are subset and re-gated, not compared directly to
+   hop-15 inference. No deployment default is selected by test performance.
+   `--phase resolution` records progress
+   in `outputs/research_runs/resolution_status.json`; inspect all status files.
+10. Next: train-only continuous-event calibration with fixed spatial/cadence/hop
+    contracts, reviewed streaming alerts, longer normal exposure, and
+    heterogeneous service-time scenarios. Preserve all reference artifacts.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -107,7 +120,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 263 tests pass,
+(native desktop and portable runtime). Current full regression: 282 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
@@ -119,3 +132,7 @@ results have been verified against predictions and paired source-clip bootstrap
 estimates have been published. Three Icarus testbenches were rerun
 successfully. SystemC 3.0.2 was built locally with MSVC 19.44 and verified on
 all five measured-service routing workloads.
+The spatial-resolution queue is also complete. Its publisher verifies common
+window grids and prevents confounding decision hops with feature resolution.
+Native continuous inference and 24 TCN-gated SystemC replays are published;
+train-only event calibration and reviewed stream exposure are next.

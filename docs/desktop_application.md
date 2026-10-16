@@ -47,15 +47,21 @@ need not be repeated to inspect a saved result.
 
 The camera action accepts a compatible public page, a direct MJPEG URL, or a
 snapshot URL. Observations are bounded to 30--120 seconds and support preview
-and cooperative cancellation. Compatible MJPEG feeds use one persistent
-connection. Captured frames are spooled on disk, then encoded for playback at
+and cooperative cancellation. Continuous inference produces causal window-end
+events during acquisition, with a one-frame mailbox and bounded context ring.
+Compatible MJPEG feeds use one persistent connection. The alternative capture
+workflow spools frames on disk, then encodes playback at
 their measured mean cadence. Source timestamps, hashes, and transport metadata
 remain in `capture.json`; analysis verifies the video hash before using that
 clock. The optional subsequent analysis executes in its own worker.
 
 ```powershell
 python scripts/run_desktop.py --capture-page "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129" --capture-duration 30 --analyze
+python scripts/run_desktop.py --capture-page "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129" --capture-duration 30 --continuous
 ```
+
+The [streaming protocol](streaming_inference.md) separates immediate event
+notification, deferred post-context evidence, and subsequent VLM service.
 
 Each analysis runs in a separate `QProcess`, preserving UI responsiveness and
 isolating worker termination. Input clips are limited to 120 seconds for

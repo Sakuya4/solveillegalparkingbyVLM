@@ -1,7 +1,7 @@
 {
-  "measurement": "Persistent public-camera ingestion and native observation-to-analysis workflow",
+  "measurement": "Persistent public-camera ingestion, native observation-to-analysis, and continuous causal inference",
   "annotation_status": "unassigned",
-  "timing_contract": "Observation precedes batch analysis; event records retain original observation timestamps",
+  "timing_contract": "Capture sessions precede batch analysis; streaming sessions emit window-end decisions while acquisition remains active; original observation timestamps are retained",
   "observations": [
     {
       "workflow": "transport_capture",
@@ -64,6 +64,52 @@
         "provider_options": {},
         "threads": 2
       }
+    }
+  ],
+  "streaming_sessions": [
+    {
+      "source_report_sha256": "32c4736424cc1d5ac88b723f6f5cb663e3b181391ea9ad83a3941f6821dd28d3",
+      "source_page": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+      "started_at_utc": "2026-10-16T00:50:42.380263+00:00",
+      "sampled_frames": 202,
+      "valid_observation_span_sec": 29.82631419999234,
+      "effective_fps": 6.7390157111686175,
+      "review_events": 2,
+      "acquisition": {
+        "decoded_frames": 296,
+        "mailbox_overwrites": 27,
+        "clock": "Local decoder observation, not a source-camera sensor timestamp"
+      },
+      "arrival_to_decision_sec": {
+        "median": 0.09823180000239518,
+        "p95": 0.13509132000326637
+      },
+      "processing_sec": {
+        "median": 0.0926626500004204,
+        "p95": 0.11089547499941545
+      },
+      "event_clock": "decoder observation clock",
+      "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+      "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "runtime": {
+        "engine": "ONNX Runtime",
+        "version": "1.27.0",
+        "requested_provider": "CPUExecutionProvider",
+        "session_providers": [
+          "CPUExecutionProvider"
+        ],
+        "cpu_fallback_disabled": false,
+        "provider_options": {},
+        "threads": 2
+      },
+      "buffers": {
+        "feature_steps": 15,
+        "context_frames": 16,
+        "camera_mailbox_frames": 1
+      },
+      "decisions_sha256": "81de80367dbff1a33c3d9a6f489a2760053a6a93f0a7c6657865c52ab9fb3bbf",
+      "feature_width_limit": null,
+      "display_width": 640
     }
   ]
 }

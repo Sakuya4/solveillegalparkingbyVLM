@@ -22,10 +22,13 @@
 - [x] Evaluate proposal coalescing and budgeted review routing with SystemC parity.
 - [x] Complete full-cohort frozen and fine-tuned VideoMAE comparison.
 - [x] Publish AUROC/AP and paired source-clip F1 intervals on matched windows.
-- [ ] Measure incident retention after admission control.
+- [x] Measure incident retention after admission control on both 100-clip event batches.
 - [x] Add native persistent CCTV observations, preview, cancellation, and source-clock analysis.
-- [ ] Add continuous streaming inference with bounded buffers and replay parity.
-- [ ] Extend independently reviewed normal exposure and TCN-gated queue replay.
+- [x] Add continuous streaming inference with bounded buffers and real-detector replay parity.
+- [x] Complete paired 320/640-pixel event preprocessing audit with common window hops.
+- [ ] Calibrate continuous-event thresholds on held-out training clips under a fixed preprocessing contract.
+- [x] Replay TCN-gated demand with source-event identities and 24 SystemC parity checks.
+- [ ] Extend independently reviewed normal-camera exposure and adjudicate streaming alerts.
 
 ## Completed Case: Red-Line Parking
 

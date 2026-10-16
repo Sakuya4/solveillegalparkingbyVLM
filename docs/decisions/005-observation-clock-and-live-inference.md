@@ -23,15 +23,18 @@ and evidence records, and stores output-frame indices for accurate event
 navigation. Public-camera observations have a separate annotation status from
 the normal-exposure evaluation cohort.
 
-## Next Implementation Gate
+## Continuous Extension
 
-Add continuous inference using the same proposal features, calibrated ONNX
-model, persistence rule, and observation clock. Use a bounded frame/feature
-ring, expose decisions as soon as their windows complete, and capture delayed
-post-event evidence without blocking the source. Verify replay parity against
-the existing video pipeline and record read time, processing time, queue
-pressure, and decision availability separately.
+Continuous inference now uses the same proposal features, calibrated ONNX
+model and persistence rule. A one-frame decoder mailbox and bounded temporal
+ring expose decisions at window completion. Post-event evidence is deferred
+until context arrives; it does not postpone event notification. Real-detector
+CPU replay verifies numerical and decision parity with the existing pipeline.
+The [streaming study](../streaming_inference.md) records measured processing
+and decoder-arrival-to-decision latency separately from operator-display time.
 
-The hardware comparison should additionally replay confirmed TCN event
-requests from continuous incident evaluation. Retain raw proposal-level
-workloads as stress tests rather than treating them as the final review demand.
+The hardware comparison also replays confirmed TCN event requests from the
+continuous incident evaluation, retaining annotation-matched event identities
+through admission and service completion. Raw proposal workloads remain
+separate stress tests. Subsequent work extends reviewed camera exposure,
+train-only event calibration, and heterogeneous review-service timing.

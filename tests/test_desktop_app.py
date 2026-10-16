@@ -125,6 +125,14 @@ def test_extended_model_tab_uses_all_matched_models_and_ranking_metrics(window):
     assert table.horizontalHeaderItem(8).text() == "AP"
 
 
+def test_edge_page_exposes_tcn_event_retention_instead_of_only_proposal_counts(window):
+    tabs = window.pages.widget(4).findChild(QTabWidget)
+    assert tabs.count() == 2
+    table = tabs.widget(1)
+    assert table.rowCount() == 24
+    assert table.horizontalHeaderItem(5).text() == "Service retained"
+
+
 def test_completed_analysis_can_be_reopened_without_inference(window, tmp_path):
     report = {
         "input": str(window.input_path), "output_video": str(window.input_path),
@@ -176,6 +184,23 @@ def test_native_capture_cancel_is_cooperative(window, mjpeg_server):
     assert window.cancelled
     assert window.job.state() == QProcess.ProcessState.NotRunning
     assert not window.actions_by_name["Analyze"].isEnabled()
+
+
+def test_native_continuous_worker_runs_without_waiting_for_capture_completion(window, mjpeg_server):
+    if not (window.root / "yolov8n.pt").is_file():
+        pytest.skip("Local detector required for native streaming integration")
+    window.capture_camera(mjpeg_server, "mjpeg", 3, continuous=True)
+    assert window.job.property("kind") == "stream"
+    for _ in range(300):
+        if window.report is not None:
+            break
+        QTest.qWait(50)
+    assert window.report is not None, window.log.toPlainText()
+    assert window.report["streaming_inference"] is True
+    assert window.report["source_mode"] == "mjpeg"
+    assert window.report["acquisition"]["decoded_frames"] >= window.report["sampled_frames"]
+    assert window.actions_by_name["Export results"].isEnabled()
+    assert not window.preview_timer.isActive()
     assert not list(window.output_dir.glob("camera_frames_*"))
 
 

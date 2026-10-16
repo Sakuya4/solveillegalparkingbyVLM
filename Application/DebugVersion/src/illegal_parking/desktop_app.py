@@ -286,7 +286,7 @@ class TrafficResearchWindow(QMainWindow):
         name = self.event_profile.currentText().lower()
         profile = next(row for row in self.snapshot["event_profiles"] if row["profile"] == name)
         geographic = next(row for row in self.snapshot["model_comparison"] if row["model"] == "Candidate ROI TCN" and row["split"] == "geographic")
-        return [(f"IID recall / {name}", f'{profile["event_recall"]:.1%}'), (f"Median delay / {name}", f'{profile["delay_median_sec"]:.3f} s'), ("Reference window F1 / geographic", f'{geographic["f1"]:.3f}')]
+        return [(f"IID benchmark recall / {name} / hop 5", f'{profile["event_recall"]:.1%}'), (f"IID benchmark delay / {name} / hop 5", f'{profile["delay_median_sec"]:.3f} s'), ("Reference window F1 / geographic", f'{geographic["f1"]:.3f}')]
 
     def _update_reference_metrics(self):
         for label, (title, value) in zip(self.metric_labels, self._reference_metric_values()):
@@ -295,7 +295,7 @@ class TrafficResearchWindow(QMainWindow):
     def _model_page(self):
         page, layout = self._page("Temporal model evaluation", "500-clip reference and 2,021-clip extended cohorts; grouped calibration and IID / geographic evaluation")
         profiles = [("IID", row) for row in self.snapshot["event_profiles"]] + [("Geographic", row) for row in self.snapshot["geographic_event_profiles"]]
-        layout.addWidget(make_table(["Split", "Profile", "Clips", "Event recall", "Median delay", "p95 delay", "Early / late episodes"], [[split, p["profile"], p["clips"], f'{p["event_recall"]:.3f}', f'{p["delay_median_sec"]:.3f} s', f'{p["delay_p95_sec"]:.3f} s', f'{p["early_alert_episodes"]} / {p["late_alert_episodes"]}'] for split, p in profiles]))
+        layout.addWidget(make_table(["Split", "Profile", "Hop", "Clips", "Event recall", "Median delay", "p95 delay", "Early / late episodes"], [[split, p["profile"], 5 if split == "IID" else 15, p["clips"], f'{p["event_recall"]:.3f}', f'{p["delay_median_sec"]:.3f} s', f'{p["delay_p95_sec"]:.3f} s', f'{p["early_alert_episodes"]} / {p["late_alert_episodes"]}'] for split, p in profiles]))
         tabs = QTabWidget()
         tabs.addTab(make_table(["Model", "Split", "Precision", "Recall", "F1", "FPR"], [[r["model"], r["split"], *(f'{r[key]:.3f}' for key in ("precision", "recall", "f1", "false_positive_rate"))] for r in self.snapshot["model_comparison"]]), "500-clip reference")
         tabs.addTab(make_table(["Representation", "Split", "Fit", "Calibration", "Test clips", "F1", "FPR", "AUROC", "AP"], [[r["display_name"], r["split"], r["fit_clips"], r["calibration_clips"], r["test_clips"], f'{r["test"]["f1"]:.3f}', f'{r["test"]["false_positive_rate"]:.3f}', f'{r["ranking"]["auroc"]:.3f}', f'{r["ranking"]["average_precision"]:.3f}'] for r in self.snapshot["full_cohort_models"]]), "2,021-clip extension")
@@ -396,7 +396,15 @@ class TrafficResearchWindow(QMainWindow):
             ["Qualcomm QNN HTP", "Available" if caps["qnn_available"] else "Install target runtime", "Explicit provider selection; CPU fallback disabled"],
         ]), 1)
         routing = self.snapshot["deployment"]["review_routing"]
-        layout.addWidget(make_table(["Review policy", "Merged", "Budget denied", "Completed", "Pending", "Queue drops"], [[r["label"], r["coalesced_proposals"], r["budget_denied"], r["queue"]["completed_reviews"], r["queue"]["pending_reviews"], r["queue"]["dropped_candidates"]] for r in routing["policies"]]), 1)
+        tabs = QTabWidget()
+        tabs.addTab(make_table(["Review policy", "Merged", "Budget denied", "Completed", "Pending", "Queue drops"], [[r["label"], r["coalesced_proposals"], r["budget_denied"], r["queue"]["completed_reviews"], r["queue"]["pending_reviews"], r["queue"]["dropped_candidates"]] for r in routing["policies"]]), "Proposal workload")
+        event_rows = []
+        for split, study in self.snapshot["deployment"]["incident_review_routing"].items():
+            for row in study["policies"]:
+                retention = row["event_retention"]
+                event_rows.append([split, row["min_positive_windows"], row["camera_count"], row["policy"], retention["detected_before_routing"], retention["retained_after_completed_service"], f'{retention["completed_review_latency_sec"]["p95"]:.2f} s'])
+        tabs.addTab(make_table(["Split", "Gate", "Cameras", "Policy", "Detected", "Service retained", "Review p95"], event_rows), "TCN event retention")
+        layout.addWidget(tabs, 1)
         return page
 
     def open_video(self):
@@ -420,9 +428,14 @@ class TrafficResearchWindow(QMainWindow):
         duration.setValue(60)
         analyze = QCheckBox()
         analyze.setChecked(True)
+        continuous = QCheckBox()
+        continuous.setChecked(True)
+        analyze.setEnabled(False)
+        continuous.toggled.connect(lambda active: analyze.setEnabled(not active))
         layout.addRow("Source type", mode)
         layout.addRow("Source URL", url)
         layout.addRow("Duration (s)", duration)
+        layout.addRow("Continuous inference", continuous)
         layout.addRow("Analyze when ready", analyze)
         buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         buttons.accepted.connect(dialog.accept)
@@ -430,11 +443,11 @@ class TrafficResearchWindow(QMainWindow):
         layout.addRow(buttons)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             try:
-                self.capture_camera(url.text().strip(), mode.currentData(), duration.value(), analyze.isChecked())
+                self.capture_camera(url.text().strip(), mode.currentData(), duration.value(), analyze.isChecked(), continuous=continuous.isChecked())
             except ValueError as exc:
                 QMessageBox.warning(self, "Camera source", str(exc))
 
-    def capture_camera(self, url: str, mode: str, duration_sec: float, analyze_after: bool = True):
+    def capture_camera(self, url: str, mode: str, duration_sec: float, analyze_after: bool = True, *, continuous: bool = False):
         if self.job and self.job.state() != QProcess.ProcessState.NotRunning:
             return
         public_source = redacted_camera_url(url)
@@ -456,8 +469,13 @@ class TrafficResearchWindow(QMainWindow):
         self.navigation.setCurrentRow(0)
         self._preview_modified = None
         self._capture_started = time.perf_counter()
-        arguments = ["--page-url" if mode == "page" else "--source-url", url, "--transport", "snapshot" if mode == "snapshot" else "mjpeg", "--duration-sec", str(duration_sec), "--output-video", str(self.output_dir / "capture.mp4"), "--output-report", str(self.output_dir / "capture.json"), "--preview", str(self.output_dir / "preview.jpg"), "--stop-file", str(self.output_dir / "cancel_capture")]
-        self._start_job("scripts/capture_public_cctv.py", arguments, "capture")
+        if continuous:
+            arguments = ["--input", url, "--source-mode", mode, "--duration-sec", str(duration_sec), "--output-dir", str(self.output_dir), "--stop-file", str(self.output_dir / "cancel_capture"), "--min-positive-windows", str(self.event_profile.currentData()), "--provider", self.provider.currentData()]
+            self._start_job("scripts/run_streaming_incident.py", arguments, "stream")
+            self.log.appendPlainText("Streaming review: clean evidence export; VLM service is deferred")
+        else:
+            arguments = ["--page-url" if mode == "page" else "--source-url", url, "--transport", "snapshot" if mode == "snapshot" else "mjpeg", "--duration-sec", str(duration_sec), "--output-video", str(self.output_dir / "capture.mp4"), "--output-report", str(self.output_dir / "capture.json"), "--preview", str(self.output_dir / "preview.jpg"), "--stop-file", str(self.output_dir / "cancel_capture")]
+            self._start_job("scripts/capture_public_cctv.py", arguments, "capture")
         self.job.setProperty("analyze_after_capture", analyze_after)
         self.preview_timer.start(300)
 
@@ -473,7 +491,14 @@ class TrafficResearchWindow(QMainWindow):
                 self.video.display_frame(frame)
                 self.video.position.setText(f"{time.perf_counter() - self._capture_started:.0f} s | CCTV")
                 self._preview_modified = modified
-        except OSError:
+                if self.job and self.job.property("kind") == "stream":
+                    progress = json.loads((self.output_dir / "progress.json").read_text(encoding="utf-8"))
+                    self.events.setRowCount(len(progress["events"]))
+                    for index, event in enumerate(progress["events"]):
+                        for column, value in enumerate((index + 1, f'{event["trigger_time_sec"]:.3f} s', f'{event["probability"]:.3f}')):
+                            self.events.setItem(index, column, QTableWidgetItem(str(value)))
+                    self.statusBar().showMessage(f'Streaming | {progress["sampled_frames"]} frames | {progress["window_count"]} causal decisions | {len(progress["events"])} events')
+        except (OSError, ValueError):
             return
 
     def open_results(self):
@@ -563,7 +588,7 @@ class TrafficResearchWindow(QMainWindow):
         self.actions_by_name["Reference clip"].setEnabled(False)
         self.actions_by_name["Open results"].setEnabled(False)
         self.actions_by_name["Camera observation"].setEnabled(False)
-        self.statusBar().showMessage("Observing camera" if kind == "capture" else "Analyzing video | CPU proposals + selected temporal runtime")
+        self.statusBar().showMessage({"capture": "Observing camera", "stream": "Streaming inference | connecting camera"}.get(kind, "Analyzing video | CPU proposals + selected temporal runtime"))
         job.start(worker_python(), [str(self.root / script), *arguments])
 
     def _reset_job_controls(self):
@@ -645,7 +670,7 @@ class TrafficResearchWindow(QMainWindow):
         if self.job and self.job.state() != QProcess.ProcessState.NotRunning:
             self.cancelled = True
             job = self.job
-            if job.property("kind") == "capture":
+            if job.property("kind") in {"capture", "stream"}:
                 (self.output_dir / "cancel_capture").touch()
                 timeout = 6500
             else:

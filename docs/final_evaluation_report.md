@@ -42,6 +42,21 @@ median delay 1.057 s, and p95 2.771 s. Early/late episode counts are 48/127 and
 
 [Geographic protocol, per-type results, and per-clip decisions](results/geographic_event_evaluation.json)
 
+### 2.1 Spatial and Decision-Hop Audit
+
+The original IID event batch uses five-step decision hops; geographic and
+desktop replay use 15-step hops. A separate matched audit aligns both spatial
+protocols to 15-step hops by selecting existing IID640 window probabilities
+and recomputing persistence. On this common grid, IID responsive recall is
+0.48 at 640 pixels and 0.50 at 320 pixels; conservative recall is 0.20/0.08.
+Geographic responsive recall is 0.63/0.47 and conservative recall 0.30/0.20.
+The audit preserves all original results and reports paired clip intervals.
+These findings motivate train-only continuous-event calibration under an
+explicit spatial/cadence/hop contract.
+
+Data: [preprocessing study](spatial_preprocessing_study.md),
+[paired numerical artifact](results/event_resolution_audit.json).
+
 ## 3. Temporal-Model Comparison
 
 Candidate ROI TCN, frozen VideoMAE, and partial fine-tuned VideoMAE use the same
@@ -238,6 +253,25 @@ match between Python and SystemC 3.0.2 in every policy.
 
 Data: [routing study](review_routing_study.md),
 [five-policy artifact](results/review_routing.json).
+
+A separate 24-condition replay uses TCN-gated episodes from the 100-clip IID
+and geographic event batches. All integer queue counters reproduce in SystemC.
+The IID single-camera conservative profile completes matching reviews for all
+44 detected events without metering, but only 30 under full-capacity admission.
+The four-camera responsive IID profile instead improves from 51 to 62 completed
+matched events under metering. Queue overflow, admission denial, and event
+retention therefore require distinct endpoints. Immediate edge notification is
+separated from downstream evidence-service admission in the native streaming
+implementation. Data: [TCN event-retention replay](review_routing_study.md#tcn-gated-event-retention).
+
+The continuous native pipeline maintains a one-frame acquisition mailbox,
+15-step feature buffer, and 16-frame evidence ring. Sequential reference-video
+inference matches batch decisions on all 14 windows, with a maximum probability
+difference of 1.79e-7. A 30-second Taichung camera session processes 202 frames
+at 6.74 FPS and measures 98/135 ms median/p95 decoder-arrival-to-decision time.
+Its two review episodes remain unlabeled and are not added to the reviewed
+normal-exposure cohort. [Streaming protocol](streaming_inference.md) records
+the clock boundary, resource limits, and reproducible validation.
 
 QNN preparation fixes the input to `(1, 15, 10)` and calibrates A16W8 QDQ using
 128 training windows from 112 clips. Calibration/test clip overlap is zero.
