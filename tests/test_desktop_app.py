@@ -284,6 +284,8 @@ def test_native_continuous_worker_recovers_real_mjpeg_connection_closures(window
     assert window.report is not None, window.log.toPlainText()
     report = window.report
     assert report["end_reason"] == "duration_limit"
+    assert report["camera_model_warmup_sec"] > 0
+    assert report["initialization_before_observation_sec"] >= report["camera_model_warmup_sec"]
     assert report["acquisition"]["connections"] >= 2
     assert report["acquisition"]["retry_attempts"] >= 1
     assert report["acquisition"]["read_failures"] >= 1

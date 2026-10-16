@@ -41,6 +41,7 @@ def main():
     from illegal_parking.frame_sources import MJPEGFrameSource, HTTPImageSource
     from illegal_parking.live_cctv import resolve_first_media_url
     from illegal_parking.incident_streaming import StreamingIncidentProcessor, LatestFrameReader
+    from illegal_parking.incident_camera_startup import warm_camera_models
     from illegal_parking.onnx_runtime import OnnxIncidentPredictor
     from illegal_parking.incident_vlm_evidence import write_clean_review_package
     from illegal_parking.observation_review import MAX_OBSERVATION_GAP_SEC
@@ -56,6 +57,7 @@ def main():
     processor = StreamingIncidentProcessor(detector, predictor, feature_width=args.feature_width, min_positive_windows=args.min_positive_windows)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     camera = args.source_mode != "file"
+    warmup_sec = warm_camera_models(detector, predictor) if camera else 0.0
     reader = capture = writer = clean_writer = None
     context = deque(maxlen=16)
     pending, events, windows, frame_times, processing_times = [], [], [], [], []
@@ -197,6 +199,7 @@ def main():
     if not processed:
         raise ValueError("No frames were processed")
     report = {"input": source, "output_video": str(output_video.resolve()), "source_mode": args.source_mode,
+              "camera_model_warmup_sec": warmup_sec,
               "initialization_before_observation_sec": started - worker_started, "worker_elapsed_sec": time.perf_counter() - worker_started,
               "requested_duration_sec": args.duration_sec, "context_gap_limit_sec": MAX_OBSERVATION_GAP_SEC, "context_gaps": context_gaps,
               "clean_video": str(clean_video.resolve()), "clean_video_sha256": hashlib.sha256(clean_video.read_bytes()).hexdigest(),
