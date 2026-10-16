@@ -42,7 +42,8 @@ The same matrix is generated from checked-in artifacts for the integrated
 
 - [x] SAM2.1-t same-sample proposal ablation on 10 clips.
 - [x] Qwen2.5-VL-3B and LLaVA/Qwen review on 20 paired evidence sequences,
-  with matched greedy decoding and three/eight-frame density analysis.
+  with matched requests and three/eight-frame density analysis. See the
+  [generation-contract audit](vlm_generation_contract.md) for corrected decoding replication.
 - [x] Two normal government CCTV sessions totaling 0.0867 camera-hours.
 
 ## External Validation Required

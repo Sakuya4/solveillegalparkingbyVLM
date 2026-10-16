@@ -165,6 +165,7 @@ class TrafficResearchWindow(QMainWindow):
         self.snapshot = build_project_snapshot(root)
         self.input_path = None
         self.report = None
+        self.report_path = None
         self.job = None
         self.cancelled = False
         self.capture_report_path = None
@@ -207,6 +208,7 @@ class TrafficResearchWindow(QMainWindow):
             ("Open results", QStyle.StandardPixmap.SP_FileDialogDetailedView, self.open_results),
             ("Reference clip", QStyle.StandardPixmap.SP_FileDialogContentsView, self.load_demo),
             ("Analyze", QStyle.StandardPixmap.SP_MediaPlay, self.analyze_video),
+            ("Review selected event", QStyle.StandardPixmap.SP_FileDialogContentsView, self.review_selected_event),
             ("Cancel", QStyle.StandardPixmap.SP_MediaStop, self.cancel_analysis),
             ("Export results", QStyle.StandardPixmap.SP_DialogSaveButton, self.export_results),
         ]
@@ -219,6 +221,7 @@ class TrafficResearchWindow(QMainWindow):
             self.actions_by_name[text] = action
         self.actions_by_name["Cancel"].setEnabled(False)
         self.actions_by_name["Export results"].setEnabled(False)
+        self.actions_by_name["Review selected event"].setEnabled(False)
         toolbar.addSeparator()
         toolbar.addWidget(QLabel(" Temporal runtime "))
         self.provider = QComboBox()
@@ -458,6 +461,8 @@ class TrafficResearchWindow(QMainWindow):
         if mode not in {"page", "mjpeg", "snapshot"} or not 0 < duration_sec <= 120:
             raise ValueError("Select a supported source and an observation of at most 120 seconds")
         self.input_path = self.report = self.capture_report_path = None
+        self.report_path = None
+        self.actions_by_name["Review selected event"].setEnabled(False)
         self.events.setRowCount(0)
         self.show_evidence(self.evidence_choice.currentIndex())
         self.actions_by_name["Export results"].setEnabled(False)
@@ -531,6 +536,8 @@ class TrafficResearchWindow(QMainWindow):
             except (OSError, ValueError):
                 self.log.appendPlainText("Capture metadata could not be associated with this video")
         self.report = None
+        self.report_path = None
+        self.actions_by_name["Review selected event"].setEnabled(False)
         self.events.setRowCount(0)
         self.show_evidence(self.evidence_choice.currentIndex())
         self.actions_by_name["Export results"].setEnabled(False)
@@ -567,6 +574,14 @@ class TrafficResearchWindow(QMainWindow):
             arguments.extend(["--capture-report", str(self.capture_report_path)])
         self._start_job("scripts/analyze_desktop_video.py", arguments, "analysis")
 
+    def review_selected_event(self):
+        if self.report_path is None or not self.report or not self.report["events"] or (self.job and self.job.state() != QProcess.ProcessState.NotRunning):
+            return
+        row = max(0, self.events.currentRow())
+        self.output_dir = self.root / "outputs/desktop" / uuid.uuid4().hex[:12]
+        arguments = ["--report", str(self.report_path), "--event-index", str(row), "--output-dir", str(self.output_dir)]
+        self._start_job("scripts/review_desktop_events.py", arguments, "review")
+
     def _start_job(self, script: str, arguments: list[str], kind: str):
         self.cancelled = False
         self.log.clear()
@@ -584,6 +599,7 @@ class TrafficResearchWindow(QMainWindow):
         job.finished.connect(lambda code, status: self._job_finished(job, code))
         job.errorOccurred.connect(lambda error: self._job_error(job, error))
         self.actions_by_name["Analyze"].setEnabled(False)
+        self.actions_by_name["Review selected event"].setEnabled(False)
         self.actions_by_name["Cancel"].setEnabled(True)
         self.provider.setEnabled(False)
         self.event_profile.setEnabled(False)
@@ -592,7 +608,7 @@ class TrafficResearchWindow(QMainWindow):
         self.actions_by_name["Reference clip"].setEnabled(False)
         self.actions_by_name["Open results"].setEnabled(False)
         self.actions_by_name["Camera observation"].setEnabled(False)
-        self.statusBar().showMessage({"capture": "Observing camera", "stream": "Streaming inference | connecting camera"}.get(kind, "Analyzing video | CPU proposals + selected temporal runtime"))
+        self.statusBar().showMessage({"capture": "Observing camera", "stream": "Streaming inference | connecting camera", "review": "Reviewing saved event evidence | original detector result preserved"}.get(kind, "Analyzing video | CPU proposals + selected temporal runtime"))
         job.start(worker_python(), [str(self.root / script), *arguments])
 
     def _reset_job_controls(self):
@@ -605,6 +621,7 @@ class TrafficResearchWindow(QMainWindow):
         self.actions_by_name["Reference clip"].setEnabled(True)
         self.actions_by_name["Open results"].setEnabled(True)
         self.actions_by_name["Camera observation"].setEnabled(True)
+        self.actions_by_name["Review selected event"].setEnabled(bool(self.report_path and self.report and self.report["events"]))
 
     def _job_error(self, job: QProcess, error):
         if job is not self.job:
@@ -652,6 +669,7 @@ class TrafficResearchWindow(QMainWindow):
             video_path = report_path.parent / video_path
         self.video.load(video_path)
         self.report = payload
+        self.report_path = report_path.resolve()
         self.event_profile.setCurrentIndex(profile_index)
         source = Path(payload.get("input", ""))
         if not source.is_absolute():
@@ -668,6 +686,7 @@ class TrafficResearchWindow(QMainWindow):
                 self.events.setItem(index, column, QTableWidgetItem(str(value)))
         self.show_evidence(0)
         self.actions_by_name["Export results"].setEnabled(True)
+        self.actions_by_name["Review selected event"].setEnabled(bool(payload["events"]))
         self.statusBar().showMessage(f'{len(self.report["events"])} review events | {self.report["runtime"]["requested_provider"]} | {self.report["elapsed_sec"]:.1f} s processing')
 
     def cancel_analysis(self):

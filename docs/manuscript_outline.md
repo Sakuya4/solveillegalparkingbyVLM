@@ -106,6 +106,9 @@ Evidence-aware VLM routing distinguishes schema compliance, classification,
 and declared evidence sufficiency. Retain the zero-supported-case result under
 the complete-evidence policy, with undefined support precision and explicit
 unresolved coverage, alongside unchanged raw model classification results.
+Document the installed generation-argument audit: legacy runs record requested
+sampling settings; version-2 runs explicitly forward them to generation.
+Keep the corrected replications and source hashes separate from legacy outcomes.
 The fixed-contract event-calibration study reports all 24 settings selected
 on held-out training clips. Distinguish improvements in two-window event recall
 from test budget exceedance and changes in one-window recall. The 176-scenario

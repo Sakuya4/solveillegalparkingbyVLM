@@ -26,7 +26,7 @@ event from the report.
 
 ## Controlled Cohort Reanalysis
 
-The fixed greedy Qwen cohort contains 20 annotation-defined sequences from ten
+The preserved Qwen cohort contains 20 annotation-defined sequences from ten
 IID test clips. Raw structured classification remains 14/20 correct. A
 confidence-only positive-support rule accepts eight sequences: six annotated
 positives and two annotated negatives, giving 0.75 precision among supported
@@ -45,6 +45,9 @@ review outcomes rather than interpreting high self-reported confidence as
 confirmation. The paired-sequence cohort is not a measured TCN-triggered field
 cohort, and a missing-evidence declaration is evaluated as a routing signal,
 not as an independently established scene fact.
+
+The [generation-contract audit](vlm_generation_contract.md) documents the
+legacy requested-decoding metadata and separately versioned corrected runs.
 
 [Case-level routing and source hashes](results/vlm_review_dispositions.json)
 

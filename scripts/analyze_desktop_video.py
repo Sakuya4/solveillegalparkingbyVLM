@@ -101,7 +101,6 @@ def main() -> None:
     }
     if capture_metadata is not None:
         report["capture"] = capture_metadata
-    vlm_pipeline = None
     for index, event in enumerate(events):
         window_start = result.report["window_starts"][event["window_index"]]
         decision = min(window_start + 15, len(result.frames) - 1)
@@ -114,35 +113,15 @@ def main() -> None:
             review_frames.append(frame)
         times = tuple(source_time(result.source_indices[frame]) for frame in frame_indices)
         event["evidence"] = write_clean_review_package(tuple(review_frames), times, args.output_dir / f"event_{index + 1:03d}", privacy_method=result.report["privacy"])
-        if args.vlm_review and index < args.max_vlm_events:
-            from illegal_parking.vlm_review import VlmReviewRequest, parse_vlm_review_result_text, build_unparsed_vlm_review_result
-            from illegal_parking.vlm_transformers import TransformersVlmConfig, run_transformers_image_text_to_text
-            print(f"Reviewing event {index + 1} with Qwen2.5-VL-3B", flush=True)
-            request = VlmReviewRequest.from_dict(json.loads(Path(event["evidence"]["request_json"]).read_text(encoding="utf-8")))
-            config = TransformersVlmConfig("Qwen/Qwen2.5-VL-3B-Instruct", "qwen2_5_vl_3b", device=0 if torch.cuda.is_available() else "cpu")
-            if vlm_pipeline is None:
-                from transformers import pipeline
-                vlm_pipeline = pipeline("image-text-to-text", model=config.model_id, device=config.device, dtype="auto")
-            review_started = time.perf_counter()
-            raw = run_transformers_image_text_to_text(request, config, pipeline_factory=lambda **kwargs: vlm_pipeline)
-            try:
-                review = parse_vlm_review_result_text(raw, provider=config.provider_name)
-                schema_valid = True
-            except (ValueError, json.JSONDecodeError) as exc:
-                review = build_unparsed_vlm_review_result(raw, provider=config.provider_name, error=str(exc))
-                schema_valid = False
-            event["vlm_review"] = {
-                **review.to_dict(), "schema_valid": schema_valid,
-                "elapsed_sec": time.perf_counter() - review_started,
-                "model_id": config.model_id,
-                "model_revision": getattr(vlm_pipeline.model.config, "_commit_hash", None),
-                "parameter_dtype": str(next(vlm_pipeline.model.parameters()).dtype),
-                "do_sample": config.do_sample, "max_new_tokens": config.max_new_tokens,
-                "seed": 42,
-            }
+    if args.vlm_review:
+        from illegal_parking.incident_review_service import load_review_request, review_incident_requests
+        selected = events[:args.max_vlm_events]
+        requests = [load_review_request(Path(event["evidence"]["request_json"])) for event in selected]
+        for event, result in zip(selected, review_incident_requests(ROOT, requests)):
+            event["vlm_review"] = result["review"]
             event["review_disposition"] = review_disposition(True, event["vlm_review"])
             event["review_disposition_policy_version"] = REVIEW_POLICY_VERSION
-            Path(event["evidence"]["request_json"]).with_name("vlm_raw.txt").write_text(raw, encoding="utf-8")
+            Path(event["evidence"]["request_json"]).with_name("vlm_raw.txt").write_text(result["raw_text"], encoding="utf-8")
     report["elapsed_sec"] = time.perf_counter() - started
     report["vlm_requested"] = args.vlm_review
     report["vlm_event_budget"] = args.max_vlm_events

@@ -76,8 +76,11 @@ At the deadline, report delivered artifacts and remaining external requirements.
 ## Current Research Queue
 
 1. Completed: 100-clip geographic event batch and both persistence profiles.
-2. Completed: controlled greedy Qwen/LLaVA comparison and eight-frame Qwen
-   evidence-density ablation on 20 paired sequences. Preserve all replications.
+2. Completed: matched-request Qwen/LLaVA comparison and eight-frame Qwen
+   evidence-density ablation on 20 paired sequences. A runtime audit identifies
+   that requested sampling parameters were not forwarded to generation.
+   Preserve all legacy results and run separate `decoding` replications with
+   explicit `generate_kwargs` and pinned model revisions.
 3. Audit temporal sampling: source FPS spans 3.92--49.70, while the existing
    frame-stride training rate has median 7.49 steps/s and the deployment target
    is 7.5. Test cadence-consistent extraction as a controlled ablation.
@@ -113,16 +116,19 @@ At the deadline, report delivered artifacts and remaining external requirements.
 11. Completed: evidence-aware VLM disposition, including all declared evidence
     gaps and review requests, and 176 variable-service scenarios with 32
     exact SystemC/Python counter comparisons.
-12. Next: review the two unlabeled streaming alerts, extend independently
-    reviewed normal exposure, and connect saved streaming evidence to the
-    native optional-review workflow without rerunning the detector. Add
-    exclusive GPU-job checks before any new multimodal inference.
+12. Completed: saved-event native VLM review without detector reruns, exclusive
+    GPU OS locks, and actual research-child PID checks. Both saved Taichung
+    alerts receive incomplete-evidence dispositions with explicit generation
+    forwarding; independent labels remain unassigned.
+13. Next: complete `decoding_status.json` replications; publish their separate
+    model comparison and evidence-density endpoints. Extend independently
+    reviewed normal exposure. Do not restart completed training queues.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
 recorded atomically in `outputs/research_runs/overnight_status.json`. Inspect
 that file before starting another GPU workload. The queue starts with controlled
-greedy-decoding VLM replications, then a matched eight-frame evidence ablation,
+requested-decoding VLM replications, then a matched eight-frame evidence ablation,
 full-cohort candidate extraction, and four fixed-protocol temporal fits.
 Current 500-clip desktop model bundles remain the reference deployment version.
 The second queue uses `--phase representations` and records its live state in
@@ -132,7 +138,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 297 tests pass,
+(native desktop and portable runtime). Current full regression: 313 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
@@ -147,5 +153,5 @@ all five measured-service routing workloads.
 The spatial-resolution queue is also complete. Its publisher verifies common
 window grids and prevents confounding decision hops with feature resolution.
 Native continuous inference and 24 TCN-gated SystemC replays are published;
-train-only event calibration is complete; reviewed stream exposure and native
-post-stream review remain next.
+train-only event calibration and native post-stream review are complete.
+Corrected decoding replications and reviewed stream exposure remain next.

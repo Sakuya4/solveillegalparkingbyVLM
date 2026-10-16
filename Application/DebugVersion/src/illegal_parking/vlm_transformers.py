@@ -6,6 +6,8 @@ from typing import Any, Callable
 
 from .vlm_review import VlmReviewRequest
 
+GENERATION_CONTRACT_VERSION = 2
+
 
 @dataclass(frozen=True)
 class TransformersVlmConfig:
@@ -45,9 +47,8 @@ def run_transformers_image_text_to_text(
     pipe = pipeline_factory(**pipe_kwargs)
     output = pipe(
         text=build_transformers_messages(request),
-        max_new_tokens=config.max_new_tokens,
         return_full_text=config.return_full_text,
-        do_sample=config.do_sample,
+        generate_kwargs={"max_new_tokens": config.max_new_tokens, "do_sample": config.do_sample},
     )
     return extract_generated_text(output)
 

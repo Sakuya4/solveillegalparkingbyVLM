@@ -156,6 +156,26 @@ def test_completed_analysis_can_be_reopened_without_inference(window, tmp_path):
     assert "No review event" in window.evidence_text.text()
     assert window.actions_by_name["Export results"].isEnabled()
     assert window.video.current_image is not None
+    assert not window.actions_by_name["Review selected event"].isEnabled()
+
+
+def test_native_saved_event_review_does_not_depend_on_a_local_source_video(window, tmp_path, monkeypatch):
+    report = {"input": "https://camera.invalid/live", "output_video": str(window.input_path),
+              "events": [{"trigger_time_sec": 1, "probability": 0.8, "evidence": {"contact_sheet": str(window.root / "docs/assets/incident_vlm_clean_evidence.jpg")}}],
+              "runtime": {"requested_provider": "CPUExecutionProvider"}, "elapsed_sec": 2}
+    path = tmp_path / "report.json"
+    path.write_text(json.dumps(report), encoding="utf-8")
+    window.load_report(path)
+    assert window.input_path is None
+    assert window.actions_by_name["Review selected event"].isEnabled()
+    launched = []
+    monkeypatch.setattr(window, "_start_job", lambda *args: launched.append(args))
+    window.review_selected_event()
+    script, arguments, kind = launched[0]
+    assert script == "scripts/review_desktop_events.py" and kind == "review"
+    assert arguments[arguments.index("--report") + 1] == str(path.resolve())
+    assert arguments[arguments.index("--event-index") + 1] == "0"
+    assert "--input" not in arguments
 
 
 def test_report_rejects_unknown_event_gate_before_changing_ui(window, tmp_path):

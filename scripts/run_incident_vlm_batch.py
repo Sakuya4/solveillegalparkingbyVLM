@@ -98,14 +98,16 @@ def review(args):
     import torch
     from transformers import pipeline
     from illegal_parking.vlm_review import VlmReviewRequest, parse_vlm_review_result_text, build_unparsed_vlm_review_result
-    from illegal_parking.vlm_transformers import TransformersVlmConfig, run_transformers_image_text_to_text
+    from illegal_parking.vlm_transformers import GENERATION_CONTRACT_VERSION, TransformersVlmConfig, run_transformers_image_text_to_text
+    import transformers
 
     torch.set_num_threads(2)
     torch.manual_seed(42)
     manifest = json.loads((args.output / "manifest.json").read_text(encoding="utf-8"))
     model_id = "Qwen/Qwen2.5-VL-3B-Instruct" if args.provider == "qwen" else "llava-hf/llava-interleave-qwen-0.5b-hf"
     config = TransformersVlmConfig(model_id, args.provider, device=0 if torch.cuda.is_available() else "cpu", max_new_tokens=192)
-    pipe = pipeline("image-text-to-text", model=model_id, device=config.device, dtype="auto")
+    legacy = json.loads((ROOT / "docs/results" / f"incident_vlm_{args.provider}_greedy_batch.json").read_text(encoding="utf-8"))
+    pipe = pipeline("image-text-to-text", model=model_id, revision=legacy["model_revision"], device=config.device, dtype="auto")
     results = []
     for index, case in enumerate(manifest["cases"]):
         request_path = Path(case["request"])
@@ -114,10 +116,14 @@ def review(args):
             "request": request_payload, "model": model_id,
             "revision": getattr(pipe.model.config, "_commit_hash", None),
             "max_new_tokens": config.max_new_tokens, "do_sample": config.do_sample,
+            "generation_contract_version": GENERATION_CONTRACT_VERSION,
+            "transformers_version": transformers.__version__,
+            "wrapper_sha256": hashlib.sha256((ROOT / "Application/DebugVersion/src/illegal_parking/vlm_transformers.py").read_bytes()).hexdigest(),
+            "pipeline_source_sha256": hashlib.sha256((Path(transformers.__file__).parent / "pipelines/image_text_to_text.py").read_bytes()).hexdigest(),
             "image_hashes": [hashlib.sha256(Path(path).read_bytes()).hexdigest() for path in request_payload["image_paths"]],
         }
         signature = hashlib.sha256(json.dumps(fingerprint, sort_keys=True).encode()).hexdigest()
-        result_path = args.output / case["case_id"] / f"{args.provider}_greedy_result.json"
+        result_path = args.output / case["case_id"] / f"{args.provider}_forwarded_v2_result.json"
         cached = json.loads(result_path.read_text(encoding="utf-8")) if result_path.is_file() else None
         if cached and cached.get("input_signature") == signature:
             row = cached
@@ -158,9 +164,17 @@ def review(args):
         "evaluation_unit": "paired sequences clustered within source clips",
         "frames_per_case": manifest.get("frames_per_case", 3),
         "decoding": "greedy", "do_sample": False, "seed": 42,
+        "generation_contract_version": GENERATION_CONTRACT_VERSION,
+        "transformers_version": transformers.__version__,
+        "generation_parameter_route": "generate_kwargs: do_sample=False, max_new_tokens=192",
+        "wrapper_sha256": fingerprint["wrapper_sha256"],
+        "pipeline_source_sha256": fingerprint["pipeline_source_sha256"],
+        "model_generation_defaults": pipe.model.generation_config.to_diff_dict(),
+        "source_manifest_sha256": hashlib.sha256((args.output / "manifest.json").read_bytes()).hexdigest(),
+        "case_results": [{"case_id": row["case_id"], "input_signature": row["input_signature"], "report_sha256": hashlib.sha256((args.output / row["case_id"] / f"{args.provider}_forwarded_v2_result.json").read_bytes()).hexdigest()} for row in results],
     }
     suffix = "" if summary["frames_per_case"] == 3 else f'_dense{summary["frames_per_case"]}'
-    destination = ROOT / "docs/results" / f"incident_vlm_{args.provider}{suffix}_greedy_batch.json"
+    destination = ROOT / "docs/results" / f"incident_vlm_{args.provider}{suffix}_forwarded_v2_batch.json"
     destination.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(summary, indent=2), flush=True)
 

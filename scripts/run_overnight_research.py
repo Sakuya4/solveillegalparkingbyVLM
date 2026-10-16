@@ -11,6 +11,8 @@ import sys
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "Application/DebugVersion/src"))
+from illegal_parking.gpu_job import exclusive_gpu_job
 
 
 def workflow_steps() -> list[tuple[str, list[str]]]:
@@ -64,17 +66,25 @@ def calibration_steps() -> list[tuple[str, list[str]]]:
     return steps
 
 
+def decoding_steps() -> list[tuple[str, list[str]]]:
+    return [
+        ("forwarded_v2_qwen", ["scripts/run_incident_vlm_batch.py", "review", "--provider", "qwen"]),
+        ("forwarded_v2_llava", ["scripts/run_incident_vlm_batch.py", "review", "--provider", "llava"]),
+        ("forwarded_v2_dense_qwen", ["scripts/run_incident_vlm_batch.py", "review", "--provider", "qwen", "--output", "outputs/validation/incident_vlm_paired_dense8"]),
+    ]
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the bounded, sequential research queue with resumable checkpoints.")
     parser.add_argument("--deadline", required=True, help="Timezone-aware ISO deadline, e.g. 2026-10-17T04:00:00+00:00")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--keep-awake-until-deadline", action="store_true")
-    parser.add_argument("--phase", choices=("initial", "representations", "resolution", "calibration"), default="initial")
+    parser.add_argument("--phase", choices=("initial", "representations", "resolution", "calibration", "decoding"), default="initial")
     args = parser.parse_args()
     deadline = datetime.fromisoformat(args.deadline)
     if deadline.tzinfo is None:
         parser.error("--deadline must include a timezone")
-    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps, "calibration": calibration_steps}[args.phase]()
+    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps, "calibration": calibration_steps, "decoding": decoding_steps}[args.phase]()
     if args.dry_run:
         print(json.dumps(steps, indent=2))
         return
@@ -131,7 +141,7 @@ def main():
             state["command"] = [sys.executable, *arguments]
             state["log"] = str((directory / f"{name}.log").relative_to(ROOT))
             started = time.perf_counter()
-            with (directory / f"{name}.log").open("w", encoding="utf-8") as log:
+            with exclusive_gpu_job(ROOT), (directory / f"{name}.log").open("w", encoding="utf-8") as log:
                 child = subprocess.Popen([sys.executable, *arguments], cwd=ROOT, env=environment, stdout=log, stderr=subprocess.STDOUT, creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
                 state["child_pid"] = child.pid
                 persist()

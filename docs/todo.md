@@ -16,7 +16,9 @@
 - [x] Complete geographic event-level validation and target-compatible QNN quantization.
 - [x] Produce a manuscript outline with research questions, endpoints, and source artifacts.
 - [x] Produce an end-to-end native demonstration recording.
-- [x] Compare matched greedy Qwen/LLaVA decoding and three/eight-frame evidence.
+- [x] Compare matched Qwen/LLaVA requests and three/eight-frame evidence; preserve legacy requested-decoding runs.
+- [x] Audit installed generation routing and enforce explicitly forwarded sampling parameters.
+- [ ] Complete separately versioned greedy Qwen/LLaVA and eight-frame replications.
 - [x] Replay candidate queues using measured Qwen review-service time.
 - [x] Complete full-cohort candidate/global TCN training and controlled reporting.
 - [x] Evaluate proposal coalescing and budgeted review routing with SystemC parity.
@@ -33,6 +35,8 @@
 - [ ] Extend independently reviewed normal-camera exposure and adjudicate streaming alerts.
 - [x] Preserve VLM evidence gaps and operator-review requests in native review routing.
 - [x] Reanalyze selective visual support separately from raw VLM classification.
+- [x] Add saved-event native VLM review without detector reruns and exclusive GPU job control.
+- [x] Review both saved Taichung alerts with version-2 generation; retain unassigned independent labels.
 
 ## Completed Case: Red-Line Parking
 

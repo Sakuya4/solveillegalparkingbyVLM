@@ -105,6 +105,31 @@ python scripts/analyze_desktop_video.py --input docs/assets/incident_input.mp4 -
 
 Reference: [ONNX Runtime QNN documentation](https://onnxruntime.ai/docs/execution-providers/QNN-ExecutionProvider.html).
 
+## Saved-Event Evidence Review
+
+The toolbar's review action submits the selected saved event, including events
+from a completed camera observation. No local source-video file or detector
+rerun is required. A separate worker loads the pinned Qwen model and writes a
+new report, raw response, request/image hashes, model revision, and source-report
+lineage. The original event probability, source timing, acquisition metrics,
+and processing duration remain unchanged; review duration is recorded separately.
+The worker accepts at most three explicitly selected events per CLI invocation.
+
+An operating-system file lock prevents overlapping workbench and research-runner
+GPU jobs. Before entry, the guard also verifies recorded research child PIDs
+against actual command lines. A terminated worker releases the OS lock; stale
+PID records do not authorize overlap with a matching live child. Command-line
+experiment scripts run through the guarded sequential runner.
+
+```powershell
+python scripts/review_desktop_events.py --report outputs/desktop/RUN_ID/report.json --event-index 0 --output-dir outputs/desktop/NEW_REVIEW_ID
+```
+
+The desktop triage prompt covers collisions, abrupt conflicts and stopped
+hazards. Its outcomes remain separate from the controlled collision-specific
+paired benchmark. The [evidence disposition policy](vlm_evidence_routing.md)
+keeps missing evidence and requested operator review visible.
+
 ## Reproducible UI Verification
 
 ```powershell

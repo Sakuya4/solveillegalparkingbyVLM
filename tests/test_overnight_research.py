@@ -6,6 +6,14 @@ import pytest
 from scripts import run_overnight_research as runner
 
 
+def test_decoding_replication_queue_does_not_restart_training_or_overwrite_legacy():
+    steps = runner.decoding_steps()
+    assert len(steps) == 3
+    assert all("forwarded_v2" in name for name, _ in steps)
+    assert all(arguments[0] == "scripts/run_incident_vlm_batch.py" and arguments[1] == "review" for _, arguments in steps)
+    assert "incident_vlm_paired_dense8" in steps[-1][1][-1]
+
+
 def test_calibration_queue_freezes_thresholds_before_each_test_batch():
     steps = runner.calibration_steps()
     assert len(steps) == 8

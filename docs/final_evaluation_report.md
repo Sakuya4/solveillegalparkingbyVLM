@@ -159,7 +159,12 @@ An expanded paired study evaluates ten IID test clips, each contributing a
 collision sequence and a pre-event sequence. Both models receive identical
 privacy-treated frames, a collision-specific prompt, and a 192-token budget.
 Labels derive from ACCIDENT event timestamps and remain separate from requests.
-The controlled comparison uses greedy decoding (`do_sample=False`) and seed 42.
+The preserved run requests `do_sample=False` and seed 42. A subsequent
+[runtime audit](vlm_generation_contract.md) identifies that the top-level
+sampling argument reaches preprocessing, not generation, in Transformers
+5.13.0. These results retain their original artifact names but do not establish
+a verified common greedy decoder. Explicitly forwarded replications are
+recorded separately without overwriting these observations.
 
 | Model | Cases | Schema validity | Correct structured outputs / all cases | Mean review time |
 | --- | ---: | ---: | ---: | ---: |
@@ -178,7 +183,7 @@ upstream-decoding runs are retained separately as
 [LLaVA replication](results/incident_vlm_llava_batch.json).
 
 An eight-frame Qwen ablation preserves the same clips, positive/negative
-interval endpoints, prompt, greedy decoding, and token budget. Schema validity
+interval endpoints, prompt, requested generation settings, and token budget. Schema validity
 is 95%, all-case structured correctness is 60%, and mean service time is
 10.123 s. The valid-case confusion matrix is TP=3, FP=1, FN=6, TN=9. Relative
 to three frames, denser sampling does not improve this small paired cohort;
@@ -188,7 +193,7 @@ The protocol was specified in [ADR 004](decisions/004-temporal-evidence-density.
 Data: [eight-frame ablation](results/incident_vlm_qwen_dense8_greedy_batch.json).
 
 Evidence-aware disposition additionally honors the VLM's evidence gaps and
-operator-review request. In the fixed greedy Qwen cohort, confidence-only
+operator-review request. In the preserved Qwen cohort, confidence-only
 support accepts eight sequences (six positive, two negative). All eight
 declare evidence gaps and are therefore unresolved under the complete-evidence
 policy. Twelve other sequences produce temporal/visual disagreement. Raw

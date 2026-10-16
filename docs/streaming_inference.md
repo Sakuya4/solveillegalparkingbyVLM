@@ -56,6 +56,26 @@ artifacts exclude the camera's image and video payloads.
 
 [Camera session measurements](results/native_cctv_observations.json)
 
+## Saved-Alert Multimodal Review
+
+Both emitted episodes were subsequently reviewed from their saved three-frame
+packages using pinned Qwen2.5-VL-3B, explicit generation contract version 2,
+and a 256-token limit. No detector or temporal inference was rerun. Review
+service took 9.778 and 7.758 s; the complete job, including model load, has its
+own measured duration in the artifact. Both responses were schema-valid,
+assigned self-reported confidence 0.85, declared evidence gaps, and requested
+operator review. The complete-evidence gate therefore assigns both to
+`incomplete_visual_evidence`.
+
+These are triage outcomes, not adjudicated incident labels. In particular,
+model descriptions of turning behavior or signal violations are not accepted
+as verified scene facts. Independent event labels remain unassigned, and
+reviewed normal exposure increases by zero camera-hours. The second event's
+post-context truncation remains in its original event record. Public results
+contain hashes, model responses, and timing, without camera imagery.
+
+[Saved-alert review artifact](results/streaming_alert_vlm_review.json)
+
 ## Spatial Preprocessing
 
 The preserved desktop reference uses 640-pixel feature frames. Its 500-clip
@@ -78,5 +98,8 @@ python -m pytest tests/test_incident_streaming.py tests/test_streaming_integrati
 ```
 
 The camera dialog also supports capture followed by batch analysis. Streaming
-exports clean evidence for later VLM service; local-video analysis retains the
-existing integrated Qwen-review option.
+exports clean evidence for later VLM service. The native saved-event review
+action submits that package in a separate, GPU-guarded worker without rerunning
+the detector. It writes a new report and retains the original source report;
+review time does not replace immediate event-notification latency. Local-video
+analysis also retains the integrated Qwen-review option.

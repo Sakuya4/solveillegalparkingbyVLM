@@ -23,3 +23,10 @@ The hypothesis concerns evidence density, with source clip as the paired unit.
 It does not require new model training or accident bounding boxes. All selected
 cases are evaluated. Temporal evidence availability and model processing cost
 are recorded separately for deployment analysis.
+
+## Runtime Addendum
+
+The [generation-contract audit](../vlm_generation_contract.md) identifies a
+sampling-argument forwarding discrepancy in the retained runs. The protocol's
+greedy requirement is enforced by the version-2 replication; legacy case files
+and their measured outcomes are preserved separately.
