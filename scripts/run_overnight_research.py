@@ -15,6 +15,31 @@ sys.path.insert(0, str(ROOT / "Application/DebugVersion/src"))
 from illegal_parking.gpu_job import exclusive_gpu_job
 
 
+def stop_worker_tree(pid: int):
+    import psutil
+
+    try:
+        root = psutil.Process(pid)
+        descendants = root.children(recursive=True)
+    except psutil.NoSuchProcess:
+        return
+    processes = list(reversed(descendants)) + [root]
+    for process in processes:
+        try:
+            process.terminate()
+        except psutil.NoSuchProcess:
+            pass
+    _, alive = psutil.wait_procs(processes, timeout=10)
+    for process in alive:
+        try:
+            process.kill()
+        except psutil.NoSuchProcess:
+            pass
+    _, alive = psutil.wait_procs(alive, timeout=10)
+    if alive:
+        raise RuntimeError(f"Worker descendants remain active: {[process.pid for process in alive]}")
+
+
 def workflow_steps() -> list[tuple[str, list[str]]]:
     dense = "outputs/validation/incident_vlm_paired_dense8"
     sequence = "data/processed/accident/candidate_roi_sequences_full.npz"
@@ -160,7 +185,7 @@ def main():
                 persist()
                 while child.poll() is None:
                     if datetime.now(timezone.utc) >= deadline:
-                        child.terminate()
+                        stop_worker_tree(child.pid)
                         state["status"] = "deadline_reached"
                         break
                     try:
@@ -189,12 +214,8 @@ def main():
         raise
     finally:
         if child is not None and child.poll() is None:
-            child.terminate()
-            try:
-                child.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                child.kill()
-                child.wait()
+            stop_worker_tree(child.pid)
+            child.wait(timeout=10)
         state["child_pid"] = None
         if keep_awake:
             ctypes.windll.kernel32.SetThreadExecutionState(0x80000000)

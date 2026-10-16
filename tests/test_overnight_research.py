@@ -1,5 +1,8 @@
 import json
 import sys
+import os
+import subprocess
+import time
 
 import pytest
 
@@ -90,3 +93,35 @@ def test_failed_step_stops_downstream_work_and_preserves_status(monkeypatch, tmp
     assert state["status"] == "failed"
     assert state["current_step"] == "first"
     assert state["child_pid"] is None
+
+
+def test_worker_shutdown_stops_descendants_including_windows_redirectors(tmp_path):
+    import psutil
+
+    pid_path = tmp_path / "descendant.txt"
+    code = "import pathlib,subprocess,sys,time; child=subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)']); pathlib.Path(sys.argv[1]).write_text(str(child.pid)); time.sleep(60)"
+    child = subprocess.Popen([sys.executable, "-c", code, str(pid_path)], creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+    try:
+        deadline = time.monotonic() + 10
+        while not pid_path.exists() and time.monotonic() < deadline:
+            time.sleep(.05)
+        assert pid_path.exists()
+        descendant_pid = int(pid_path.read_text())
+        assert psutil.pid_exists(descendant_pid)
+        runner.stop_worker_tree(child.pid)
+        child.wait(timeout=10)
+        assert not psutil.pid_exists(descendant_pid)
+    finally:
+        if child.poll() is None:
+            runner.stop_worker_tree(child.pid)
+            child.wait(timeout=10)
+
+
+def test_worker_shutdown_tolerates_an_already_exited_process(monkeypatch):
+    import psutil
+
+    def missing(pid):
+        raise psutil.NoSuchProcess(pid)
+
+    monkeypatch.setattr(psutil, "Process", missing)
+    runner.stop_worker_tree(123)

@@ -1,0 +1,13 @@
+# Retain the recorded bytes of hash-bound presentation-study inputs on checkout.
+docs/results/presentation_protocol.json text eol=crlf
+docs/results/presentation_protocol.jsonl text eol=crlf
+docs/results/cadence_source_audit.json text eol=crlf
+scripts/train_incident_tcn.py text eol=crlf
+Application/DebugVersion/src/illegal_parking/incident_baseline.py text eol=crlf
+Application/DebugVersion/src/illegal_parking/incident_candidate_roi.py text eol=crlf
+Application/DebugVersion/src/illegal_parking/incident_tcn.py text eol=crlf
+Application/DebugVersion/src/illegal_parking/incident_ultralytics.py text eol=crlf
+scripts/prepare_presentation_protocol.py text eol=lf
+Application/DebugVersion/src/illegal_parking/incident_presentation.py text eol=lf
+scripts/audit_incident_cadence.py text eol=lf
+Application/DebugVersion/src/illegal_parking/incident_cadence.py text eol=lf

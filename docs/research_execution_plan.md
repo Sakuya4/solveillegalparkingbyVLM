@@ -181,7 +181,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 385 tests pass,
+(native desktop and portable runtime). Current full regression: 387 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

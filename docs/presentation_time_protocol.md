@@ -114,3 +114,8 @@ paired contrasts after all fits finish. Source decode uses the same per-clip
 support verified at cohort preparation; only the chosen arm's 16 images enter
 the detector and motion model. Smoke subsets are explicitly barred from fitting.
 Continuous PTS event replay remains a subsequent, separate evaluation.
+On Windows, deadline and shutdown handling terminates the full worker process
+tree, including virtual-environment redirectors and their actual interpreters.
+Per-window feature caches remain available for controlled queue resumption.
+The repository attributes preserve the recorded LF/CRLF conventions of
+hash-bound source and manifest files across Windows and Unix checkouts.
