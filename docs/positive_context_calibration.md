@@ -89,7 +89,7 @@ lower calibration recall quantifies the cost of excluding trivial positive
 policies; it does not predict a test-set improvement. The new test replay
 must report recall and both constraint outcomes together.
 
-## Planned Comparisons
+## Paired Comparisons
 
 For each model, evaluate the constrained policy and its original onset-only
 training-selected threshold on the same new clips. Retain same-grid
@@ -113,6 +113,90 @@ python scripts/run_overnight_research.py --phase positive_exposure --deadline 20
 python -m pytest tests/test_positive_exposure.py
 ```
 
+The preparation and replay commands create the frozen study once; completed
+queues and immutable publications should not be restarted. Public numerical
+verification requires neither videos nor model weights:
+
+```powershell
+python scripts/audit_positive_contexts.py
+python scripts/plot_positive_contexts.py
+python scripts/run_desktop.py --page 1 --tab 6 --screenshot outputs/positive_context.png
+```
+
+## Completed Evaluation
+
+All **191 distinct sources** completed without cohort replacement. The
+publisher reproduces all **16,568 probabilities** from the saved feature
+tensors and eight checkpoints, with maximum absolute error **zero**. Selection
+and the execution appendix precede the new test replay in the recorded UTC
+chronology. All sixteen operating policies and four constant-control groups
+are retained on the fixed 100/100 source cohorts.
+
+| Model / split | Onset recall | Constrained recall | Pre-event macro fraction | Off-target / clip | Both test caps met |
+| --- | ---: | ---: | ---: | ---: | :---: |
+| Source-frame candidate / IID | 0.45 | 0.14 | 0.268 | 0.28 | No |
+| Source-frame global / IID | 0.44 | 0.06 | 0.095 | 0.11 | Yes |
+| Source-frame candidate / geographic | 0.55 | 0.09 | 0.160 | 0.11 | Yes |
+| Source-frame global / geographic | 0.51 | 0.08 | 0.085 | 0.17 | Yes |
+| Fixed-time candidate / IID | 0.45 | 0.10 | 0.191 | 0.16 | Yes |
+| Fixed-time global / IID | 0.45 | 0.05 | 0.110 | 0.18 | Yes |
+| Fixed-time candidate / geographic | 0.51 | 0.11 | 0.161 | 0.22 | Yes |
+| Fixed-time global / geographic | 0.51 | 0.25 | 0.315 | 0.55 | No |
+
+Six of eight constrained policies satisfy both caps on test. Source-frame
+candidate IID exceeds the positive-context cap; fixed-time global geographic
+exceeds both caps. All eight inherited onset-only policies exceed the episode
+budget on this new cohort. Constrained recall ranges from **0.05 to 0.25**,
+compared with **0.44 to 0.55** for onset-only decisions. The eight paired
+constrained-minus-onset recall differences range from **-46 to -26 percentage
+points**, and every pointwise 95% interval is strictly below zero. Off-target
+demand falls for seven policies; fixed-time global geographic increases from
+0.53 to 0.55. The complete results therefore establish an operating-objective
+tradeoff rather than improved event sensitivity.
+
+The same-grid positive control yields recall **0.45 / 0.51**, off-target demand
+**0.65 / 0.53** and pre-event positive fraction **1.0 / 1.0**. The always-negative
+control has zero recall and zero positive demand. Neither control is a
+useful deployable detector: one violates both caps, while the other misses
+every annotated event. These measurements use different source cohorts from
+the earlier 88/90 study and are not a before/after model-improvement estimate.
+
+Pre-event support is **77/100 IID** and **80/100 geographic** clips, with
+159/181 eligible contexts. The remaining 23/20 clips remain in event recall
+denominators but do not acquire invented prefix exposure. Invalid contexts
+total 48/27 within the respective cohorts; every test clip retains at least
+one valid context. Reported delays condition on detected events and should
+not be compared as though the detected subsets were unchanged.
+
+![Operating-policy tradeoffs on fixed event cohorts](assets/positive_context_tradeoffs.png)
+
+## Public Trace Verification
+
+A separate exporter adds **13,060 model-assigned context scores** and a
+**1,508-row complete clip inventory** across calibration and test. Empty
+contexts, missing prefix support, source hashes, annotation PTS and collision
+types remain explicit. The exporter does not modify the frozen publisher or
+the scientific protocol.
+
+The independent public-data auditor implements its own hop-gap reset,
+two-positive onset gate, inclusive event interval and strict prefix boundary.
+It reconstructs **816 calibration-curve points**, all **eight selected
+thresholds**, **2,000 per-clip outcomes**, all sixteen model-policy summaries,
+four controls, macro/pooled prefix statistics and **eight paired intervals**.
+CSV round trips agree within 1e-12. This audit uses public CSV/JSON only,
+separately from the publisher's checkpoint/feature verification.
+
+The findings identify limited event sensitivity under the current score-and-
+gate contract. Threshold adjustment alone does not establish a useful policy.
+Subsequent model development should align training contexts with continuous
+inference, examine event-local discrimination using training holdouts, and
+evaluate representation changes under a newly frozen protocol. No reference
+binary or native operating default is changed using these test outcomes.
+
 [Frozen protocol and replay inventory](results/positive_exposure_protocol.json) ·
 [Complete calibration curves and selections](results/positive_exposure_selection.json) ·
-[Execution appendix](results/positive_exposure_execution.json).
+[Execution appendix](results/positive_exposure_execution.json) ·
+[All policy/control results](results/positive_exposure_results.json) ·
+[Per-clip outcomes](results/positive_exposure_outcomes.csv) ·
+[Context trace manifest](results/positive_context_trace.json) ·
+[Independent public-data audit](results/positive_context_audit.json).

@@ -57,6 +57,12 @@ The same matrix is generated from checked-in artifacts for the integrated
 
 ## Measured Results
 
+- Positive-context follow-up: 191 distinct sources, all 16,568 checkpoint
+  probabilities exactly reproduced; six of eight settings meet both test caps,
+  with recall 0.05--0.25. Public context traces independently reproduce every
+  calibration point and all 2,000 new per-clip outcomes. This is a different
+  cohort/PTS contract from the reference benchmarks listed below.
+
 - Ten-camera held-out risk coverage: greedy `15.49%`, independent ranking
   `13.69%`, and random mean `11.38%` at A1:A2 5:1 and radius 1 km.
 - Responsive event recall: `0.750` over 100 IID accident clips.

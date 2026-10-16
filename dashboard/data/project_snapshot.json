@@ -3883,6 +3883,1332 @@
     "scope": "Diagnostic controls expose temporal dataset structure, not normal-camera operational performance",
     "uncertainty": "Eight pointwise paired clip-bootstrap diagnostic contrasts; fixed models and thresholds; no family-wise correction"
   },
+  "positive_context_events": {
+    "protocol_sha256": "3f0fe6e023f92252af49e3bac220715fd73a28be6aea6e4565774f06194a375d",
+    "selection_sha256": "272f1ffa5f4ebc46e5e39c41857b4a7a743581e0ffc3a85c0fce6c5b5545a2b4",
+    "execution_sha256": "cf88e5037c014aab6afee903d3511049b09d6754aa7bc9a65b6dc2082335d609",
+    "test_batch_sha256": "58728735351e8335eb39b99a08edaa08c421635645b11ec8c35aa15f4d1c6b01",
+    "trace_sha256": "398f634a663a8b57a160cdb2ebb286fb0f0abf8fd235896330752449a3e2338d",
+    "trace_rows": 2000,
+    "prediction_verification": {
+      "verified_probabilities": 16568,
+      "maximum_absolute_error": 0.0,
+      "tolerance": 1e-07,
+      "device": "cpu"
+    },
+    "policies": [
+      {
+        "model": "legacy_candidate_iid",
+        "split": "iid",
+        "policy": "onset_only",
+        "threshold": 0.0,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 45,
+          "missed_clips": 55,
+          "event_recall": 0.45,
+          "early_alert_episodes": 49,
+          "late_alert_episodes": 16,
+          "trigger_delay_sec": {
+            "mean": 0.8411151777777778,
+            "median": 0.7500000000000004,
+            "p95": 2.7533335999999995,
+            "minimum": -0.8666670000000005,
+            "maximum": 3.0
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 2,
+              "event_recall": 1.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 12,
+              "event_recall": 0.4444444444444444
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 3,
+              "event_recall": 0.5
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 14,
+              "event_recall": 0.4827586206896552
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 14,
+              "event_recall": 0.3888888888888889
+            }
+          },
+          "off_target_episodes_per_clip": 0.65,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 159,
+          "macro_positive_fraction": 1.0,
+          "pooled_positive_fraction": 1.0
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "legacy_candidate_iid",
+        "split": "iid",
+        "policy": "positive_context",
+        "threshold": 0.84,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 14,
+          "missed_clips": 86,
+          "event_recall": 0.14,
+          "early_alert_episodes": 3,
+          "late_alert_episodes": 25,
+          "trigger_delay_sec": {
+            "mean": 1.351617785714286,
+            "median": 1.5833335,
+            "p95": 2.95833335,
+            "minimum": -0.8666670000000005,
+            "maximum": 2.9583340000000007
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 4,
+              "event_recall": 0.14814814814814814
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 3,
+              "event_recall": 0.10344827586206896
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 7,
+              "event_recall": 0.19444444444444445
+            }
+          },
+          "off_target_episodes_per_clip": 0.28,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 36,
+          "macro_positive_fraction": 0.2680890538033395,
+          "pooled_positive_fraction": 0.22641509433962265
+        },
+        "episode_budget_exceeded": false,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "legacy_global_iid",
+        "split": "iid",
+        "policy": "onset_only",
+        "threshold": 0.16,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 44,
+          "missed_clips": 56,
+          "event_recall": 0.44,
+          "early_alert_episodes": 47,
+          "late_alert_episodes": 25,
+          "trigger_delay_sec": {
+            "mean": 0.9388495454545454,
+            "median": 0.8541670000000003,
+            "p95": 2.76291695,
+            "minimum": -0.8666670000000005,
+            "maximum": 3.0
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 2,
+              "event_recall": 1.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 12,
+              "event_recall": 0.4444444444444444
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 2,
+              "event_recall": 0.3333333333333333
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 15,
+              "event_recall": 0.5172413793103449
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 13,
+              "event_recall": 0.3611111111111111
+            }
+          },
+          "off_target_episodes_per_clip": 0.72,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 151,
+          "macro_positive_fraction": 0.9426406926406926,
+          "pooled_positive_fraction": 0.949685534591195
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "legacy_global_iid",
+        "split": "iid",
+        "policy": "positive_context",
+        "threshold": 0.78,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 6,
+          "missed_clips": 94,
+          "event_recall": 0.06,
+          "early_alert_episodes": 3,
+          "late_alert_episodes": 8,
+          "trigger_delay_sec": {
+            "mean": 1.0259968333333334,
+            "median": 0.8666665,
+            "p95": 2.1979170000000003,
+            "minimum": 0.0,
+            "maximum": 2.4166670000000003
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 1,
+              "event_recall": 0.037037037037037035
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 2,
+              "event_recall": 0.06896551724137931
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 3,
+              "event_recall": 0.08333333333333333
+            }
+          },
+          "off_target_episodes_per_clip": 0.11,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 17,
+          "macro_positive_fraction": 0.09523809523809523,
+          "pooled_positive_fraction": 0.1069182389937107
+        },
+        "episode_budget_exceeded": false,
+        "pre_event_cap_exceeded": false
+      },
+      {
+        "model": "legacy_candidate_geographic",
+        "split": "geographic",
+        "policy": "onset_only",
+        "threshold": 0.08,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 55,
+          "missed_clips": 45,
+          "event_recall": 0.55,
+          "early_alert_episodes": 36,
+          "late_alert_episodes": 75,
+          "trigger_delay_sec": {
+            "mean": 0.7454205454545455,
+            "median": 0.7916659999999998,
+            "p95": 2.6791660999999998,
+            "minimum": -0.9310340000000004,
+            "maximum": 2.733333
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 2,
+              "event_recall": 0.6666666666666666
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 9,
+              "event_recall": 0.5
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 1,
+              "event_recall": 0.16666666666666666
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 19,
+              "event_recall": 0.5
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 24,
+              "event_recall": 0.6857142857142857
+            }
+          },
+          "off_target_episodes_per_clip": 1.11,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 149,
+          "macro_positive_fraction": 0.7946394230769231,
+          "pooled_positive_fraction": 0.8232044198895028
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "legacy_candidate_geographic",
+        "split": "geographic",
+        "policy": "positive_context",
+        "threshold": 0.99,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 9,
+          "missed_clips": 91,
+          "event_recall": 0.09,
+          "early_alert_episodes": 1,
+          "late_alert_episodes": 10,
+          "trigger_delay_sec": {
+            "mean": 0.8233155555555555,
+            "median": 0.875,
+            "p95": 1.8760002,
+            "minimum": -0.5833329999999997,
+            "maximum": 2.1666670000000003
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 1,
+              "event_recall": 0.3333333333333333
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 1,
+              "event_recall": 0.05555555555555555
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 3,
+              "event_recall": 0.07894736842105263
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 4,
+              "event_recall": 0.11428571428571428
+            }
+          },
+          "off_target_episodes_per_clip": 0.11,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 23,
+          "macro_positive_fraction": 0.15968749999999998,
+          "pooled_positive_fraction": 0.1270718232044199
+        },
+        "episode_budget_exceeded": false,
+        "pre_event_cap_exceeded": false
+      },
+      {
+        "model": "legacy_global_geographic",
+        "split": "geographic",
+        "policy": "onset_only",
+        "threshold": 0.06,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 51,
+          "missed_clips": 49,
+          "event_recall": 0.51,
+          "early_alert_episodes": 44,
+          "late_alert_episodes": 13,
+          "trigger_delay_sec": {
+            "mean": 0.6010314509803922,
+            "median": 0.4583330000000001,
+            "p95": 2.533333,
+            "minimum": -0.9310340000000004,
+            "maximum": 2.791667
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 2,
+              "event_recall": 0.6666666666666666
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 9,
+              "event_recall": 0.5
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 1,
+              "event_recall": 0.16666666666666666
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 18,
+              "event_recall": 0.47368421052631576
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 21,
+              "event_recall": 0.6
+            }
+          },
+          "off_target_episodes_per_clip": 0.57,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 180,
+          "macro_positive_fraction": 0.99375,
+          "pooled_positive_fraction": 0.994475138121547
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "legacy_global_geographic",
+        "split": "geographic",
+        "policy": "positive_context",
+        "threshold": 0.81,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 8,
+          "missed_clips": 92,
+          "event_recall": 0.08,
+          "early_alert_episodes": 0,
+          "late_alert_episodes": 17,
+          "trigger_delay_sec": {
+            "mean": 1.341504875,
+            "median": 1.7916665,
+            "p95": 2.747075549999999,
+            "minimum": -0.5833329999999997,
+            "maximum": 2.790372999999999
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 1,
+              "event_recall": 0.3333333333333333
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 1,
+              "event_recall": 0.05555555555555555
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 1,
+              "event_recall": 0.02631578947368421
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 5,
+              "event_recall": 0.14285714285714285
+            }
+          },
+          "off_target_episodes_per_clip": 0.17,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 12,
+          "macro_positive_fraction": 0.08479166666666667,
+          "pooled_positive_fraction": 0.06629834254143646
+        },
+        "episode_budget_exceeded": false,
+        "pre_event_cap_exceeded": false
+      },
+      {
+        "model": "fixed_candidate_iid",
+        "split": "iid",
+        "policy": "onset_only",
+        "threshold": 0.0,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 45,
+          "missed_clips": 55,
+          "event_recall": 0.45,
+          "early_alert_episodes": 49,
+          "late_alert_episodes": 16,
+          "trigger_delay_sec": {
+            "mean": 0.8411151777777778,
+            "median": 0.7500000000000004,
+            "p95": 2.7533335999999995,
+            "minimum": -0.8666670000000005,
+            "maximum": 3.0
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 2,
+              "event_recall": 1.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 12,
+              "event_recall": 0.4444444444444444
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 3,
+              "event_recall": 0.5
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 14,
+              "event_recall": 0.4827586206896552
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 14,
+              "event_recall": 0.3888888888888889
+            }
+          },
+          "off_target_episodes_per_clip": 0.65,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 159,
+          "macro_positive_fraction": 1.0,
+          "pooled_positive_fraction": 1.0
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "fixed_candidate_iid",
+        "split": "iid",
+        "policy": "positive_context",
+        "threshold": 0.98,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 10,
+          "missed_clips": 90,
+          "event_recall": 0.1,
+          "early_alert_episodes": 3,
+          "late_alert_episodes": 13,
+          "trigger_delay_sec": {
+            "mean": 1.3830981000000002,
+            "median": 1.1666665000000003,
+            "p95": 2.86458315,
+            "minimum": -0.25,
+            "maximum": 2.958333
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 4,
+              "event_recall": 0.14814814814814814
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 3,
+              "event_recall": 0.10344827586206896
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 3,
+              "event_recall": 0.08333333333333333
+            }
+          },
+          "off_target_episodes_per_clip": 0.16,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 29,
+          "macro_positive_fraction": 0.19124922696351268,
+          "pooled_positive_fraction": 0.18238993710691823
+        },
+        "episode_budget_exceeded": false,
+        "pre_event_cap_exceeded": false
+      },
+      {
+        "model": "fixed_global_iid",
+        "split": "iid",
+        "policy": "onset_only",
+        "threshold": 0.0,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 45,
+          "missed_clips": 55,
+          "event_recall": 0.45,
+          "early_alert_episodes": 49,
+          "late_alert_episodes": 16,
+          "trigger_delay_sec": {
+            "mean": 0.8411151777777778,
+            "median": 0.7500000000000004,
+            "p95": 2.7533335999999995,
+            "minimum": -0.8666670000000005,
+            "maximum": 3.0
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 2,
+              "event_recall": 1.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 12,
+              "event_recall": 0.4444444444444444
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 3,
+              "event_recall": 0.5
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 14,
+              "event_recall": 0.4827586206896552
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 14,
+              "event_recall": 0.3888888888888889
+            }
+          },
+          "off_target_episodes_per_clip": 0.65,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 159,
+          "macro_positive_fraction": 1.0,
+          "pooled_positive_fraction": 1.0
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "fixed_global_iid",
+        "split": "iid",
+        "policy": "positive_context",
+        "threshold": 0.71,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 5,
+          "missed_clips": 95,
+          "event_recall": 0.05,
+          "early_alert_episodes": 4,
+          "late_alert_episodes": 14,
+          "trigger_delay_sec": {
+            "mean": 2.395,
+            "median": 2.8,
+            "p95": 2.9499998,
+            "minimum": 0.9333330000000002,
+            "maximum": 2.958333
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 2,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 27,
+              "detected_clips": 1,
+              "event_recall": 0.037037037037037035
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 29,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 36,
+              "detected_clips": 4,
+              "event_recall": 0.1111111111111111
+            }
+          },
+          "off_target_episodes_per_clip": 0.18,
+          "rejected_windows": 48,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 77,
+          "clips_without_support": 23,
+          "pre_event_contexts": 159,
+          "positive_pre_event_contexts": 17,
+          "macro_positive_fraction": 0.11038961038961038,
+          "pooled_positive_fraction": 0.1069182389937107
+        },
+        "episode_budget_exceeded": false,
+        "pre_event_cap_exceeded": false
+      },
+      {
+        "model": "fixed_candidate_geographic",
+        "split": "geographic",
+        "policy": "onset_only",
+        "threshold": 0.0,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 51,
+          "missed_clips": 49,
+          "event_recall": 0.51,
+          "early_alert_episodes": 45,
+          "late_alert_episodes": 8,
+          "trigger_delay_sec": {
+            "mean": 0.6132863529411765,
+            "median": 0.4583330000000001,
+            "p95": 2.533333,
+            "minimum": -0.9310340000000004,
+            "maximum": 2.791667
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 2,
+              "event_recall": 0.6666666666666666
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 9,
+              "event_recall": 0.5
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 1,
+              "event_recall": 0.16666666666666666
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 18,
+              "event_recall": 0.47368421052631576
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 21,
+              "event_recall": 0.6
+            }
+          },
+          "off_target_episodes_per_clip": 0.53,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 181,
+          "macro_positive_fraction": 1.0,
+          "pooled_positive_fraction": 1.0
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "fixed_candidate_geographic",
+        "split": "geographic",
+        "policy": "positive_context",
+        "threshold": 0.99,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 11,
+          "missed_clips": 89,
+          "event_recall": 0.11,
+          "early_alert_episodes": 6,
+          "late_alert_episodes": 16,
+          "trigger_delay_sec": {
+            "mean": 1.0560556363636364,
+            "median": 0.875,
+            "p95": 2.5541665,
+            "minimum": -0.533334,
+            "maximum": 2.708333
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 2,
+              "event_recall": 0.1111111111111111
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 7,
+              "event_recall": 0.18421052631578946
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 2,
+              "event_recall": 0.05714285714285714
+            }
+          },
+          "off_target_episodes_per_clip": 0.22,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 30,
+          "macro_positive_fraction": 0.16104166666666667,
+          "pooled_positive_fraction": 0.16574585635359115
+        },
+        "episode_budget_exceeded": false,
+        "pre_event_cap_exceeded": false
+      },
+      {
+        "model": "fixed_global_geographic",
+        "split": "geographic",
+        "policy": "onset_only",
+        "threshold": 0.01,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 51,
+          "missed_clips": 49,
+          "event_recall": 0.51,
+          "early_alert_episodes": 45,
+          "late_alert_episodes": 8,
+          "trigger_delay_sec": {
+            "mean": 0.6132863529411765,
+            "median": 0.4583330000000001,
+            "p95": 2.533333,
+            "minimum": -0.9310340000000004,
+            "maximum": 2.791667
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 2,
+              "event_recall": 0.6666666666666666
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 9,
+              "event_recall": 0.5
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 1,
+              "event_recall": 0.16666666666666666
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 18,
+              "event_recall": 0.47368421052631576
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 21,
+              "event_recall": 0.6
+            }
+          },
+          "off_target_episodes_per_clip": 0.53,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 181,
+          "macro_positive_fraction": 1.0,
+          "pooled_positive_fraction": 1.0
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      },
+      {
+        "model": "fixed_global_geographic",
+        "split": "geographic",
+        "policy": "positive_context",
+        "threshold": 0.58,
+        "test": {
+          "clip_count": 100,
+          "detected_clips": 25,
+          "missed_clips": 75,
+          "event_recall": 0.25,
+          "early_alert_episodes": 16,
+          "late_alert_episodes": 39,
+          "trigger_delay_sec": {
+            "mean": 1.1959451200000002,
+            "median": 1.208333,
+            "p95": 2.7333331999999997,
+            "minimum": -0.5833329999999997,
+            "maximum": 2.9333329999999997
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 3,
+              "detected_clips": 1,
+              "event_recall": 0.3333333333333333
+            },
+            "rear-end": {
+              "clip_count": 18,
+              "detected_clips": 4,
+              "event_recall": 0.2222222222222222
+            },
+            "sideswipe": {
+              "clip_count": 6,
+              "detected_clips": 1,
+              "event_recall": 0.16666666666666666
+            },
+            "single": {
+              "clip_count": 38,
+              "detected_clips": 10,
+              "event_recall": 0.2631578947368421
+            },
+            "t-bone": {
+              "clip_count": 35,
+              "detected_clips": 9,
+              "event_recall": 0.2571428571428571
+            }
+          },
+          "off_target_episodes_per_clip": 0.55,
+          "rejected_windows": 27,
+          "clips_without_valid_windows": 0
+        },
+        "pre_event": {
+          "clips_with_support": 80,
+          "clips_without_support": 20,
+          "pre_event_contexts": 181,
+          "positive_pre_event_contexts": 77,
+          "macro_positive_fraction": 0.31520833333333337,
+          "pooled_positive_fraction": 0.425414364640884
+        },
+        "episode_budget_exceeded": true,
+        "pre_event_cap_exceeded": true
+      }
+    ],
+    "paired_recall_contrasts": [
+      {
+        "model": "legacy_candidate_iid",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.31,
+          "lower_95": -0.42,
+          "upper_95": -0.21,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      },
+      {
+        "model": "legacy_global_iid",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.38,
+          "lower_95": -0.5,
+          "upper_95": -0.26,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      },
+      {
+        "model": "legacy_candidate_geographic",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.46,
+          "lower_95": -0.56,
+          "upper_95": -0.36,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      },
+      {
+        "model": "legacy_global_geographic",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.43,
+          "lower_95": -0.53,
+          "upper_95": -0.33,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      },
+      {
+        "model": "fixed_candidate_iid",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.35,
+          "lower_95": -0.46,
+          "upper_95": -0.24,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      },
+      {
+        "model": "fixed_global_iid",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.4,
+          "lower_95": -0.51,
+          "upper_95": -0.3,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      },
+      {
+        "model": "fixed_candidate_geographic",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.4,
+          "lower_95": -0.51,
+          "upper_95": -0.29,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      },
+      {
+        "model": "fixed_global_geographic",
+        "contrast": "positive-context minus onset-only recall",
+        "paired_interval": {
+          "difference": -0.26,
+          "lower_95": -0.38,
+          "upper_95": -0.15,
+          "clusters": 100,
+          "bootstrap_repeats": 2000,
+          "seed": 42
+        }
+      }
+    ],
+    "controls": {
+      "iid": {
+        "clock_only_positive": {
+          "test": {
+            "clip_count": 100,
+            "detected_clips": 45,
+            "missed_clips": 55,
+            "event_recall": 0.45,
+            "early_alert_episodes": 49,
+            "late_alert_episodes": 16,
+            "trigger_delay_sec": {
+              "mean": 0.8411151777777778,
+              "median": 0.7500000000000004,
+              "p95": 2.7533335999999995,
+              "minimum": -0.8666670000000005,
+              "maximum": 3.0
+            },
+            "by_collision_type": {
+              "head-on": {
+                "clip_count": 2,
+                "detected_clips": 2,
+                "event_recall": 1.0
+              },
+              "rear-end": {
+                "clip_count": 27,
+                "detected_clips": 12,
+                "event_recall": 0.4444444444444444
+              },
+              "sideswipe": {
+                "clip_count": 6,
+                "detected_clips": 3,
+                "event_recall": 0.5
+              },
+              "single": {
+                "clip_count": 29,
+                "detected_clips": 14,
+                "event_recall": 0.4827586206896552
+              },
+              "t-bone": {
+                "clip_count": 36,
+                "detected_clips": 14,
+                "event_recall": 0.3888888888888889
+              }
+            },
+            "off_target_episodes_per_clip": 0.65,
+            "rejected_windows": 48,
+            "clips_without_valid_windows": 0
+          },
+          "pre_event": {
+            "clips_with_support": 77,
+            "clips_without_support": 23,
+            "pre_event_contexts": 159,
+            "positive_pre_event_contexts": 159,
+            "macro_positive_fraction": 1.0,
+            "pooled_positive_fraction": 1.0
+          }
+        },
+        "always_negative": {
+          "test": {
+            "clip_count": 100,
+            "detected_clips": 0,
+            "missed_clips": 100,
+            "event_recall": 0.0,
+            "early_alert_episodes": 0,
+            "late_alert_episodes": 0,
+            "trigger_delay_sec": {
+              "mean": null,
+              "median": null,
+              "p95": null,
+              "minimum": null,
+              "maximum": null
+            },
+            "by_collision_type": {
+              "head-on": {
+                "clip_count": 2,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "rear-end": {
+                "clip_count": 27,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "sideswipe": {
+                "clip_count": 6,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "single": {
+                "clip_count": 29,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "t-bone": {
+                "clip_count": 36,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              }
+            },
+            "off_target_episodes_per_clip": 0.0,
+            "rejected_windows": 48,
+            "clips_without_valid_windows": 0
+          },
+          "pre_event": {
+            "clips_with_support": 77,
+            "clips_without_support": 23,
+            "pre_event_contexts": 159,
+            "positive_pre_event_contexts": 0,
+            "macro_positive_fraction": 0.0,
+            "pooled_positive_fraction": 0.0
+          }
+        }
+      },
+      "geographic": {
+        "clock_only_positive": {
+          "test": {
+            "clip_count": 100,
+            "detected_clips": 51,
+            "missed_clips": 49,
+            "event_recall": 0.51,
+            "early_alert_episodes": 45,
+            "late_alert_episodes": 8,
+            "trigger_delay_sec": {
+              "mean": 0.6132863529411765,
+              "median": 0.4583330000000001,
+              "p95": 2.533333,
+              "minimum": -0.9310340000000004,
+              "maximum": 2.791667
+            },
+            "by_collision_type": {
+              "head-on": {
+                "clip_count": 3,
+                "detected_clips": 2,
+                "event_recall": 0.6666666666666666
+              },
+              "rear-end": {
+                "clip_count": 18,
+                "detected_clips": 9,
+                "event_recall": 0.5
+              },
+              "sideswipe": {
+                "clip_count": 6,
+                "detected_clips": 1,
+                "event_recall": 0.16666666666666666
+              },
+              "single": {
+                "clip_count": 38,
+                "detected_clips": 18,
+                "event_recall": 0.47368421052631576
+              },
+              "t-bone": {
+                "clip_count": 35,
+                "detected_clips": 21,
+                "event_recall": 0.6
+              }
+            },
+            "off_target_episodes_per_clip": 0.53,
+            "rejected_windows": 27,
+            "clips_without_valid_windows": 0
+          },
+          "pre_event": {
+            "clips_with_support": 80,
+            "clips_without_support": 20,
+            "pre_event_contexts": 181,
+            "positive_pre_event_contexts": 181,
+            "macro_positive_fraction": 1.0,
+            "pooled_positive_fraction": 1.0
+          }
+        },
+        "always_negative": {
+          "test": {
+            "clip_count": 100,
+            "detected_clips": 0,
+            "missed_clips": 100,
+            "event_recall": 0.0,
+            "early_alert_episodes": 0,
+            "late_alert_episodes": 0,
+            "trigger_delay_sec": {
+              "mean": null,
+              "median": null,
+              "p95": null,
+              "minimum": null,
+              "maximum": null
+            },
+            "by_collision_type": {
+              "head-on": {
+                "clip_count": 3,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "rear-end": {
+                "clip_count": 18,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "sideswipe": {
+                "clip_count": 6,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "single": {
+                "clip_count": 38,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              },
+              "t-bone": {
+                "clip_count": 35,
+                "detected_clips": 0,
+                "event_recall": 0.0
+              }
+            },
+            "off_target_episodes_per_clip": 0.0,
+            "rejected_windows": 27,
+            "clips_without_valid_windows": 0
+          },
+          "pre_event": {
+            "clips_with_support": 80,
+            "clips_without_support": 20,
+            "pre_event_contexts": 181,
+            "positive_pre_event_contexts": 0,
+            "macro_positive_fraction": 0.0,
+            "pooled_positive_fraction": 0.0
+          }
+        }
+      }
+    },
+    "constraints": {
+      "episode_budget_per_clip": 0.5,
+      "macro_pre_event_positive_cap": 0.2,
+      "minimum_supported_calibration_clips": 20,
+      "pre_event_definition": "Valid context end PTS strictly less than supplied event PTS minus 1 second",
+      "aggregation": "Equal weight per clip with at least one eligible context; unsupported clips are disclosed, not assigned zero exposure",
+      "selection_rule": "Maximize training-holdout event recall subject to both constraints; ties minimize off-target episodes then maximize threshold; insufficient support or infeasibility remains unselected"
+    },
+    "scope": "Calibration-motivated follow-up after the previous event study; new continuous-event replays exclude previously replayed sources, but paired-window test scores on these sources were already observed. Pre-event contexts are annotation-derived accident-clip prefixes, not independently reviewed normal CCTV.",
+    "default_policy": "Retain 500-clip reference binaries and desktop defaults; do not select replacements on test scores"
+  },
   "ablations": [
     {
       "stage": "proposal",

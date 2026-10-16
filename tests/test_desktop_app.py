@@ -141,7 +141,7 @@ def test_extended_model_tab_uses_all_matched_models_and_ranking_metrics(window):
 
 def test_native_vlm_tab_displays_corrected_results_and_clustered_uncertainty(window):
     tabs = window.pages.widget(1).findChild(QTabWidget)
-    assert tabs.count() == 6
+    assert tabs.count() == 7
     tabs.setCurrentIndex(2)
     assert window.vlm_results.rowCount() == 3
     assert window.vlm_results.item(0, 2).text() == "95%"

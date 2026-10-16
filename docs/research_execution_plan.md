@@ -211,6 +211,23 @@ At the deadline, report delivered artifacts and remaining external requirements.
     window-test observations are disclosed and no original metrics replaced.
     The separate `positive_exposure` queue verifies frozen code, source/model
     hashes, selection chronology and saved-feature prediction reproduction.
+25. Completed: all 191 new sources and 16 policies, with 16,568 checkpoint
+    probabilities reproduced exactly. Six of eight constrained policies meet
+    both test caps, but recall is 0.05--0.25; every paired recall interval
+    versus onset-only lies below zero. All inherited onset-only policies
+    exceed the new-cohort episode budget. Retain both constrained failures,
+    all controls, fixed reference defaults and the original source cohorts.
+26. Published: 13,060 public context scores, a complete 1,508-row inventory,
+    independent reconstruction of 816 calibration points, eight selected
+    thresholds, 2,000 outcomes and eight paired intervals. A separate exporter
+    and auditor leave frozen implementations unchanged. Tradeoff figures and
+    the seventh native model-evaluation tab display the same measured results.
+27. Next: predeclare TRAIN-holdout event-local discrimination diagnostics
+    before changing representations or fitting models. Inspect score ranking
+    around annotated events versus supported prefixes under the same PTS
+    contract; do not optimize or select defaults on the observed test cohorts.
+    New independent normal-camera labels and physical QNN profiling remain
+    external requirements. All research queues are complete; do not restart.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -226,7 +243,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 445 tests pass,
+(native desktop and portable runtime). Current full regression: 465 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

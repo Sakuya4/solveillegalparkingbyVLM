@@ -357,6 +357,8 @@ class TrafficResearchWindow(QMainWindow):
         tabs.addTab(vlm_page, "VLM / generation v2")
         from .desktop_presentation_results import add_presentation_tabs
         add_presentation_tabs(tabs, self.snapshot, make_table)
+        from .desktop_positive_context_results import add_positive_context_tab
+        add_positive_context_tab(tabs, self.snapshot, make_table)
         layout.addWidget(tabs, 1)
         return page
 

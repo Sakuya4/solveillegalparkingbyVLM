@@ -1,0 +1,10 @@
+{
+  "calibration_curve_points": 816,
+  "per_clip_outcomes": 2000,
+  "paired_intervals": 8,
+  "inventory_rows": 1508,
+  "context_rows": 13060,
+  "trace_manifest_sha256": "c982b7cbf9ab3f84765466d661bb9986770719d5e221fb9607d0b3d09f5bf062",
+  "auditor_sha256": "1a33ce95fd2cd58849619418519db91c850220660a3eb3ace7213b1a8af42405",
+  "scope": "Public CSV/JSON only; independent gate, prefix, event and aggregate reconstruction; no video, checkpoint, detector or GPU required"
+}

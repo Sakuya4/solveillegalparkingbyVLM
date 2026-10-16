@@ -394,6 +394,17 @@ alongside new 100/100 event-replay cohorts excluding 463 prior replay clips.
 Its sixteen operating-policy comparisons retain original onset-only thresholds
 and all eight model weights. Earlier paired-window test observations are
 disclosed separately from the new continuous-event endpoint.
+The new replay is complete on 191 distinct sources. All 16,568 saved model
+probabilities reproduce exactly. Six of eight constrained policies meet both
+test caps, but event recall is 0.05--0.25 versus 0.44--0.55 for onset-only
+decisions. All eight paired recall intervals lie below zero. Two constrained
+policies exceed the prefix cap, including one that also exceeds the episode
+budget. The positive-context objective reduces trivial positive demand but
+does not establish useful event sensitivity. Source support is 77/100 IID and
+80/100 geographic clips; unsupported prefixes are never zero-imputed.
+Public traces permit independent reconstruction of all 816 calibration
+points, 2,000 per-clip outcomes and eight paired contrasts without private
+data or model weights. Native tables and figures expose the full tradeoff.
 
 Continuous-event calibration uses 101 IID and 90 geographic held-out training
 clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating

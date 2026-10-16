@@ -1,0 +1,31 @@
+{
+  "protocol_sha256": "3f0fe6e023f92252af49e3bac220715fd73a28be6aea6e4565774f06194a375d",
+  "selection_sha256": "272f1ffa5f4ebc46e5e39c41857b4a7a743581e0ffc3a85c0fce6c5b5545a2b4",
+  "results_sha256": "14b433fa8bbd5de80d8dc93fa2ad7d5f0bf2723bfef6cef8e21e9799ee6b4e63",
+  "test_batch_sha256": "58728735351e8335eb39b99a08edaa08c421635645b11ec8c35aa15f4d1c6b01",
+  "calibration_batch_sha256": "9e02246367430be98e48d8e1b1a4fd35f0e1ff543489807f76254cd66f3f4d29",
+  "exporter_sha256": "2b608eba98906a0299895a0fc307ac2f8ab248c403e07666f27bf71f613af827",
+  "files": {
+    "inventory": {
+      "path": "docs/results/positive_context_inventory.csv",
+      "sha256": "62b54ee04a2ac05cfdf1b9974140ed69349a419b45568cc5b98d35076ad5410a"
+    },
+    "contexts": {
+      "path": "docs/results/positive_context_scores.csv",
+      "sha256": "de629a5d76dd12c260a45db7de0ed29f0f57d36e7b6e75a77dd192dc86d8a149"
+    }
+  },
+  "inventory_rows": 1508,
+  "context_rows": 13060,
+  "model_sha256": {
+    "legacy_candidate_iid": "10b11c32038166981a366bde3906dbc5701930138e81d2775575bc5202cafd92",
+    "legacy_global_iid": "a38f298b562c425afa505622aa0754404c496ed9957d6fef0cb103f5b2631c16",
+    "legacy_candidate_geographic": "13c8bfd11dbb1559f496ca6aeb9c2742e6d105ed5e8add3f74d74ba6110b0242",
+    "legacy_global_geographic": "61d44157c076cb1851fee28aebd196e30ba38f0b5fc56478357e44a102599d3e",
+    "fixed_candidate_iid": "bfe22b248c86f16325beaa8db79e9842a5723dfdd05ca2c90ab840df709feb9b",
+    "fixed_global_iid": "d80b482f4e7c2c3b3be5a3b3536b169e174f0afc89259f6022a71f1d3f632173",
+    "fixed_candidate_geographic": "367c5e239d699420924da1729c56310de832637c317c857475b95adbd6683349",
+    "fixed_global_geographic": "52ea91aff3233780d9a47c850c29df5ef7199f1494a9461149aedc24f5751575"
+  },
+  "scope": "All model-assigned calibration/test clips, including empty and unsupported prefixes. Context rows are valid PTS decisions, not camera-hours. Constant controls are reconstructed on the same grid."
+}

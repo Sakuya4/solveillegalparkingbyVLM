@@ -195,6 +195,17 @@ and feature tensors. Native evaluation tabs display the same measurements.
 
 ![Presentation-time event evaluation and nonvisual controls](docs/assets/presentation_event_controls.png)
 
+A separate 191-source replay evaluates an additional training-only constraint
+on pre-event positive contexts. Six of eight policies meet both test caps,
+with event recall 0.05--0.25 versus 0.44--0.55 under onset-only calibration.
+This isolates the sensitivity/workload tradeoff and motivates event-selective
+representation development. The [complete study](docs/positive_context_calibration.md)
+publishes all sixteen policies, controls and paired intervals. A public-data
+auditor reconstructs 816 calibration points and 2,000 per-clip outcomes from
+13,060 context scores. The native workbench displays the same comparisons.
+
+![Event sensitivity and positive-context constraints](docs/assets/positive_context_tradeoffs.png)
+
 ### Multimodal Evidence and Restoration
 
 ![Privacy-treated temporal evidence](docs/assets/incident_vlm_clean_evidence.jpg)

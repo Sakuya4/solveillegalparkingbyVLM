@@ -132,6 +132,15 @@ keeps missing evidence and requested operator review visible.
 
 ## Reproducible UI Verification
 
+Model evaluation contains seven tabs: reference, full-cohort models,
+generation-v2 VLM review, PTS windows, PTS events, nonvisual controls and
+positive-context constraints. The last tab retains all eight paired
+operating-policy results on the new 100/100 cohorts, test-cap exceedances,
+pointwise recall intervals and supported/unsupported prefix counts.
+Its source is the hash-bound numerical study rather than recomputed UI metrics.
+
+![Native positive-context comparison](assets/desktop_positive_context.png)
+
 The observation-annotation action is enabled for new continuous reports that
 contain full clean playback. Its dialog begins with an uncertain label and
 unchecked review attestations. Reviewer records are append-only and source-

@@ -44,6 +44,13 @@ locally; public camera-session artifacts contain numerical measurements only.
 
 ## Continuous Reference Demonstration (16 October 2026)
 
+`positive_context_tradeoffs.png` and `.pdf` show all sixteen operating policies
+and same-grid controls on the separately frozen 100/100 event cohorts.
+`positive_context_tradeoffs.json` binds the numerical input, plotter and media
+hashes. `desktop_positive_context.png` captures the seventh native evaluation
+tab from those checked-in results. These figures contain aggregate research
+measurements, not additional source-video frames or independent observations.
+
 `incident_demo.mp4` is the complete 30-second reference clip with causal
 streaming output, vehicle privacy blur, motion proposals and temporal scores.
 `incident_demo_preview.jpg` is a frame from that output; the corresponding GIF

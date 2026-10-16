@@ -60,7 +60,11 @@
 - [x] Verify real TCN confidence/persistence traces in a bit-accurate RTL controller, with an explicit quantization audit.
 - [x] Predeclare a positive-exposure-aware calibration follow-up and a new event validation cohort; retain current findings and defaults.
 - [x] Freeze all eight train-only constrained operating policies and the new worker/publisher execution appendix.
-- [ ] Complete the new 191-source event replay and publish paired policy/control outcomes with both constraint budgets.
+- [x] Complete the new 191-source event replay and publish paired policy/control outcomes with both constraint budgets.
+- [x] Export every model-assigned calibration/test context and complete source inventory without modifying frozen implementations.
+- [x] Independently reconstruct 816 calibration points, 2,000 per-clip outcomes, prefix support and eight paired intervals from public data.
+- [x] Publish all operating-policy tradeoffs and a native positive-context comparison tab, retaining test-cap exceedances.
+- [ ] Predeclare training-holdout event-local discrimination diagnostics before any new representation or fitting study.
 
 ## Completed Case: Red-Line Parking
 

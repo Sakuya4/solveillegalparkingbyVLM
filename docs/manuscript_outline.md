@@ -172,6 +172,14 @@ existing training holdout. Its new 100/100 event-replay cohorts exclude 463
 prior clip identities while acknowledging earlier window-test observations.
 All sixteen paired operating policies and constant controls are retained,
 including low-recall or test-budget-exceeding outcomes.
+The completed follow-up reproduces 16,568 checkpoint probabilities exactly.
+Six of eight constrained policies meet both test caps, while event recall
+falls to 0.05--0.25. All eight constrained-minus-onset recall intervals are
+strictly negative. Interpret this as a measured sensitivity/workload tradeoff,
+not an effective deployment operating point. The independent public-data
+auditor reconstructs 816 calibration points, 2,000 per-clip outcomes and eight
+paired intervals from 13,060 context scores and the complete clip inventory.
+Preserve unsupported-prefix clips and disclose prior window-test observations.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and
