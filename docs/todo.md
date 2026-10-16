@@ -57,8 +57,10 @@
 - [x] Verify all 21,608 continuous probabilities from saved features and publish clock-control contrasts.
 - [x] Display completed PTS window/event/control results in the native workbench.
 - [x] Publish full train-only calibration curves, 2,130 per-clip outcomes and independently recomputable aggregate/paired-interval tests.
-- [ ] Verify real TCN confidence/persistence traces in a bit-accurate RTL controller, with an explicit quantization audit.
-- [ ] Predeclare a positive-exposure-aware calibration follow-up and a new event validation cohort; retain current findings and defaults.
+- [x] Verify real TCN confidence/persistence traces in a bit-accurate RTL controller, with an explicit quantization audit.
+- [x] Predeclare a positive-exposure-aware calibration follow-up and a new event validation cohort; retain current findings and defaults.
+- [x] Freeze all eight train-only constrained operating policies and the new worker/publisher execution appendix.
+- [ ] Complete the new 191-source event replay and publish paired policy/control outcomes with both constraint budgets.
 
 ## Completed Case: Red-Line Parking
 
@@ -109,7 +111,7 @@
 - [ ] Add Verilog acceleration and time-to-collision trigger logic.
 - [x] Add a Verilog ROI-versus-global motion-spike trigger.
 - [x] Add a shared NPU/review queue golden simulation and camera-capacity sweep.
-- [ ] Feed real model traces into Verilog golden vectors.
+- [x] Feed real model traces into Verilog golden vectors.
 - [x] Add SystemC camera, shared-NPU, and review/alert queues.
 - [x] Feed real candidate ROI traces into Python and SystemC queue inputs.
 - [x] Simulate latency, backpressure, frame dropping, and utilization for

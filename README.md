@@ -232,6 +232,7 @@ architecture and computation requirements recorded in the
 | QNN A16W8 preparation | 450 test windows; 100% float32 decision agreement; probability MAE 0.00201 |
 | Native CPU reference analysis | Complete 30-second clip; one review event |
 | Verilog | Three self-checking trigger testbenches passed |
+| TCN confidence/persistence RTL | 24,252 real-trace cycles; zero golden mismatches; 11,376 decisions retain float-policy outputs after UNORM16 encoding |
 | SystemC / Python trace parity | 49,320 frames, 6,808 candidates, 2,156 completed reviews |
 | Four-camera workload | Zero frame drops at 7.5 FPS per camera |
 | Review-stage pressure | 68.33% candidate drops at the 300 ms review-stage setting |
@@ -242,6 +243,11 @@ Causal overlap merging consolidates 6,808 proposal arrivals into 1,568 requests.
 At the measured service budget, admission control completes 198 reviews with
 zero queue overflow, three pending requests, and 1,367 explicit budget denials.
 [Routing protocol and complete accounting](docs/review_routing_study.md)
+
+The [real-trace RTL study](docs/tcn_confidence_rtl.md) verifies thresholding,
+persistence, idle cycles and clip/gap resets against the frozen temporal
+models. Public integer vectors and float/quantized audits connect the
+software model outputs to reproducible digital-controller simulation.
 
 The Qualcomm deployment workflow records the requested provider and enforces
 explicit HTP execution. Target profiling is documented in the

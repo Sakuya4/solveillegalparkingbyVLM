@@ -203,3 +203,13 @@ python scripts/evaluate_review_routing.py --systemc-executable outputs/toolchain
 
 The build script limits parallel jobs to two and restores its temporary drive
 alias on exit. [Reproducible counters and hashes](../docs/results/review_routing.json)
+
+## Real TCN Confidence Controller
+
+`rtl/tcn_confidence_gate.v` and its self-checking testbench implement the
+two-window confidence/persistence contract, including clip/gap resets and
+idle-cycle state retention. The published real-score replay verifies 24,252
+cycles from 11,376 model decisions with zero integer-golden mismatches.
+UNORM16 probability and threshold quantization changes no episode or event
+trigger in this corpus; near-threshold counterexamples remain in the tests.
+[Controller method, public vectors and measured audit](../docs/tcn_confidence_rtl.md).

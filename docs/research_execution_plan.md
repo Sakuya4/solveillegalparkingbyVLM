@@ -195,6 +195,22 @@ At the deadline, report delivered artifacts and remaining external requirements.
     freeze a new event cohort before further evaluation. Episode onset
     budgets alone admit near-always-positive policies; preserve this result
     rather than changing thresholds or defaults after seeing test scores.
+23. Completed: real TCN confidence-controller RTL with two-window persistence,
+    clip/gap resets and idle-cycle hold. All 24,252 cycles match the integer
+    golden model; 11,376 source decisions retain floating-policy flags,
+    events and trigger times after UNORM16 encoding in this corpus. Publish
+    vectors, per-decision audit and tool/source hashes. Unicode-directory
+    launch regression and randomized near-threshold counterexamples preserve
+    the distinction between measured agreement and a universal guarantee.
+24. Frozen: positive-context follow-up on the original training holdouts and
+    new 100-clip-per-scheme event cohorts (191 distinct files), excluding 463
+    inventoried prior replay clips. The additional macro pre-event positive
+    cap is 0.2, episode budget 0.5 and minimum support 20 calibration clips.
+    All eight selections satisfy both training constraints, with lower recall.
+    Compare them with original onset-only policies on the same new cohort;
+    window-test observations are disclosed and no original metrics replaced.
+    The separate `positive_exposure` queue verifies frozen code, source/model
+    hashes, selection chronology and saved-feature prediction reproduction.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -210,7 +226,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 426 tests pass,
+(native desktop and portable runtime). Current full regression: 445 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

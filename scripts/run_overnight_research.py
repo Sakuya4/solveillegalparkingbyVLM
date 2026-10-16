@@ -121,17 +121,22 @@ def presentation_event_steps():
     ]
 
 
+def positive_exposure_steps():
+    return [("positive_exposure_test_replay", ["scripts/replay_positive_exposure.py"]),
+            ("positive_exposure_publication", ["scripts/publish_positive_exposure.py"])]
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the bounded, sequential research queue with resumable checkpoints.")
     parser.add_argument("--deadline", required=True, help="Timezone-aware ISO deadline, e.g. 2026-10-17T04:00:00+00:00")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--keep-awake-until-deadline", action="store_true")
-    parser.add_argument("--phase", choices=("initial", "representations", "resolution", "calibration", "decoding", "cadence", "pts_events"), default="initial")
+    parser.add_argument("--phase", choices=("initial", "representations", "resolution", "calibration", "decoding", "cadence", "pts_events", "positive_exposure"), default="initial")
     args = parser.parse_args()
     deadline = datetime.fromisoformat(args.deadline)
     if deadline.tzinfo is None:
         parser.error("--deadline must include a timezone")
-    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps, "calibration": calibration_steps, "decoding": decoding_steps, "cadence": cadence_steps, "pts_events": presentation_event_steps}[args.phase]()
+    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps, "calibration": calibration_steps, "decoding": decoding_steps, "cadence": cadence_steps, "pts_events": presentation_event_steps, "positive_exposure": positive_exposure_steps}[args.phase]()
     if args.dry_run:
         print(json.dumps(steps, indent=2))
         return

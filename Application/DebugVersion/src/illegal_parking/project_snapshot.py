@@ -37,6 +37,7 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
     ablations = _typed_rows(results / "sam2_vlm_ablation.csv")
     deployment = _load_json(results / "deployment_metrics.json")
     deployment["qnn_quantization"] = _load_json(results / "qnn_quantization.json")
+    deployment["tcn_confidence_rtl"] = _load_json(results / "tcn_confidence_rtl.json")
     deployment["measured_review_queue"] = _load_json(results / "measured_review_queue.json")
     deployment["review_routing"] = _load_json(results / "review_routing.json")
     deployment["incident_review_routing"] = {split: _load_json(results / f"incident_review_routing_{split}.json") for split in ("iid", "geographic")}

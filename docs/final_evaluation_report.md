@@ -247,6 +247,14 @@ Data: [native camera observations](results/native_cctv_observations.json).
 
 ## 6. Edge Runtime and Hardware Evaluation
 
+The real-confidence controller extension verifies 24,252 clocked tokens from
+11,376 TCN decisions across 1,420 model/clip/cohort runs. Integer RTL and
+Python golden outputs agree throughout. Endpoint-preserving UNORM16 encoding
+changes no observed review flag, episode, matched event or trigger time;
+maximum probability reconstruction error is 7.62921e-6. Randomized tests
+retain near-threshold counterexamples and reset/idle boundary coverage.
+[Controller protocol, public vectors and trace audit](tcn_confidence_rtl.md).
+
 Three Icarus Verilog testbenches validate dwell logic, bounding-box overlap,
 and motion triggering. SystemC 3.0.2 replays 12,330 real candidate-trace records
 replicated across four camera streams. Python and SystemC agree on 49,320
@@ -379,6 +387,13 @@ from positive-context exposure before promoting an operating policy.
 The complete study publishes 2,130 per-clip outcomes, full train-only curves,
 native comparison tables and exact recomputation of 21,608 probabilities.
 All legacy results retain their original cohorts and clocks.
+
+The [positive-context follow-up](positive_context_calibration.md) freezes
+a second training-only constraint on annotation-derived pre-event decisions,
+alongside new 100/100 event-replay cohorts excluding 463 prior replay clips.
+Its sixteen operating-policy comparisons retain original onset-only thresholds
+and all eight model weights. Earlier paired-window test observations are
+disclosed separately from the new continuous-event endpoint.
 
 Continuous-event calibration uses 101 IID and 90 geographic held-out training
 clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating

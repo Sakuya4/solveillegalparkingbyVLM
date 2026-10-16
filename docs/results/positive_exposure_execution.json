@@ -1,0 +1,11 @@
+{
+  "created_at_utc": "2026-10-16T12:50:28.545133+00:00",
+  "protocol_sha256": "3f0fe6e023f92252af49e3bac220715fd73a28be6aea6e4565774f06194a375d",
+  "selection_sha256": "272f1ffa5f4ebc46e5e39c41857b4a7a743581e0ffc3a85c0fce6c5b5545a2b4",
+  "implementation_sha256": {
+    "scripts/replay_positive_exposure.py": "5e90583dffbd3ace62762d645553d772eb0c3fab790d201496cb8c29e4aba817",
+    "scripts/publish_positive_exposure.py": "a3bd3c86b4dadb5a4ac2d711205f21a3a8f5103f56f94f73e4dadf5dbe5b3b25",
+    "scripts/audit_presentation_event_predictions.py": "1d81e7e71116b57f94f6738202117e7a4dcfa28c0e743a88c21696237296ab08"
+  },
+  "role": "Execution appendix to the already frozen sampling/cohort/calibration protocol; no scientific contracts changed"
+}

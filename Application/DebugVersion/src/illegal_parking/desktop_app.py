@@ -446,11 +446,13 @@ class TrafficResearchWindow(QMainWindow):
         caps = runtime_capabilities()
         quantization = self.snapshot["deployment"]["qnn_quantization"]
         measured_queue = self.snapshot["deployment"]["measured_review_queue"]
+        confidence_rtl = self.snapshot["deployment"]["tcn_confidence_rtl"]
         layout.addWidget(make_table(["Component", "Measurement", "Evidence"], [
             ["ONNX Runtime", caps["onnxruntime_version"], ", ".join(caps["available_providers"])],
             ["TCN ONNX parity", "128 samples", "Maximum absolute error 1.79e-7"],
             ["QNN A16W8 preparation", f'{quantization["test_samples"]} test windows', f'{quantization["decision_agreement"]:.1%} float32 decision agreement'],
             ["Verilog", "3 / 3 testbenches", "Dwell / overlap / motion trigger"],
+            ["TCN confidence RTL", f'{confidence_rtl["tokens_checked"]:,} verified cycles', f'{confidence_rtl["model_decisions"]:,} real decisions; {confidence_rtl["rtl_golden_mismatches"]} golden mismatches'],
             ["SystemC 3.0.2", "49,320 processed frames", "Python trace parity"],
             ["4-camera frame queue", "0 dropped frames", "7.5 FPS per camera"],
             ["Review queue", "68.33% candidate drops", "300 ms review-stage assumption"],

@@ -161,6 +161,17 @@ diagnostic of event-placement and operating-objective sensitivity, not a
 visual-detection improvement. Distinguish onset budgets from positive-context
 exposure. Publish 2,130 per-clip outcomes and the exact 21,608-probability
 checkpoint/feature verification alongside full training-only selection curves.
+The hardware-control extension checks 24,252 real-score cycles against a
+Python integer golden model. UNORM16 quantization retains all 11,376 measured
+decision outputs and event triggers, with maximum probability error 7.63e-6.
+Report the explicit near-threshold counterexample and distinguish controller
+parity from accelerator arithmetic, synthesized timing or target power.
+The next operating-point study predeclares a 0.2 macro pre-event positive
+constraint in addition to the 0.5 episode budget, calibrated only on the
+existing training holdout. Its new 100/100 event-replay cohorts exclude 463
+prior clip identities while acknowledging earlier window-test observations.
+All sixteen paired operating policies and constant controls are retained,
+including low-recall or test-budget-exceeding outcomes.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and
