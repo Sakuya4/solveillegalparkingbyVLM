@@ -8,7 +8,7 @@ from pathlib import Path
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    names = ["numpy", "opencv-python", "opencv-contrib-python", "opencv-python-headless", "torch", "torchvision", "ultralytics", "transformers", "onnx", "onnxruntime", "PySide6", "pytest"]
+    names = ["numpy", "opencv-python", "opencv-contrib-python", "opencv-python-headless", "torch", "torchvision", "ultralytics", "transformers", "onnx", "onnxruntime", "PySide6", "pytest", "scikit-learn", "scipy", "matplotlib"]
     versions = {}
     for name in names:
         try:

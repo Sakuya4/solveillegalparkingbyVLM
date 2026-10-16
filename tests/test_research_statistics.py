@@ -1,7 +1,18 @@
 import numpy as np
 import pytest
 
-from illegal_parking.research_statistics import paired_cluster_coverage_interval, wilson_interval
+from illegal_parking.research_statistics import paired_cluster_coverage_interval, paired_cluster_f1_interval, wilson_interval
+
+
+def test_paired_f1_resamples_source_clips_and_preserves_identical_predictions():
+    labels = np.array([0, 1, 0, 1])
+    scores = np.array([0.1, 0.9, 0.1, 0.9])
+    clips = np.array(["a", "a", "b", "b"])
+    same = paired_cluster_f1_interval(labels, scores, scores, clips, threshold_a=0.5, threshold_b=0.5, repeats=20)
+    assert same["difference"] == same["lower_95"] == same["upper_95"] == 0
+    opposite = paired_cluster_f1_interval(labels, scores, 1 - scores, clips, threshold_a=0.5, threshold_b=0.5, repeats=20)
+    assert opposite["difference"] == opposite["lower_95"] == opposite["upper_95"] == 1
+    assert opposite["clusters"] == 2
 
 
 def test_wilson_interval_matches_known_binomial_example():
