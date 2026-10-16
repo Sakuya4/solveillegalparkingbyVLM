@@ -1,0 +1,31 @@
+{
+  "method": "NAFNet-REDS-width64 pretrained deblurring",
+  "input": "codex-clipboard-1291f486-8157-4ecc-ab35-43ac4504ed8e.jpg",
+  "checkpoint": "outputs/build/nafnet-official/experiments/pretrained_models/NAFNet-REDS-width64.pth",
+  "privacy": {
+    "plate": "pixelated before synthetic degradation and inference",
+    "timestamp_and_address": "removed by inpainting before synthetic degradation and inference"
+  },
+  "evaluation_contract": "The privacy-safe source is treated as the clean reference; a deterministic synthetic motion blur is applied before restoration. This is a restoration demo, not a traffic-event metric.",
+  "image_shape": [
+    683,
+    512,
+    3
+  ],
+  "blur_length": 15,
+  "device": "cuda",
+  "latency_ms": 2454.2714999988675,
+  "degraded": {
+    "psnr_db": 21.905958140148336,
+    "ssim": 0.5170001027249923
+  },
+  "restored": {
+    "psnr_db": 23.41018038598409,
+    "ssim": 0.636369470595397
+  },
+  "delta": {
+    "psnr_db": 1.5042222458357557,
+    "ssim": 0.11936936787040464
+  },
+  "source": "https://github.com/megvii-research/NAFNet"
+}

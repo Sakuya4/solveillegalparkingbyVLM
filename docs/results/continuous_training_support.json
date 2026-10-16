@@ -1,0 +1,53 @@
+{
+  "protocol_sha256": "b4bed7ad89a8651cee422f28711181ddda6de1339fd66c4a324ade025e3b4595",
+  "completed_at_utc": "2026-10-16T16:44:05.851857+00:00",
+  "fit_source_union": 557,
+  "files": {
+    "sources": {
+      "path": "docs/results/continuous_training_support.csv",
+      "sha256": "e497b015d3cb759d0740246e720c401f32617807acd1461ef14c2ea64cee2259",
+      "rows": 557
+    },
+    "contexts": {
+      "path": "docs/results/continuous_training_support_contexts.csv",
+      "sha256": "ca450b9bbbee5e0aaa107f4bace72c3710a8f9a3c3148fef9af320344d2fe30b",
+      "rows": 3830
+    }
+  },
+  "splits": {
+    "iid": {
+      "source_clips": 376,
+      "empty_clips": 0,
+      "valid_contexts": 2894,
+      "invalid_contexts": 89,
+      "prefix": 511,
+      "target": 705,
+      "post": 1678,
+      "both_classes": 237,
+      "gate1_support": 375,
+      "gate2_structural_support": 337,
+      "two_target_contexts_adjacent": 322,
+      "anchored_windows": 572,
+      "anchored_exact_continuous_matches": 43,
+      "anchored_endpoint_label_disagreements": 0
+    },
+    "geographic": {
+      "source_clips": 332,
+      "empty_clips": 0,
+      "valid_contexts": 1535,
+      "invalid_contexts": 91,
+      "prefix": 392,
+      "target": 586,
+      "post": 557,
+      "both_classes": 186,
+      "gate1_support": 330,
+      "gate2_structural_support": 282,
+      "two_target_contexts_adjacent": 255,
+      "anchored_windows": 496,
+      "anchored_exact_continuous_matches": 44,
+      "anchored_endpoint_label_disagreements": 0
+    }
+  },
+  "scope": "Fit-only timestamp/label feasibility audit; no image features, predictions, optimization, calibration endpoints or test outcomes. Packet support is not expanded-context decoder verification.",
+  "training_started": false
+}

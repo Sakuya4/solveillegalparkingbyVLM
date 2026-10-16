@@ -59,6 +59,26 @@ def test_build_traffic_incident_review_request_uses_temporal_privacy_evidence(tm
     assert "0.9300" in request.prompt
 
 
+def test_build_blind_incident_request_hides_model_scores(tmp_path):
+    evidence = {
+        "model_probability": 0.999,
+        "decision_threshold": 0.8,
+        "consecutive_positive_windows": 2,
+        "required_consecutive_windows": 2,
+        "artifacts": {"before": "before.jpg", "trigger": "trigger.jpg", "after": "after.jpg"},
+    }
+
+    request = build_traffic_incident_review_request(
+        evidence, tmp_path, include_model_context=False
+    )
+
+    assert "blinded visual review" in request.prompt
+    assert "0.999" not in request.prompt
+    assert "0.800" not in request.prompt
+    assert "model_probability" not in request.evidence
+    assert "decision_threshold" not in request.evidence
+
+
 def test_offline_incident_review_confirms_persistent_model_event(tmp_path):
     request = build_traffic_incident_review_request(
         {

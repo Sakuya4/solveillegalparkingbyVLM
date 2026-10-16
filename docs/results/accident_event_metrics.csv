@@ -1,0 +1,3 @@
+profile,min_positive_windows,clips,detected,event_recall,early_alert_episodes,late_alert_episodes,delay_mean_sec,delay_median_sec,delay_p95_sec
+responsive,1,100,75,0.750,90,238,0.546,0.394,2.251
+conservative,2,100,44,0.440,24,68,0.689,0.608,2.674

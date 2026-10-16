@@ -1,0 +1,27 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "provider": "qwen",
+  "total_cases": 20,
+  "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+  "parameter_dtype": "torch.bfloat16",
+  "device": "0",
+  "valid_schema_cases": 20,
+  "schema_valid_rate": 1.0,
+  "valid_case_confusion": {
+    "tp": 6,
+    "fp": 2,
+    "fn": 4,
+    "tn": 8
+  },
+  "valid_case_accuracy": 0.7,
+  "end_to_end_correct_rate": 0.7,
+  "mean_review_sec": 8.273610775003908,
+  "operator_review_rate": 0.6,
+  "max_new_tokens": 192,
+  "protocol": "Paired annotation-defined collision and pre-event sequences from IID test clips",
+  "evaluation_unit": "paired sequences clustered within source clips",
+  "frames_per_case": 3,
+  "decoding": "greedy",
+  "do_sample": false,
+  "seed": 42
+}

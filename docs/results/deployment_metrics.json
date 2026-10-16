@@ -1,0 +1,50 @@
+{
+  "normal_cctv": {
+    "session_count": 2,
+    "observed_camera_hours": 0.08670609318996415,
+    "evaluated_windows": 21,
+    "raw_positive_windows": 3,
+    "false_alert_episodes": 0,
+    "false_alerts_per_camera_hour": 0.0,
+    "zero_event_95pct_upper_per_camera_hour": 34.55042388994103
+  },
+  "edge_queue": {
+    "camera_count": 4,
+    "camera_fps": 7.5,
+    "processed_frames": 49320,
+    "frame_drop_rate": 0.0,
+    "mean_frame_latency_ms": 17.25,
+    "p95_frame_latency_ms": 27.6,
+    "generated_candidates": 6808,
+    "completed_reviews": 2156,
+    "dropped_candidates": 4652,
+    "review_drop_rate": 0.6833137485311398
+  },
+  "systemc": {
+    "version": "3.0.2",
+    "processed_frames": 49320,
+    "dropped_frames": 0,
+    "generated_candidates": 6808,
+    "completed_reviews": 2156,
+    "review_drops": 4652,
+    "python_parity": true
+  },
+  "verilog": {
+    "simulator": "Icarus Verilog",
+    "passed_testbenches": 3,
+    "total_testbenches": 3,
+    "modules": [
+      "dwell_fsm",
+      "bbox_overlap_counter",
+      "motion_trigger"
+    ]
+  },
+  "onnx_qnn": {
+    "parity_samples": 128,
+    "max_absolute_error": 1.7881393432617188e-7,
+    "onnx_check_passed": true,
+    "qnn_target": "Samsung Galaxy S23 NPU",
+    "qnn_status": "ready_for_authenticated_submission",
+    "measured_snapdragon_latency": false
+  }
+}

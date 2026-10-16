@@ -1,0 +1,20 @@
+{
+  "model": "Candidate ROI causal TCN",
+  "dataset": "ACCIDENT",
+  "training_cohort_clips": 500,
+  "split_scheme": "iid",
+  "operating_point": "grouped_train_holdout_fpr20",
+  "input_shape": ["batch", 15, 10],
+  "feature_names": [
+    "candidate_diff_mean", "candidate_change_ratio", "candidate_flow_mean",
+    "candidate_flow_p95", "candidate_available", "candidate_score",
+    "candidate_area_ratio", "candidate_from_track", "candidate_from_motion",
+    "candidate_from_sam2"
+  ],
+  "threshold": 0.8547053337097168,
+  "sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+  "opset": 18,
+  "preprocessing": "Feature standardization is embedded in the ONNX graph.",
+  "source_report": "docs/final_evaluation_report.md",
+  "license": "CC BY-NC-SA 4.0 research model bundle"
+}

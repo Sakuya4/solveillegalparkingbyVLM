@@ -16,6 +16,7 @@ from illegal_parking.incident_evaluation import (
     match_report_to_accident_clip,
     summarize_incident_evaluations,
 )
+from illegal_parking.incident_tcn_inference import persistent_positive_flags
 
 
 def main() -> int:
@@ -29,8 +30,11 @@ def main() -> int:
     parser.add_argument("--normal-report-glob", action="append", default=[])
     parser.add_argument("--early-tolerance-sec", type=float, default=1.0)
     parser.add_argument("--late-tolerance-sec", type=float, default=3.0)
+    parser.add_argument("--min-positive-windows", type=int)
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
+    if args.min_positive_windows is not None and args.min_positive_windows <= 0:
+        raise SystemExit("--min-positive-windows must be positive")
 
     report_paths = _collect_paths(args.report, args.report_glob)
     if not report_paths:
@@ -40,6 +44,17 @@ def main() -> int:
     seen_clip_paths: set[str] = set()
     for report_path in report_paths:
         report = json.loads(report_path.read_text(encoding="utf-8"))
+        if args.min_positive_windows is not None:
+            try:
+                report["window_review_flags"] = persistent_positive_flags(
+                    report["window_probabilities"],
+                    report["threshold"],
+                    args.min_positive_windows,
+                ).tolist()
+            except KeyError as exc:
+                raise ValueError(
+                    f"Report {report_path} cannot override persistence without {exc.args[0]}"
+                ) from exc
         clip = match_report_to_accident_clip(report, clips)
         clip_key = clip.relative_path.as_posix()
         if clip_key in seen_clip_paths:
@@ -59,6 +74,7 @@ def main() -> int:
             "trigger_time": "window_end",
             "early_tolerance_sec": args.early_tolerance_sec,
             "late_tolerance_sec": args.late_tolerance_sec,
+            "min_positive_windows": args.min_positive_windows,
             "annotation_contract": (
                 "ACCIDENT timing is used only by this post-inference evaluator; "
                 "inference reports must declare annotation_free_inference=true."

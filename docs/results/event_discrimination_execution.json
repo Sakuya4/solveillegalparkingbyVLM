@@ -1,0 +1,8 @@
+{
+  "created_at_utc": "2026-10-16T14:37:27.154939+00:00",
+  "protocol_sha256": "2859dc658d2a7ce390780094722be975b4db3c27c5fca9c461724b58c37db45c",
+  "implementation_sha256": {
+    "scripts/analyze_event_discrimination.py": "1426fdaf3feef2f0e648bf90984abeff2559bfd36ba13669caac2a016dfb07bd",
+    "Application/DebugVersion/src/illegal_parking/incident_event_discrimination.py": "f8e4ad4dcbe35fa0740f98ea1c8223b00cfc82608e4818d99ce53226108fb8b3"
+  }
+}

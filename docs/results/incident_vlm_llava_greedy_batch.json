@@ -1,0 +1,27 @@
+{
+  "model": "llava-hf/llava-interleave-qwen-0.5b-hf",
+  "provider": "llava",
+  "total_cases": 20,
+  "model_revision": "1090956dd1c79bc93ae98dcf395590369435ec91",
+  "parameter_dtype": "torch.bfloat16",
+  "device": "0",
+  "valid_schema_cases": 8,
+  "schema_valid_rate": 0.4,
+  "valid_case_confusion": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 2,
+    "tn": 6
+  },
+  "valid_case_accuracy": 0.75,
+  "end_to_end_correct_rate": 0.3,
+  "mean_review_sec": 7.76329618499949,
+  "operator_review_rate": 0.6,
+  "max_new_tokens": 192,
+  "protocol": "Paired annotation-defined collision and pre-event sequences from IID test clips",
+  "evaluation_unit": "paired sequences clustered within source clips",
+  "frames_per_case": 3,
+  "decoding": "greedy",
+  "do_sample": false,
+  "seed": 42
+}

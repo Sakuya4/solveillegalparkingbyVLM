@@ -1,5 +1,80 @@
 # Project TODO
 
+## Research and Native Desktop Revision
+
+- [x] Map peer-reviewed methods to the research questions and implementation.
+- [x] Implement government camera allocation with temporal holdout and source hashes.
+- [x] Compare severity/count greedy, independent ranking, and randomized allocation.
+- [x] Build a native laptop workbench with asynchronous inference and cancellation.
+- [x] Bundle a portable ONNX model and full-context reference clip.
+- [x] Record execution providers and disable CPU fallback for requested QNN HTP execution.
+- [x] Align video overlays with causal window-end decisions.
+- [x] Rewrite the primary README and evaluation report in academic English.
+- [x] Expand per-event visual evidence and optional VLM review inside the desktop workflow.
+- [x] Add paired uncertainty estimates and publication-ready allocation figures.
+- [x] Prepare fixed-shape QNN A16W8 with training-only calibration and test-set agreement.
+- [x] Complete geographic event-level validation and target-compatible QNN quantization.
+- [x] Produce a manuscript outline with research questions, endpoints, and source artifacts.
+- [x] Produce an end-to-end native demonstration recording.
+- [x] Compare matched Qwen/LLaVA requests and three/eight-frame evidence; preserve legacy requested-decoding runs.
+- [x] Audit installed generation routing and enforce explicitly forwarded sampling parameters.
+- [x] Complete separately versioned greedy Qwen/LLaVA and eight-frame replications.
+- [x] Publish source-clip paired intervals and native version-2 VLM comparison tables.
+- [x] Replay candidate queues using measured Qwen review-service time.
+- [x] Complete full-cohort candidate/global TCN training and controlled reporting.
+- [x] Evaluate proposal coalescing and budgeted review routing with SystemC parity.
+- [x] Complete full-cohort frozen and fine-tuned VideoMAE comparison.
+- [x] Publish AUROC/AP and paired source-clip F1 intervals on matched windows.
+- [x] Measure incident retention after admission control on both 100-clip event batches.
+- [x] Add native persistent CCTV observations, preview, cancellation, and source-clock analysis.
+- [x] Add continuous streaming inference with bounded buffers and real-detector replay parity.
+- [x] Complete paired 320/640-pixel event preprocessing audit with common window hops.
+- [x] Calibrate continuous-event thresholds on held-out training clips under a fixed preprocessing contract.
+- [x] Publish all 24 frozen event operating settings and paired recall intervals.
+- [x] Test empirical VLM service variability in 176 scenarios with 32 SystemC parity checks.
+- [x] Replay TCN-gated demand with source-event identities and 24 SystemC parity checks.
+- [ ] Extend independently reviewed normal-camera exposure and adjudicate streaming alerts.
+- [x] Preserve VLM evidence gaps and operator-review requests in native review routing.
+- [x] Reanalyze selective visual support separately from raw VLM classification.
+- [x] Add saved-event native VLM review without detector reruns and exclusive GPU job control.
+- [x] Review both saved Taichung alerts with version-2 generation; retain unassigned independent labels.
+- [x] Add full-observation clean playback and attributed native reviewer annotations.
+- [x] Evaluate reviewed normal exposure with source-clock gap exclusion, duplicate/conflict checks and Poisson upper limits.
+- [x] Validate real public-camera reconnects over 120 seconds and preserve the earlier source-failure record.
+- [x] Verify native MJPEG closure recovery and temporal warm-up after source gaps.
+- [x] Rerun the complete reference clip, retain actual VLM disagreement, and publish source-hashed detection/native videos with visible media attribution.
+- [x] Audit all source-container frame counts/hashes and verify presentation clocks on seven train-only decoded traces.
+- [x] Freeze presentation-time sampling, annotation-frame support and paired cohorts before cadence-consistent training.
+- [x] Verify both real-detector extraction arms on a train-only smoke subset and reject smoke data for fitting.
+- [x] Implement a separate guarded queue for two complete feature arms, eight matched fits and hash-verified paired reporting.
+- [x] Train and evaluate eight matched cadence/context TCN ablations without replacing reference models.
+- [x] Recompute all paired window results from prediction CSVs and verify byte-identical publication.
+- [x] Implement and CPU-test continuous PTS contexts, missing-hop persistence resets and annotation-time event evaluation.
+- [x] Implement a separate model/source-hashed event protocol and calibration-before-test queue.
+- [x] Complete continuous PTS replay and publish eight-model event recall, delay and alert-budget outcomes.
+- [x] Complete 170-source calibration replay and preserve/recover a format-only reporting failure without changing frozen scientific implementations.
+- [x] Freeze nonvisual temporal controls after calibration and before test replay.
+- [x] Verify all 21,608 continuous probabilities from saved features and publish clock-control contrasts.
+- [x] Display completed PTS window/event/control results in the native workbench.
+- [x] Publish full train-only calibration curves, 2,130 per-clip outcomes and independently recomputable aggregate/paired-interval tests.
+- [x] Verify real TCN confidence/persistence traces in a bit-accurate RTL controller, with an explicit quantization audit.
+- [x] Predeclare a positive-exposure-aware calibration follow-up and a new event validation cohort; retain current findings and defaults.
+- [x] Freeze all eight train-only constrained operating policies and the new worker/publisher execution appendix.
+- [x] Complete the new 191-source event replay and publish paired policy/control outcomes with both constraint budgets.
+- [x] Export every model-assigned calibration/test context and complete source inventory without modifying frozen implementations.
+- [x] Independently reconstruct 816 calibration points, 2,000 per-clip outcomes, prefix support and eight paired intervals from public data.
+- [x] Publish all operating-policy tradeoffs and a native positive-context comparison tab, retaining test-cap exceedances.
+- [x] Predeclare training-holdout event-local discrimination diagnostics before any new representation or fitting study.
+- [x] Freeze calibration-only score inputs and execute ranking/support/controller diagnostics without new test endpoints.
+- [x] Independently verify all supported clip rankings and both policy detections against public data and the frozen production evaluator.
+- [x] Publish the eight-model diagnostic report, decomposition figures and native TRAIN-only comparison modes.
+- [x] Verify isolated desktop installation, declare tracker dependencies and separate camera warm-up from observation clocks.
+- [x] Run a predeclared 120-second night-time public-camera experiment and publish numeric timing/reconnection traces without assigning ground truth.
+- [x] Freeze and complete the fit-only continuous-context support audit, without reading model scores or test endpoints.
+- [x] Freeze the eight-model continuous-context training comparison, source splits, settings, operating objective and new event cohorts before extraction/fitting.
+- [ ] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.
+- [ ] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
+
 ## Completed Case: Red-Line Parking
 
 - [x] Build edge simulation from image, video, webcam, URL, and CCTV sources.
@@ -8,6 +83,8 @@
 - [x] Add SAM mask evidence and local Qwen2.5-VL review.
 - [x] Compare YOLOv8n and RT-DETR-L detector baselines.
 - [x] Add event evaluation, hot-spot analysis, and A1/A2 risk analysis.
+- [x] Integrate measured results, evidence media, hardware status, and
+  government deployment analysis in one runnable Dashboard.
 
 ## Phase 1: Public-Dataset Incident Model
 
@@ -32,36 +109,45 @@
 - [x] Calibrate model thresholds against a target false-positive budget using a grouped train holdout.
 - [x] Train a frozen VideoMAE embedding comparison head.
 - [x] Compare candidate ROI and VideoMAE feature fusion.
-- [ ] Fine-tune the final VideoMAE encoder block.
+- [x] Fine-tune the final VideoMAE encoder block with grouped-holdout early stopping.
 - [ ] Compare YOLO, RT-DETR, and D-FINE as detector front ends.
 - [x] Generate ordered privacy-treated incident evidence for VLM review.
-- [ ] Compare SAM2-assisted evidence and real VLM providers on annotated incidents.
+- [x] Run a same-sample SAM2 proposal ablation and clean-blind VLM case comparison.
 - [x] Add event recall, trigger-delay, and off-target alert evaluation tooling.
-- [ ] Run representative IID/OOD reports and publish recall, false alarms/hour,
-  temporal error, type accuracy, and latency distributions.
+- [x] Publish a 100-clip IID event recall, trigger-delay, type, and off-target alert report.
+- [x] Add a matching geographic OOD event-level batch report.
 
 ## Phase 2: Edge And Hardware-Aware Validation
 
-- [ ] Export and quantize the selected models for an edge runtime.
+- [x] Export the calibrated TCN to ONNX and verify 128-sample runtime parity.
+- [ ] Quantize and profile the model on an authenticated QNN target.
 - [ ] Add Verilog acceleration and time-to-collision trigger logic.
 - [x] Add a Verilog ROI-versus-global motion-spike trigger.
 - [x] Add a shared NPU/review queue golden simulation and camera-capacity sweep.
-- [ ] Feed real model traces into Verilog golden vectors.
+- [x] Feed real model traces into Verilog golden vectors.
 - [x] Add SystemC camera, shared-NPU, and review/alert queues.
 - [x] Feed real candidate ROI traces into Python and SystemC queue inputs.
 - [x] Simulate latency, backpressure, frame dropping, and utilization for
   multiple cameras.
 - [ ] Add CPU/VLM stages and calibrated power proxies to the SystemC model.
-- [ ] Document the Snapdragon QNN/AI Hub compilation and profiling path.
-- [ ] Join alerts with Taiwan A1/A2, violations, VD flow, and CCTV locations.
+- [x] Document the Snapdragon QNN/AI Hub compilation path and credential boundary.
+- [x] Spatially join Taiwan A1/A2 risk grids with public enforcement-camera locations.
+- [ ] Add VD flow and event-alert coordinates to the same spatial join.
 - [x] Run an initial live public-CCTV runtime and domain-shift check.
 - [x] Aggregate matching CCTV sessions with a zero-event 95% exposure bound.
 - [ ] Extend normal-only CCTV validation to independently reviewed camera-hours.
-- [ ] Produce the final accuracy, edge cost, hot-spot coverage, and response-time
-  report.
+- [x] Produce the accuracy, edge cost, hot-spot coverage, and response-time report.
+
+## Difficult-Image And Review Validation
+
+- [x] Run an official NAFNet checkpoint on privacy-safe synthetic motion blur.
+- [x] Audit the official SM3Det release, configuration, domain, compute, and license.
+- [x] Separate annotated VLM evidence from clean blinded visual review.
+- [x] Compare Qwen2.5-VL-3B and LLaVA/Qwen-0.5B schema behavior on one incident.
+- [x] Expand clean-blind VLM evaluation to 20 paired sequences from ten annotated test clips.
 
 ## Final Claim Gate
 
-- [ ] Do not claim reduced A1/A2 casualties without before/after field data.
-- [ ] Claim only measured detection delay, event quality, camera-hour false
+- [x] Do not claim reduced A1/A2 casualties without before/after field data.
+- [x] Claim only measured detection delay, event quality, camera-hour false
   alarms, risk coverage, throughput, and review-cost savings.

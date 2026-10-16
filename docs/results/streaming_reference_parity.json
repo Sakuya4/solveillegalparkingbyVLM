@@ -1,0 +1,47 @@
+{
+  "input_filename": "incident_input.mp4",
+  "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+  "input_sha256": "1f2a29ef53659e8a1aa349a3d5bd02ccf93f1ffedc58d7e5e656d19d586c1633",
+  "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+  "sampled_frames": 225,
+  "min_positive_windows": 2,
+  "runtime": {
+    "engine": "ONNX Runtime",
+    "version": "1.27.0",
+    "requested_provider": "CPUExecutionProvider",
+    "session_providers": [
+      "CPUExecutionProvider"
+    ],
+    "cpu_fallback_disabled": false,
+    "provider_options": {},
+    "threads": 2
+  },
+  "buffers": {
+    "feature_steps": 15,
+    "context_frames": 16,
+    "camera_mailbox_frames": 1
+  },
+  "batch_report_sha256": "ad2d6436244e57160adb6990630bcdbd8c79e3b1465829e1cac66b6450174f73",
+  "stream_report_sha256": "662a2f33f6f46c63224729a24c69c3163d7d58b9a882304ae753cb5f70600a74",
+  "windows": 14,
+  "probability_max_abs_difference": 1.7881393432617188e-07,
+  "window_flag_agreement": 1.0,
+  "matched_events": 1,
+  "event_frame_identity_agreement": true,
+  "feature_width_limit": null,
+  "display_width": 640,
+  "stream_processing_sec": {
+    "median": 0.08901830000104383,
+    "p95": 0.1043052200024249
+  },
+  "events": [
+    {
+      "input_frame_index": 80,
+      "trigger_time_sec": 10.041666666666666,
+      "decision_available_wall_sec": 9.451622799999313,
+      "evidence_available_wall_sec": 10.846246100001736,
+      "post_context_truncated": false
+    }
+  ],
+  "scope": "Sequential CPU inference and batch inference on identical decoded source frames; file replay throughput is distinct from camera arrival-to-decision latency"
+}

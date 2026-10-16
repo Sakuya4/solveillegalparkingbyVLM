@@ -50,8 +50,10 @@ def test_run_transformers_image_text_to_text_uses_pipeline_contract():
     text = run_transformers_image_text_to_text(request, config, pipeline_factory=fake_pipeline)
 
     assert calls["pipeline_kwargs"] == {"task": "image-text-to-text", "model": "test/model", "device": 0}
-    assert calls["pipe_kwargs"]["max_new_tokens"] == 32
+    assert calls["pipe_kwargs"]["generate_kwargs"]["max_new_tokens"] == 32
     assert calls["pipe_kwargs"]["return_full_text"] is False
+    assert calls["pipe_kwargs"]["generate_kwargs"]["do_sample"] is False
+    assert "do_sample" not in calls["pipe_kwargs"]
     assert '"likely_violation": true' in text
 
 
@@ -66,6 +68,25 @@ def test_extract_generated_text_handles_chat_style_generated_text():
     ]
 
     assert extract_generated_text(output) == '{"likely_violation": false}'
+
+
+def test_installed_pipeline_routes_decoding_to_generation_not_processor():
+    import pytest
+    pytest.importorskip("transformers")
+    from transformers.pipelines.image_text_to_text import ImageTextToTextPipeline
+    pipe = object.__new__(ImageTextToTextPipeline)
+    captured = {}
+
+    def factory(**kwargs):
+        def call(**kwargs):
+            pre, forward, _ = pipe._sanitize_parameters(**kwargs)
+            captured.update(pre=pre, forward=forward)
+            return [{"generated_text": "{}"}]
+        return call
+
+    run_transformers_image_text_to_text(VlmReviewRequest("test", "Return JSON", [], {}), TransformersVlmConfig("test", "test", max_new_tokens=192), pipeline_factory=factory)
+    assert "do_sample" not in captured["pre"]
+    assert captured["forward"]["generate_kwargs"] == {"max_new_tokens": 192, "do_sample": False}
 
 
 def test_parse_device_accepts_int_or_string():

@@ -1,0 +1,141 @@
+{
+  "model": "llava-hf/llava-interleave-qwen-0.5b-hf",
+  "provider": "llava",
+  "total_cases": 20,
+  "model_revision": "1090956dd1c79bc93ae98dcf395590369435ec91",
+  "parameter_dtype": "torch.bfloat16",
+  "device": "0",
+  "valid_schema_cases": 8,
+  "schema_valid_rate": 0.4,
+  "valid_case_confusion": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 2,
+    "tn": 6
+  },
+  "valid_case_accuracy": 0.75,
+  "end_to_end_correct_rate": 0.3,
+  "mean_review_sec": 7.6917126999986065,
+  "operator_review_rate": 0.6,
+  "max_new_tokens": 192,
+  "protocol": "Paired annotation-defined collision and pre-event sequences from IID test clips",
+  "evaluation_unit": "paired sequences clustered within source clips",
+  "frames_per_case": 3,
+  "decoding": "greedy",
+  "do_sample": false,
+  "seed": 42,
+  "generation_contract_version": 2,
+  "transformers_version": "5.13.0",
+  "generation_parameter_route": "generate_kwargs: do_sample=False, max_new_tokens=192",
+  "wrapper_sha256": "8bd6db199d7449ba1ab6669a6aeafd1cabbbc79bf1a6ace12e6410175dbf7312",
+  "pipeline_source_sha256": "18ad41774db8c59b5187e383e809804d2ef303c864b5a45e5b8ae6648a5894bb",
+  "model_generation_defaults": {
+    "bos_token_id": 151643,
+    "eos_token_id": 151645,
+    "_from_model_config": true,
+    "transformers_version": "5.13.0"
+  },
+  "source_manifest_sha256": "1af77c68e88c8dc43164c4d59f794c06656a6adca8d9fde3f283ec416195c0f3",
+  "case_results": [
+    {
+      "case_id": "6oymx7wBmjw_04__pre_event",
+      "input_signature": "9b4aff2df0e090ee06ae5898e1fb1a14ab072d8b1bd6b0a24cbca7c03e959a7c",
+      "report_sha256": "da3e388898513c3a78f318ccd88ac05ab88cb3aae39f0b6c35ab098fa16e279d"
+    },
+    {
+      "case_id": "6oymx7wBmjw_04__collision",
+      "input_signature": "90db9a7ac0ee610ed67d3f3b4a959a9ac3b4d7af1a2bd2c8813b82c16e63b428",
+      "report_sha256": "c512d60e25e84727c12f37db960d2422b02be3ef24e88891c1fb9cc221f42fec"
+    },
+    {
+      "case_id": "Hjax6nMPd6Q_00__pre_event",
+      "input_signature": "9c68ec273a44bdc79bb410f0fda2641331d2d5e7485ceec6b38ebad7d7d0d7b0",
+      "report_sha256": "bd1970cc32dec83d1313c9ff8c68da5c81ea34f5d15c931eb7deab420c57e489"
+    },
+    {
+      "case_id": "Hjax6nMPd6Q_00__collision",
+      "input_signature": "02d37664398058402ae423f81d9ddbc6334c0a105680dad3f019784752e8bc96",
+      "report_sha256": "20ca1087ccefde2ea20dbfadc2acca880fe4ceb8540638798d2f5befd0a8004d"
+    },
+    {
+      "case_id": "Q5YnuRI6QSM_00__pre_event",
+      "input_signature": "4e23cc0ab178a15a9bb47847a1742f1940e5255c52943c652f5acf1c277a5cb3",
+      "report_sha256": "e48114c8f4283ec76af6bcc0b8f1b659612e4ad75f76132dd501ef91f1aa49fd"
+    },
+    {
+      "case_id": "Q5YnuRI6QSM_00__collision",
+      "input_signature": "49d4e4025b87e7090c64164d834debd044e92974c1ed964e72b96b58fa63107a",
+      "report_sha256": "378d555636850b505ef44db689d97fe6be593d175681f0a12f9d779b02ec2d93"
+    },
+    {
+      "case_id": "SS38UP-0QnU_00__pre_event",
+      "input_signature": "0909155d63b287c81182c11087ac9ac9704acf4895ef6e1d88b53339d42977c4",
+      "report_sha256": "3c18d3dab2b1042d39e11ad59b4465dc5adcf1ad180ee3be65a7ca012ffee830"
+    },
+    {
+      "case_id": "SS38UP-0QnU_00__collision",
+      "input_signature": "d3a0e7e53374a132ed5ffbe759ad51eb5407b28fff21228e35adb3fcd074ccf3",
+      "report_sha256": "f456745f23e59338747ad7c1feb5c124e3b968869fdd1d9632875fac759bab5f"
+    },
+    {
+      "case_id": "TXZfPbiopOE_00__pre_event",
+      "input_signature": "cc9a521e5654a51f5535d2f1e676afcb47edcd2557eccd8d9a849c5929871fa8",
+      "report_sha256": "b0c51cae57caf8666a3a26a7ea02d0135531f5eb6d53055e20d2269e699bf189"
+    },
+    {
+      "case_id": "TXZfPbiopOE_00__collision",
+      "input_signature": "d7a77008f6f44403471ba8f033cf3ec0ca621569aae72b03fc37195fa6aea6e4",
+      "report_sha256": "87132c02dc4e8cdafc82d0ac7f311b22fda9dac73bf14821bdae14c1812d0767"
+    },
+    {
+      "case_id": "W5YikE19nkc_00__pre_event",
+      "input_signature": "ec3c6921600ffcbc8be68abce78d237df6183c4b76a08603f93000035516f979",
+      "report_sha256": "b387000ac1a066b3ef1d0107a18784eec3e6388b8864d18da5ead6fd8f751b0e"
+    },
+    {
+      "case_id": "W5YikE19nkc_00__collision",
+      "input_signature": "2d22ad33d3563f5bdb432323660685bb99c8a03b7149053c5682313aee71ee46",
+      "report_sha256": "1fa228120ae2f1300d74405a738213dd0ce73f04235ba97b25988094f7cccdfa"
+    },
+    {
+      "case_id": "cZo9DI6DSIY_02__pre_event",
+      "input_signature": "bb6ff10b6de52c96da915642b13a3cc35afb9038f068ca9942d7b54c04dfa0b9",
+      "report_sha256": "f71310c7f86a03363846e740d72a3e8ffe17865ec3a4367d4b6dbaf6b5899672"
+    },
+    {
+      "case_id": "cZo9DI6DSIY_02__collision",
+      "input_signature": "463127df9eaffa26dc9b5d86ed2807b58e820320507e4f2aa787ecf25686be87",
+      "report_sha256": "fd677e6a9e9e2ff9de6a21f821593d738b414ddb6f000e493bf4a28147a6c920"
+    },
+    {
+      "case_id": "kM5FhXJsyWA_00__pre_event",
+      "input_signature": "4ca033152021f0464495a6bb3f58d66cfb51c9d9d5d2808e50f23ebfadd3bb6f",
+      "report_sha256": "537af46fe83000c1018db5c4d7411256eac45df30621d947452a52ab3fd07c1c"
+    },
+    {
+      "case_id": "kM5FhXJsyWA_00__collision",
+      "input_signature": "d1511ddda0fc8ff1f5fbcdf9aca2fdc2186c16218796a5004244ae72199b6121",
+      "report_sha256": "e7c509c224fd8946718861ce37ec22d86ca683badb529df5b85116defcb8d8ec"
+    },
+    {
+      "case_id": "snZGxCZ7vFM_00__pre_event",
+      "input_signature": "2374efeea5d7a857c55d7924a053490cf09be52da089aba975637e41ddd29a9e",
+      "report_sha256": "df313474e7d75d026d2a5574b38166870e3065fa221694ac412b0657962731a7"
+    },
+    {
+      "case_id": "snZGxCZ7vFM_00__collision",
+      "input_signature": "2b9fa300683845b7527ffe618a8b7e4acc4d33eb411e22f0f8ae3f0a0d192525",
+      "report_sha256": "80cf0c23d7b403fb38ccdb92141d5879e462ce4eeba821791c24a4a111260ab7"
+    },
+    {
+      "case_id": "zz0qZ-sSCbY_00__pre_event",
+      "input_signature": "b4d3210fb9596521f451a861f21b147717af29442376fd0879e0f650e264d48d",
+      "report_sha256": "1454b5db36a6c1ec7cb38e21b2e68c2673f88fde454268a02bc3a74c662ed773"
+    },
+    {
+      "case_id": "zz0qZ-sSCbY_00__collision",
+      "input_signature": "2e0de15411185c782ca6ef153145324d3ad1663fefcfb9602e591b02528138d6",
+      "report_sha256": "3b36e15285dce24a5a57cd9a8a7c00a831aaf496e09a728836ed5275d9053f8c"
+    }
+  ]
+}

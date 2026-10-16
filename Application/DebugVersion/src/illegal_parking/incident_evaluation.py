@@ -46,10 +46,13 @@ def evaluate_incident_report(
         raise ValueError("sampled_fps and sequence_steps must be positive")
 
     episode_indices = _episode_start_indices(review_flags)
-    episode_times = [
-        (starts[index] + sequence_steps) / sampled_fps
-        for index in episode_indices
-    ]
+    if "window_end_times_sec" in report:
+        decision_times = np.asarray(report["window_end_times_sec"], dtype=float)
+        if decision_times.ndim != 1 or len(decision_times) != len(starts) or not np.all(np.isfinite(decision_times)) or np.any(decision_times < 0) or np.any(np.diff(decision_times) <= 0):
+            raise ValueError("Source decision timestamps must be finite, increasing, and aligned with windows")
+        episode_times = [float(decision_times[index]) for index in episode_indices]
+    else:
+        episode_times = [(starts[index] + sequence_steps) / sampled_fps for index in episode_indices]
     lower_bound = clip.accident_time_sec - early_tolerance_sec
     upper_bound = clip.accident_time_sec + late_tolerance_sec
     matching = [

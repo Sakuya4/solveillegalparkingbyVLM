@@ -1,0 +1,8 @@
+# Native interface and portable temporal inference. Install the existing
+# application requirements as well when running vehicle detection locally.
+PySide6>=6.6,<7
+onnxruntime>=1.18,<2
+opencv-contrib-python>=4.8
+numpy>=1.24
+# ByteTrack assignment backend; install before inference, not at runtime.
+lap>=0.5.12

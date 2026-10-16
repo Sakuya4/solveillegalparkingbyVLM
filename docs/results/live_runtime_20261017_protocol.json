@@ -1,0 +1,37 @@
+{
+  "status": "predeclared_before_public_camera_acquisition",
+  "local_date": "2026-10-17",
+  "timezone": "Asia/Taipei",
+  "camera_page": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+  "requested_observation_sec": 120,
+  "source_mode": "page",
+  "source_policy": "One predeclared camera request; retain any source failure or truncated session. The existing worker permits three consecutive reconnect attempts. Do not replace failed observations silently.",
+  "runtime": "Native streaming worker; CPUExecutionProvider; two CPU threads; no VLM during acquisition",
+  "reference_model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+  "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+  "inference": {
+    "target_fps": 7.5,
+    "display_width": 640,
+    "feature_width_limit": null,
+    "sequence_steps": 15,
+    "hop_steps": 15,
+    "min_positive_windows": 2,
+    "threshold": 0.8547053337097168,
+    "tracker_scope": "Persistent within uninterrupted observation; reset after sampled-frame gaps above one second"
+  },
+  "clock": "Local decoder arrival/elapsed clock, not verified camera sensor timestamps; separate from video-PTS studies",
+  "endpoints": [
+    "Completion or retained failure, actual elapsed observation and initialization time",
+    "Sampled/decoded frames, reconnect attempts, gaps and context resets",
+    "Median/p95 sampled-frame processing and arrival-to-decision latency",
+    "Unassigned candidate alert count and eligible acquisition intervals at the existing one-second gap limit",
+    "Source, model, implementation, report, decisions and media hashes"
+  ],
+  "label_policy": "All observations and alerts remain UNASSIGNED until independent review. Do not calculate accuracy, recall, false-alarm rates or reviewed-normal camera-hours from this runtime session.",
+  "media_policy": "Keep camera video and screenshots local; publish numerical summaries and provenance without redistributing footage unless reuse terms are separately verified.",
+  "implementation_sha256": {
+    "scripts/run_streaming_incident.py": "321a9953cf7743d5c01ff482152b44e31ad1e6e70a4623fddf5592d6997c0d19",
+    "Application/DebugVersion/src/illegal_parking/incident_camera_startup.py": "2fb3a9e6dddeade683316fe3cb765a7c35c46cb475b75f23ba129a2d948c51b1",
+    "Application/DebugVersion/src/illegal_parking/incident_streaming.py": "baa2044fda86af59adf655541565c68117ad48f0fa3b0d3026e69eb62bbc45de"
+  }
+}

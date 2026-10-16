@@ -60,6 +60,7 @@ def main() -> int:
     )
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", default="auto")
+    parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--model-output", default="models/accident_tcn.pt")
     parser.add_argument("--report-output", default="outputs/accident/tcn_report.json")
     parser.add_argument("--predictions-output", default="outputs/accident/tcn_predictions.csv")
@@ -67,6 +68,9 @@ def main() -> int:
 
     if args.epochs <= 0 or args.batch_size <= 0 or args.learning_rate <= 0:
         raise SystemExit("epochs, batch size, and learning rate must be positive")
+    if args.threads <= 0:
+        raise SystemExit("--threads must be positive")
+    torch.set_num_threads(args.threads)
     if not 0.0 <= args.threshold <= 1.0:
         raise SystemExit("--threshold must be between zero and one")
     if args.target_train_fpr is not None and not 0.0 <= args.target_train_fpr <= 1.0:

@@ -20,6 +20,8 @@ struct QueueProfile {
     std::string candidate_flags_path;
     std::vector<bool> candidate_flags;
     double review_latency_ms = 300.0;
+    std::string review_service_path;
+    std::vector<double> review_service_ms;
     unsigned review_queue_capacity = 8;
 };
 
@@ -38,13 +40,19 @@ SC_MODULE(CameraFarm) {
 
     void run() {
         const sc_time frame_period(1000.0 / profile.camera_fps, SC_MS);
+        const auto frame_count = static_cast<unsigned>(std::lround(profile.camera_fps * profile.duration_sec));
         unsigned frame_id = 0;
-        while (sc_time_stamp() < sc_time(profile.duration_sec, SC_SEC)) {
+        for (unsigned frame_index = 0; frame_index < frame_count; ++frame_index) {
+            // Release completions and their FIFO updates before same-time arrivals.
+            wait(SC_ZERO_TIME);
             for (unsigned camera = 0; camera < profile.camera_count; ++camera) {
                 ++generated;
                 if (!frames->nb_write(frame_id++)) {
                     ++dropped;
                 }
+                // Let an idle consumer take the first frame before the next camera.
+                wait(SC_ZERO_TIME);
+                wait(SC_ZERO_TIME);
             }
             wait(frame_period);
         }
@@ -79,6 +87,7 @@ SC_MODULE(NpuWorker) {
                 : profile.candidate_stride > 0 && processed % profile.candidate_stride == 0;
             if (is_candidate) {
                 ++candidate_count;
+                wait(SC_ZERO_TIME);
                 if (!candidates->nb_write(frame_id)) {
                     ++dropped_candidates;
                 }
@@ -102,9 +111,11 @@ SC_MODULE(ReviewWorker) {
 
     void run() {
         while (true) {
-            candidates->read();
+            const unsigned frame_id = candidates->read();
             busy = true;
-            wait(sc_time(profile.review_latency_ms, SC_MS));
+            const double service_ms = profile.review_service_ms.empty()
+                ? profile.review_latency_ms : profile.review_service_ms[frame_id];
+            wait(sc_time(service_ms, SC_MS));
             ++completed;
             busy = false;
         }
@@ -129,6 +140,7 @@ static QueueProfile parse_args(int argc, char* argv[]) {
         else if (option == "--candidate-stride") profile.candidate_stride = std::stoul(value);
         else if (option == "--candidate-flags") profile.candidate_flags_path = value;
         else if (option == "--review-latency-ms") profile.review_latency_ms = std::stod(value);
+        else if (option == "--review-service-ms") profile.review_service_path = value;
         else if (option == "--review-queue-capacity") profile.review_queue_capacity = std::stoul(value);
         else {
             std::cerr << "Unknown option: " << option << std::endl;
@@ -171,6 +183,29 @@ static QueueProfile parse_args(int argc, char* argv[]) {
             std::exit(2);
         }
     }
+    if (!profile.review_service_path.empty()) {
+        std::ifstream input(profile.review_service_path);
+        if (!input) {
+            std::cerr << "Cannot open review service trace" << std::endl;
+            std::exit(2);
+        }
+        std::string value;
+        while (input >> value) {
+            std::size_t consumed = 0;
+            const double duration = std::stod(value, &consumed);
+            if (consumed != value.size() || !std::isfinite(duration) || duration < 0.0) {
+                std::cerr << "Review service durations must be finite and non-negative" << std::endl;
+                std::exit(2);
+            }
+            profile.review_service_ms.push_back(duration);
+        }
+        const auto expected_count = static_cast<std::size_t>(profile.camera_count) *
+            static_cast<std::size_t>(std::lround(profile.camera_fps * profile.duration_sec));
+        if (profile.review_service_ms.size() != expected_count) {
+            std::cerr << "Review service trace count must match generated frames" << std::endl;
+            std::exit(2);
+        }
+    }
     return profile;
 }
 
@@ -188,12 +223,15 @@ int sc_main(int argc, char* argv[]) {
     reviewer.candidates(review_queue);
 
     sc_start(sc_time(profile.duration_sec, SC_SEC));
+    // Include endpoint completions, matching the golden model's <= boundary.
+    sc_start(sc_get_time_resolution());
 
     const unsigned pending_frames = frame_queue.num_available() + (npu.busy ? 1U : 0U);
     const unsigned pending_reviews = review_queue.num_available() + (reviewer.busy ? 1U : 0U);
 
     std::cout << "generated_frames=" << camera_farm.generated << '\n'
               << "candidate_trace_enabled=" << (!profile.candidate_flags.empty() ? 1 : 0) << '\n'
+              << "review_service_trace_enabled=" << (!profile.review_service_ms.empty() ? 1 : 0) << '\n'
               << "processed_frames=" << npu.processed << '\n'
               << "pending_frames=" << pending_frames << '\n'
               << "dropped_frames=" << camera_farm.dropped << '\n'

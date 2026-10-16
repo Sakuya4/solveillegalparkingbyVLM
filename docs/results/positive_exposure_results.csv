@@ -1,0 +1,17 @@
+model,policy,threshold,event_recall,off_target_per_clip,pre_event_macro_positive_fraction,pre_event_support_clips,median_delay_sec,episode_budget_exceeded,pre_event_cap_exceeded
+legacy_candidate_iid,onset_only,0.0,0.45,0.65,1.0,77,0.7500000000000004,True,True
+legacy_candidate_iid,positive_context,0.84,0.14,0.28,0.2680890538033395,77,1.5833335,False,True
+legacy_global_iid,onset_only,0.16,0.44,0.72,0.9426406926406926,77,0.8541670000000003,True,True
+legacy_global_iid,positive_context,0.78,0.06,0.11,0.09523809523809523,77,0.8666665,False,False
+legacy_candidate_geographic,onset_only,0.08,0.55,1.11,0.7946394230769231,80,0.7916659999999998,True,True
+legacy_candidate_geographic,positive_context,0.99,0.09,0.11,0.15968749999999998,80,0.875,False,False
+legacy_global_geographic,onset_only,0.06,0.51,0.57,0.99375,80,0.4583330000000001,True,True
+legacy_global_geographic,positive_context,0.81,0.08,0.17,0.08479166666666667,80,1.7916665,False,False
+fixed_candidate_iid,onset_only,0.0,0.45,0.65,1.0,77,0.7500000000000004,True,True
+fixed_candidate_iid,positive_context,0.98,0.1,0.16,0.19124922696351268,77,1.1666665000000003,False,False
+fixed_global_iid,onset_only,0.0,0.45,0.65,1.0,77,0.7500000000000004,True,True
+fixed_global_iid,positive_context,0.71,0.05,0.18,0.11038961038961038,77,2.8,False,False
+fixed_candidate_geographic,onset_only,0.0,0.51,0.53,1.0,80,0.4583330000000001,True,True
+fixed_candidate_geographic,positive_context,0.99,0.11,0.22,0.16104166666666667,80,0.875,False,False
+fixed_global_geographic,onset_only,0.01,0.51,0.53,1.0,80,0.4583330000000001,True,True
+fixed_global_geographic,positive_context,0.58,0.25,0.55,0.31520833333333337,80,1.208333,True,True

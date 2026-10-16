@@ -10,6 +10,18 @@ from .incident_trajectory import TrackBox, build_track_boxes
 VEHICLE_CLASS_IDS = (2, 3, 5, 7)
 
 
+def track_vehicle_frame(model: Any, frame: np.ndarray, frame_index: int, *, device="cpu", image_size=320, confidence=0.15) -> list[TrackBox]:
+    results = list(model.track(source=[frame], persist=True, tracker="bytetrack.yaml", device=device, imgsz=image_size, conf=confidence, classes=list(VEHICLE_CLASS_IDS), verbose=False))
+    if len(results) != 1:
+        raise RuntimeError("Streaming tracker must return exactly one result")
+    result = results[0]
+    boxes = result.boxes
+    if boxes is None or boxes.id is None or len(boxes) == 0:
+        return []
+    height, width = result.orig_shape
+    return build_track_boxes(frame_index=frame_index, boxes_xyxy=_as_numpy(boxes.xyxy), track_ids=_as_numpy(boxes.id), confidences=_as_numpy(boxes.conf), frame_width=width, frame_height=height)
+
+
 def track_vehicle_frames(
     model: Any,
     frames: list[np.ndarray],

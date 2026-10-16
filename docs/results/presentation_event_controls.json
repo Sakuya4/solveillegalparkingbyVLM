@@ -1,0 +1,503 @@
+{
+  "protocol_sha256": "f8725a5e20f5d6ac04c55f15b37e88f8e2ae8555eb3599f8ed903768ab77b131",
+  "control_protocol_sha256": "9d95fb8206fbac580c4ad26d19f91f3651ee4f699912986846e6553dd3c07f7e",
+  "serialization_amendment_sha256": "30341409f0458afa1124e0c0b35cedd4cf9e104c9c60aed4fcae8af831378f26",
+  "calibration_batch_sha256": "9e02246367430be98e48d8e1b1a4fd35f0e1ff543489807f76254cd66f3f4d29",
+  "test_batch_sha256": "e8f10da03a49dd96f4eae0e697218aa2316c5c05c9ae7173bc953b929f6ed441",
+  "prediction_verification": {
+    "calibration": {
+      "verified_probabilities": 8744,
+      "maximum_absolute_error": 0.0,
+      "tolerance": 1e-07,
+      "device": "cpu"
+    },
+    "test": {
+      "verified_probabilities": 12864,
+      "maximum_absolute_error": 0.0,
+      "tolerance": 1e-07,
+      "device": "cpu"
+    }
+  },
+  "controls": {
+    "iid": {
+      "calibration": {
+        "clock_only_positive": {
+          "clip_count": 94,
+          "detected_clips": 50,
+          "missed_clips": 44,
+          "event_recall": 0.5319148936170213,
+          "early_alert_episodes": 34,
+          "late_alert_episodes": 6,
+          "trigger_delay_sec": {
+            "mean": 0.98831194,
+            "median": 0.9375,
+            "p95": 2.650000149999999,
+            "minimum": -0.7916670000000003,
+            "maximum": 2.875
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 5,
+              "detected_clips": 3,
+              "event_recall": 0.6
+            },
+            "rear-end": {
+              "clip_count": 11,
+              "detected_clips": 9,
+              "event_recall": 0.8181818181818182
+            },
+            "sideswipe": {
+              "clip_count": 15,
+              "detected_clips": 8,
+              "event_recall": 0.5333333333333333
+            },
+            "single": {
+              "clip_count": 36,
+              "detected_clips": 18,
+              "event_recall": 0.5
+            },
+            "t-bone": {
+              "clip_count": 27,
+              "detected_clips": 12,
+              "event_recall": 0.4444444444444444
+            }
+          },
+          "off_target_episodes_per_clip": 0.425531914893617,
+          "rejected_windows": 14,
+          "clips_without_valid_windows": 0
+        },
+        "always_negative": {
+          "clip_count": 94,
+          "detected_clips": 0,
+          "missed_clips": 94,
+          "event_recall": 0.0,
+          "early_alert_episodes": 0,
+          "late_alert_episodes": 0,
+          "trigger_delay_sec": {
+            "mean": null,
+            "median": null,
+            "p95": null,
+            "minimum": null,
+            "maximum": null
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 5,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 11,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "sideswipe": {
+              "clip_count": 15,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 36,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 27,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            }
+          },
+          "off_target_episodes_per_clip": 0.0,
+          "rejected_windows": 14,
+          "clips_without_valid_windows": 0
+        }
+      },
+      "test": {
+        "clock_only_positive": {
+          "clip_count": 88,
+          "detected_clips": 50,
+          "missed_clips": 38,
+          "event_recall": 0.5681818181818182,
+          "early_alert_episodes": 31,
+          "late_alert_episodes": 9,
+          "trigger_delay_sec": {
+            "mean": 0.8510988400000002,
+            "median": 0.7791664999999999,
+            "p95": 2.61833315,
+            "minimum": -0.9166659999999993,
+            "maximum": 3.0
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 18,
+              "detected_clips": 10,
+              "event_recall": 0.5555555555555556
+            },
+            "rear-end": {
+              "clip_count": 17,
+              "detected_clips": 10,
+              "event_recall": 0.5882352941176471
+            },
+            "sideswipe": {
+              "clip_count": 17,
+              "detected_clips": 9,
+              "event_recall": 0.5294117647058824
+            },
+            "single": {
+              "clip_count": 18,
+              "detected_clips": 11,
+              "event_recall": 0.6111111111111112
+            },
+            "t-bone": {
+              "clip_count": 18,
+              "detected_clips": 10,
+              "event_recall": 0.5555555555555556
+            }
+          },
+          "off_target_episodes_per_clip": 0.45454545454545453,
+          "rejected_windows": 45,
+          "clips_without_valid_windows": 0
+        },
+        "always_negative": {
+          "clip_count": 88,
+          "detected_clips": 0,
+          "missed_clips": 88,
+          "event_recall": 0.0,
+          "early_alert_episodes": 0,
+          "late_alert_episodes": 0,
+          "trigger_delay_sec": {
+            "mean": null,
+            "median": null,
+            "p95": null,
+            "minimum": null,
+            "maximum": null
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 18,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 17,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "sideswipe": {
+              "clip_count": 17,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 18,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 18,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            }
+          },
+          "off_target_episodes_per_clip": 0.0,
+          "rejected_windows": 45,
+          "clips_without_valid_windows": 0
+        }
+      }
+    },
+    "geographic": {
+      "calibration": {
+        "clock_only_positive": {
+          "clip_count": 83,
+          "detected_clips": 41,
+          "missed_clips": 42,
+          "event_recall": 0.4939759036144578,
+          "early_alert_episodes": 22,
+          "late_alert_episodes": 6,
+          "trigger_delay_sec": {
+            "mean": 1.014252,
+            "median": 1.1600000000000001,
+            "p95": 2.8,
+            "minimum": -0.9009,
+            "maximum": 3.0
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 8,
+              "detected_clips": 4,
+              "event_recall": 0.5
+            },
+            "rear-end": {
+              "clip_count": 9,
+              "detected_clips": 6,
+              "event_recall": 0.6666666666666666
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 8,
+              "event_recall": 0.8
+            },
+            "single": {
+              "clip_count": 12,
+              "detected_clips": 5,
+              "event_recall": 0.4166666666666667
+            },
+            "t-bone": {
+              "clip_count": 44,
+              "detected_clips": 18,
+              "event_recall": 0.4090909090909091
+            }
+          },
+          "off_target_episodes_per_clip": 0.3373493975903614,
+          "rejected_windows": 20,
+          "clips_without_valid_windows": 1
+        },
+        "always_negative": {
+          "clip_count": 83,
+          "detected_clips": 0,
+          "missed_clips": 83,
+          "event_recall": 0.0,
+          "early_alert_episodes": 0,
+          "late_alert_episodes": 0,
+          "trigger_delay_sec": {
+            "mean": null,
+            "median": null,
+            "p95": null,
+            "minimum": null,
+            "maximum": null
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 8,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 9,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 12,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 44,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            }
+          },
+          "off_target_episodes_per_clip": 0.0,
+          "rejected_windows": 20,
+          "clips_without_valid_windows": 1
+        }
+      },
+      "test": {
+        "clock_only_positive": {
+          "clip_count": 90,
+          "detected_clips": 54,
+          "missed_clips": 36,
+          "event_recall": 0.6,
+          "early_alert_episodes": 34,
+          "late_alert_episodes": 6,
+          "trigger_delay_sec": {
+            "mean": 0.605329277777778,
+            "median": 0.6458335000000002,
+            "p95": 2.38375,
+            "minimum": -0.9583329999999997,
+            "maximum": 2.583333
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 21,
+              "detected_clips": 13,
+              "event_recall": 0.6190476190476191
+            },
+            "rear-end": {
+              "clip_count": 19,
+              "detected_clips": 12,
+              "event_recall": 0.631578947368421
+            },
+            "sideswipe": {
+              "clip_count": 19,
+              "detected_clips": 14,
+              "event_recall": 0.7368421052631579
+            },
+            "single": {
+              "clip_count": 16,
+              "detected_clips": 8,
+              "event_recall": 0.5
+            },
+            "t-bone": {
+              "clip_count": 15,
+              "detected_clips": 7,
+              "event_recall": 0.4666666666666667
+            }
+          },
+          "off_target_episodes_per_clip": 0.4444444444444444,
+          "rejected_windows": 28,
+          "clips_without_valid_windows": 0
+        },
+        "always_negative": {
+          "clip_count": 90,
+          "detected_clips": 0,
+          "missed_clips": 90,
+          "event_recall": 0.0,
+          "early_alert_episodes": 0,
+          "late_alert_episodes": 0,
+          "trigger_delay_sec": {
+            "mean": null,
+            "median": null,
+            "p95": null,
+            "minimum": null,
+            "maximum": null
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 21,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 19,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "sideswipe": {
+              "clip_count": 19,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 16,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 15,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            }
+          },
+          "off_target_episodes_per_clip": 0.0,
+          "rejected_windows": 28,
+          "clips_without_valid_windows": 0
+        }
+      }
+    }
+  },
+  "model_comparisons": [
+    {
+      "model": "legacy_candidate_iid",
+      "selected_threshold": 0.0,
+      "positive_window_fraction": 1.0,
+      "paired_recall_vs_clock": {
+        "difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0,
+        "clusters": 88,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "model": "legacy_global_iid",
+      "selected_threshold": 0.16,
+      "positive_window_fraction": 0.9830028328611898,
+      "paired_recall_vs_clock": {
+        "difference": -0.022727272727272728,
+        "lower_95": -0.056818181818181816,
+        "upper_95": 0.0,
+        "clusters": 88,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "model": "legacy_candidate_geographic",
+      "selected_threshold": 0.08,
+      "positive_window_fraction": 0.8571428571428571,
+      "paired_recall_vs_clock": {
+        "difference": -0.03333333333333333,
+        "lower_95": -0.12249999999999998,
+        "upper_95": 0.06666666666666667,
+        "clusters": 90,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "model": "legacy_global_geographic",
+      "selected_threshold": 0.06,
+      "positive_window_fraction": 0.9931506849315068,
+      "paired_recall_vs_clock": {
+        "difference": 0.022222222222222223,
+        "lower_95": 0.0,
+        "upper_95": 0.05555555555555555,
+        "clusters": 90,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "model": "fixed_candidate_iid",
+      "selected_threshold": 0.0,
+      "positive_window_fraction": 1.0,
+      "paired_recall_vs_clock": {
+        "difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0,
+        "clusters": 88,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "model": "fixed_global_iid",
+      "selected_threshold": 0.0,
+      "positive_window_fraction": 1.0,
+      "paired_recall_vs_clock": {
+        "difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0,
+        "clusters": 88,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "model": "fixed_candidate_geographic",
+      "selected_threshold": 0.0,
+      "positive_window_fraction": 1.0,
+      "paired_recall_vs_clock": {
+        "difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0,
+        "clusters": 90,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "model": "fixed_global_geographic",
+      "selected_threshold": 0.01,
+      "positive_window_fraction": 1.0,
+      "paired_recall_vs_clock": {
+        "difference": 0.0,
+        "lower_95": 0.0,
+        "upper_95": 0.0,
+        "clusters": 90,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    }
+  ],
+  "scope": "Diagnostic controls expose temporal dataset structure, not normal-camera operational performance",
+  "uncertainty": "Eight pointwise paired clip-bootstrap diagnostic contrasts; fixed models and thresholds; no family-wise correction"
+}

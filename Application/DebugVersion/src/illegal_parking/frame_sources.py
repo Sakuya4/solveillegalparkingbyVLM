@@ -185,6 +185,64 @@ def _extract_jpeg(data: bytes) -> bytes | None:
     return data[start : end + 2]
 
 
+class MJPEGFrameSource:
+    def __init__(self, stream_url: str, timeout_sec: float = 10.0, max_frame_bytes: int = 5_000_000):
+        if timeout_sec <= 0 or max_frame_bytes <= 0:
+            raise ValueError("Timeout and frame byte limit must be positive")
+        self.stream_url = stream_url
+        self.timeout_sec = timeout_sec
+        self.max_frame_bytes = max_frame_bytes
+        self._response = None
+        self._buffer = bytearray()
+        self._frame_index = 0
+        self._connections = 0
+        self._last_error = None
+
+    def read(self) -> tuple[bool, np.ndarray | None]:
+        import cv2
+        import urllib.request
+
+        started = time.perf_counter()
+        try:
+            if self._response is None:
+                request = urllib.request.Request(self.stream_url, headers={"User-Agent": "solveillegalparkingbyVLM live-cctv/0.1"})
+                self._response = urllib.request.urlopen(request, timeout=self.timeout_sec)
+                self._connections += 1
+            while time.perf_counter() - started < self.timeout_sec:
+                start = self._buffer.find(b"\xff\xd8")
+                end = self._buffer.find(b"\xff\xd9", start + 2) if start >= 0 else -1
+                if end >= 0:
+                    encoded = bytes(self._buffer[start:end + 2])
+                    del self._buffer[:end + 2]
+                    frame = cv2.imdecode(np.frombuffer(encoded, dtype=np.uint8), cv2.IMREAD_COLOR)
+                    if frame is None:
+                        raise ValueError("Stream contained an invalid JPEG frame")
+                    self._frame_index += 1
+                    self._last_error = None
+                    return True, frame
+                if len(self._buffer) >= self.max_frame_bytes:
+                    raise ValueError("MJPEG frame exceeds the configured byte limit")
+                # read1 returns available stream data without waiting to fill a large block.
+                chunk = self._response.read1(min(65536, self.max_frame_bytes - len(self._buffer)))
+                if not chunk:
+                    raise EOFError("MJPEG stream ended")
+                self._buffer.extend(chunk)
+            raise TimeoutError("MJPEG frame deadline exceeded")
+        except Exception as exc:
+            self._last_error = str(exc)
+            self.release()
+            return False, None
+
+    def get_metadata(self) -> dict:
+        return {"source_type": "mjpeg_stream", "frame_index": self._frame_index, "connections": self._connections, "last_error": self._last_error}
+
+    def release(self) -> None:
+        if self._response is not None:
+            self._response.close()
+            self._response = None
+        self._buffer.clear()
+
+
 class OpenCVStreamSource:
     def __init__(self, source, source_type: str, camera_id: str):
         import cv2

@@ -1,139 +1,319 @@
 # solveillegalparkingbyVLM
-## 基於多模態時序感知與邊緣運算之道路交通事件偵測與風險評估系統
 
-### 研究動機
+## Risk-Aware Edge Intelligence for Traffic Incident Detection and Camera Allocation
 
-原始專案以紅線違停辨識為主，但實際道路監控還需要處理連續影像、事故
-事件、跨攝影機場景差異、誤報成本與有限的邊緣運算資源。因此本研究將
-單一違規辨識擴展為可訓練、可驗證並可模擬部署的交通事件分析系統。
+This project develops a native desktop system for traffic-incident detection,
+multimodal evidence analysis, and resource-constrained camera allocation.
+Lightweight temporal inference connects visual incident evidence to public-sector
+deployment priorities derived from Taiwan government crash and camera records.
 
-### 研究方法
+![Native traffic research workbench](docs/assets/desktop_workbench.png)
 
-- 以 YOLO、RT-DETR、ByteTrack 與 motion proposal 建立線上候選區域。
-- 以 causal TCN、VideoMAE 與候選特徵融合進行時間序列事件辨識。
-- 以 SAM2 與 VLM 產生可追溯的視覺證據與事件摘要。
-- 結合台灣政府開放資料分析違規熱區、A1/A2 風險與部署優先順序。
-- 以 Python、Verilog 與 SystemC 模擬多攝影機、NPU 佇列、延遲與丟幀。
+[Native application walkthrough](docs/assets/desktop_walkthrough.mp4) ·
+[Full reference-case detection video](docs/assets/incident_demo.mp4) ·
+[Execution record](docs/assets/incident_demo.json)
 
-### 系統功能
+### Reference-Case Demonstration
 
-- 紅線違停、道路事故與異常交通事件偵測。
-- 支援圖片、影片、Webcam、串流網址與公開 CCTV 輸入。
-- 車牌與畫面文字隱私處理，以及 before/trigger/after 時序證據輸出。
-- IID/geographic OOD、事件召回率、觸發延遲與 false alerts/hour 評估。
-- 邊緣裝置容量估算、候選事件分流與 Verilog/SystemC 硬體模擬。
+[![Continuous incident detection](docs/assets/incident_demo_preview.gif)](docs/assets/incident_demo.mp4)
 
-### 原始專案背景
+The complete 30-second ACCIDENT reference clip is processed by the bundled
+temporal model with two-thread CPU inference. Across 225 sampled frames and
+14 temporal windows, the persistence gate emits one event at source time
+**10.04 s**. Median sampled-frame processing is **81.3 ms** (p95 **94.7 ms**).
+These timings exclude initialization and the separate VLM evidence service.
 
-本專案源自 2025 高通台灣 AI 黑客松。原始版本使用 YOLO 做車輛檢測，
-經 NAFNet 模糊處理後交由 VLM 判斷是否違規，並規劃以 SM3Det 處理難以
-辨識的監視器畫面。紅線違停現保留為第一個完整事件案例。
+Qwen2.5-VL reviews the saved three-frame evidence in **8.21 s** and reports
+insufficient visual support for a collision. The workbench retains the temporal
+event and explicitly routes the temporal/visual disagreement for inspection.
+The [40-second native walkthrough](docs/assets/desktop_walkthrough.mp4) follows
+video playback, ordered evidence, model comparisons, government risk allocation,
+and hardware queue results. The [execution record](docs/assets/incident_demo.json)
+preserves model, detector, input and output hashes. Demonstration media retain
+the dataset's [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+license; [source attribution](docs/assets/README.md) accompanies the derivatives.
 
----
-### 團隊成員資訊
+### Research Motivation
 
-蔡霆鋒 janalexei88@gmail.com
+Roadside monitoring must balance timely incident recognition, nuisance alerts,
+limited inference capacity, and uneven geographic risk. A visually accurate
+model alone does not determine which cameras should receive scarce processing
+resources or how evidence should reach an operator. The study therefore
+examines perception, temporal decision-making, and deployment allocation within
+a common evaluation framework.
 
-辛語柔 yujouhsin@gmail.com
+The project originated in the 2025 Qualcomm Taiwan AI Hackathon. Red-line
+parking remains its first rule-based event case. The current research extends
+that foundation to temporal incident analysis and native laptop operation.
+Team attribution and original demonstrations are retained in
+[Project Provenance](docs/project_provenance.md).
 
-周佳欣 jassinchouxd@gmail.com
+### Research Contributions
 
+1. **Causal incident-to-evidence processing.** Vehicle tracking and motion
+   proposals feed a calibrated temporal convolutional model. Decisions retain
+   their availability timestamps and generate privacy-treated review artifacts.
+2. **Government-informed monitoring allocation.** A coverage-aware camera
+   selection method uses historical A1/A2 crash demand and evaluates deployment
+   choices on a subsequent temporal partition under matched camera budgets.
+3. **Hardware-aware system evaluation.** Portable ONNX inference, explicit
+   execution-provider selection, and Verilog/SystemC trace replay connect
+   event quality to latency, queue pressure, and review capacity.
 
----
-### 專案介紹
+The methodological basis includes IEEE TCSVT, IEEE Communications Surveys &
+Tutorials, IEEE T-ITS, Accident Analysis & Prevention, and Mathematical
+Programming. The [literature matrix](docs/literature_basis.md) connects each
+reference to an implemented method or experimental design.
 
-1. 攝影機及其輔助裝置優先採取邊緣運算的裝置設備，例如：ESP32, raspberry pi 等性能較低之設備
+### Native Desktop Application
 
-2. 架構上採混合雲，透過ESP32-CAM收集到的畫面，傳到雲端，經系統處理後，產生摘要，最後交由USER確定是否開立罰單
+Use Python 3.11. On Windows, keep the checkout path short (for example,
+`C:\src\traffic`) so Qt resource filenames remain within Windows path limits.
 
-<img width="1146" height="643" alt="image" src="https://github.com/user-attachments/assets/9ed41312-32ab-4fab-a5f3-b95b308a0c0f" />
-<img width="1146" height="644" alt="image" src="https://github.com/user-attachments/assets/9024c9d7-5e1e-459b-a2aa-6ae1dea65bc9" />
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r Application/DebugVersion/requirements.txt -r requirements-desktop.txt
+.\.venv\Scripts\python.exe -c "from ultralytics import YOLO; YOLO('yolov8n.pt')"
+.\.venv\Scripts\python.exe scripts/run_desktop.py
+```
 
----
-### Demo
-<img width="1108" height="319" alt="image" src="https://github.com/user-attachments/assets/186939f9-38ed-4c36-b833-38ea244dd503" />
+The workbench provides video playback, asynchronous analysis, job cancellation,
+event navigation, JSON export, model comparisons, visual evidence, government
+risk analysis, and runtime diagnostics. A compact calibrated ONNX model and a
+complete reference clip are included. The default interactive configuration
+uses two CPU threads. Qualcomm QNN HTP is selectable when its execution provider
+and target-compatible model are installed.
 
----
-### 基於多模態時序感知與邊緣運算之道路交通事件偵測與風險評估系統
+The camera action supports public MJPEG pages, direct MJPEG streams, and
+snapshot URLs, with continuous causal inference, preview, bounded acquisition,
+cancellation, and optional capture-then-analysis. Source clocks, model hashes,
+and decision-availability timestamps accompany exported events. A one-frame
+acquisition mailbox and bounded temporal buffers prevent growing inference
+backlog. [Streaming protocol and measured latency](docs/streaming_inference.md).
 
-[![ACCIDENT 固定式道路監視器事故片段](docs/assets/accident_reference.gif)](docs/assets/accident_reference.mp4)
+VLM review preserves visual reasons, evidence gaps, and operator-review
+requests without removing temporal events. [Evidence-routing protocol](docs/vlm_evidence_routing.md).
 
-點擊預覽可播放 MP4。片段取自
-[ACCIDENT 交通監視器事故資料集](https://github.com/accidentbench/ACCIDENT)，用於測試事件時間、位置與事故類型辨識；此衍生片段依原資料集的
-[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 條款提供。
+Clean observation playback supports attributed reviewer annotations and
+source-clock exposure accounting. Bounded reconnects preserve camera operation
+across transient disconnects; long sampled-frame gaps reset temporal context.
+[Observation review and acquisition results](docs/observation_review_protocol.md).
 
----
-### 模型實際輸出
+[Desktop architecture and deployment protocol](docs/desktop_application.md)
 
-[![YOLO、ByteTrack、motion candidate ROI 與 TCN 事故事件輸出](docs/assets/candidate_incident_model_output.gif)](docs/assets/candidate_incident_model_output.mp4)
+On Windows, `RunTrafficWorkbench.cmd` launches the installed native application.
 
-這不是示意框。影片由 YOLO/ByteTrack、motion candidate ROI 與校準後的
-causal TCN 實際推論產生，推論時未讀取 ACCIDENT 的事故標註框。連續兩個
-高分視窗才建立審核事件，車輛下半部則做隱私模糊。點擊預覽可播放 MP4。
+### System Architecture
 
-以視窗結束時間計算，這支 Demo 在事故後 `0.792s` 完成觸發。這是單片
-整合測試，不代表完整資料集的事件召回率或延遲分布。
+```mermaid
+flowchart LR
+    A["Camera or video input"] --> B["Vehicle tracking and motion proposals"]
+    B --> C["Causal temporal inference"]
+    C --> D["Persistence-gated event evidence"]
+    C --> F["Native operator workspace"]
+    D --> E["SAM2 / VLM evidence analysis"]
+    E --> F
+    G["Taiwan A1/A2 and camera records"] --> H["Budgeted coverage allocation"]
+    H --> F
+    C --> I["ONNX / QNN deployment"]
+    I --> J["Verilog / SystemC capacity analysis"]
+```
 
----
-### 線上事故候選區域
+### Government-Data Study
 
-系統已能在不讀取事故標註框的情況下，以 YOLO/ByteTrack、畫面 motion 與可選的 SAM2 box prompt 產生候選區域。500 支 ACCIDENT 影片共產生 822 個視窗，零處理失敗。
+New Taipei's 2024 crash records support an explicit temporal experiment:
+January--September determines camera selection; October--December evaluates
+the resulting geographic coverage. The study uses 46,957 dated A1/A2 records,
+a fixed 17-camera inventory, three severity settings, three proximity radii,
+five camera budgets, and 200 random seeds per randomized comparison.
 
-| 500-clip 模型 | IID F1 | Geographic F1 |
+At A1:A2 = 5:1 and a 1 km radius, ten-camera marginal-gain selection covers
+**15.49%** of held-out crash risk, compared with **13.69%** for independent
+ranking and **11.38%** for random selection. The improvement over independent
+ranking is **1.80 percentage points**. Risk and count greedy achieve the same
+coverage at this reference setting.
+
+[Study protocol and interpretation](docs/government_camera_study.md) ·
+[180-setting comparison](docs/results/government_camera_budget/comparison.csv) ·
+[Source hashes and temporal partitions](docs/results/government_camera_budget/protocol.json)
+
+![Camera allocation performance](docs/assets/government_camera_budget.png)
+
+### Incident Detection Results
+
+| Split | Event profile | Test clips | Event recall | Median trigger delay | p95 delay |
+| --- | --- | ---: | ---: | ---: | ---: |
+| IID | Responsive | 100 | 0.750 | 0.394 s | 2.251 s |
+| IID | Conservative | 100 | 0.440 | 0.608 s | 2.674 s |
+| Geographic | Responsive | 100 | 0.630 | 0.625 s | 2.530 s |
+| Geographic | Conservative | 100 | 0.300 | 1.057 s | 2.771 s |
+
+Temporal-model comparisons use the same 500-clip cohort and grouped training
+holdout calibration. At the calibrated operating point:
+
+| Model | IID F1 | Geographic F1 | IID FPR | Geographic FPR |
+| --- | ---: | ---: | ---: | ---: |
+| Candidate ROI TCN | 0.473 | 0.499 | 0.235 | 0.304 |
+| Frozen VideoMAE + linear head | 0.447 | 0.358 | 0.196 | 0.217 |
+| Partial fine-tuned VideoMAE | 0.260 | 0.382 | 0.095 | 0.217 |
+
+These endpoints characterize complementary operating choices. The
+[evaluation report](docs/final_evaluation_report.md) specifies data partitions,
+threshold selection, event matching, and review-load measurements.
+
+The full-data extension processes all 2,027 input clips. Six clips are shorter
+than the 32-frame eligibility requirement, leaving 2,021 clips and 3,387 windows.
+Candidate/global TCNs share these windows and fixed training-holdout calibration:
+
+| TCN features | IID F1 / FPR | Geographic F1 / FPR |
 | --- | ---: | ---: |
-| Global motion logistic | 0.405 | 0.516 |
-| Online candidate ROI logistic | 0.581 | 0.615 |
-| Global causal TCN | 0.642 | 0.569 |
-| Online candidate ROI TCN | 0.629 | 0.668 |
-| Frozen VideoMAE-small + linear head | 0.646 | 0.610 |
-| Candidate ROI + frozen VideoMAE | 0.634 | 0.615 |
+| Candidate motion | 0.346 / 0.139 | 0.395 / 0.146 |
+| Global motion | 0.521 / 0.290 | 0.357 / 0.131 |
+| Frozen VideoMAE | 0.444 / 0.159 | 0.373 / 0.138 |
+| Fine-tuned VideoMAE | 0.450 / 0.190 | 0.378 / 0.138 |
 
-完整指標、FPR 與研究限制請見 [ACCIDENT Phase 1 results](docs/accident_phase1_results.md)。
+This extension has a different class and geographic composition from the
+balanced reference cohort. [Verified full-cohort results](docs/results/full_cohort_temporal.json)
+include fitting, calibration, and test counts, model hashes, and exclusion records.
+[Full representation comparison and paired uncertainty](docs/results/full_cohort_model_comparison.json)
+include all eight model/split results with AUROC and average precision.
 
-以 train-only holdout 將 TCN 門檻校準到 20% window FPR 後，IID 測試 FPR
-由 0.531 降至 0.235，F1 由 0.629 降至 0.473。這是政府場域降低誤報時
-必須揭露的 recall 取捨，不使用 test split 調整門檻。
+A separate presentation-time study retains 1,861 clips and 2,985 paired
+windows after source-clock and annotation-support verification. Fixed-time
+training changes candidate F1 by +3.64 percentage points (IID) and +1.09
+(geographic), while global-feature F1 changes by -6.68 and -8.24 points.
+Candidate gains accompany increased test FPR. The
+[matched sampling/context study](docs/presentation_time_protocol.md) reports
+all eight models, ranking metrics and paired uncertainty; continuous event
+evaluation uses a separately frozen common-clock contract.
 
-Frozen VideoMAE 使用 16 幀、384 維 embedding，在 RTX 3060 上完成 822 個
-視窗抽取，零失敗，速度 1.46 windows/s。它在固定門檻的 IID F1 略高於
-candidate TCN，但 geographic F1 較低；目前是 frozen encoder 比較，不宣稱
-已完成 VideoMAE 微調。事故候選也可輸出 before/trigger/after 三幀隱私化
-證據包交給 VLM。
+Continuous PTS replay evaluates 88 IID and 90 geographic event clips across
+all eight training-calibrated variants. A nonvisual, same-grid warm-up control
+achieves recall **0.568 / 0.600**; four zero-threshold policies reproduce it
+exactly. This comparison separates visual contribution from event-time priors.
+The [complete event/control study](docs/presentation_event_protocol.md)
+reports alert budgets, paired intervals and 2,130 source-hashed per-clip
+outcomes. All 21,608 saved probabilities reproduce exactly from their models
+and feature tensors. Native evaluation tabs display the same measurements.
 
----
-### 安裝說明
+![Presentation-time event evaluation and nonvisual controls](docs/assets/presentation_event_controls.png)
 
-1. 建立虛擬環境
-   
-`python -m venv venv`
+A separate 191-source replay evaluates an additional training-only constraint
+on pre-event positive contexts. Six of eight policies meet both test caps,
+with event recall 0.05--0.25 versus 0.44--0.55 under onset-only calibration.
+This isolates the sensitivity/workload tradeoff and motivates event-selective
+representation development. The [complete study](docs/positive_context_calibration.md)
+publishes all sixteen policies, controls and paired intervals. A public-data
+auditor reconstructs 816 calibration points and 2,000 per-clip outcomes from
+13,060 context scores. The native workbench displays the same comparisons.
 
-2. 啟動虛擬環境
+![Event sensitivity and positive-context constraints](docs/assets/positive_context_tradeoffs.png)
 
-PowerShell:
+The [training-holdout diagnostic](docs/event_local_discrimination.md) separates
+score ranking, temporal support and controller failures before further model
+development. All eight within-clip AUROC/AP contrast intervals include zero.
+Under constrained thresholds, missing event-local positive pairs dominate
+onset suppression. The public report and native TRAIN view retain complete
+source denominators and motivate a matched continuous-context training study.
+The [fit-only alignment audit and frozen training protocol](docs/continuous_context_training.md)
+retain the original source partitions and predeclare the next eight-model comparison.
 
-`.\venv\Scripts\Activate.ps1`
+### Public-Camera Runtime
 
-cmd:
+A [120-second Taichung public-camera experiment](docs/live_cctv_runtime.md)
+processed 884 sampled frames and 58 temporal decisions on the CPU runtime.
+Median decoder-arrival-to-decision latency was 107 ms (p95 141 ms); bounded
+reconnection sustained the session across four read failures. The numerical
+release includes timestamps, decisions and provenance. This session emitted
+zero candidate alerts and retains an unassigned ground-truth label.
 
-`.\venv\Scripts\activate.bat`
+### Multimodal Evidence and Restoration
 
-3. 安裝需要的套件
+![Privacy-treated temporal evidence](docs/assets/incident_vlm_clean_evidence.jpg)
 
-`pip install -r Application\DebugVersion\requirements.txt`
+SAM2 refines difficult spatial candidates; VLMs produce structured evidence
+reviews. The same-sample SAM2 study compares proposal recall and processing
+cost. Clean-blind VLM cases examine schema validity and visual grounding.
 
----
-### 執行與使用說明
+With explicitly forwarded greedy generation on twenty paired sequences,
+Qwen2.5-VL-3B achieves 95% schema validity and 60% correct structured outputs
+across all cases; LLaVA/Qwen-0.5B achieves 40% and 30%. Mean review times are
+8.53 s and 7.69 s. The paired correctness difference is +30 percentage points
+(95% source-clip interval: +10 to +50). The native workbench exports
+event-specific temporal evidence and can attach Qwen review results directly.
+Temporal/visual disagreement retains the event for operator inspection.
+An eight-frame evidence-density ablation produces 55% correct structured
+outputs at 9.74 s per review, compared with 60% at 8.53 s for three frames.
+The [generation-contract study](docs/vlm_generation_contract.md) reports
+all corrected comparisons and source-clip uncertainty, alongside the preserved
+legacy runs. The native model-evaluation page displays the same verified data.
 
-1. 開啟終端機
+![NAFNet restoration](docs/assets/nafnet_cctv_demo/comparison.jpg)
 
-2. 進入程式資料夾
+The official NAFNet REDS model improves PSNR from 21.91 to 23.41 dB and SSIM
+from 0.517 to 0.636 under the specified motion-blur protocol. SM3Det contributes
+a documented RGB/SAR/infrared transfer-analysis branch, with its original
+architecture and computation requirements recorded in the
+[transfer audit](docs/assets/sm3det_transfer_audit.json).
 
-`cd Application/DebugVersion/src`
+### Edge and Hardware Results
 
-3. 執行程式檔
+| Component | Measurement |
+| --- | --- |
+| TCN ONNX parity | 128 samples; maximum absolute error 1.79e-7 |
+| QNN A16W8 preparation | 450 test windows; 100% float32 decision agreement; probability MAE 0.00201 |
+| Native CPU reference analysis | Complete 30-second clip; one review event |
+| Verilog | Three self-checking trigger testbenches passed |
+| TCN confidence/persistence RTL | 24,252 real-trace cycles; zero golden mismatches; 11,376 decisions retain float-policy outputs after UNORM16 encoding |
+| SystemC / Python trace parity | 49,320 frames, 6,808 candidates, 2,156 completed reviews |
+| Four-camera workload | Zero frame drops at 7.5 FPS per camera |
+| Review-stage pressure | 68.33% candidate drops at the 300 ms review-stage setting |
+| Measured Qwen service-time scenario | 96.96% candidate drops; 8.27 s per review on four replicated streams |
+| Capacity-aware review routing | Five Python/SystemC policy replays agree on all frame/review counters |
 
-`python main.py`
+Causal overlap merging consolidates 6,808 proposal arrivals into 1,568 requests.
+At the measured service budget, admission control completes 198 reviews with
+zero queue overflow, three pending requests, and 1,367 explicit budget denials.
+[Routing protocol and complete accounting](docs/review_routing_study.md)
 
-4. 在 GUI 中上傳照片
+The [real-trace RTL study](docs/tcn_confidence_rtl.md) verifies thresholding,
+persistence, idle cycles and clip/gap resets against the frozen temporal
+models. Public integer vectors and float/quantized audits connect the
+software model outputs to reproducible digital-controller simulation.
 
-5. 開始分析
+The Qualcomm deployment workflow records the requested provider and enforces
+explicit HTP execution. Target profiling is documented in the
+[desktop deployment protocol](docs/desktop_application.md).
+
+### Reproduction
+
+```powershell
+python scripts/evaluate_government_camera_budget.py
+python scripts/run_desktop.py --analyze --screenshot docs/assets/desktop_workbench.png
+python -m pytest
+```
+
+Government inputs are prepared using `scripts/prepare_taiwan_data.py` and the
+versioned dataset-source manifest. Large training data and experiment outputs
+remain under `data/raw/`, `data/processed/`, and `outputs/`. The optional
+browser-based result viewer remains available with `scripts/run_project_dashboard.py`.
+
+### Research Artifacts
+
+- [Methodological foundations](docs/literature_basis.md)
+- [Manuscript structure and research questions](docs/manuscript_outline.md)
+- [Government camera allocation study](docs/government_camera_study.md)
+- [Formal evaluation report](docs/final_evaluation_report.md)
+- [Native desktop application](docs/desktop_application.md)
+- [Project status](docs/project_status.md) and [development tasks](docs/todo.md)
+- [Hardware simulation](hardware_sim/README.md)
+- [Capacity-aware evidence routing](docs/review_routing_study.md)
+
+### Attribution and Licensing
+
+The original contributors are 蔡霆鋒, 辛語柔, and 周佳欣. Contact information
+and original system figures are retained in [Project Provenance](docs/project_provenance.md).
+Project source code uses the MIT license. ACCIDENT media and the bundled
+research model use CC BY-NC-SA 4.0; upstream models and figures retain their
+respective licenses. See [media attribution](docs/assets/README.md) and
+[model-bundle provenance](Application/desktop/models/README.md).

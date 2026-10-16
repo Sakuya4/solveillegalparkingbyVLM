@@ -1,0 +1,39 @@
+{
+  "workload": {
+    "source": "outputs/accident/candidate_roi_trace_500.jsonl",
+    "semantics": "annotation-free YOLO/ByteTrack plus motion candidate proposal score",
+    "trace_records": 12330,
+    "score_threshold": 0.95,
+    "source_candidate_count": 1702,
+    "source_candidate_rate": 0.13803730738037306,
+    "camera_replication": 4
+  },
+  "profile": {
+    "camera_count": 4,
+    "camera_fps": 7.5,
+    "duration_sec": 1644.0,
+    "detector_latency_ms": 3.9,
+    "temporal_latency_ms": 3.0,
+    "npu_queue_capacity": 8,
+    "candidate_probability": 0.13803730738037306,
+    "review_latency_ms": 8273.610775003908,
+    "review_queue_capacity": 8
+  },
+  "result": {
+    "generated_frames": 49320,
+    "processed_frames": 49320,
+    "pending_frames": 0,
+    "dropped_frames": 0,
+    "frame_drop_rate": 0.0,
+    "npu_utilization": 0.207,
+    "mean_frame_latency_ms": 17.249999999941895,
+    "p95_frame_latency_ms": 27.600000000093132,
+    "generated_candidates": 6808,
+    "completed_reviews": 198,
+    "pending_reviews": 9,
+    "dropped_candidates": 6601,
+    "review_drop_rate": 0.9695945945945946,
+    "review_utilization": 1.0
+  },
+  "review_latency_source": "docs/results/incident_vlm_qwen_greedy_batch.json"
+}

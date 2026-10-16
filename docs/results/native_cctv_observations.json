@@ -1,0 +1,115 @@
+{
+  "measurement": "Persistent public-camera ingestion, native observation-to-analysis, and continuous causal inference",
+  "annotation_status": "unassigned",
+  "timing_contract": "Capture sessions precede batch analysis; streaming sessions emit window-end decisions while acquisition remains active; original observation timestamps are retained",
+  "observations": [
+    {
+      "workflow": "transport_capture",
+      "source_report_sha256": "d9999f72dbd41cff9dc6c37c7395f175ab32233c29d8d130a0f05923c64aff4b",
+      "source_page": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+      "transport": "mjpeg",
+      "started_at_utc": "2026-10-16T00:03:36.209399+00:00",
+      "requested_duration_sec": 30.0,
+      "observed_wall_duration_sec": 30.030213100006222,
+      "successful_frames": 218,
+      "decoded_frames": 299,
+      "failed_reads": 0,
+      "effective_fps": 7.283346837900047,
+      "unique_exact_frames": 218,
+      "exact_duplicate_rate": 0.0,
+      "new_frame_transitions_per_sec": 7.283346837900047,
+      "source_metadata": {
+        "source_type": "mjpeg_stream",
+        "frame_index": 300,
+        "connections": 1,
+        "last_error": null
+      },
+      "output_video_sha256": "58d8152d45ec1b1c5828cb17060d1113efc20eec404072dec1550aa55c1c963f"
+    },
+    {
+      "workflow": "native_capture_and_analysis",
+      "source_report_sha256": "f56eaf3253f12d518cabf92d431d93ebbad05a40064053aa584c39440e34ee56",
+      "source_page": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+      "transport": "mjpeg",
+      "started_at_utc": "2026-10-16T00:08:32.759766+00:00",
+      "requested_duration_sec": 30.0,
+      "observed_wall_duration_sec": 30.04795429999649,
+      "valid_observation_span_sec": 29.81270160000713,
+      "successful_frames": 223,
+      "decoded_frames": 299,
+      "failed_reads": 0,
+      "effective_fps": 7.446490525365434,
+      "unique_exact_frames": 223,
+      "exact_duplicate_rate": 0.0,
+      "new_frame_transitions_per_sec": 7.446490525365434,
+      "source_metadata": {
+        "source_type": "mjpeg_stream",
+        "frame_index": 300,
+        "connections": 1,
+        "last_error": null
+      },
+      "output_video_sha256": "485a83354ab233e402b7a5ddeca06d3bccd3ac9f929e0254c4ea251f0d5613c8",
+      "analysis_sec": 17.613349799998105,
+      "review_events": 0,
+      "event_clock": "captured observation timestamps",
+      "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+      "runtime": {
+        "engine": "ONNX Runtime",
+        "version": "1.27.0",
+        "requested_provider": "CPUExecutionProvider",
+        "session_providers": [
+          "CPUExecutionProvider"
+        ],
+        "cpu_fallback_disabled": false,
+        "provider_options": {},
+        "threads": 2
+      }
+    }
+  ],
+  "streaming_sessions": [
+    {
+      "source_report_sha256": "32c4736424cc1d5ac88b723f6f5cb663e3b181391ea9ad83a3941f6821dd28d3",
+      "source_page": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+      "started_at_utc": "2026-10-16T00:50:42.380263+00:00",
+      "sampled_frames": 202,
+      "valid_observation_span_sec": 29.82631419999234,
+      "effective_fps": 6.7390157111686175,
+      "review_events": 2,
+      "acquisition": {
+        "decoded_frames": 296,
+        "mailbox_overwrites": 27,
+        "clock": "Local decoder observation, not a source-camera sensor timestamp"
+      },
+      "arrival_to_decision_sec": {
+        "median": 0.09823180000239518,
+        "p95": 0.13509132000326637
+      },
+      "processing_sec": {
+        "median": 0.0926626500004204,
+        "p95": 0.11089547499941545
+      },
+      "event_clock": "decoder observation clock",
+      "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+      "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "runtime": {
+        "engine": "ONNX Runtime",
+        "version": "1.27.0",
+        "requested_provider": "CPUExecutionProvider",
+        "session_providers": [
+          "CPUExecutionProvider"
+        ],
+        "cpu_fallback_disabled": false,
+        "provider_options": {},
+        "threads": 2
+      },
+      "buffers": {
+        "feature_steps": 15,
+        "context_frames": 16,
+        "camera_mailbox_frames": 1
+      },
+      "decisions_sha256": "81de80367dbff1a33c3d9a6f489a2760053a6a93f0a7c6657865c52ab9fb3bbf",
+      "feature_width_limit": null,
+      "display_width": 640
+    }
+  ]
+}

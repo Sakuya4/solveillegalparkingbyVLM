@@ -1,0 +1,30 @@
+{
+  "camera_allocation": {
+    "contrast": "risk_greedy minus independent_rank",
+    "a1_weight": 5,
+    "radius_m": 1000,
+    "camera_budget": 10,
+    "resampling_unit": "New Taipei district",
+    "holdout_weight": 12998.0,
+    "difference": 0.01800276965687029,
+    "lower_95": -0.010134081408591516,
+    "upper_95": 0.05644641389159791,
+    "clusters": 29,
+    "bootstrap_repeats": 2000,
+    "seed": 42
+  },
+  "event_recall": [
+    {
+      "profile": "responsive",
+      "recall": 0.75,
+      "wilson_lower_95": 0.656955364519384,
+      "wilson_upper_95": 0.8245478863771232
+    },
+    {
+      "profile": "conservative",
+      "recall": 0.44,
+      "wilson_lower_95": 0.346720266301608,
+      "wilson_upper_95": 0.5377189534832302
+    }
+  ]
+}

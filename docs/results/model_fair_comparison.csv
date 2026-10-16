@@ -1,0 +1,13 @@
+model,training,split,operating_point,precision,recall,f1,false_positive_rate
+Candidate ROI TCN,trained,iid,fixed_0.5,0.639,0.620,0.629,0.531
+Candidate ROI TCN,trained,geographic,fixed_0.5,0.665,0.671,0.668,0.522
+Frozen VideoMAE + linear head,frozen_encoder,iid,fixed_0.5,0.675,0.620,0.646,0.453
+Frozen VideoMAE + linear head,frozen_encoder,geographic,fixed_0.5,0.614,0.606,0.610,0.590
+Partial fine-tuned VideoMAE,last_block_500_clips,iid,fixed_0.5,0.622,0.934,0.746,0.860
+Partial fine-tuned VideoMAE,last_block_500_clips,geographic,fixed_0.5,0.636,0.590,0.612,0.522
+Candidate ROI TCN,trained,iid,train_holdout_fpr20,0.698,0.358,0.473,0.235
+Candidate ROI TCN,trained,geographic,train_holdout_fpr20,0.669,0.398,0.499,0.304
+Frozen VideoMAE + linear head,frozen_encoder,iid,train_holdout_fpr20,0.715,0.325,0.447,0.196
+Frozen VideoMAE + linear head,frozen_encoder,geographic,train_holdout_fpr20,0.639,0.249,0.358,0.217
+Partial fine-tuned VideoMAE,last_block_500_clips,iid,train_holdout_fpr20,0.717,0.159,0.260,0.095
+Partial fine-tuned VideoMAE,last_block_500_clips,geographic,train_holdout_fpr20,0.657,0.269,0.382,0.217

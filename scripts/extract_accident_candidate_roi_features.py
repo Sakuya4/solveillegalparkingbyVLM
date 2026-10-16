@@ -43,6 +43,7 @@ def main() -> int:
     parser.add_argument("--model", default="yolov8n.pt")
     parser.add_argument("--tracker", default="bytetrack.yaml")
     parser.add_argument("--device", default="0")
+    parser.add_argument("--threads", type=int, default=2)
     parser.add_argument("--image-size", type=int, default=320)
     parser.add_argument("--confidence", type=float, default=0.15)
     parser.add_argument("--sam2-model", default=None)
@@ -77,8 +78,14 @@ def main() -> int:
         raise SystemExit("frame stride, target width, and image size must be positive")
     if not 0.0 <= args.confidence <= 1.0:
         raise SystemExit("--confidence must be between zero and one")
+    if args.threads <= 0:
+        raise SystemExit("--threads must be positive")
 
+    import cv2
+    import torch
     from ultralytics import YOLO
+    torch.set_num_threads(args.threads)
+    cv2.setNumThreads(args.threads)
 
     metadata_path = _resolve(args.metadata)
     dataset_root = _resolve(args.dataset_root)

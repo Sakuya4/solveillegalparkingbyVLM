@@ -1,7 +1,71 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
+import math
+from pathlib import Path
 from typing import Any
+
+
+REVIEW_POLICY_VERSION = 2
+
+
+def review_disposition(temporal_positive: bool, review: dict[str, Any]) -> str:
+    if not review.get("schema_valid", False):
+        return "response_contract_review"
+    try:
+        confidence = float(review["confidence"])
+    except (KeyError, ValueError, TypeError):
+        return "response_contract_review"
+    if not math.isfinite(confidence) or not 0 <= confidence <= 1 or not isinstance(review.get("likely_violation"), bool):
+        return "response_contract_review"
+    if bool(review["likely_violation"]) != temporal_positive:
+        return "temporal_visual_disagreement"
+    if review.get("missing_evidence"):
+        return "incomplete_visual_evidence"
+    if review.get("human_review_needed", False):
+        return "operator_review_requested"
+    if confidence < 0.7:
+        return "low_confidence_review"
+    if temporal_positive and not review.get("visual_reasons"):
+        return "missing_visual_rationale"
+    return "consistent_visual_support" if temporal_positive else "consistent_background"
+
+
+def write_clean_review_package(
+    frames: tuple[Any, Any, Any], timestamps_sec: tuple[float, float, float],
+    output_dir: Path, *, privacy_method: str,
+) -> dict[str, str]:
+    """Export already-redacted frames without model-score overlays."""
+    import cv2
+    import numpy as np
+    from .vlm_review import build_traffic_incident_review_request
+
+    if len(frames) != 3 or len(timestamps_sec) != 3:
+        raise ValueError("Review evidence requires three ordered frames and timestamps")
+    if any(not math.isfinite(time) or time < 0 for time in timestamps_sec) or list(timestamps_sec) != sorted(timestamps_sec):
+        raise ValueError("Evidence timestamps must be finite, nonnegative, and ordered")
+    if not privacy_method.strip():
+        raise ValueError("A privacy method must be recorded")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    artifacts = {name: f"{name}.jpg" for name in ("before", "trigger", "after")}
+    for frame, name in zip(frames, artifacts.values()):
+        if not cv2.imwrite(str(output_dir / name), frame):
+            raise OSError(f"Could not write evidence frame: {name}")
+    contact_sheet = output_dir / "contact_sheet.jpg"
+    if not cv2.imwrite(str(contact_sheet), np.concatenate(frames, axis=1)):
+        raise OSError("Could not write evidence contact sheet")
+    evidence = {
+        "event_type": "traffic_incident", "timestamps_sec": list(timestamps_sec),
+        "evidence_available_time_sec": max(timestamps_sec),
+        "privacy_redacted": True, "privacy_method": privacy_method,
+        "artifacts": artifacts,
+    }
+    request = build_traffic_incident_review_request(evidence, output_dir.resolve(), include_model_context=False)
+    request_path = output_dir / "vlm_review_request.json"
+    request_path.write_text(json.dumps(request.to_dict(), indent=2) + "\n", encoding="utf-8")
+    (output_dir / "evidence.json").write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+    return {"request_json": str(request_path.resolve()), "contact_sheet": str(contact_sheet.resolve()), "evidence_json": str((output_dir / "evidence.json").resolve())}
 
 
 @dataclass(frozen=True)

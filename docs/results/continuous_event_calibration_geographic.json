@@ -1,0 +1,2202 @@
+{
+  "split_scheme": "geographic",
+  "training_cohort": "full eligible ACCIDENT cohort; candidate ROI TCN",
+  "model_sha256": "e4c31f9a3667345f9ad44c3ae1a5485a4168a288f9157585fcc0de62d15d207f",
+  "protocol_sha256": "5ac91a80e0f9990f43380d3720db301c5260b9032c1aba2be17edd2fce9e486f",
+  "selection_sha256": "a34f5b01664abf9c8cc249e8476a6fff49aef6a8dff6f3c40141c937cf616a37",
+  "calibration_clips": 90,
+  "test_clips": 100,
+  "calibration_sources": {
+    "batch_sha256": "eadc2f9c17c9a735e203a427e9b58c9e1391df404789489a9cc47f5fd4164812",
+    "reports": [
+      {
+        "clip": "real_videos/0ThWw_efieo_00.mp4",
+        "sha256": "beab444588d7199ca46b45dd3e59d12d3acdc8bb477461f7d4aeccb6f23799b8"
+      },
+      {
+        "clip": "real_videos/0jlyeLcFLVc_00.mp4",
+        "sha256": "b249e2228f2aa1f27259986b43b8e25cddbd3dd97976dee0f152a9e7f4d74e65"
+      },
+      {
+        "clip": "real_videos/1Utldy8lKBo_00.mp4",
+        "sha256": "ffb2f431aa785f268fc065e851bbe16fdbee77cd6d9b85bbaa24e319c8b01e0d"
+      },
+      {
+        "clip": "real_videos/1_F0r7KVJ1k_00.mp4",
+        "sha256": "c7c03216c0b88b36e2c5e9b1fdc224130c0da29ea57295f92651012850f64243"
+      },
+      {
+        "clip": "real_videos/3Xd6PxEvbNk_11_00.mp4",
+        "sha256": "274060375d4975ccd872f47b8dd0e8e6c019410d46ad8bfedecc31c10c674e97"
+      },
+      {
+        "clip": "real_videos/3p_-1RjvCmw_1_00.mp4",
+        "sha256": "c55cf1b853fb35c638d87e96755d204f89182399053f79a47da8c7b49a991fd4"
+      },
+      {
+        "clip": "real_videos/651RQwxB3WA_12_00.mp4",
+        "sha256": "8d7664d4ff54097dec311209acaaeadf158c0649be35eea43cbf615fd13c4548"
+      },
+      {
+        "clip": "real_videos/65p17BwHTaw_00.mp4",
+        "sha256": "e5dc1e7a7f9b7559161ed37736c4546da56f8ff32783a1fc8b8a5c9880083d6b"
+      },
+      {
+        "clip": "real_videos/6mVcTFd5TzI_12_00.mp4",
+        "sha256": "bc3e6d0a814579c010a3dc40d9f87971367e6c277e060e699f143ff508ba8c18"
+      },
+      {
+        "clip": "real_videos/6mVcTFd5TzI_20_00.mp4",
+        "sha256": "1abe6fe68fd5c07818dc6526af4398625cf4eed72c43cfa4866021c4fe1c5ddb"
+      },
+      {
+        "clip": "real_videos/7YEUfIVVk9Y_4_00.mp4",
+        "sha256": "765324fed0ffdd2c181da867caf65a80384e063501ba78030718545ee8c285ff"
+      },
+      {
+        "clip": "real_videos/7YEUfIVVk9Y_7_00.mp4",
+        "sha256": "d09129ba935331776bbb10c63159772dd42328b41d5a7e6282865da6b44546eb"
+      },
+      {
+        "clip": "real_videos/9DRFJxKHc6g_3_00.mp4",
+        "sha256": "88dafd54bddec427fd3d0016c772b2ded7275beb3b3554d04f0273897c821e58"
+      },
+      {
+        "clip": "real_videos/9DRFJxKHc6g_4_00.mp4",
+        "sha256": "15399e22384a38c43416345146d58169dc857939cef7bbeef87d28b6d2666fc6"
+      },
+      {
+        "clip": "real_videos/AJKLxHzIHYY_19_00.mp4",
+        "sha256": "e0cb8bd790c630af9ced67d0c69ba5b06375b4497bdd34bc8c4bfc45f658bb35"
+      },
+      {
+        "clip": "real_videos/AuQz_-J2kzc_14_00.mp4",
+        "sha256": "c69d6292e6cc6cd7e1b3aa85c24fe1e36845009bbd6c5d17c2d687ae0a25b6a5"
+      },
+      {
+        "clip": "real_videos/AuQz_-J2kzc_15_00.mp4",
+        "sha256": "9f9cd7cf66ca9eaea602ae6171536aea3cb34b2b154012d375a7ca224bc04bbe"
+      },
+      {
+        "clip": "real_videos/AuQz_-J2kzc_25_00.mp4",
+        "sha256": "c598f2bf31b5a1801eae878b032c9c6b14f137b49d4a0d4b06c8d7eb5d7ef7d8"
+      },
+      {
+        "clip": "real_videos/AuQz_-J2kzc_27_00.mp4",
+        "sha256": "8c85d849a4c7b713cb66781684b1f13afc6077901e450800e8874f7febd7502b"
+      },
+      {
+        "clip": "real_videos/AuQz_-J2kzc_29_00.mp4",
+        "sha256": "77a5f20601781c623d68ba908e16fe7504ffef9c111d643ae4938f2fb872ce18"
+      },
+      {
+        "clip": "real_videos/B3ehIhlZVD8_2_00.mp4",
+        "sha256": "c273dc62f7d47f9a3c2b3e80ccfe420b9a4ca3048195ded08e6a4ac5c306aa31"
+      },
+      {
+        "clip": "real_videos/BgdKGnFqz0I_00.mp4",
+        "sha256": "e841ff7b5b7253e59c2dd895f3470a2b3561a12ca2c243744520893f5d82436c"
+      },
+      {
+        "clip": "real_videos/CkI203kbHQ8_5_00.mp4",
+        "sha256": "1e0ce7b6a62d66947fe5a93a2738762ddf3a868028de8c2cabd30165fb47243d"
+      },
+      {
+        "clip": "real_videos/FJcKTvBI75U_01.mp4",
+        "sha256": "71c7b56bec843e15e9b2f05be891238f6008b577a4a2baf17807669e1736c0db"
+      },
+      {
+        "clip": "real_videos/GnpwLP2THmM_10_00.mp4",
+        "sha256": "5ac6c7f7c9ae3b686e9e2db2685143f197813044828e60bd4f62497a9bed0f9f"
+      },
+      {
+        "clip": "real_videos/GnpwLP2THmM_2_00.mp4",
+        "sha256": "c592fc1469777d190303015add6710e2c0b708828f3ca55023ef8391d5e61570"
+      },
+      {
+        "clip": "real_videos/GnpwLP2THmM_3_00.mp4",
+        "sha256": "69c2d41916c0500212185f6170e92cd822bb050dba5025701a6ed1b097fb635d"
+      },
+      {
+        "clip": "real_videos/Hu5cukZ0Zgw_00.mp4",
+        "sha256": "68e99ae250cd087fa4e5b80181fba26bd1a7261df611e87a0b1fd3642ad288c4"
+      },
+      {
+        "clip": "real_videos/IAhGJNVqs1M_10_00.mp4",
+        "sha256": "2e67983efe6b5556755963cc6c997afa922fb75a8fe1699eeeddb9638d2a7058"
+      },
+      {
+        "clip": "real_videos/IAhGJNVqs1M_14_00.mp4",
+        "sha256": "81e98b6dbb447dbfb4e32865a7473d888938d6d09160b30585a46bf8b2eb7ae4"
+      },
+      {
+        "clip": "real_videos/KPyyCBJKS98_00.mp4",
+        "sha256": "7b035418e9db7a1f80014e486e323c469f621f06d0ae624054adfe5ec54c5832"
+      },
+      {
+        "clip": "real_videos/KZ8uvPQdYdk_00.mp4",
+        "sha256": "a51d984f7722629f4f08f03f0068fff660aa656e2e1dd1912af74b07d824125b"
+      },
+      {
+        "clip": "real_videos/L334aqEJxys_0_00.mp4",
+        "sha256": "2002eadca9b51a371cb935a59c19bb7ca51ea98cad6792897e2c06cc6f8933e7"
+      },
+      {
+        "clip": "real_videos/LAojlJEDJ2w_00.mp4",
+        "sha256": "66ce21a427e8087c31da8672a9b8b844256cb6ce49d8df52c84f5f30de90de59"
+      },
+      {
+        "clip": "real_videos/LeRsK6lfpK8_00.mp4",
+        "sha256": "e9696874af28d2bd7102e223dafaeb004858216d85ef7ecb267811a75ce51e69"
+      },
+      {
+        "clip": "real_videos/MsQns-Oy-hk_00.mp4",
+        "sha256": "291c920516da20c8c5d7923bd37e66e9702b6e1b87f9399836937a58a107b56e"
+      },
+      {
+        "clip": "real_videos/MxiC2UdOzE8_0_00.mp4",
+        "sha256": "05aa0f32d0565767befb31435b0f869d605677ca65dedd95f5a846f5858fd925"
+      },
+      {
+        "clip": "real_videos/N6zJ2inqJn0_0_00.mp4",
+        "sha256": "58949070be3a217705ec25a84f169fec0bfad7610eff952a419a63e96fd88ac1"
+      },
+      {
+        "clip": "real_videos/Nlb0EeukIEQ_00.mp4",
+        "sha256": "5aea020eb1b3ab08ef8b92764f0282944b93f98bca6932e39a9bb2cc1022b0de"
+      },
+      {
+        "clip": "real_videos/Ns30XeulhHo_00.mp4",
+        "sha256": "52c433ff6b186c9a77026ecb84a9b0edf25025a5b415e29dc5523f307b1b583a"
+      },
+      {
+        "clip": "real_videos/Ns30XeulhHo_03.mp4",
+        "sha256": "a8ca3efe70eb0887cfb5b690065379b03cb39e30391ad1352ab34b02bebee87f"
+      },
+      {
+        "clip": "real_videos/Ns30XeulhHo_05.mp4",
+        "sha256": "d0a40bc942ac771114664a4b9a3c7915d82eed922fbdfb2b1dff78e401f24bb0"
+      },
+      {
+        "clip": "real_videos/OY5bWBGoSwc_00.mp4",
+        "sha256": "b175f4585d8297082f9530b070db4fd7bf3738339bdad316e8115b93d45d323b"
+      },
+      {
+        "clip": "real_videos/OjjbNRuOJhc_01.mp4",
+        "sha256": "566606906091fc9775cfe5c1dfce7ed9cc10bb4075f8640836b2b153b373439b"
+      },
+      {
+        "clip": "real_videos/OjosPgV4Lss_00.mp4",
+        "sha256": "10cbe9944d1df43619a844a9b4d1991e7b412593ee884809983a1a4e8bdeb01f"
+      },
+      {
+        "clip": "real_videos/T636miXHz3U_00.mp4",
+        "sha256": "5831b784c386ab4cbbc9dfa443f7c9f2d0e0832ccc07996329026b55987816e6"
+      },
+      {
+        "clip": "real_videos/TY8UXgpfBzU_00.mp4",
+        "sha256": "aad5e6cb40d7a5d5caa79768f747df4e12f55e9f4cc1b876c0f07ddd809efa97"
+      },
+      {
+        "clip": "real_videos/TvPX5q1VvE0_0_00.mp4",
+        "sha256": "e618fc9c98e085a523807a9c0a6ada63ce96919bd8d891b824844781b5d9940c"
+      },
+      {
+        "clip": "real_videos/XESYC4RcqGQ_00.mp4",
+        "sha256": "1c1a4f7f654227229f3a540cd35e99137620e0f1fddc9b7fa8c3a0ba44b788bb"
+      },
+      {
+        "clip": "real_videos/XESYC4RcqGQ_03.mp4",
+        "sha256": "17dc578a856b495be9d1bc0bb93b2b908f194f71f2cc39d64da4568ab8f528fe"
+      },
+      {
+        "clip": "real_videos/XESYC4RcqGQ_04.mp4",
+        "sha256": "af40d91e25855a76992991e4d22a5a94be5cda63f8bd78c783380e37686dd2c2"
+      },
+      {
+        "clip": "real_videos/YueG1zLkV8o_02.mp4",
+        "sha256": "c03f46a1969e5f14ba581d31ecff448638f959499cb366e9d44a84d081b61b2f"
+      },
+      {
+        "clip": "real_videos/Z52L6jGdSkY_10_00.mp4",
+        "sha256": "bd524f1c7701f2c5dc95d8eef496e8172a7e05d9379fd6de2bfd8d50b3077b7b"
+      },
+      {
+        "clip": "real_videos/Z52L6jGdSkY_11_00.mp4",
+        "sha256": "7e4374867d2dc8d3ae09b9af38ee5ffbdde7ef3d6f626637ce0375bff925e05f"
+      },
+      {
+        "clip": "real_videos/Z52L6jGdSkY_12_00.mp4",
+        "sha256": "bd0df24350fe41a5251dbfae5c872c83898b2da754a29a7f6cb5f67d294d94eb"
+      },
+      {
+        "clip": "real_videos/bwW_wL4TwZg_1_00.mp4",
+        "sha256": "42eeed9b8b893b0a58ccc7251870418a8b6956aeb6cc4ac1b0291c38dc6e7a00"
+      },
+      {
+        "clip": "real_videos/bwW_wL4TwZg_2_00.mp4",
+        "sha256": "1eb71f8bad8d3de814e48b3c149b18cc8ea24a4f6a4267d343af205225cc1d82"
+      },
+      {
+        "clip": "real_videos/bys_qghQe0w_02.mp4",
+        "sha256": "05463bdc36ca1d4ccce4dee2f99b18ad97205285d2ef3ad4cba6386c7ca25394"
+      },
+      {
+        "clip": "real_videos/cSCM3PYMKRo_00.mp4",
+        "sha256": "63d039d6fa09e6f4aad5d35cc26c5fb12532661ee77a1f748ee515760366abdc"
+      },
+      {
+        "clip": "real_videos/dEqwcxeYJw4_00.mp4",
+        "sha256": "5f39dbb0e118fb74d7a23fa179b66774e2d8d1798564580d6995632fc1f1ca29"
+      },
+      {
+        "clip": "real_videos/e17Wq4Hpqlk_01.mp4",
+        "sha256": "01a9c6bfd8b9eb58874de2051d432bcb59c340771220d8540300f11587d9faec"
+      },
+      {
+        "clip": "real_videos/h50TQ3i9k5I_0_00.mp4",
+        "sha256": "3e30a4d775fe2d0b9752305ff7714796ff5e3dad1d16850dc3fd644d48b089b4"
+      },
+      {
+        "clip": "real_videos/k932VZGqE6c_2_00.mp4",
+        "sha256": "a5e1f9d795b287acb42ed678a48bc65f82cb07178e511c73ddf2291476512f77"
+      },
+      {
+        "clip": "real_videos/kaggle-fahaddalwai-cctvfootagevideo_1_00.mp4",
+        "sha256": "68192c9fec85efa580454d2a21ec98aa9b435208e04330ff1360bb1071433333"
+      },
+      {
+        "clip": "real_videos/kd7QwQqeJZQ_01.mp4",
+        "sha256": "476ebe480bbf502b452e6127d33f55c64455356a8eee50c0de8ed3e1be75879b"
+      },
+      {
+        "clip": "real_videos/kd7QwQqeJZQ_02.mp4",
+        "sha256": "df69f838377203162fbeb8c733a5f51f48512f847ef91aba99add29700266c8d"
+      },
+      {
+        "clip": "real_videos/kkwEN_zBCx8_00.mp4",
+        "sha256": "08ad19bd0872efb7331f069cf1f767353aafe66a4723974b8d7f150294ae113d"
+      },
+      {
+        "clip": "real_videos/mOwuW8t6-GQ_5_00.mp4",
+        "sha256": "3b2e5e8c49c0927efef0f2e7fcbeca05d12ed1230f6f58c5a474a03667809189"
+      },
+      {
+        "clip": "real_videos/n77TaXyADls_00.mp4",
+        "sha256": "5ccc86fc0fda2cdf6fdf1bc45d3f2ac3d813194637c51df2f14e86cb8250c2de"
+      },
+      {
+        "clip": "real_videos/nSK7cehJiCE_9_00.mp4",
+        "sha256": "fdd7807e6b20a0697d6a051beec6d2bd2840a12417db5c9455907c902c674128"
+      },
+      {
+        "clip": "real_videos/nsHYg3ENgk4_2_00.mp4",
+        "sha256": "af9c287d1ba54e62e3efec66c38cfe9307df5e6b7e1637244bc399df73830474"
+      },
+      {
+        "clip": "real_videos/pA6q7Q2EQrw_21_00.mp4",
+        "sha256": "a9b2feb8ea39642ef3610d7ab72f21f7f28e6aea23167c5c33d25350051db02b"
+      },
+      {
+        "clip": "real_videos/pA6q7Q2EQrw_22_00.mp4",
+        "sha256": "a25be3c6cedcc8094c1f074715510b0e930c24cd5698b9f8f06a8619d1ed95d8"
+      },
+      {
+        "clip": "real_videos/pA6q7Q2EQrw_32_00.mp4",
+        "sha256": "a2f49785ca86fdb9941dee4355161cae6e82f4d78bebcffbd789c49f518e71f8"
+      },
+      {
+        "clip": "real_videos/rQy2l6gxB8c_1_00.mp4",
+        "sha256": "204294f8684afc5fdf5e3f23b851e7bf5234ada0747d92c2c9128e31d3998f7b"
+      },
+      {
+        "clip": "real_videos/rQy2l6gxB8c_3_00.mp4",
+        "sha256": "38f0ca188e034fd7fcad33344d837c818d7bc7d39239526e79d22577f9c48041"
+      },
+      {
+        "clip": "real_videos/russia12_00.mp4",
+        "sha256": "d013365f878be4550f359cf942b55dd853ec21518bcc68d8aca05408a66387fc"
+      },
+      {
+        "clip": "real_videos/russia4_00.mp4",
+        "sha256": "bd601b451b1184ad50ad1a39d954851bedc762a57df8c5e44c0fc91c0c27040a"
+      },
+      {
+        "clip": "real_videos/russia6_00.mp4",
+        "sha256": "31a1ad72566a09d0cadf0dc0ea73ec70cd015d902dcade876e867cc3f8a33c98"
+      },
+      {
+        "clip": "real_videos/russia7_00.mp4",
+        "sha256": "f5db09d31980549fe4d0db4c2e57ce51ed0afd6868a4ccedbf0893313e894da9"
+      },
+      {
+        "clip": "real_videos/s80RaghtMRk_03.mp4",
+        "sha256": "a1feebcb50f9407fca9f2d6a368cdabbfd1423374f8a307ba380c0cc937b35f6"
+      },
+      {
+        "clip": "real_videos/tDN-mwNSJc8_9_00.mp4",
+        "sha256": "d8470ea3a60fc1b1fe5f2937fb7e0fefacbb2420a667ed578978fdc2ae5195b0"
+      },
+      {
+        "clip": "real_videos/upawiSphDM8_2_00.mp4",
+        "sha256": "2a239644f406d11d395b920466a0a2e4c6b99d4cb001d0e58b0b6890e49fb19e"
+      },
+      {
+        "clip": "real_videos/video193_00.mp4",
+        "sha256": "2f9dd8e2169a3e2071c249289cf220b2ee8831882f423cbc2f7a4be64185f3ba"
+      },
+      {
+        "clip": "real_videos/video56_00.mp4",
+        "sha256": "1f70115ae085486b01fc81c9c77e61094f6ba120225c150193476e0841d0858d"
+      },
+      {
+        "clip": "real_videos/video72_00.mp4",
+        "sha256": "8cc2cc9f88df6c6732a3700dc0da913416eb1c781773102aba8db5d8e3d76c99"
+      },
+      {
+        "clip": "real_videos/wScVipt0pWk_10_00.mp4",
+        "sha256": "b468acd3fc165ab9f7f41fb83d499153ccbb88a7c38bff89389bbfde02d2afdf"
+      },
+      {
+        "clip": "real_videos/wScVipt0pWk_3_00.mp4",
+        "sha256": "6519c555800efd71c26bc393fb1393b99825e340cb76f6395a5f1ca25e7a6c8e"
+      },
+      {
+        "clip": "real_videos/xKT7khciy-c_14_00.mp4",
+        "sha256": "f9e7dbc253420dcaeeb9a56bd0d4a302825b85aa346a2496aacf9a7ee5ff19bb"
+      },
+      {
+        "clip": "real_videos/xKT7khciy-c_5_00.mp4",
+        "sha256": "65174b0ce1fd03de380aad43f7636cadd7ff9b5121f0df6c8d514b10bc84dec5"
+      }
+    ]
+  },
+  "test_sources": {
+    "batch_sha256": "eb413138b1ffc7d0455a77cfeac2be6140b775fe0d754d113d8764a5d263a856",
+    "reports": [
+      {
+        "clip": "real_videos/-FQxK6HdxNU_00.mp4",
+        "sha256": "6549522cec3ab72c76e51a088d02d5421839b78fa397d4f417ca6161175ad2b9"
+      },
+      {
+        "clip": "real_videos/-yLuZ5wxAsc_00.mp4",
+        "sha256": "92022f55dccbc69d17dfa6713fc37fb79b51270cb82b6005ec076f849df4047e"
+      },
+      {
+        "clip": "real_videos/0isplBZQftg_00.mp4",
+        "sha256": "34b8a104eaeee92efd8e508a0393f9eef1a1dc2f4fc6587688a1894064fab1c1"
+      },
+      {
+        "clip": "real_videos/1hJlpaZsYa8_00.mp4",
+        "sha256": "63b043163cbc4461b109ad5639917d18a35e6b9e2b061f561253247dbb7c7c02"
+      },
+      {
+        "clip": "real_videos/20zWZEGQ7GY_00.mp4",
+        "sha256": "fcde576402481aeafb482ebaf97cd33121202a734289962855d511adf9b4aee9"
+      },
+      {
+        "clip": "real_videos/24R72DZBQ5k_00.mp4",
+        "sha256": "64a23ab21444921c0fe42c5d0e7bcf9d022a64474d8eef0703bf431eac34c69d"
+      },
+      {
+        "clip": "real_videos/3UBcAuDgcOg_00.mp4",
+        "sha256": "6db3e47a1054ee8a8816de65be563050c64d505988c13376508080a4616a94a4"
+      },
+      {
+        "clip": "real_videos/6hJ8mYLUfE8_00.mp4",
+        "sha256": "ce6e2e5aa60386e371948e987f4658d55e80c58d51c8475fe0acdd0956a1f303"
+      },
+      {
+        "clip": "real_videos/7CO_LqgfiFg_00.mp4",
+        "sha256": "73f9f500de8743ae04f98d25cfdfc80d1973c39c9dcefe8397699e7beab06f37"
+      },
+      {
+        "clip": "real_videos/82garGyvexA_00.mp4",
+        "sha256": "d60065d92e98a0eacb95fa0e14fbb6347e202998ac0b514e610c29b92fd9aca5"
+      },
+      {
+        "clip": "real_videos/8G_gWFWoV3U_00.mp4",
+        "sha256": "b30cf7a9e8f5ae34731a49179ea8759fd478629bfe741893731f17b4964abb65"
+      },
+      {
+        "clip": "real_videos/8UJFstPfuhU_00.mp4",
+        "sha256": "28d17f5550cdd117d1f0d6493e83171b98c2de46e1387c8d5e29e6501f7f94d3"
+      },
+      {
+        "clip": "real_videos/93SNo1CTA_w_00.mp4",
+        "sha256": "abcdd38765a54d13bc3496212f054b9943f60d98788054f8ca4aec1d3d27fc20"
+      },
+      {
+        "clip": "real_videos/9w-8u8wKF5k_00.mp4",
+        "sha256": "256b8d03e6a9230985cdbbd3e0259fd226cab4131ae33a15c66d94310cf8df3a"
+      },
+      {
+        "clip": "real_videos/AGn3mKAiKQY_00.mp4",
+        "sha256": "955c4cc49499ba088c4cc25838524408147bf952bc0112731e3160a4ba099e4d"
+      },
+      {
+        "clip": "real_videos/ApyekBAgfg8_00.mp4",
+        "sha256": "83b6b00ad6ac63afec43966078e80d5b11e40ac5c6fea2912b768652d7e26d76"
+      },
+      {
+        "clip": "real_videos/BR4WAtlyQEQ_00.mp4",
+        "sha256": "a0231273eedaa9f0bdd62fcbdd5e948e1b350509b020a698ad471d0c84d22a7d"
+      },
+      {
+        "clip": "real_videos/BVXW2dz2OYA_00.mp4",
+        "sha256": "a1ec58e526bfd2d3a365305f1dd1fad7974302d4f3cc7f35866e03103923343d"
+      },
+      {
+        "clip": "real_videos/CJYMnDmGxio_00.mp4",
+        "sha256": "4daeb84c076068769f8f3e5cfe96adc71b23d991503345c553ba5d895c9c381b"
+      },
+      {
+        "clip": "real_videos/F0NHENn-HS4_00.mp4",
+        "sha256": "88dc816488f4816f896e371fdf17eef7c5774722a832164988a56ac310ff5019"
+      },
+      {
+        "clip": "real_videos/FR3eYZzgeJY_00.mp4",
+        "sha256": "79e54644aac862062166968105474d99daedf619c9f6fcd256a072f28d289332"
+      },
+      {
+        "clip": "real_videos/FV6XO5Yg9VU_00.mp4",
+        "sha256": "66653212fe5ab11c7e067b69e34d63e17b59c030faf62a616dd722bf76c163c1"
+      },
+      {
+        "clip": "real_videos/FaI91W7BO04_00.mp4",
+        "sha256": "f594354a0ca4c9f1ea55708f889a79361860e3206e9a6e23b0d6dc4ea44803c2"
+      },
+      {
+        "clip": "real_videos/GD6usZ7O7UU_00.mp4",
+        "sha256": "6cb737075c4618d4a9dda78e0f851dfc4f9bc40a3afd408d22489d5514291f73"
+      },
+      {
+        "clip": "real_videos/HYr1QeHHFkI_00.mp4",
+        "sha256": "1ec6b8aea8437ac0ff01da9b71c6746143d23543f93e9050d6ee0cc7760e498e"
+      },
+      {
+        "clip": "real_videos/JEclWwaL-Ps_00.mp4",
+        "sha256": "25931a00b4f52fa4bdff7fd21ccfc9c00786945a3dbcd4fe00cfdc24cbe1bc8f"
+      },
+      {
+        "clip": "real_videos/K4we-6FhePo_00.mp4",
+        "sha256": "308e067476487cd92f3ffa11c29e89c8fbe67d64a5dfef4fff51c5544ae47667"
+      },
+      {
+        "clip": "real_videos/LQ3ERldwsJQ_00.mp4",
+        "sha256": "30133a4db053cd8a2eaef7f7fc1702dcf389c67bc41bf1cbc017ceed7ae54235"
+      },
+      {
+        "clip": "real_videos/MenTH2yFi6c_00.mp4",
+        "sha256": "5d1eb3ad883d8836c0f53467e9f705692099781e6678cae8011ea9e9828050e7"
+      },
+      {
+        "clip": "real_videos/Mzuyrdg3hxY_00.mp4",
+        "sha256": "a52636c72ac3cbcb18af88d416bc97fa3a30d1a1db7f678d269a10e24e5afaab"
+      },
+      {
+        "clip": "real_videos/NIwmS3dbHY0_00.mp4",
+        "sha256": "0715197c95b88bc53dfcda67afcd632e39d5fca5d255da2b9e0267a7cbe96678"
+      },
+      {
+        "clip": "real_videos/NQXpqL8dL8s_00.mp4",
+        "sha256": "a41576da3394ebb58d4af877822215dd1c1491eab5bf985f85a2e1626879152b"
+      },
+      {
+        "clip": "real_videos/NdXcu0X1nH8_00.mp4",
+        "sha256": "9f670c4537218e8d9c5194e9c64e5c9d27c98a82e833617b89beb759972fd05e"
+      },
+      {
+        "clip": "real_videos/PD-N1gMJNXg_00.mp4",
+        "sha256": "638649605165715a0daf0f7a38f098d36517c14af6df1e73dd1e28ecd808951b"
+      },
+      {
+        "clip": "real_videos/PNXLwYc7TFo_00.mp4",
+        "sha256": "5df8e609081171bc58df0e4ef2aa79be0b4ce032d83809b5d302fa5bec24d15e"
+      },
+      {
+        "clip": "real_videos/Q5YnuRI6QSM_00.mp4",
+        "sha256": "d72c638d52252f6ea8cdc1faf23e3d559cf401d30cdf5228727e581f3926aba5"
+      },
+      {
+        "clip": "real_videos/QeZz4_zmy1I_00.mp4",
+        "sha256": "2e572d6d265facc7fe0ab16d34b5b13eeea2341d0ec52537cd8f0889e0759629"
+      },
+      {
+        "clip": "real_videos/QwFFfl2CNUY_00.mp4",
+        "sha256": "3a524da5ad6487eb88d3c1c0d29c2ecc9d8dca8e502c4a0b907cfb26065f7f03"
+      },
+      {
+        "clip": "real_videos/RHwcGsU3d08_00.mp4",
+        "sha256": "393bd50ddcf8d2fdfeb6dfda16365da42b2bff4bb0103cce704c2ffd75e12412"
+      },
+      {
+        "clip": "real_videos/SBTD7z4A1y8_00.mp4",
+        "sha256": "9727506618d19c060711154ade6d87cc45957a748604fc9f0a293aab5c2b000b"
+      },
+      {
+        "clip": "real_videos/SUK79gpopL0_00.mp4",
+        "sha256": "8bbd16f5debad6f503c5c4e1d275ed3742b50d303195b418186dfd2203196bfd"
+      },
+      {
+        "clip": "real_videos/TLjDFutg8mI_00.mp4",
+        "sha256": "584a1baac94033479b6c63c7e2c283c6b454b8b17d3b2a80caa22d73db325450"
+      },
+      {
+        "clip": "real_videos/TSHPa6dU_yo_00.mp4",
+        "sha256": "c9cd7f8e7c07a7bd3f0dbb0205c05f472db602a3ceb1ce2ad787183a1e4522f6"
+      },
+      {
+        "clip": "real_videos/TWCg8QXjraw_00.mp4",
+        "sha256": "001f9f2c1de3fedcdb010af91de574e3c0355f99c9941295f66527b6e7c8d6dc"
+      },
+      {
+        "clip": "real_videos/TilBcBFe1gc_00.mp4",
+        "sha256": "78d4cac094e5af223a00a9e3e8288fd69af34461ba330b31196c469d4743d26b"
+      },
+      {
+        "clip": "real_videos/TvOF9UpguyM_00.mp4",
+        "sha256": "d5eab6604c96af560dbbee4b6a1ba5907d409b7cef1721059e3a191ad2e42be0"
+      },
+      {
+        "clip": "real_videos/UjEFjnXKXXc_00.mp4",
+        "sha256": "11228192a660b57f81808aeb3a4c9841edad0e31bd8f4fc85a4dd8515a1470ae"
+      },
+      {
+        "clip": "real_videos/Urin3yuptr8_00.mp4",
+        "sha256": "854c6381748fa6c5c8648127d2dfd4f0505565868d342a47165b7f1e2a254c77"
+      },
+      {
+        "clip": "real_videos/V3oNEkBwP7M_00.mp4",
+        "sha256": "270e36491861085ad51525db5850ae945017cb85367ac7ad345aab5b929068ee"
+      },
+      {
+        "clip": "real_videos/VbJ0P0Ranrw_00.mp4",
+        "sha256": "2b8697adf25cf419fc962d45ffa575b2cfe0944cadac4643c199fd0f20237a6d"
+      },
+      {
+        "clip": "real_videos/VpQn6ugiG1M_00.mp4",
+        "sha256": "a0e0270e9c9a45f7bb10a0935aef32091f7ef72ecc0f87e8d636097bda0e38ec"
+      },
+      {
+        "clip": "real_videos/W0KJ7kxqtQo_00.mp4",
+        "sha256": "09d70fcb36548b44d0185ea0764033eeda0136008dbcad150d9922ef99a820cf"
+      },
+      {
+        "clip": "real_videos/WTz4apKhaQY_00.mp4",
+        "sha256": "1ced18eb7c75cd99ea6a7609ac78729a747d68d5dca971831176b279182dbdda"
+      },
+      {
+        "clip": "real_videos/XGmx0mhtM_A_00.mp4",
+        "sha256": "e1d6723fef920701545fd505503047151fcd0960f3ad75f76da17c1ab6fb56a3"
+      },
+      {
+        "clip": "real_videos/YGBuLu9t4Ts_00.mp4",
+        "sha256": "104fb40a66a0bffe7cf7fdefa2e389c290c52266d7f7c6fc2bd1960dc2329b54"
+      },
+      {
+        "clip": "real_videos/YXj8m_rAyaE_00.mp4",
+        "sha256": "bd7cd19f1f9e31dbe97d587f1bd5fd6692ef0c69f9db1340876547a5c84ba511"
+      },
+      {
+        "clip": "real_videos/ZDiU58ZiXTk_00.mp4",
+        "sha256": "49a1243d26978751a3e8a0e8a1dc787454930dc9a93fa1af7756222a8912f5a3"
+      },
+      {
+        "clip": "real_videos/ZTLYOhzf8Jw_00.mp4",
+        "sha256": "f5ac4ac2677edeb8c78bea22b913ca2672c0ac80202c1a9a6b03fbc34ca14950"
+      },
+      {
+        "clip": "real_videos/Zp5xCOo7DSE_00.mp4",
+        "sha256": "94a67cf06e478e7cdd51fadcbb6a68a23d2a4daac7aad58dfb0a00bcc5a5de14"
+      },
+      {
+        "clip": "real_videos/Zq0TjWFlXQI_00.mp4",
+        "sha256": "eb91b8b71204dba7128e577b341aa8b9d565c822d53e92676ff7a0a8718c70cc"
+      },
+      {
+        "clip": "real_videos/_75B7Y8QaX0_00.mp4",
+        "sha256": "690e0312fc44c61233f3722d9a7ee1eaa552f372ee76135bf5419cc4d650dfb0"
+      },
+      {
+        "clip": "real_videos/bUn3nfDgLEs_00.mp4",
+        "sha256": "5d611d0557fbedd77fbe0fc05ced99b7c6667334bbb50b1e21ad95884bc8cb8d"
+      },
+      {
+        "clip": "real_videos/br57It5-6lM_00.mp4",
+        "sha256": "5936de2bafee2e455f0b62063a95b15de0d2ff3885692b75b6b1563da744367b"
+      },
+      {
+        "clip": "real_videos/bw6JUt3iQls_00.mp4",
+        "sha256": "a8fbc37f31c85fb7f6a153e475e98ba48516166c2ed158806f11ddaf9bcb33ae"
+      },
+      {
+        "clip": "real_videos/cZqLDOqM9TM_00.mp4",
+        "sha256": "913454b84ff1a27b8ef5c497c46e2e6c5c8435e5143d1f8bda8bef41227b480d"
+      },
+      {
+        "clip": "real_videos/eaAiEUwvy20_00.mp4",
+        "sha256": "80095e74029ba37c0be79eae77ff9e1db98980a528f5fb633909ae04c50524cb"
+      },
+      {
+        "clip": "real_videos/gXDhzlVtCXI_00.mp4",
+        "sha256": "f86b6000aec966e6a14199d961bb423bbf848ef790175e6f712670cbb689bb67"
+      },
+      {
+        "clip": "real_videos/gkyJ3CwetQY_00.mp4",
+        "sha256": "3b24fe53fe78b351ae28ed324140091c8d5de7477561ad39ca577ad4b39ca74e"
+      },
+      {
+        "clip": "real_videos/gtKsxCrjJ2Q_00.mp4",
+        "sha256": "ce6741baa2df21a21906556669e24f53a74fded9424be3a1e52d62f1e4c80d50"
+      },
+      {
+        "clip": "real_videos/ig4k6LEEMy0_00.mp4",
+        "sha256": "898056e70cb813d5c4fce4d5f4ffba921830fb7a56491626a3502132ea88776d"
+      },
+      {
+        "clip": "real_videos/jF_WIm0oxLc_00.mp4",
+        "sha256": "47012ea4dcc2692f89b5654019122439e44c4160deb6d1ee4ad703e75603d2b3"
+      },
+      {
+        "clip": "real_videos/jnarvwUc5NU_00.mp4",
+        "sha256": "0feb2f71b0e2b867faca3312e863b351dec3f4c7b6a951a16da16dd126813f9f"
+      },
+      {
+        "clip": "real_videos/l3GUdPH62y8_00.mp4",
+        "sha256": "62ace62f34513bbb22486ff20c376d087462a9d2290c64797eb52fae26bc08c1"
+      },
+      {
+        "clip": "real_videos/lXKSWeJ9jEc_00.mp4",
+        "sha256": "bc48b3d5f162944ceed7c1d13f4195af015f6159ec39bda7bab3a3d971899b13"
+      },
+      {
+        "clip": "real_videos/mDHuTgnSxMs_00.mp4",
+        "sha256": "5e8cf544571bf17d1da3d09addda756b74f6bd630bafffd2838cf5599921e764"
+      },
+      {
+        "clip": "real_videos/mM1mhT8o578_00.mp4",
+        "sha256": "0dc5174898dc21ac44da54173cfed53f45354d6dd53b3dd00eb0074981737afc"
+      },
+      {
+        "clip": "real_videos/maJsgJsapH4_00.mp4",
+        "sha256": "c42a0392ae0e0c6958993ed3b1ebedbed405d2322820cffd26fd7e37e5ad289c"
+      },
+      {
+        "clip": "real_videos/mntY3Xh8lT4_00.mp4",
+        "sha256": "1df7e965fac1e6ec92c159544e478ff3122fc8576bf361f2fbc2ba6b05dbad5c"
+      },
+      {
+        "clip": "real_videos/njI11mpdwo0_00.mp4",
+        "sha256": "35703fee6aeb5a5c469cb886bd3653fdc2c8fb2cb32903625088d8ee915e8d1a"
+      },
+      {
+        "clip": "real_videos/oPdIw4WJ6ZU_00.mp4",
+        "sha256": "9cff45a80e495466440c0e06aacaca7d4fd2d067d3aee7b097a32508834234bb"
+      },
+      {
+        "clip": "real_videos/p7GtPUgji9w_00.mp4",
+        "sha256": "d0d722d16f4aacad5e4845621282a0a0f3a7ac75d6c6255a38303e591f820897"
+      },
+      {
+        "clip": "real_videos/qfCt6R_rTMY_00.mp4",
+        "sha256": "b5673ecb961fa0800d793f88b553510d8d9c2bd92c3e1daac4e1dd7e71214134"
+      },
+      {
+        "clip": "real_videos/qx2zGl2mYt0_00.mp4",
+        "sha256": "bc90a326eae44e6abee1c46b274dc173ceccb8ece73dac09681ecf700f2b7bb8"
+      },
+      {
+        "clip": "real_videos/r-fThmrFOqs_00.mp4",
+        "sha256": "4a49ca7033324036036fdae420e576df86af098f79672b9931d37b522b0b05bb"
+      },
+      {
+        "clip": "real_videos/tAGibqigAx0_00.mp4",
+        "sha256": "24607a2d92a7a2431198308d79db1895f43f6197b36f179e79fcb8e840a4f1c5"
+      },
+      {
+        "clip": "real_videos/tFS_Hk-qEiQ_00.mp4",
+        "sha256": "5c626330fea8495768c2cc37d783ee1a23286d722ef36078110388a79e1d303b"
+      },
+      {
+        "clip": "real_videos/tHW7Y0dIwkg_00.mp4",
+        "sha256": "752e67c08beada1e8428dac2f962000f24c4d844d3d76960aec0dcedcd497889"
+      },
+      {
+        "clip": "real_videos/tmZqFNBoF-E_00.mp4",
+        "sha256": "7f4b3760eb0767ecc9be75c12ad1ef5f4aa8525379bb1bb19107cae120a2f983"
+      },
+      {
+        "clip": "real_videos/uAmblqScf8Q_00.mp4",
+        "sha256": "7e62beae3901a82a98f33be37794c6bc1f7181478e13a7e117cdb518b2bac84d"
+      },
+      {
+        "clip": "real_videos/uh5OqU0h4ZM_00.mp4",
+        "sha256": "5a1e1786b62328c686ad83198917a6da911d26815cc03c9b2b4a802324c3c63a"
+      },
+      {
+        "clip": "real_videos/v0VVrqk4l3o_00.mp4",
+        "sha256": "a2d90103ab233fc45be91dc2f70a44faf47b4ef4dd90ce6621e4f285a7d35a66"
+      },
+      {
+        "clip": "real_videos/w0jywVfX7LY_00.mp4",
+        "sha256": "939ebbccd492de68ead22957a35576eb73dabdbf02cc778a561a444013af8f87"
+      },
+      {
+        "clip": "real_videos/xApGBKUGoR4_00.mp4",
+        "sha256": "3fca7360e30b8620d2f3952268acf38313c434a513b519454932cac95beb6d29"
+      },
+      {
+        "clip": "real_videos/xDNd4r5dECc_00.mp4",
+        "sha256": "4113fad36ef93e3f5329c1729fcc615c5e760936d1d352cd0e91256fed166dd0"
+      },
+      {
+        "clip": "real_videos/xSMybsal-zs_00.mp4",
+        "sha256": "19214dcce8ede5ca11a250e267d300faed1d3a7503e7c508c21469b11e207e36"
+      },
+      {
+        "clip": "real_videos/xUocvk0m-mc_00.mp4",
+        "sha256": "c569af58f4fa39a072491fd28edca8d250be95c5e80c7404d03b903a4b6ff774"
+      },
+      {
+        "clip": "real_videos/xrQ3mx08clM_00.mp4",
+        "sha256": "2fcae326d7aebfb5a3eac207ea273c99ba17dc7e51e7ea29011387dace1dd714"
+      },
+      {
+        "clip": "real_videos/yQyB-0PLYAU_00.mp4",
+        "sha256": "f5379f9de432f7c6bd2b7b429a050683268746b06f50bf1288a653f370d63541"
+      },
+      {
+        "clip": "real_videos/ysTXjULP4u8_00.mp4",
+        "sha256": "3622586486d1134cf642141eb697a4f873364ea661608c2e8e7c39379da65341"
+      },
+      {
+        "clip": "real_videos/zKzNUiaoHZI_00.mp4",
+        "sha256": "143e42c9d4d1a9bea783eed8b195afca594b7825f3c74039fed99e5f66708408"
+      }
+    ]
+  },
+  "baselines": [
+    {
+      "hop_steps": 5,
+      "gate": 1,
+      "threshold": 0.9262804388999939,
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 65,
+        "missed_clips": 35,
+        "event_recall": 0.65,
+        "early_alert_episodes": 56,
+        "late_alert_episodes": 240,
+        "trigger_delay_sec": {
+          "mean": 0.8133762780138084,
+          "median": 0.8336666666666659,
+          "p95": 2.533422796625381,
+          "minimum": -0.9876028210838905,
+          "maximum": 2.933041788143827
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 16,
+            "event_recall": 0.7272727272727273
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 16,
+            "event_recall": 0.7619047619047619
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 9,
+            "event_recall": 0.45
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 16,
+            "event_recall": 0.8
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 8,
+            "event_recall": 0.47058823529411764
+          }
+        },
+        "off_target_episodes_per_clip": 2.96
+      }
+    },
+    {
+      "hop_steps": 5,
+      "gate": 2,
+      "threshold": 0.9262804388999939,
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 20,
+        "missed_clips": 80,
+        "event_recall": 0.2,
+        "early_alert_episodes": 11,
+        "late_alert_episodes": 59,
+        "trigger_delay_sec": {
+          "mean": 1.0567264711070656,
+          "median": 0.9248893509451539,
+          "p95": 2.7668089597560974,
+          "minimum": -0.7789568299408565,
+          "maximum": 2.9278458617886183
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 6,
+            "event_recall": 0.2727272727272727
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 3,
+            "event_recall": 0.14285714285714285
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 5,
+            "event_recall": 0.25
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 5,
+            "event_recall": 0.25
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 1,
+            "event_recall": 0.058823529411764705
+          }
+        },
+        "off_target_episodes_per_clip": 0.7
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 1,
+      "threshold": 0.9262804388999939,
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 36,
+        "missed_clips": 64,
+        "event_recall": 0.36,
+        "early_alert_episodes": 28,
+        "late_alert_episodes": 84,
+        "trigger_delay_sec": {
+          "mean": 1.083139041082105,
+          "median": 0.8880453403656825,
+          "p95": 2.892801645807878,
+          "minimum": -0.7135825242718443,
+          "maximum": 2.933041788143827
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 10,
+            "event_recall": 0.45454545454545453
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 8,
+            "event_recall": 0.38095238095238093
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 6,
+            "event_recall": 0.3
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 7,
+            "event_recall": 0.35
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 5,
+            "event_recall": 0.29411764705882354
+          }
+        },
+        "off_target_episodes_per_clip": 1.12
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 2,
+      "threshold": 0.9262804388999939,
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 5,
+        "missed_clips": 95,
+        "event_recall": 0.05,
+        "early_alert_episodes": 2,
+        "late_alert_episodes": 16,
+        "trigger_delay_sec": {
+          "mean": 1.7016047911221635,
+          "median": 2.104434589800443,
+          "p95": 2.6570477425261596,
+          "minimum": -0.401234567901235,
+          "maximum": 2.738412948381452
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 1,
+            "event_recall": 0.045454545454545456
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 1,
+            "event_recall": 0.047619047619047616
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 1,
+            "event_recall": 0.05
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 2,
+            "event_recall": 0.1
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          }
+        },
+        "off_target_episodes_per_clip": 0.18
+      }
+    }
+  ],
+  "policies": [
+    {
+      "hop_steps": 5,
+      "gate": 1,
+      "budget_per_clip": 0.25,
+      "selected": {
+        "threshold": 1.0,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 0,
+          "missed_clips": 90,
+          "event_recall": 0.0,
+          "early_alert_episodes": 0,
+          "late_alert_episodes": 0,
+          "trigger_delay_sec": {
+            "mean": null,
+            "median": null,
+            "p95": null,
+            "minimum": null,
+            "maximum": null
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            }
+          },
+          "off_target_episodes_per_clip": 0.0
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 0,
+        "missed_clips": 100,
+        "event_recall": 0.0,
+        "early_alert_episodes": 0,
+        "late_alert_episodes": 1,
+        "trigger_delay_sec": {
+          "mean": null,
+          "median": null,
+          "p95": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          }
+        },
+        "off_target_episodes_per_clip": 0.01
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": -0.65,
+        "lower_95": -0.74,
+        "upper_95": -0.55,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 5,
+      "gate": 1,
+      "budget_per_clip": 0.5,
+      "selected": {
+        "threshold": 1.0,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 0,
+          "missed_clips": 90,
+          "event_recall": 0.0,
+          "early_alert_episodes": 0,
+          "late_alert_episodes": 0,
+          "trigger_delay_sec": {
+            "mean": null,
+            "median": null,
+            "p95": null,
+            "minimum": null,
+            "maximum": null
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            }
+          },
+          "off_target_episodes_per_clip": 0.0
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 0,
+        "missed_clips": 100,
+        "event_recall": 0.0,
+        "early_alert_episodes": 0,
+        "late_alert_episodes": 1,
+        "trigger_delay_sec": {
+          "mean": null,
+          "median": null,
+          "p95": null,
+          "minimum": null,
+          "maximum": null
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 0,
+            "event_recall": 0.0
+          }
+        },
+        "off_target_episodes_per_clip": 0.01
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": -0.65,
+        "lower_95": -0.74,
+        "upper_95": -0.55,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 5,
+      "gate": 1,
+      "budget_per_clip": 1.0,
+      "selected": {
+        "threshold": 0.94,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 59,
+          "missed_clips": 31,
+          "event_recall": 0.6555555555555556,
+          "early_alert_episodes": 44,
+          "late_alert_episodes": 43,
+          "trigger_delay_sec": {
+            "mean": 0.584784708771825,
+            "median": 0.6336834782656613,
+            "p95": 2.3516614552908184,
+            "minimum": -0.907025077727952,
+            "maximum": 2.510943396226415
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 5,
+              "event_recall": 0.8333333333333334
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 5,
+              "event_recall": 0.5
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 7,
+              "event_recall": 0.7
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 8,
+              "event_recall": 0.5333333333333333
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 34,
+              "event_recall": 0.6938775510204082
+            }
+          },
+          "off_target_episodes_per_clip": 0.9666666666666667
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 60,
+        "missed_clips": 40,
+        "event_recall": 0.6,
+        "early_alert_episodes": 55,
+        "late_alert_episodes": 221,
+        "trigger_delay_sec": {
+          "mean": 0.7967244368109849,
+          "median": 0.8016448632668141,
+          "p95": 2.416672258122419,
+          "minimum": -0.9876028210838905,
+          "maximum": 2.8588684405025875
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 14,
+            "event_recall": 0.6363636363636364
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 14,
+            "event_recall": 0.6666666666666666
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 9,
+            "event_recall": 0.45
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 16,
+            "event_recall": 0.8
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 7,
+            "event_recall": 0.4117647058823529
+          }
+        },
+        "off_target_episodes_per_clip": 2.76
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": -0.05,
+        "lower_95": -0.1,
+        "upper_95": -0.01,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 5,
+      "gate": 2,
+      "budget_per_clip": 0.25,
+      "selected": {
+        "threshold": 0.96,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 18,
+          "missed_clips": 72,
+          "event_recall": 0.2,
+          "early_alert_episodes": 10,
+          "late_alert_episodes": 12,
+          "trigger_delay_sec": {
+            "mean": 1.0788734622170248,
+            "median": 1.373316060866013,
+            "p95": 2.0421959798994966,
+            "minimum": -0.8815053763440859,
+            "maximum": 2.5
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 2,
+              "event_recall": 0.3333333333333333
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 2,
+              "event_recall": 0.2
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 2,
+              "event_recall": 0.2
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 1,
+              "event_recall": 0.06666666666666667
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 11,
+              "event_recall": 0.22448979591836735
+            }
+          },
+          "off_target_episodes_per_clip": 0.24444444444444444
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 18,
+        "missed_clips": 82,
+        "event_recall": 0.18,
+        "early_alert_episodes": 10,
+        "late_alert_episodes": 38,
+        "trigger_delay_sec": {
+          "mean": 1.2847290301199605,
+          "median": 1.385181079083518,
+          "p95": 2.7837602126016256,
+          "minimum": -0.7789568299408565,
+          "maximum": 2.9278458617886183
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 6,
+            "event_recall": 0.2727272727272727
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 2,
+            "event_recall": 0.09523809523809523
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 4,
+            "event_recall": 0.2
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 5,
+            "event_recall": 0.25
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 1,
+            "event_recall": 0.058823529411764705
+          }
+        },
+        "off_target_episodes_per_clip": 0.48
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": -0.02,
+        "lower_95": -0.05,
+        "upper_95": 0.0,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 5,
+      "gate": 2,
+      "budget_per_clip": 0.5,
+      "selected": {
+        "threshold": 0.88,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 31,
+          "missed_clips": 59,
+          "event_recall": 0.34444444444444444,
+          "early_alert_episodes": 19,
+          "late_alert_episodes": 24,
+          "trigger_delay_sec": {
+            "mean": 1.3261893356222092,
+            "median": 1.4481130000000002,
+            "p95": 2.6667929085843083,
+            "minimum": -0.8815053763440859,
+            "maximum": 2.918170568561873
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 3,
+              "event_recall": 0.5
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 2,
+              "event_recall": 0.2
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 3,
+              "event_recall": 0.3
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 2,
+              "event_recall": 0.13333333333333333
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 21,
+              "event_recall": 0.42857142857142855
+            }
+          },
+          "off_target_episodes_per_clip": 0.4777777777777778
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 26,
+        "missed_clips": 74,
+        "event_recall": 0.26,
+        "early_alert_episodes": 15,
+        "late_alert_episodes": 84,
+        "trigger_delay_sec": {
+          "mean": 0.9816861792238887,
+          "median": 0.9248893509451539,
+          "p95": 2.7180324907407405,
+          "minimum": -0.914182556291391,
+          "maximum": 2.9278458617886183
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 7,
+            "event_recall": 0.3181818181818182
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 6,
+            "event_recall": 0.2857142857142857
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 6,
+            "event_recall": 0.3
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 5,
+            "event_recall": 0.25
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 2,
+            "event_recall": 0.11764705882352941
+          }
+        },
+        "off_target_episodes_per_clip": 0.99
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": 0.06,
+        "lower_95": 0.02,
+        "upper_95": 0.11,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 5,
+      "gate": 2,
+      "budget_per_clip": 1.0,
+      "selected": {
+        "threshold": 0.05,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 58,
+          "missed_clips": 32,
+          "event_recall": 0.6444444444444445,
+          "early_alert_episodes": 56,
+          "late_alert_episodes": 26,
+          "trigger_delay_sec": {
+            "mean": 0.790032142956317,
+            "median": 0.8629868334978881,
+            "p95": 1.853309029290558,
+            "minimum": -0.9922737625930789,
+            "maximum": 2.16
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 4,
+              "event_recall": 0.6666666666666666
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 6,
+              "event_recall": 0.6
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 8,
+              "event_recall": 0.8
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 9,
+              "event_recall": 0.6
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 31,
+              "event_recall": 0.6326530612244898
+            }
+          },
+          "off_target_episodes_per_clip": 0.9111111111111111
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 77,
+        "missed_clips": 23,
+        "event_recall": 0.77,
+        "early_alert_episodes": 67,
+        "late_alert_episodes": 176,
+        "trigger_delay_sec": {
+          "mean": 0.635193588290667,
+          "median": 0.5780516351118763,
+          "p95": 2.2754530599431977,
+          "minimum": -0.9885555555555561,
+          "maximum": 2.564556273559505
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 17,
+            "event_recall": 0.7727272727272727
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 17,
+            "event_recall": 0.8095238095238095
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 16,
+            "event_recall": 0.8
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 13,
+            "event_recall": 0.65
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 14,
+            "event_recall": 0.8235294117647058
+          }
+        },
+        "off_target_episodes_per_clip": 2.43
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": 0.57,
+        "lower_95": 0.44975000000000004,
+        "upper_95": 0.69,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 1,
+      "budget_per_clip": 0.25,
+      "selected": {
+        "threshold": 0.99,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 20,
+          "missed_clips": 70,
+          "event_recall": 0.2222222222222222,
+          "early_alert_episodes": 9,
+          "late_alert_episodes": 8,
+          "trigger_delay_sec": {
+            "mean": 0.8736890109149392,
+            "median": 0.8754631296296296,
+            "p95": 2.7391111928003506,
+            "minimum": -0.907025077727952,
+            "maximum": 2.973073529209623
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 1,
+              "event_recall": 0.16666666666666666
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 1,
+              "event_recall": 0.1
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 1,
+              "event_recall": 0.1
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 0,
+              "event_recall": 0.0
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 17,
+              "event_recall": 0.3469387755102041
+            }
+          },
+          "off_target_episodes_per_clip": 0.18888888888888888
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 14,
+        "missed_clips": 86,
+        "event_recall": 0.14,
+        "early_alert_episodes": 19,
+        "late_alert_episodes": 40,
+        "trigger_delay_sec": {
+          "mean": 1.447132366503736,
+          "median": 1.1408742559523808,
+          "p95": 2.897474207938643,
+          "minimum": -0.11462752709978297,
+          "maximum": 2.9278458617886183
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 1,
+            "event_recall": 0.045454545454545456
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 5,
+            "event_recall": 0.23809523809523808
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 1,
+            "event_recall": 0.05
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 5,
+            "event_recall": 0.25
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 2,
+            "event_recall": 0.11764705882352941
+          }
+        },
+        "off_target_episodes_per_clip": 0.59
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": -0.22,
+        "lower_95": -0.3,
+        "upper_95": -0.14,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 1,
+      "budget_per_clip": 0.5,
+      "selected": {
+        "threshold": 0.95,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 35,
+          "missed_clips": 55,
+          "event_recall": 0.3888888888888889,
+          "early_alert_episodes": 22,
+          "late_alert_episodes": 13,
+          "trigger_delay_sec": {
+            "mean": 0.7973436583254441,
+            "median": 0.8,
+            "p95": 2.5032830188679243,
+            "minimum": -0.907025077727952,
+            "maximum": 2.973073529209623
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 1,
+              "event_recall": 0.16666666666666666
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 4,
+              "event_recall": 0.4
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 5,
+              "event_recall": 0.5
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 2,
+              "event_recall": 0.13333333333333333
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 23,
+              "event_recall": 0.46938775510204084
+            }
+          },
+          "off_target_episodes_per_clip": 0.3888888888888889
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 24,
+        "missed_clips": 76,
+        "event_recall": 0.24,
+        "early_alert_episodes": 27,
+        "late_alert_episodes": 69,
+        "trigger_delay_sec": {
+          "mean": 1.2842349956214807,
+          "median": 0.9622222222222221,
+          "p95": 2.8627022044088193,
+          "minimum": -0.39999999999999947,
+          "maximum": 2.9278458617886183
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 5,
+            "event_recall": 0.22727272727272727
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 6,
+            "event_recall": 0.2857142857142857
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 5,
+            "event_recall": 0.25
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 5,
+            "event_recall": 0.25
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 3,
+            "event_recall": 0.17647058823529413
+          }
+        },
+        "off_target_episodes_per_clip": 0.96
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": -0.12,
+        "lower_95": -0.19,
+        "upper_95": -0.06,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 1,
+      "budget_per_clip": 1.0,
+      "selected": {
+        "threshold": 0.37,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 64,
+          "missed_clips": 26,
+          "event_recall": 0.7111111111111111,
+          "early_alert_episodes": 42,
+          "late_alert_episodes": 34,
+          "trigger_delay_sec": {
+            "mean": 0.9036859386822886,
+            "median": 0.8574999999999999,
+            "p95": 2.6282400569429543,
+            "minimum": -0.907025077727952,
+            "maximum": 2.9953000000000003
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 6,
+              "event_recall": 1.0
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 7,
+              "event_recall": 0.7
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 8,
+              "event_recall": 0.8
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 7,
+              "event_recall": 0.4666666666666667
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 36,
+              "event_recall": 0.7346938775510204
+            }
+          },
+          "off_target_episodes_per_clip": 0.8444444444444444
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 52,
+        "missed_clips": 48,
+        "event_recall": 0.52,
+        "early_alert_episodes": 58,
+        "late_alert_episodes": 178,
+        "trigger_delay_sec": {
+          "mean": 1.0294706018009558,
+          "median": 0.9579118649503158,
+          "p95": 2.7112892970015663,
+          "minimum": -0.9000000000000004,
+          "maximum": 2.933041788143827
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 13,
+            "event_recall": 0.5909090909090909
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 13,
+            "event_recall": 0.6190476190476191
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 9,
+            "event_recall": 0.45
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 10,
+            "event_recall": 0.5
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 7,
+            "event_recall": 0.4117647058823529
+          }
+        },
+        "off_target_episodes_per_clip": 2.36
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": 0.16,
+        "lower_95": 0.06,
+        "upper_95": 0.26,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 2,
+      "budget_per_clip": 0.25,
+      "selected": {
+        "threshold": 0.62,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 27,
+          "missed_clips": 63,
+          "event_recall": 0.3,
+          "early_alert_episodes": 5,
+          "late_alert_episodes": 16,
+          "trigger_delay_sec": {
+            "mean": 1.1357078196969312,
+            "median": 1.2901774444444438,
+            "p95": 2.9085431041152265,
+            "minimum": -0.8066273469785568,
+            "maximum": 2.973073529209623
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 2,
+              "event_recall": 0.3333333333333333
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 2,
+              "event_recall": 0.2
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 3,
+              "event_recall": 0.3
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 2,
+              "event_recall": 0.13333333333333333
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 18,
+              "event_recall": 0.3673469387755102
+            }
+          },
+          "off_target_episodes_per_clip": 0.23333333333333334
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 15,
+        "missed_clips": 85,
+        "event_recall": 0.15,
+        "early_alert_episodes": 7,
+        "late_alert_episodes": 60,
+        "trigger_delay_sec": {
+          "mean": 1.0706717577945695,
+          "median": 0.9754795321637424,
+          "p95": 2.668378004781696,
+          "minimum": -0.401234567901235,
+          "maximum": 2.738412948381452
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 5,
+            "event_recall": 0.22727272727272727
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 3,
+            "event_recall": 0.14285714285714285
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 2,
+            "event_recall": 0.1
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 3,
+            "event_recall": 0.15
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 2,
+            "event_recall": 0.11764705882352941
+          }
+        },
+        "off_target_episodes_per_clip": 0.67
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": 0.1,
+        "lower_95": 0.04,
+        "upper_95": 0.16,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 2,
+      "budget_per_clip": 0.5,
+      "selected": {
+        "threshold": 0.04,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 51,
+          "missed_clips": 39,
+          "event_recall": 0.5666666666666667,
+          "early_alert_episodes": 27,
+          "late_alert_episodes": 8,
+          "trigger_delay_sec": {
+            "mean": 1.182705391520376,
+            "median": 1.2600006666666665,
+            "p95": 2.8625927592592593,
+            "minimum": -0.8066273469785568,
+            "maximum": 2.969655172413793
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 5,
+              "event_recall": 0.8333333333333334
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 6,
+              "event_recall": 0.6
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 7,
+              "event_recall": 0.7
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 8,
+              "event_recall": 0.5333333333333333
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 25,
+              "event_recall": 0.5102040816326531
+            }
+          },
+          "off_target_episodes_per_clip": 0.3888888888888889
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 53,
+        "missed_clips": 47,
+        "event_recall": 0.53,
+        "early_alert_episodes": 27,
+        "late_alert_episodes": 60,
+        "trigger_delay_sec": {
+          "mean": 1.0050090040599406,
+          "median": 0.9461385447154469,
+          "p95": 2.84059786835443,
+          "minimum": -0.9000000000000004,
+          "maximum": 2.966907407407408
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 14,
+            "event_recall": 0.6363636363636364
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 11,
+            "event_recall": 0.5238095238095238
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 9,
+            "event_recall": 0.45
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 9,
+            "event_recall": 0.45
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 10,
+            "event_recall": 0.5882352941176471
+          }
+        },
+        "off_target_episodes_per_clip": 0.87
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": 0.48,
+        "lower_95": 0.38,
+        "upper_95": 0.58,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    },
+    {
+      "hop_steps": 15,
+      "gate": 2,
+      "budget_per_clip": 1.0,
+      "selected": {
+        "threshold": 0.04,
+        "summary": {
+          "clip_count": 90,
+          "detected_clips": 51,
+          "missed_clips": 39,
+          "event_recall": 0.5666666666666667,
+          "early_alert_episodes": 27,
+          "late_alert_episodes": 8,
+          "trigger_delay_sec": {
+            "mean": 1.182705391520376,
+            "median": 1.2600006666666665,
+            "p95": 2.8625927592592593,
+            "minimum": -0.8066273469785568,
+            "maximum": 2.969655172413793
+          },
+          "by_collision_type": {
+            "head-on": {
+              "clip_count": 6,
+              "detected_clips": 5,
+              "event_recall": 0.8333333333333334
+            },
+            "rear-end": {
+              "clip_count": 10,
+              "detected_clips": 6,
+              "event_recall": 0.6
+            },
+            "sideswipe": {
+              "clip_count": 10,
+              "detected_clips": 7,
+              "event_recall": 0.7
+            },
+            "single": {
+              "clip_count": 15,
+              "detected_clips": 8,
+              "event_recall": 0.5333333333333333
+            },
+            "t-bone": {
+              "clip_count": 49,
+              "detected_clips": 25,
+              "event_recall": 0.5102040816326531
+            }
+          },
+          "off_target_episodes_per_clip": 0.3888888888888889
+        }
+      },
+      "test": {
+        "clip_count": 100,
+        "detected_clips": 53,
+        "missed_clips": 47,
+        "event_recall": 0.53,
+        "early_alert_episodes": 27,
+        "late_alert_episodes": 60,
+        "trigger_delay_sec": {
+          "mean": 1.0050090040599406,
+          "median": 0.9461385447154469,
+          "p95": 2.84059786835443,
+          "minimum": -0.9000000000000004,
+          "maximum": 2.966907407407408
+        },
+        "by_collision_type": {
+          "head-on": {
+            "clip_count": 22,
+            "detected_clips": 14,
+            "event_recall": 0.6363636363636364
+          },
+          "rear-end": {
+            "clip_count": 21,
+            "detected_clips": 11,
+            "event_recall": 0.5238095238095238
+          },
+          "sideswipe": {
+            "clip_count": 20,
+            "detected_clips": 9,
+            "event_recall": 0.45
+          },
+          "single": {
+            "clip_count": 20,
+            "detected_clips": 9,
+            "event_recall": 0.45
+          },
+          "t-bone": {
+            "clip_count": 17,
+            "detected_clips": 10,
+            "event_recall": 0.5882352941176471
+          }
+        },
+        "off_target_episodes_per_clip": 0.87
+      },
+      "paired_recall_vs_window_threshold": {
+        "difference": 0.48,
+        "lower_95": 0.38,
+        "upper_95": 0.58,
+        "clusters": 100,
+        "bootstrap_repeats": 2000,
+        "seed": 42
+      }
+    }
+  ],
+  "scope": "Off-target episodes in accident clips are not a normal-camera false-alarm rate. This study changes operating thresholds, not model weights or reference deployment defaults.",
+  "uncertainty": "Paired test-clip bootstrap, fixed models and selected thresholds; calibration-selection uncertainty is not resampled",
+  "reference_policy": "All predeclared budgets, gates, and hops are reported; 500-clip desktop binaries and defaults remain unchanged"
+}

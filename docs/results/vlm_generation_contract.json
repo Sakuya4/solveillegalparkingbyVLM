@@ -1,0 +1,39 @@
+{
+  "transformers_version": "5.13.0",
+  "pipeline_source_sha256": "18ad41774db8c59b5187e383e809804d2ef303c864b5a45e5b8ae6648a5894bb",
+  "wrapper_sha256": "8bd6db199d7449ba1ab6669a6aeafd1cabbbc79bf1a6ace12e6410175dbf7312",
+  "legacy_requested": {
+    "do_sample": false,
+    "max_new_tokens": 192
+  },
+  "legacy_preprocess_parameters": {
+    "do_sample": false
+  },
+  "legacy_generation_parameters": {
+    "generate_kwargs": {
+      "max_new_tokens": 192
+    }
+  },
+  "version_2_preprocess_parameters": {},
+  "version_2_generation_parameters": {
+    "generate_kwargs": {
+      "do_sample": false,
+      "max_new_tokens": 192
+    }
+  },
+  "qwen_model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+  "qwen_generation_config_sha256": "533f191cc257b7de37a4fccd0a7a1706d75e1aa660f93efaa54e5a2a9f9aace9",
+  "qwen_generation_defaults": {
+    "bos_token_id": 151643,
+    "pad_token_id": 151643,
+    "do_sample": true,
+    "eos_token_id": [
+      151645,
+      151643
+    ],
+    "repetition_penalty": 1.05,
+    "temperature": 1e-06,
+    "transformers_version": "4.49.0"
+  },
+  "scope": "Actual installed pipeline argument routing and cached model defaults; no model weights are loaded or performance inferred"
+}

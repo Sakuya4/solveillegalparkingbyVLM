@@ -1,0 +1,92 @@
+{
+  "source_report_sha256": "32c4736424cc1d5ac88b723f6f5cb663e3b181391ea9ad83a3941f6821dd28d3",
+  "reviewed_report_sha256": "cbfcc3c74ea941813b45ade29e615138ebbdfe74bc9c4d00e9205b4af9a0b1d1",
+  "source_model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+  "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+  "review_duration_including_model_load_sec": 35.41970310000761,
+  "detector_rerun": false,
+  "event_clock": "decoder observation clock",
+  "events": [
+    {
+      "event_index": 0,
+      "trigger_time_sec": 22.86525729999994,
+      "temporal_probability": 0.9965789318084717,
+      "review_disposition": "incomplete_visual_evidence",
+      "policy_version": 2,
+      "model_output": {
+        "likely_violation": true,
+        "confidence": 0.85,
+        "visual_reasons": [
+          "The truck appears to be making a sharp turn, which could lead to a collision if it does not slow down or stop properly."
+        ],
+        "missing_evidence": [
+          "The exact cause of the incident is unclear without more context, such as the speed of the vehicles involved and any potential warning signs or signals."
+        ],
+        "human_review_needed": true,
+        "provider": "qwen2_5_vl_3b",
+        "schema_valid": true,
+        "elapsed_sec": 9.77770619999501,
+        "model_id": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "parameter_dtype": "torch.bfloat16",
+        "device": "0",
+        "do_sample": false,
+        "max_new_tokens": 256,
+        "seed": 42,
+        "generation_contract_version": 2,
+        "prompt_sha256": "191bc0aed52428d1be95726a4a68edda218090329c2b0bbca9b8f4133343f880",
+        "image_sha256": [
+          "827097bc28429708608407ed2d5b90086d6b38124ed68df53702df1c668943cd",
+          "2a65fc79fd5f7f2176f8d5d50b9d4c7e65f774c9176a6b4e566b6a0765685b27",
+          "310c7bec1d809f765ee41536c94f4d0d6e929e599142948467e4f30b792f3f23"
+        ],
+        "task_scope": "Desktop traffic-incident triage; separate from the collision-specific paired benchmark",
+        "request_sha256": "270678029dd8ef1f6d4b5b6a88c4697bf28b826da88b03ca6b0776908d6e0835"
+      },
+      "raw_response_sha256": "a5ad6edd6ab53b09b6a6d2dd6b3adb97dbc38802afe0b5e33bd9e1f80f235ad2",
+      "annotation_status": "unassigned"
+    },
+    {
+      "event_index": 1,
+      "trigger_time_sec": 29.129005399998277,
+      "temporal_probability": 0.962295651435852,
+      "review_disposition": "incomplete_visual_evidence",
+      "policy_version": 2,
+      "model_output": {
+        "likely_violation": true,
+        "confidence": 0.85,
+        "visual_reasons": [
+          "A motorcycle is seen crossing the intersection while the red light is on, indicating a potential violation of traffic rules."
+        ],
+        "missing_evidence": [
+          "The exact position of other vehicles and pedestrians at the time of the event is unclear."
+        ],
+        "human_review_needed": true,
+        "provider": "qwen2_5_vl_3b",
+        "schema_valid": true,
+        "elapsed_sec": 7.7581942999968305,
+        "model_id": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "parameter_dtype": "torch.bfloat16",
+        "device": "0",
+        "do_sample": false,
+        "max_new_tokens": 256,
+        "seed": 42,
+        "generation_contract_version": 2,
+        "prompt_sha256": "191bc0aed52428d1be95726a4a68edda218090329c2b0bbca9b8f4133343f880",
+        "image_sha256": [
+          "401e7b56bb8b4993c59fd57fa0797faebf9d7f7905303a684a9f9d38a9a4e6d5",
+          "ee7871c807a8dddb797aafad1b7c79aa82dde35e678e60a56ae19a2935fe4052",
+          "9f19abf85d723046988d4fe35a2a5198d7cf213c78fd8b422eaa20a2e00dc615"
+        ],
+        "task_scope": "Desktop traffic-incident triage; separate from the collision-specific paired benchmark",
+        "request_sha256": "d938c77c5c6932a9c4700ff5586e0296d72fe213b85a9f95c5229f4c3264a3b7"
+      },
+      "raw_response_sha256": "ffd16aa8a3c56ae5556d6a068727f9a8f26027558fd6454e8e30972789f4efe8",
+      "annotation_status": "unassigned"
+    }
+  ],
+  "reviewed_normal_exposure_added_hours": 0,
+  "scope": "Saved streaming-alert evidence reviewed by a VLM; model descriptions are not independently verified labels, and this session is not added to the normal-camera false-alarm denominator",
+  "media_policy": "Numeric results and model responses only; public-camera imagery and video are retained locally"
+}

@@ -118,6 +118,33 @@ def test_trace_queue_uses_explicit_candidate_flags() -> None:
     assert result.generated_candidates == 2
 
 
+def test_trace_review_identities_preserve_completion_pending_and_overflow():
+    profile = EdgeQueueProfile(2, 2, 2, 1, 1, 8, 1, 1000, 1)
+    events = []
+    result = simulate_edge_trace_queues(profile, [True] * 8, review_events=events)
+    assert len(events) == result.generated_candidates == 8
+    assert [event["source_index"] for event in events] == list(range(8))
+    for status, expected in (("completed", result.completed_reviews), ("pending", result.pending_reviews), ("dropped", result.dropped_candidates)):
+        assert sum(event["status"] == status for event in events) == expected
+        assert expected > 0
+    assert events[0]["finish_ms"] == pytest.approx(1002)
+
+
+def test_variable_service_is_bound_to_source_frame_and_actual_service_cost():
+    profile = EdgeQueueProfile(1, 2, 5, 1, 1, 8, 1, 1000, 1)
+    flags = [True, True, False, True, False, True, False, False, False, False]
+    service = [100, 2000, 9000, 100, 9000, 300, 9000, 9000, 9000, 9000]
+    events = []
+    result = simulate_edge_trace_queues(profile, flags, review_events=events, review_service_ms=service)
+    assert result.completed_reviews == 4
+    assert result.review_utilization == pytest.approx(0.5)
+    assert [event["source_index"] for event in events] == [0, 1, 3, 5]
+    assert [event["finish_ms"] for event in events] == pytest.approx([102, 2502, 2602, 2902])
+    for invalid in ([1] * 9, [float("nan")] * 10, [-1] * 10):
+        with pytest.raises(ValueError, match="service trace"):
+            simulate_edge_trace_queues(profile, flags, review_service_ms=invalid)
+
+
 def test_trace_queue_rejects_flag_count_mismatch() -> None:
     profile = EdgeQueueProfile(
         camera_count=1,

@@ -1,0 +1,93 @@
+{
+  "source": {
+    "dataset": "ACCIDENT",
+    "clip": "real_videos/ig4k6LEEMy0_00.mp4",
+    "dataset_url": "https://www.kaggle.com/datasets/picekl/accident",
+    "license": "CC BY-NC-SA 4.0",
+    "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "license_metadata_url": "https://www.kaggle.com/api/v1/datasets/view/picekl/accident",
+    "license_verified_on": "2026-10-16",
+    "input_sha256": "1f2a29ef53659e8a1aa349a3d5bd02ccf93f1ffedc58d7e5e656d19d586c1633"
+  },
+  "source_report_sha256": "df4d2868a21bd2f473e17d9d63c0cc906cc7c4eea901133101c378025ead7ec5",
+  "started_at_utc": "2026-10-16T06:18:49.695877+00:00",
+  "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+  "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+  "decisions_sha256": "5542ac94cd27e1357bc67b74eada62bbad0c13281c3956ac98c7e85f3bb93705",
+  "runtime": {
+    "engine": "ONNX Runtime",
+    "version": "1.27.0",
+    "requested_provider": "CPUExecutionProvider",
+    "session_providers": [
+      "CPUExecutionProvider"
+    ],
+    "cpu_fallback_disabled": false,
+    "provider_options": {},
+    "threads": 2
+  },
+  "threshold": 0.8547053337097168,
+  "sequence_steps": 15,
+  "hop_steps": 15,
+  "min_positive_windows": 2,
+  "display_width": 640,
+  "feature_width_limit": null,
+  "sampled_frames": 225,
+  "windows": 14,
+  "event_clock": "source video frame clock",
+  "playback_clock": "7.5 FPS presentation; actual frame_times_sec determine event timing",
+  "initialization_before_observation_sec": 3.7405677999922773,
+  "processing_sec": {
+    "median": 0.0813066999980947,
+    "p95": 0.0947318799997447
+  },
+  "processing_scope": "Sampled-frame processing; excludes model initialization and VLM review",
+  "events": [
+    {
+      "event_id": 1,
+      "trigger_time_sec": 10.041666666666666,
+      "probability": 0.9990211725234985,
+      "post_context_truncated": false,
+      "vlm_review": {
+        "likely_violation": false,
+        "confidence": 0.3,
+        "visual_reasons": [
+          "The vehicles appear to be moving smoothly without any immediate signs of a collision or abrupt road conflict."
+        ],
+        "missing_evidence": [
+          "No clear evidence of a collision or other abnormal road incident is present in the image."
+        ],
+        "human_review_needed": false,
+        "provider": "qwen2_5_vl_3b",
+        "schema_valid": true,
+        "elapsed_sec": 8.214442199998302,
+        "model_id": "Qwen/Qwen2.5-VL-3B-Instruct",
+        "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+        "parameter_dtype": "torch.bfloat16",
+        "device": "0",
+        "do_sample": false,
+        "max_new_tokens": 256,
+        "seed": 42,
+        "generation_contract_version": 2,
+        "prompt_sha256": "191bc0aed52428d1be95726a4a68edda218090329c2b0bbca9b8f4133343f880",
+        "image_sha256": [
+          "3dc0d0890b0a8c7a0aebfddb3fa1669813da916e882b94007f06d1bfcf96b267",
+          "7760405a0e5cce9cfae91c4622f616edc77b2098b8875504d4d80a9f77a3321a",
+          "c8bdd8b1ef3aa500d4e1f8f6b0900799f3dafcf06ef2de8a0f763a08c3440bf3"
+        ],
+        "task_scope": "Desktop traffic-incident triage; separate from the collision-specific paired benchmark",
+        "request_sha256": "583d084efcf8a9e6dd3bed6c3e5f2bf6730188958e130d83eb8d716f9857c59f"
+      },
+      "review_disposition": "temporal_visual_disagreement",
+      "review_disposition_policy_version": 2
+    }
+  ],
+  "privacy": "Heuristic lower-center blur inside each tracked vehicle box",
+  "interpretation": "Single reference-case execution with preserved temporal/visual disagreement; cohort estimates are reported separately",
+  "media": {
+    "incident_demo.mp4": "c2f0c86eaa4d6f09e75099afa2c2d6f0ea8dd1940c84d25a3788c7843d643927",
+    "desktop_walkthrough.mp4": "1f38fb4db200165922d497e62c4a4ea1d5690ae4f267a6d417cf07f6068e5066",
+    "codec": "H.264 / yuv420p / faststart / no audio",
+    "incident_demo_preview.jpg": "ce4e91303b904b10d982373e245d4edf7cf1e4bb6217ccac3dd95da97cb7ce18",
+    "incident_demo_preview.gif": "ec4b19d6fa20803fd02230bbab32bc110b9eed066cc4cc5964262e4189b0f3bf"
+  }
+}

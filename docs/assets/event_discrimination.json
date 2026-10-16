@@ -1,0 +1,9 @@
+{
+  "results_sha256": "0b0ab2fa8093b5a78f6883e39038fc6a18d93cff65c962e6bac9d6b40229b9f1",
+  "plotter_sha256": "ac0596d535e1edd44891e6036fd2e2f330c2d5f6540974b0b091aab6b1ac5d91",
+  "outputs": {
+    "event_discrimination.png": "cb518a0d7f1a3844bbf027b750337bde5af86615e263507464f2ed083652b2b9",
+    "event_discrimination.pdf": "890a1e847939f5c972e0acd72574ccd66923751c6b89c3f8cefa1b5f67963fb9"
+  },
+  "scope": "Exploratory corresponding-TRAIN-holdout diagnostics. Pooled and within-clip AUROC have different weighting. Controller fractions retain all assigned clips, including unsupported and empty contexts. No new test endpoints."
+}

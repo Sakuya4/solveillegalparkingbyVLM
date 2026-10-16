@@ -1,0 +1,27 @@
+{
+  "source_report_sha256": "df4d2868a21bd2f473e17d9d63c0cc906cc7c4eea901133101c378025ead7ec5",
+  "capture": "Native PySide6 window rendering with recorded analysis and video playback",
+  "pages": [
+    "incident",
+    "evidence",
+    "model_comparison",
+    "government_coverage",
+    "edge_runtime"
+  ],
+  "selected_tabs": {
+    "model_comparison": 2,
+    "government_coverage": 2,
+    "edge_runtime": 1
+  },
+  "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+  "fps": 8,
+  "frames": 320,
+  "duration_sec": 40.0,
+  "resolution": [
+    1400,
+    900
+  ],
+  "source_media_license": "CC BY-NC-SA 4.0",
+  "video_sha256": "1f38fb4db200165922d497e62c4a4ea1d5690ae4f267a6d417cf07f6068e5066",
+  "publication_codec": "H.264 / yuv420p / faststart / no audio"
+}

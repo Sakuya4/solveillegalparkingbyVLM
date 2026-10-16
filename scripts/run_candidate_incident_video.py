@@ -26,6 +26,7 @@ from illegal_parking.incident_tcn_inference import (
     summarize_normal_video_predictions,
 )
 from illegal_parking.incident_ultralytics import track_vehicle_frames
+from illegal_parking.incident_video_pipeline import expand_window_flags, expand_window_probabilities
 
 
 def main() -> int:
@@ -207,15 +208,7 @@ def _expand_window_probabilities(
     probabilities: np.ndarray,
     sequence_steps: int,
 ) -> np.ndarray:
-    expanded = np.full(frame_count, np.nan, dtype=np.float64)
-    for start, probability in zip(starts, probabilities):
-        first_frame = int(start) + 1
-        end_frame = min(frame_count, first_frame + sequence_steps)
-        current = expanded[first_frame:end_frame]
-        expanded[first_frame:end_frame] = np.where(
-            np.isnan(current), probability, np.maximum(current, probability)
-        )
-    return expanded
+    return expand_window_probabilities(frame_count, starts, probabilities, sequence_steps)
 
 
 def _expand_window_flags(
@@ -224,11 +217,7 @@ def _expand_window_flags(
     flags: np.ndarray,
     sequence_steps: int,
 ) -> np.ndarray:
-    expanded = np.zeros(frame_count, dtype=np.bool_)
-    for start, flag in zip(starts, flags):
-        first_frame = int(start) + 1
-        expanded[first_frame : min(frame_count, first_frame + sequence_steps)] = flag
-    return expanded
+    return expand_window_flags(frame_count, starts, flags, sequence_steps)
 
 
 def _write_annotated_video(

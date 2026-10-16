@@ -1,0 +1,9 @@
+{
+  "results_sha256": "14b433fa8bbd5de80d8dc93fa2ad7d5f0bf2723bfef6cef8e21e9799ee6b4e63",
+  "plotter_sha256": "d53276c0355be5909f56684fd4e0902c22359d4152fe400689da5fd922ba7316",
+  "outputs": {
+    "positive_context_tradeoffs.png": "dbf6c546ef9f7bde1db190cda5964d1af3a80f9f48f01e13ce6404e1f1ecbc3d",
+    "positive_context_tradeoffs.pdf": "d0573a4001669ee2cd5ba24bcceaa1269f1c4d47a1bfc81aa00493407a60e49b"
+  },
+  "scope": "All sixteen policies and four controls on the separately frozen 100/100 event cohorts. Dashed constraints were used on TRAIN holdouts; test exceedances remain visible. Pointwise paired intervals are in the numerical study."
+}
