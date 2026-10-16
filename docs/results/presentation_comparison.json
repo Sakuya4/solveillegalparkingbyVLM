@@ -1,0 +1,533 @@
+{
+  "protocol_sha256": "7fced423bbd18de20d83319b54d5e9f4326a15526e254a917022d7b29daa4419",
+  "paired_clips": 1861,
+  "paired_windows": 2985,
+  "models": [
+    {
+      "arm": "legacy",
+      "feature": "candidate",
+      "split": "iid",
+      "fit_clips": 376,
+      "calibration_clips": 94,
+      "test_clips": 1391,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.8534852862358093,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2272,
+        "accuracy": 0.5140845070422535,
+        "precision": 0.7387687188019967,
+        "recall": 0.3191948238677211,
+        "f1": 0.4457831325301205,
+        "false_positive_rate": 0.1782065834279228,
+        "specificity": 0.8217934165720772,
+        "threshold": 0.8534852862358093,
+        "confusion_matrix": {
+          "tn": 724,
+          "fp": 157,
+          "fn": 947,
+          "tp": 444
+        }
+      },
+      "calibration": {
+        "sample_count": 141,
+        "accuracy": 0.48226950354609927,
+        "precision": 0.7692307692307693,
+        "recall": 0.3191489361702128,
+        "f1": 0.4511278195488722,
+        "false_positive_rate": 0.19148936170212766,
+        "specificity": 0.8085106382978723,
+        "threshold": 0.8534852862358093,
+        "confusion_matrix": {
+          "tn": 38,
+          "fp": 9,
+          "fn": 64,
+          "tp": 30
+        }
+      },
+      "auroc": 0.6091168212058873,
+      "average_precision": 0.7045784787764748,
+      "positive_prevalence": 0.6122359154929577,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "10b11c32038166981a366bde3906dbc5701930138e81d2775575bc5202cafd92",
+      "predictions_sha256": "645d248a3b50e63071d2f443213f806d7f4944e9f969906d31113975f05c56bd",
+      "report_sha256": "ae6215669e7a359fbcebdd3c8fff471bca1a183eb4327e27b5d4abbefa96bd50"
+    },
+    {
+      "arm": "legacy",
+      "feature": "global",
+      "split": "iid",
+      "fit_clips": 376,
+      "calibration_clips": 94,
+      "test_clips": 1391,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.6481930017471313,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2272,
+        "accuracy": 0.4951584507042254,
+        "precision": 0.6918238993710691,
+        "recall": 0.3163191948238677,
+        "f1": 0.4341391218549581,
+        "false_positive_rate": 0.2224744608399546,
+        "specificity": 0.7775255391600454,
+        "threshold": 0.6481930017471313,
+        "confusion_matrix": {
+          "tn": 685,
+          "fp": 196,
+          "fn": 951,
+          "tp": 440
+        }
+      },
+      "calibration": {
+        "sample_count": 141,
+        "accuracy": 0.5319148936170213,
+        "precision": 0.8043478260869565,
+        "recall": 0.39361702127659576,
+        "f1": 0.5285714285714287,
+        "false_positive_rate": 0.19148936170212766,
+        "specificity": 0.8085106382978723,
+        "threshold": 0.6481930017471313,
+        "confusion_matrix": {
+          "tn": 38,
+          "fp": 9,
+          "fn": 57,
+          "tp": 37
+        }
+      },
+      "auroc": 0.5915341937916115,
+      "average_precision": 0.6873570343627566,
+      "positive_prevalence": 0.6122359154929577,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "a38f298b562c425afa505622aa0754404c496ed9957d6fef0cb103f5b2631c16",
+      "predictions_sha256": "80a1c81b6223caf348dc20d2479e972f2e72a0293305ec0206a98f9ca0d77ffd",
+      "report_sha256": "1c74271520a81e329364935d396d88071d88a7b2c49a633b366667b388749866"
+    },
+    {
+      "arm": "legacy",
+      "feature": "candidate",
+      "split": "geographic",
+      "fit_clips": 332,
+      "calibration_clips": 83,
+      "test_clips": 1446,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.9684816002845764,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2367,
+        "accuracy": 0.5162653147444022,
+        "precision": 0.7377567140600316,
+        "recall": 0.32295988934993086,
+        "f1": 0.4492544492544493,
+        "false_positive_rate": 0.18023887079261672,
+        "specificity": 0.8197611292073833,
+        "threshold": 0.9684816002845764,
+        "confusion_matrix": {
+          "tn": 755,
+          "fp": 166,
+          "fn": 979,
+          "tp": 467
+        }
+      },
+      "calibration": {
+        "sample_count": 122,
+        "accuracy": 0.5,
+        "precision": 0.8055555555555556,
+        "recall": 0.3493975903614458,
+        "f1": 0.4873949579831932,
+        "false_positive_rate": 0.1794871794871795,
+        "specificity": 0.8205128205128205,
+        "threshold": 0.9684816002845764,
+        "confusion_matrix": {
+          "tn": 32,
+          "fp": 7,
+          "fn": 54,
+          "tp": 29
+        }
+      },
+      "auroc": 0.59040627257341,
+      "average_precision": 0.6946968326919907,
+      "positive_prevalence": 0.6108998732572877,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "13c8bfd11dbb1559f496ca6aeb9c2742e6d105ed5e8add3f74d74ba6110b0242",
+      "predictions_sha256": "c36a981bb083f44fcf17590b79bbe6cf320f2bb9ee8e0730128f50109e4c37e3",
+      "report_sha256": "086f9c31795142859ddbf64da80d6171878c316f022ff5e32f017709ab038e75"
+    },
+    {
+      "arm": "legacy",
+      "feature": "global",
+      "split": "geographic",
+      "fit_clips": 332,
+      "calibration_clips": 83,
+      "test_clips": 1446,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.5121034979820251,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2367,
+        "accuracy": 0.5289395859738065,
+        "precision": 0.6732984293193718,
+        "recall": 0.44467496542185336,
+        "f1": 0.5356101624323198,
+        "false_positive_rate": 0.33876221498371334,
+        "specificity": 0.6612377850162866,
+        "threshold": 0.5121034979820251,
+        "confusion_matrix": {
+          "tn": 609,
+          "fp": 312,
+          "fn": 803,
+          "tp": 643
+        }
+      },
+      "calibration": {
+        "sample_count": 122,
+        "accuracy": 0.5901639344262295,
+        "precision": 0.851063829787234,
+        "recall": 0.4819277108433735,
+        "f1": 0.6153846153846153,
+        "false_positive_rate": 0.1794871794871795,
+        "specificity": 0.8205128205128205,
+        "threshold": 0.5121034979820251,
+        "confusion_matrix": {
+          "tn": 32,
+          "fp": 7,
+          "fn": 43,
+          "tp": 40
+        }
+      },
+      "auroc": 0.5659695472027368,
+      "average_precision": 0.6697050570234946,
+      "positive_prevalence": 0.6108998732572877,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "61d44157c076cb1851fee28aebd196e30ba38f0b5fc56478357e44a102599d3e",
+      "predictions_sha256": "437d7d036060d0e96b1dc0f0b5db78052f93882e1fa24d2561656e2c1f2255cd",
+      "report_sha256": "829cf17483a1eee45f4370fbd11535ee2a6a3a8cf73c609b47dc5033a32a47eb"
+    },
+    {
+      "arm": "fixed",
+      "feature": "candidate",
+      "split": "iid",
+      "fit_clips": 376,
+      "calibration_clips": 94,
+      "test_clips": 1391,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.9188539981842041,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2272,
+        "accuracy": 0.5149647887323944,
+        "precision": 0.6960651289009498,
+        "recall": 0.3687994248741912,
+        "f1": 0.4821428571428571,
+        "false_positive_rate": 0.2542565266742338,
+        "specificity": 0.7457434733257662,
+        "threshold": 0.9188539981842041,
+        "confusion_matrix": {
+          "tn": 657,
+          "fp": 224,
+          "fn": 878,
+          "tp": 513
+        }
+      },
+      "calibration": {
+        "sample_count": 141,
+        "accuracy": 0.5815602836879432,
+        "precision": 0.8301886792452831,
+        "recall": 0.46808510638297873,
+        "f1": 0.5986394557823129,
+        "false_positive_rate": 0.19148936170212766,
+        "specificity": 0.8085106382978723,
+        "threshold": 0.9188539981842041,
+        "confusion_matrix": {
+          "tn": 38,
+          "fp": 9,
+          "fn": 50,
+          "tp": 44
+        }
+      },
+      "auroc": 0.6054618999552009,
+      "average_precision": 0.6822094429561572,
+      "positive_prevalence": 0.6122359154929577,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "bfe22b248c86f16325beaa8db79e9842a5723dfdd05ca2c90ab840df709feb9b",
+      "predictions_sha256": "c8070654806d4d3b018acbea4494fa3f36b5937554a89114cef840442e32ffe1",
+      "report_sha256": "b46515e1d30fb2a5ef2db87f762b1842412c4fb584ebd794609478d1b237aa9b"
+    },
+    {
+      "arm": "fixed",
+      "feature": "global",
+      "split": "iid",
+      "fit_clips": 376,
+      "calibration_clips": 94,
+      "test_clips": 1391,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.7392089366912842,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2272,
+        "accuracy": 0.4920774647887324,
+        "precision": 0.7736720554272517,
+        "recall": 0.24083393242271747,
+        "f1": 0.3673245614035088,
+        "false_positive_rate": 0.1112372304199773,
+        "specificity": 0.8887627695800226,
+        "threshold": 0.7392089366912842,
+        "confusion_matrix": {
+          "tn": 783,
+          "fp": 98,
+          "fn": 1056,
+          "tp": 335
+        }
+      },
+      "calibration": {
+        "sample_count": 141,
+        "accuracy": 0.46808510638297873,
+        "precision": 0.7567567567567568,
+        "recall": 0.2978723404255319,
+        "f1": 0.42748091603053434,
+        "false_positive_rate": 0.19148936170212766,
+        "specificity": 0.8085106382978723,
+        "threshold": 0.7392089366912842,
+        "confusion_matrix": {
+          "tn": 38,
+          "fp": 9,
+          "fn": 66,
+          "tp": 28
+        }
+      },
+      "auroc": 0.6415696495469905,
+      "average_precision": 0.7266460624487708,
+      "positive_prevalence": 0.6122359154929577,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "d80b482f4e7c2c3b3be5a3b3536b169e174f0afc89259f6022a71f1d3f632173",
+      "predictions_sha256": "17f0af4f2a87087b0a339ef228c647edbccc4c420d29230503273d9f2ad92269",
+      "report_sha256": "bb0990ee0a8987c620f77f4f35fceae9ecb178fbbb015d3e84e81288d0eb92f5"
+    },
+    {
+      "arm": "fixed",
+      "feature": "candidate",
+      "split": "geographic",
+      "fit_clips": 332,
+      "calibration_clips": 83,
+      "test_clips": 1446,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.9705983400344849,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2367,
+        "accuracy": 0.5073933248838192,
+        "precision": 0.696078431372549,
+        "recall": 0.3437067773167358,
+        "f1": 0.4601851851851852,
+        "false_positive_rate": 0.23561346362649294,
+        "specificity": 0.7643865363735071,
+        "threshold": 0.9705983400344849,
+        "confusion_matrix": {
+          "tn": 704,
+          "fp": 217,
+          "fn": 949,
+          "tp": 497
+        }
+      },
+      "calibration": {
+        "sample_count": 122,
+        "accuracy": 0.4918032786885246,
+        "precision": 0.8,
+        "recall": 0.3373493975903614,
+        "f1": 0.4745762711864407,
+        "false_positive_rate": 0.1794871794871795,
+        "specificity": 0.8205128205128205,
+        "threshold": 0.9705983400344849,
+        "confusion_matrix": {
+          "tn": 32,
+          "fp": 7,
+          "fn": 55,
+          "tp": 28
+        }
+      },
+      "auroc": 0.569628973858771,
+      "average_precision": 0.6597695069787158,
+      "positive_prevalence": 0.6108998732572877,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "367c5e239d699420924da1729c56310de832637c317c857475b95adbd6683349",
+      "predictions_sha256": "f61efc5c8fbaeccfcc75778dd22837583e674251df664a1b16c697e9346856ac",
+      "report_sha256": "6115c0c78a82d4c9504a362aca685ec54b8fa0dd66713d0bf5b4dbc6c8ebb9be"
+    },
+    {
+      "arm": "fixed",
+      "feature": "global",
+      "split": "geographic",
+      "fit_clips": 332,
+      "calibration_clips": 83,
+      "test_clips": 1446,
+      "decision_threshold": {
+        "source": "train_holdout_fpr_calibration",
+        "effective": 0.6897072792053223,
+        "fixed_request": 0.5,
+        "target_train_fpr": 0.2,
+        "calibration_fraction": 0.2,
+        "seed": 42
+      },
+      "test": {
+        "sample_count": 2367,
+        "accuracy": 0.5107731305449936,
+        "precision": 0.7142857142857143,
+        "recall": 0.33195020746887965,
+        "f1": 0.4532577903682719,
+        "false_positive_rate": 0.20846905537459284,
+        "specificity": 0.7915309446254072,
+        "threshold": 0.6897072792053223,
+        "confusion_matrix": {
+          "tn": 729,
+          "fp": 192,
+          "fn": 966,
+          "tp": 480
+        }
+      },
+      "calibration": {
+        "sample_count": 122,
+        "accuracy": 0.45081967213114754,
+        "precision": 0.7666666666666667,
+        "recall": 0.27710843373493976,
+        "f1": 0.40707964601769914,
+        "false_positive_rate": 0.1794871794871795,
+        "specificity": 0.8205128205128205,
+        "threshold": 0.6897072792053223,
+        "confusion_matrix": {
+          "tn": 32,
+          "fp": 7,
+          "fn": 60,
+          "tp": 23
+        }
+      },
+      "auroc": 0.5818210556509177,
+      "average_precision": 0.6711918641167733,
+      "positive_prevalence": 0.6108998732572877,
+      "training_torch_version": "2.11.0+cu128",
+      "gpu_name": "NVIDIA GeForce RTX 3060",
+      "model_sha256": "52ea91aff3233780d9a47c850c29df5ef7199f1494a9461149aedc24f5751575",
+      "predictions_sha256": "1331aa8db73a1b498f08cf63c5d63eca86f7a51fd60e43a4381761dde37dfe19",
+      "report_sha256": "1ea1eb7c3a51ee35d6551344627aa62da8b112c850135a1e1eeb7ce8c9ecb2c2"
+    }
+  ],
+  "paired_f1_contrasts": [
+    {
+      "feature": "candidate",
+      "split": "iid",
+      "contrast": "fixed minus legacy",
+      "difference": 0.03635972461273668,
+      "lower_95": 0.003519636437766856,
+      "upper_95": 0.0663672128324538,
+      "clusters": 1391,
+      "bootstrap_repeats": 2000,
+      "seed": 42
+    },
+    {
+      "feature": "candidate",
+      "split": "geographic",
+      "contrast": "fixed minus legacy",
+      "difference": 0.010930735930735958,
+      "lower_95": -0.019420489193665704,
+      "upper_95": 0.04386345125312494,
+      "clusters": 1446,
+      "bootstrap_repeats": 2000,
+      "seed": 42
+    },
+    {
+      "feature": "global",
+      "split": "iid",
+      "contrast": "fixed minus legacy",
+      "difference": -0.06681456045144929,
+      "lower_95": -0.09724778859182888,
+      "upper_95": -0.03638551901004812,
+      "clusters": 1391,
+      "bootstrap_repeats": 2000,
+      "seed": 42
+    },
+    {
+      "feature": "global",
+      "split": "geographic",
+      "contrast": "fixed minus legacy",
+      "difference": -0.08235237206404789,
+      "lower_95": -0.10818753302730214,
+      "upper_95": -0.05528155876569005,
+      "clusters": 1446,
+      "bootstrap_repeats": 2000,
+      "seed": 42
+    }
+  ],
+  "training": {
+    "feature_width": 320,
+    "image_size": 320,
+    "confidence": 0.15,
+    "tracker": "bytetrack.yaml",
+    "arms": [
+      "legacy",
+      "fixed"
+    ],
+    "features": [
+      "candidate_",
+      "global_"
+    ],
+    "epochs": 40,
+    "channels": 32,
+    "dropout": 0.1,
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "target_train_fpr": 0.2,
+    "calibration_fraction": 0.2
+  },
+  "extraction_sha256": {
+    "legacy": "b991d83026e28afc53238ed9ccb3c85426b9b222ce9120aff478178639a0b8c5",
+    "fixed": "bcec15e5dbe0e3fdb00a5c7018960a903066adefaf7a9b2af2036272c69417e7"
+  },
+  "sklearn_version": "1.9.1",
+  "interpretation": "Joint sampling/context and pre-event-gap policy comparison; not an isolated model architecture effect",
+  "evaluation_scope": "Paired annotation-defined windows under verified presentation clocks; continuous event evaluation is a separate endpoint",
+  "uncertainty_scope": "Four pointwise source-clip bootstrap contrasts conditional on fitted models and thresholds; no family-wise correction",
+  "default_policy": "Retain 500-clip reference binaries and desktop defaults; do not select replacements on test scores"
+}

@@ -175,6 +175,15 @@ include fitting, calibration, and test counts, model hashes, and exclusion recor
 [Full representation comparison and paired uncertainty](docs/results/full_cohort_model_comparison.json)
 include all eight model/split results with AUROC and average precision.
 
+A separate presentation-time study retains 1,861 clips and 2,985 paired
+windows after source-clock and annotation-support verification. Fixed-time
+training changes candidate F1 by +3.64 percentage points (IID) and +1.09
+(geographic), while global-feature F1 changes by -6.68 and -8.24 points.
+Candidate gains accompany increased test FPR. The
+[matched sampling/context study](docs/presentation_time_protocol.md) reports
+all eight models, ranking metrics and paired uncertainty; continuous event
+evaluation uses a separately frozen common-clock contract.
+
 ### Multimodal Evidence and Restoration
 
 ![Privacy-treated temporal evidence](docs/assets/incident_vlm_clean_evidence.jpg)

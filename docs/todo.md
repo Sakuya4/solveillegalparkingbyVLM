@@ -47,7 +47,11 @@
 - [x] Freeze presentation-time sampling, annotation-frame support and paired cohorts before cadence-consistent training.
 - [x] Verify both real-detector extraction arms on a train-only smoke subset and reject smoke data for fitting.
 - [x] Implement a separate guarded queue for two complete feature arms, eight matched fits and hash-verified paired reporting.
-- [ ] Train and evaluate matched cadence/context TCN ablations without replacing reference models.
+- [x] Train and evaluate eight matched cadence/context TCN ablations without replacing reference models.
+- [x] Recompute all paired window results from prediction CSVs and verify byte-identical publication.
+- [x] Implement and CPU-test continuous PTS contexts, missing-hop persistence resets and annotation-time event evaluation.
+- [x] Implement a separate model/source-hashed event protocol and calibration-before-test queue.
+- [ ] Complete continuous PTS replay and publish eight-model event recall, delay and alert-budget outcomes.
 
 ## Completed Case: Red-Line Parking
 

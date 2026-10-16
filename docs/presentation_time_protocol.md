@@ -119,3 +119,37 @@ tree, including virtual-environment redirectors and their actual interpreters.
 Per-window feature caches remain available for controlled queue resumption.
 The repository attributes preserve the recorded LF/CRLF conventions of
 hash-bound source and manifest files across Windows and Unix checkouts.
+
+## Completed Window Comparison
+
+Both complete extraction arms and all eight fits finished on 16 October 2026.
+Recomputing the publisher from prediction CSVs reproduces the public JSON
+byte-for-byte (SHA256 `db93ecbfedc3b63055fb29cea502caf56e191fd65c097669a62e635a25578196`).
+
+| Features | Split | Source-frame F1 | Fixed-time F1 | Difference, pp [pointwise 95% interval] |
+| --- | --- | ---: | ---: | ---: |
+| Candidate | IID | 0.446 | 0.482 | +3.64 [+0.35, +6.64] |
+| Candidate | Geographic | 0.449 | 0.460 | +1.09 [-1.94, +4.39] |
+| Global | IID | 0.434 | 0.367 | -6.68 [-9.72, -3.64] |
+| Global | Geographic | 0.536 | 0.453 | -8.24 [-10.82, -5.53] |
+
+The candidate IID gain accompanies an FPR increase from 0.178 to 0.254;
+its AUROC changes from 0.609 to 0.605 and average precision from 0.705 to
+0.682. Geographic candidate FPR increases from 0.180 to 0.236, while
+AUROC declines from 0.590 to 0.570. Thus, the F1 increase does not establish
+improved discrimination or reduced review demand. Conversely, global IID
+AUROC increases from 0.592 to 0.642 despite its lower calibrated F1.
+These differences motivate event-budget calibration rather than selecting
+a deployment default from a single test metric.
+
+[All eight models, ranking metrics and hashes](results/presentation_comparison.json) ·
+[Tabular results](results/presentation_comparison.csv).
+
+## Continuous Presentation-Time Follow-Up
+
+The [event protocol](presentation_event_protocol.md) fixes all eight model
+hashes before continuous replay. Both training arms receive the same 7.5-Hz
+presentation-grid inputs at inference. This tests training-policy transfer
+to a common physical-time deployment contract, not two different inference
+cadences. Event recall, delay and off-target episodes form separate endpoints
+from the annotation-defined window comparison above.

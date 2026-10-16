@@ -360,7 +360,14 @@ frame-index timing from presentation timestamps before cadence-controlled
 training. All 2,027 media inputs are hashed; seven train-only decoded traces
 show nominal-clock deviations up to 1.36 s. Existing event results retain their
 original clock contract. Presentation-time sampling and label-frame support
-will define the separate controlled extension.
+define the separate controlled extension. Its completed paired-window study
+retains 1,861 clips and 2,985 windows. Fixed-time candidate F1 improves by
+3.64 pp on IID testing [0.35, 6.64], with increased FPR; the geographic
+contrast is +1.09 pp [-1.94, 4.39]. Global F1 declines by 6.68 and 8.24 pp.
+The [complete comparison](presentation_time_protocol.md) retains ranking
+metrics, all eight model hashes and pointwise source-clip intervals. Its
+[continuous PTS follow-up](presentation_event_protocol.md) uses a separate
+common-clock, training-calibrated event contract.
 
 Continuous-event calibration uses 101 IID and 90 geographic held-out training
 clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating

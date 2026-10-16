@@ -146,6 +146,13 @@ with matched legacy-context and bounded-jitter 7.5-Hz policies, fixed grouped
 holdouts and eight candidate/global by IID/geographic fits. Its four source-
 clip bootstrap contrasts are pointwise; continuous event evaluation remains
 separate and uses the fixed 88/90-clip intersections.
+All eight fits now complete. Candidate fixed-minus-source-frame window-F1
+changes are +3.64 pp [0.35, 6.64] for IID and +1.09 pp [-1.94, 4.39] for
+geographic testing; global changes are -6.68 pp [-9.72, -3.64] and -8.24 pp
+[-10.82, -5.53]. Candidate gains accompany increased FPR rather than improved
+AUROC. Retain both directions and distinguish ranking from threshold effects.
+The separate event follow-up uses common PTS inputs for both fitted arms,
+two-window persistence, missing-hop resets and training-only episode budgets.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and

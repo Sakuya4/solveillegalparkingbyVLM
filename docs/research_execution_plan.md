@@ -166,6 +166,16 @@ At the deadline, report delivered artifacts and remaining external requirements.
     remain complete and must not restart. [Frozen study](presentation_time_protocol.md).
     Subsequent work adds continuous PTS replay on the fixed 88/90 test-clip
     intersections and corresponding 94/83 calibration clips.
+18. Completed: both feature arms, all eight matched fits and hash-verified
+    window comparison. Candidate IID F1 improves by 3.64 pp with increased
+    FPR; global F1 declines in both splits. The publisher recomputation is
+    byte-identical. Preserve all four paired contrasts and reference defaults.
+19. Implemented: separate continuous PTS event modules and guarded queue,
+    common physical-time model inputs, invalid-context rejection, missing-hop
+    persistence resets and training-only threshold selection. CPU fixtures
+    and a real-detector training-only clip verify the new reader/features.
+    Freeze model/code hashes before `--phase pts_events`; inspect all status
+    files first and never restart the completed cadence queue.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -181,7 +191,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 387 tests pass,
+(native desktop and portable runtime). Current full regression: 408 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
