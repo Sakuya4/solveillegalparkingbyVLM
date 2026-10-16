@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (
 
 from .onnx_runtime import runtime_capabilities
 from .project_snapshot import build_project_snapshot
-from .incident_vlm_evidence import review_disposition
+from .incident_vlm_evidence import REVIEW_POLICY_VERSION, review_disposition
 from .cctv_capture import load_camera_observation, redacted_camera_url
 
 
@@ -351,8 +351,12 @@ class TrafficResearchWindow(QMainWindow):
             text = f'Current event at {event["trigger_time_sec"]:.3f} s. Ordered clean before / trigger / after evidence.'
             if "vlm_review" in event:
                 review = event["vlm_review"]
-                disposition = event.get("review_disposition", review_disposition(True, review)).replace("_", " ")
-                text += f' Disposition: {disposition}. Qwen2.5-VL confidence={review["confidence"]:.3f}. ' + " ".join(review["visual_reasons"])
+                disposition = review_disposition(True, review).replace("_", " ")
+                text += f' Disposition (policy {REVIEW_POLICY_VERSION}): {disposition}. Qwen2.5-VL confidence={review["confidence"]:.3f}. ' + " ".join(review["visual_reasons"])
+                if review.get("missing_evidence"):
+                    text += " Evidence gaps: " + "; ".join(review["missing_evidence"])
+                if review.get("human_review_needed"):
+                    text += " Operator review requested."
         pixmap = QPixmap(str(image_path))
         if index == 0 and self.report is None and frame_name is not None:
             offset = self.frame_choice.currentIndex() - 1

@@ -7,14 +7,29 @@ from pathlib import Path
 from typing import Any
 
 
+REVIEW_POLICY_VERSION = 2
+
+
 def review_disposition(temporal_positive: bool, review: dict[str, Any]) -> str:
     if not review.get("schema_valid", False):
         return "response_contract_review"
+    try:
+        confidence = float(review["confidence"])
+    except (KeyError, ValueError, TypeError):
+        return "response_contract_review"
+    if not math.isfinite(confidence) or not 0 <= confidence <= 1 or not isinstance(review.get("likely_violation"), bool):
+        return "response_contract_review"
     if bool(review["likely_violation"]) != temporal_positive:
         return "temporal_visual_disagreement"
-    if float(review["confidence"]) < 0.7:
+    if review.get("missing_evidence"):
+        return "incomplete_visual_evidence"
+    if review.get("human_review_needed", False):
+        return "operator_review_requested"
+    if confidence < 0.7:
         return "low_confidence_review"
-    return "corroborated_incident" if temporal_positive else "consistent_background"
+    if temporal_positive and not review.get("visual_reasons"):
+        return "missing_visual_rationale"
+    return "consistent_visual_support" if temporal_positive else "consistent_background"
 
 
 def write_clean_review_package(

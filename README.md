@@ -67,6 +67,9 @@ and decision-availability timestamps accompany exported events. A one-frame
 acquisition mailbox and bounded temporal buffers prevent growing inference
 backlog. [Streaming protocol and measured latency](docs/streaming_inference.md).
 
+VLM review preserves visual reasons, evidence gaps, and operator-review
+requests without removing temporal events. [Evidence-routing protocol](docs/vlm_evidence_routing.md).
+
 [Desktop architecture and deployment protocol](docs/desktop_application.md)
 
 On Windows, `RunTrafficWorkbench.cmd` launches the installed native application.

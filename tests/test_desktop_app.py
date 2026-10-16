@@ -116,6 +116,16 @@ def test_evidence_selection_loads_real_images(window):
         assert window.evidence_text.text()
 
 
+def test_visual_evidence_recomputes_current_policy_and_exposes_evidence_gaps(window):
+    window.report = {"events": [{"trigger_time_sec": 2, "evidence": {"contact_sheet": str(window.root / "docs/assets/incident_vlm_clean_evidence.jpg")}, "review_disposition": "corroborated_incident", "vlm_review": {"schema_valid": True, "likely_violation": True, "confidence": 0.95, "visual_reasons": ["Vehicle interaction"], "missing_evidence": ["Collision moment absent"], "human_review_needed": True}}]}
+    window.frame_choice.setCurrentIndex(0)
+    window.show_evidence(0)
+    assert "incomplete visual evidence" in window.evidence_text.text()
+    assert "Collision moment absent" in window.evidence_text.text()
+    assert "Operator review requested" in window.evidence_text.text()
+    assert "corroborated incident" not in window.evidence_text.text()
+
+
 def test_extended_model_tab_uses_all_matched_models_and_ranking_metrics(window):
     tabs = window.pages.widget(1).findChild(QTabWidget)
     tabs.setCurrentIndex(1)
@@ -184,6 +194,7 @@ def test_native_capture_cancel_is_cooperative(window, mjpeg_server):
     assert window.cancelled
     assert window.job.state() == QProcess.ProcessState.NotRunning
     assert not window.actions_by_name["Analyze"].isEnabled()
+    assert not list(window.output_dir.glob("camera_frames_*"))
 
 
 def test_native_continuous_worker_runs_without_waiting_for_capture_completion(window, mjpeg_server):
@@ -201,7 +212,6 @@ def test_native_continuous_worker_runs_without_waiting_for_capture_completion(wi
     assert window.report["acquisition"]["decoded_frames"] >= window.report["sampled_frames"]
     assert window.actions_by_name["Export results"].isEnabled()
     assert not window.preview_timer.isActive()
-    assert not list(window.output_dir.glob("camera_frames_*"))
 
 
 def test_cancel_analysis_terminates_the_active_worker(window):

@@ -121,3 +121,14 @@ def test_visual_disagreement_retains_temporal_event_for_review():
     assert review_disposition(False, review) == "consistent_background"
     assert review_disposition(True, {**review, "schema_valid": False}) == "response_contract_review"
     assert review_disposition(True, {**review, "likely_violation": True, "confidence": 0.3}) == "low_confidence_review"
+
+
+def test_visual_agreement_does_not_override_missing_evidence_or_requested_review():
+    review = {"schema_valid": True, "likely_violation": True, "confidence": 0.95, "visual_reasons": ["Visible contact"], "missing_evidence": [], "human_review_needed": False}
+    assert review_disposition(True, review) == "consistent_visual_support"
+    assert review_disposition(True, {**review, "missing_evidence": ["Collision moment absent"]}) == "incomplete_visual_evidence"
+    assert review_disposition(True, {**review, "human_review_needed": True}) == "operator_review_requested"
+    assert review_disposition(True, {**review, "visual_reasons": []}) == "missing_visual_rationale"
+    assert review_disposition(True, {**review, "confidence": float("nan")}) == "response_contract_review"
+    assert review_disposition(True, {**review, "confidence": 1.1}) == "response_contract_review"
+    assert review_disposition(True, {**review, "confidence": "invalid"}) == "response_contract_review"

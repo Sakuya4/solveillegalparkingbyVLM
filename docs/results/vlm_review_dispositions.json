@@ -1,0 +1,175 @@
+{
+  "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+  "decoding": "greedy",
+  "cases": 20,
+  "source_clips": 10,
+  "policy_version": 2,
+  "source_manifest_sha256": "1af77c68e88c8dc43164c4d59f794c06656a6adca8d9fde3f283ec416195c0f3",
+  "source_summary_sha256": "159a74a6948994e30f4cd417c50135e64ba4b7bd968341a4496fc2412fad4832",
+  "confidence_only_support": {
+    "supported_cases": 8,
+    "supported_true_cases": 6,
+    "supported_false_cases": 2,
+    "supported_positive_precision": 0.75,
+    "support_coverage_of_positive_cases": 0.6,
+    "unresolved_cases": 12
+  },
+  "structured_support": {
+    "supported_cases": 0,
+    "supported_true_cases": 0,
+    "supported_false_cases": 0,
+    "supported_positive_precision": null,
+    "support_coverage_of_positive_cases": 0.0,
+    "unresolved_cases": 20
+  },
+  "dispositions": {
+    "temporal_visual_disagreement": 12,
+    "incomplete_visual_evidence": 8
+  },
+  "source_cases": [
+    {
+      "case_id": "6oymx7wBmjw_04__pre_event",
+      "report_sha256": "7cae53efeab4efdbc9e0469410ed1d1db846b1e96bb7a2d9b98d244a5a5be640",
+      "input_signature": "b12f1130abaade923aa8014ef272610d183dd5129a12f3e11a4c57c9f4634b97",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "6oymx7wBmjw_04__collision",
+      "report_sha256": "7eaf6a5d214ddec3452b7a5bd5ff51c6fc129ceb8d7198d1dde6dbca3598dc99",
+      "input_signature": "c564a4756aa74606db089fadf9ee95dff1c7419710af62352249d7eb650b20ce",
+      "expected_collision": true,
+      "disposition": "incomplete_visual_evidence"
+    },
+    {
+      "case_id": "Hjax6nMPd6Q_00__pre_event",
+      "report_sha256": "1c6d018e9b3b26f332738c61ad30936f3f6f5e39a86034b42a33d6e57db89c49",
+      "input_signature": "1d48a76b25d96d8fdcbbbaf0a8f7597a84174c0d1014dffdfaa70e0d6eb3d1e5",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "Hjax6nMPd6Q_00__collision",
+      "report_sha256": "f7f8b1efcc75f5ea40a92afd8f403712745089a9eba1e93c85a26a82ca267b58",
+      "input_signature": "3fa44811fcf6d2ea2298d52e3956e88e3a954c3221c7169bb05ea84f588b924b",
+      "expected_collision": true,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "Q5YnuRI6QSM_00__pre_event",
+      "report_sha256": "f42ac026d868d6712c56bc3f1dcd31f414bf662175081fd8efc95f08d7b3df74",
+      "input_signature": "dfbbd818bc7df2730c97756b7148037c1fdd744f551373da7820468bf6a91fa9",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "Q5YnuRI6QSM_00__collision",
+      "report_sha256": "d237aa0e45a10df173a6b20582489fb6c9d5778de878812d10aba7aa2e8dd05b",
+      "input_signature": "5361596100304cb7790c22413e47b0f20c2cca55a43bd4c42189eea03dee5ce2",
+      "expected_collision": true,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "SS38UP-0QnU_00__pre_event",
+      "report_sha256": "b9b0f74924527d37a82f99fe3428ca09009b9d69ebe01cb9e19234bdcd0014d8",
+      "input_signature": "9ccfbeabe9bded3d2cb5ec64a4e1da7786dd0aac4c3be70fe7b6603f6929e0c9",
+      "expected_collision": false,
+      "disposition": "incomplete_visual_evidence"
+    },
+    {
+      "case_id": "SS38UP-0QnU_00__collision",
+      "report_sha256": "62e1d8658511028cd129322ca6480b03544eb3eb2027de6da2c0034e7831da80",
+      "input_signature": "345b2b3addfd3f5f5ff3c82477677c9b9a4a48950a0eb447659e4bece62af8d1",
+      "expected_collision": true,
+      "disposition": "incomplete_visual_evidence"
+    },
+    {
+      "case_id": "TXZfPbiopOE_00__pre_event",
+      "report_sha256": "9ac64bfb184de80652e5e7b2f41f644bde5ef7fc14516155ca837168882e3ded",
+      "input_signature": "7e1723c0c29fbf3824c65a5dfe27cbbec88de071d393b7dfe9326fa6ea1fc615",
+      "expected_collision": false,
+      "disposition": "incomplete_visual_evidence"
+    },
+    {
+      "case_id": "TXZfPbiopOE_00__collision",
+      "report_sha256": "2c4a43c677c381227dd7b42442fae25ac897b5f7064c516f990fe3134561e22c",
+      "input_signature": "2a4033b8d7cb57f3e5830a7abb2e2c3637143625abd8ad2ecc291e8b66559af5",
+      "expected_collision": true,
+      "disposition": "incomplete_visual_evidence"
+    },
+    {
+      "case_id": "W5YikE19nkc_00__pre_event",
+      "report_sha256": "5d0cad5ce1d12d4ef650d74f8eb3ad840deecc1214ed61defddee4a7bd4b33f3",
+      "input_signature": "ac2e43da84266253b9b6f41ee18a0a08a7f5ef89e88e56973b18a5a3f07f738f",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "W5YikE19nkc_00__collision",
+      "report_sha256": "17e39b9e21e4177bb11502125a60c603aeab61faac1c57fc62c14afd81b2657c",
+      "input_signature": "87c96aaf51bc973398cb6fe89e87c48f6d1fb1a55d96161871345437ec908f7a",
+      "expected_collision": true,
+      "disposition": "incomplete_visual_evidence"
+    },
+    {
+      "case_id": "cZo9DI6DSIY_02__pre_event",
+      "report_sha256": "da65148d198608e036106c0222e9697b56e611a1b3a406a651b7c23cbb49be79",
+      "input_signature": "60b2abce39c66914188fa10c3a8a762e7d2edc3daf47bd2528514f53ab015f13",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "cZo9DI6DSIY_02__collision",
+      "report_sha256": "f8628ca6078d66b40cc99ea925dbb5165810aee6b36affe66e6520c7e0b9b902",
+      "input_signature": "cf7e67e3ee282c7fbcbbcaab123aef5a34d2910dbdcc989c673b360b497f3fff",
+      "expected_collision": true,
+      "disposition": "incomplete_visual_evidence"
+    },
+    {
+      "case_id": "kM5FhXJsyWA_00__pre_event",
+      "report_sha256": "de794a6a71ae400ad18b6c00559d979986f471c0840b8bc9f028fa68a9ba0cf4",
+      "input_signature": "1deaa6e1bf63a926e4432351a4144c2a4f9311aaeb8e2970a54d7ce317293f9f",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "kM5FhXJsyWA_00__collision",
+      "report_sha256": "7a1b2425b019629437d64778453f37de9eb0671a2c56d749b135e2b38bc28992",
+      "input_signature": "273a7dac9ccb9897ebe1bd57a83718b8a5bcd2b3bce3648b42d3479b4f3c9089",
+      "expected_collision": true,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "snZGxCZ7vFM_00__pre_event",
+      "report_sha256": "3effaaea8346f8480129bed23c561d4edb61c5b51a4d3800d92c3fdf6c04c6b6",
+      "input_signature": "ea6c8b19121165695954d7f52dd3267f3182c8e2e7d0857e6a5d4c2cc70d70c1",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "snZGxCZ7vFM_00__collision",
+      "report_sha256": "7bc37f6755c632d1c041858f55446240ee3d47571172ef58a5867285a402b13b",
+      "input_signature": "3f427305ac93ce664887a91965bb6205d822474179bafe6e755eb3aaddde411a",
+      "expected_collision": true,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "zz0qZ-sSCbY_00__pre_event",
+      "report_sha256": "32a3b1a57f5ed988afde0f155894e897dc048bf40865df5e70259a0f118b05c9",
+      "input_signature": "e67f9f05e938eca117428bf49f273ca2f6b0f7dd4e0e1ae7c3a947f4a87daefe",
+      "expected_collision": false,
+      "disposition": "temporal_visual_disagreement"
+    },
+    {
+      "case_id": "zz0qZ-sSCbY_00__collision",
+      "report_sha256": "9d717512fdabac5ab71cf2aa485b32b3d14d9cee27d9066f0be448774b330eea",
+      "input_signature": "75cea9bc1d3cac729fc9e14273b272f937e14d9e0e45736f7511f89ec140c251",
+      "expected_collision": true,
+      "disposition": "incomplete_visual_evidence"
+    }
+  ],
+  "protocol": "Apply a candidate-positive review gate to the fixed blinded paired-sequence cohort; honor schema, evidence gaps, review requests, confidence and rationale without changing raw VLM predictions",
+  "endpoint": "Selective positive visual support and unresolved coverage; abstentions are not true negatives and raw classification metrics remain unchanged",
+  "scope": "Paired annotation-defined sequences are not a measured TCN-triggered field cohort; emitted model reasons are not independent ground truth"
+}

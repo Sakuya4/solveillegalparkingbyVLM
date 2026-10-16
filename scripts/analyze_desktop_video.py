@@ -43,7 +43,7 @@ def main() -> None:
     from ultralytics import YOLO
     from illegal_parking.incident_video_pipeline import run_candidate_incident_inference
     from illegal_parking.onnx_runtime import OnnxIncidentPredictor
-    from illegal_parking.incident_vlm_evidence import write_clean_review_package, review_disposition
+    from illegal_parking.incident_vlm_evidence import REVIEW_POLICY_VERSION, write_clean_review_package, review_disposition
     from illegal_parking.cctv_capture import load_camera_observation
     from run_candidate_incident_video import _write_annotated_video, _blur_plate_region
 
@@ -141,6 +141,7 @@ def main() -> None:
                 "seed": 42,
             }
             event["review_disposition"] = review_disposition(True, event["vlm_review"])
+            event["review_disposition_policy_version"] = REVIEW_POLICY_VERSION
             Path(event["evidence"]["request_json"]).with_name("vlm_raw.txt").write_text(raw, encoding="utf-8")
     report["elapsed_sec"] = time.perf_counter() - started
     report["vlm_requested"] = args.vlm_review
