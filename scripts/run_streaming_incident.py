@@ -54,7 +54,7 @@ def main():
     processor = StreamingIncidentProcessor(detector, predictor, feature_width=args.feature_width, min_positive_windows=args.min_positive_windows)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     camera = args.source_mode != "file"
-    reader = capture = writer = None
+    reader = capture = writer = clean_writer = None
     context = deque(maxlen=16)
     pending, events, windows, frame_times, processing_times = [], [], [], [], []
     source = redacted_camera_url(args.input) if camera else str(Path(args.input).resolve())
@@ -65,6 +65,7 @@ def main():
     cancelled = False
     end_reason, source_error = "duration_limit", None
     output_video = args.output_dir / "incident_output.mp4"
+    clean_video = args.output_dir / "observation_clean.mp4"
     privacy = "Heuristic lower-center blur inside each tracked vehicle box"
 
     def publish_json(path, payload):
@@ -151,9 +152,11 @@ def main():
                 cv2.putText(display, f"STREAM  {timestamp:.2f}s  incident={score}  {label}", (12, 33), cv2.FONT_HERSHEY_SIMPLEX, 0.65, (245, 245, 245), 2, cv2.LINE_AA)
                 if writer is None:
                     writer = cv2.VideoWriter(str(output_video), cv2.VideoWriter_fourcc(*"mp4v"), 7.5, (display.shape[1], display.shape[0]))
-                    if not writer.isOpened():
+                    clean_writer = cv2.VideoWriter(str(clean_video), cv2.VideoWriter_fourcc(*"mp4v"), 7.5, (clean.shape[1], clean.shape[0]))
+                    if not writer.isOpened() or not clean_writer.isOpened():
                         raise OSError("Could not create streaming playback")
                 writer.write(display)
+                clean_writer.write(clean)
                 processed += 1
                 if update.new_event or time.perf_counter() - started >= next_preview:
                     temporary = args.output_dir / "preview_pending.jpg"
@@ -177,9 +180,13 @@ def main():
             capture.release()
         if writer is not None:
             writer.release()
+        if clean_writer is not None:
+            clean_writer.release()
     if not processed:
         raise ValueError("No frames were processed")
     report = {"input": source, "output_video": str(output_video.resolve()), "source_mode": args.source_mode,
+              "clean_video": str(clean_video.resolve()), "clean_video_sha256": hashlib.sha256(clean_video.read_bytes()).hexdigest(),
+              "clean_video_contract": "Privacy-treated sampled frames without model boxes, probabilities, event state, or artificial timestamp overlays",
               "annotation_free_inference": True, "streaming_inference": True, "started_at_utc": started_utc,
               "elapsed_sec": time.perf_counter() - started, "cancelled": cancelled, "end_reason": end_reason, "source_error": source_error, "events": events,
               "runtime": predictor.runtime, "min_positive_windows": args.min_positive_windows,

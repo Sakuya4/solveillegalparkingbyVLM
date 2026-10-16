@@ -38,6 +38,8 @@
 - [x] Reanalyze selective visual support separately from raw VLM classification.
 - [x] Add saved-event native VLM review without detector reruns and exclusive GPU job control.
 - [x] Review both saved Taichung alerts with version-2 generation; retain unassigned independent labels.
+- [x] Add full-observation clean playback and attributed native reviewer annotations.
+- [x] Evaluate reviewed normal exposure with source-clock gap exclusion, duplicate/conflict checks and Poisson upper limits.
 
 ## Completed Case: Red-Line Parking
 

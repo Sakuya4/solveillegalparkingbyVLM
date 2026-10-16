@@ -158,6 +158,44 @@ def make_table(headers: list[str], rows: list[list[object]]) -> QTableWidget:
     return table
 
 
+class ObservationReviewDialog(QDialog):
+    def __init__(self, report_path: Path, parent=None):
+        super().__init__(parent)
+        from .observation_review import load_review_observation
+        report, video = load_review_observation(report_path)
+        self.setWindowTitle("Observation annotation | clean sampled video")
+        self.resize(1100, 780)
+        layout = QVBoxLayout(self)
+        self.video = VideoPanel()
+        self.video.load(video)
+        layout.addWidget(self.video, 1)
+        form = QFormLayout()
+        self.reviewer = QLineEdit()
+        self.label = QComboBox()
+        for title, value in (("Uncertain", "uncertain"), ("Incident present", "incident_present"), ("Normal observation", "normal")):
+            self.label.addItem(title, value)
+        self.complete = QCheckBox("Reviewed all available frames")
+        self.blinded = QCheckBox("Model outputs not consulted")
+        form.addRow("Reviewer ID", self.reviewer)
+        form.addRow("Observation label", self.label)
+        form.addRow(self.complete)
+        form.addRow(self.blinded)
+        times = report["frame_times_sec"]
+        form.addRow("Source-clock span", QLabel(f'{times[-1] - times[0]:.3f} s | {len(times)} sampled frames'))
+        layout.addLayout(form)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel)
+        save = buttons.button(QDialogButtonBox.StandardButton.Save)
+        save.setEnabled(False)
+        self.reviewer.textChanged.connect(lambda text: save.setEnabled(bool(text.strip())))
+        buttons.accepted.connect(self.accept)
+        buttons.rejected.connect(self.reject)
+        layout.addWidget(buttons)
+
+    def done(self, result):
+        self.video.release()
+        super().done(result)
+
+
 class TrafficResearchWindow(QMainWindow):
     def __init__(self, root: Path):
         super().__init__()
@@ -209,6 +247,7 @@ class TrafficResearchWindow(QMainWindow):
             ("Reference clip", QStyle.StandardPixmap.SP_FileDialogContentsView, self.load_demo),
             ("Analyze", QStyle.StandardPixmap.SP_MediaPlay, self.analyze_video),
             ("Review selected event", QStyle.StandardPixmap.SP_FileDialogContentsView, self.review_selected_event),
+            ("Annotate observation", QStyle.StandardPixmap.SP_DialogApplyButton, self.annotate_observation),
             ("Cancel", QStyle.StandardPixmap.SP_MediaStop, self.cancel_analysis),
             ("Export results", QStyle.StandardPixmap.SP_DialogSaveButton, self.export_results),
         ]
@@ -222,6 +261,7 @@ class TrafficResearchWindow(QMainWindow):
         self.actions_by_name["Cancel"].setEnabled(False)
         self.actions_by_name["Export results"].setEnabled(False)
         self.actions_by_name["Review selected event"].setEnabled(False)
+        self.actions_by_name["Annotate observation"].setEnabled(False)
         toolbar.addSeparator()
         toolbar.addWidget(QLabel(" Temporal runtime "))
         self.provider = QComboBox()
@@ -476,6 +516,7 @@ class TrafficResearchWindow(QMainWindow):
         self.input_path = self.report = self.capture_report_path = None
         self.report_path = None
         self.actions_by_name["Review selected event"].setEnabled(False)
+        self.actions_by_name["Annotate observation"].setEnabled(False)
         self.events.setRowCount(0)
         self.show_evidence(self.evidence_choice.currentIndex())
         self.actions_by_name["Export results"].setEnabled(False)
@@ -551,6 +592,7 @@ class TrafficResearchWindow(QMainWindow):
         self.report = None
         self.report_path = None
         self.actions_by_name["Review selected event"].setEnabled(False)
+        self.actions_by_name["Annotate observation"].setEnabled(False)
         self.events.setRowCount(0)
         self.show_evidence(self.evidence_choice.currentIndex())
         self.actions_by_name["Export results"].setEnabled(False)
@@ -595,6 +637,20 @@ class TrafficResearchWindow(QMainWindow):
         arguments = ["--report", str(self.report_path), "--event-index", str(row), "--output-dir", str(self.output_dir)]
         self._start_job("scripts/review_desktop_events.py", arguments, "review")
 
+    def annotate_observation(self):
+        if self.report_path is None or not self.report or not self.report.get("clean_video") or (self.job and self.job.state() != QProcess.ProcessState.NotRunning):
+            return
+        try:
+            dialog = ObservationReviewDialog(self.report_path, self)
+            if dialog.exec() == QDialog.DialogCode.Accepted:
+                from .observation_review import save_observation_review
+                output = self.root / "outputs/observation_reviews" / f"{uuid.uuid4().hex}.json"
+                record = save_observation_review(self.report_path, output, reviewer_id=dialog.reviewer.text(), label=dialog.label.currentData(), all_frames_reviewed=dialog.complete.isChecked(), model_outputs_not_consulted=dialog.blinded.isChecked())
+                self.statusBar().showMessage(f'Observation annotation saved | {record["label"]} | {output.name}')
+            dialog.deleteLater()
+        except (OSError, ValueError, KeyError) as exc:
+            QMessageBox.warning(self, "Observation annotation", str(exc))
+
     def _start_job(self, script: str, arguments: list[str], kind: str):
         self.cancelled = False
         self.log.clear()
@@ -613,6 +669,7 @@ class TrafficResearchWindow(QMainWindow):
         job.errorOccurred.connect(lambda error: self._job_error(job, error))
         self.actions_by_name["Analyze"].setEnabled(False)
         self.actions_by_name["Review selected event"].setEnabled(False)
+        self.actions_by_name["Annotate observation"].setEnabled(False)
         self.actions_by_name["Cancel"].setEnabled(True)
         self.provider.setEnabled(False)
         self.event_profile.setEnabled(False)
@@ -635,6 +692,7 @@ class TrafficResearchWindow(QMainWindow):
         self.actions_by_name["Open results"].setEnabled(True)
         self.actions_by_name["Camera observation"].setEnabled(True)
         self.actions_by_name["Review selected event"].setEnabled(bool(self.report_path and self.report and self.report["events"]))
+        self.actions_by_name["Annotate observation"].setEnabled(bool(self.report_path and self.report and self.report.get("clean_video")))
 
     def _job_error(self, job: QProcess, error):
         if job is not self.job:
@@ -700,6 +758,7 @@ class TrafficResearchWindow(QMainWindow):
         self.show_evidence(0)
         self.actions_by_name["Export results"].setEnabled(True)
         self.actions_by_name["Review selected event"].setEnabled(bool(payload["events"]))
+        self.actions_by_name["Annotate observation"].setEnabled(bool(payload.get("clean_video")))
         self.statusBar().showMessage(f'{len(self.report["events"])} review events | {self.report["runtime"]["requested_provider"]} | {self.report["elapsed_sec"]:.1f} s processing')
 
     def cancel_analysis(self):

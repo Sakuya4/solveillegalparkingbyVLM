@@ -129,6 +129,12 @@ At the deadline, report delivered artifacts and remaining external requirements.
     `scripts/publish_vlm_forwarded_comparison.py` verifies every new input/result
     hash and recomputes metrics before paired source-clip bootstrap reporting.
     Two focused publisher tests pass in addition to the 313-test regression.
+14. Implemented: clean full-observation streaming recording, native reviewer
+    annotation and hash-bound normal-exposure evaluation. The one-second
+    acquisition-gap contract is fixed before collecting additional observations.
+    Labels require reviewer attribution; uncertain/incomplete/model-informed
+    records and conflicting labels are excluded. No additional normal camera-
+    hours are claimed from unassigned observations.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are

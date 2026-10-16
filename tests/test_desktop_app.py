@@ -15,7 +15,7 @@ pytest.importorskip("PySide6")
 from PySide6.QtWidgets import QApplication, QTabWidget
 from PySide6.QtCore import QCoreApplication, QEvent, QProcess
 from PySide6.QtTest import QTest
-from illegal_parking.desktop_app import TrafficResearchWindow
+from illegal_parking.desktop_app import TrafficResearchWindow, ObservationReviewDialog
 
 
 @pytest.fixture
@@ -168,6 +168,7 @@ def test_completed_analysis_can_be_reopened_without_inference(window, tmp_path):
     assert window.actions_by_name["Export results"].isEnabled()
     assert window.video.current_image is not None
     assert not window.actions_by_name["Review selected event"].isEnabled()
+    assert not window.actions_by_name["Annotate observation"].isEnabled()
 
 
 def test_native_saved_event_review_does_not_depend_on_a_local_source_video(window, tmp_path, monkeypatch):
@@ -241,6 +242,15 @@ def test_native_continuous_worker_runs_without_waiting_for_capture_completion(wi
     assert window.report["streaming_inference"] is True
     assert window.report["source_mode"] == "mjpeg"
     assert window.report["acquisition"]["decoded_frames"] >= window.report["sampled_frames"]
+    assert window.actions_by_name["Annotate observation"].isEnabled()
+    dialog = ObservationReviewDialog(window.report_path, window)
+    assert dialog.label.currentData() == "uncertain"
+    assert not dialog.complete.isChecked()
+    assert not dialog.blinded.isChecked()
+    assert dialog.video.path.name == "observation_clean.mp4"
+    dialog.reject()
+    assert dialog.video.capture is None
+    dialog.deleteLater()
     assert window.actions_by_name["Export results"].isEnabled()
     assert not window.preview_timer.isActive()
 
