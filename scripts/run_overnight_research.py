@@ -52,17 +52,29 @@ def resolution_steps() -> list[tuple[str, list[str]]]:
     return steps
 
 
+def calibration_steps() -> list[tuple[str, list[str]]]:
+    steps = []
+    protocol = "docs/results/continuous_event_calibration_protocol.json"
+    for split in ("iid", "geographic"):
+        common = ["scripts/run_accident_event_batch.py", "--split-scheme", split, "--model", f"models/candidate_full_tcn_{split}_fpr20.pt", "--protocol", protocol, "--feature-width", "320", "--hop-steps", "5", "--source-clock", "--threads", "2", "--device", "0"]
+        steps.append((f"continuous_calibration_{split}", [*common, "--cohort", "calibration", "--output-dir", f"outputs/accident/continuous_calibration_{split}"]))
+        steps.append((f"select_event_thresholds_{split}", ["scripts/calibrate_continuous_events.py", "calibrate", "--split-scheme", split]))
+        steps.append((f"continuous_test_{split}", [*common, "--cohort", "test", "--threshold-selection", f"outputs/accident/continuous_event_{split}_selection.json", "--output-dir", f"outputs/accident/continuous_test_{split}"]))
+        steps.append((f"evaluate_event_thresholds_{split}", ["scripts/calibrate_continuous_events.py", "evaluate", "--split-scheme", split]))
+    return steps
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the bounded, sequential research queue with resumable checkpoints.")
     parser.add_argument("--deadline", required=True, help="Timezone-aware ISO deadline, e.g. 2026-10-17T04:00:00+00:00")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--keep-awake-until-deadline", action="store_true")
-    parser.add_argument("--phase", choices=("initial", "representations", "resolution"), default="initial")
+    parser.add_argument("--phase", choices=("initial", "representations", "resolution", "calibration"), default="initial")
     args = parser.parse_args()
     deadline = datetime.fromisoformat(args.deadline)
     if deadline.tzinfo is None:
         parser.error("--deadline must include a timezone")
-    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps}[args.phase]()
+    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps, "calibration": calibration_steps}[args.phase]()
     if args.dry_run:
         print(json.dumps(steps, indent=2))
         return

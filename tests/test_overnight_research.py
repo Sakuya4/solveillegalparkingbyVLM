@@ -6,6 +6,20 @@ import pytest
 from scripts import run_overnight_research as runner
 
 
+def test_calibration_queue_freezes_thresholds_before_each_test_batch():
+    steps = runner.calibration_steps()
+    assert len(steps) == 8
+    for offset, split in ((0, "iid"), (4, "geographic")):
+        train, select, test, evaluate = [arguments for _, arguments in steps[offset:offset + 4]]
+        assert train[train.index("--cohort") + 1] == "calibration"
+        assert select[1] == "calibrate" and evaluate[1] == "evaluate"
+        assert test[test.index("--cohort") + 1] == "test"
+        assert "--threshold-selection" in test
+        assert "--source-clock" in train and "--source-clock" in test
+        assert train[train.index("--hop-steps") + 1] == "5"
+        assert f"candidate_full_tcn_{split}" in train[train.index("--model") + 1]
+
+
 def test_resolution_phase_preserves_reference_models_and_matched_event_selection():
     steps = runner.resolution_steps()
     batches = [arguments for _, arguments in steps if arguments[0].endswith("run_accident_event_batch.py")]

@@ -48,6 +48,7 @@ def run_candidate_incident_inference(
     hop_steps: int,
     min_positive_windows: int,
     feature_width: int | None = None,
+    source_clock: bool = False,
 ) -> CandidateIncidentInference:
     frames, feature_frames, source_indices, source_fps = _read_sampled_video_views(
         input_path,
@@ -124,6 +125,9 @@ def run_candidate_incident_inference(
         "candidate_sources": dict(source_counts),
         "privacy": "Heuristic lower-center blur is applied inside every tracked vehicle box.",
     }
+    if source_clock:
+        report["window_end_times_sec"] = [source_indices[int(start) + sequence_steps] / source_fps for start in starts]
+        report["decision_clock"] = "actual sampled source-frame time"
     return CandidateIncidentInference(
         report=report,
         frames=frames,

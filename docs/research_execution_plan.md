@@ -105,6 +105,10 @@ At the deadline, report delivered artifacts and remaining external requirements.
 10. Next: train-only continuous-event calibration with fixed spatial/cadence/hop
     contracts, reviewed streaming alerts, longer normal exposure, and
     heterogeneous service-time scenarios. Preserve all reference artifacts.
+    The [frozen calibration protocol](continuous_event_calibration.md) uses
+    101 IID and 90 geographic model-fitting holdout clips. The separate
+    `--phase calibration` queue records `calibration_status.json`; selection
+    must complete before each corresponding 100-clip test replay starts.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are

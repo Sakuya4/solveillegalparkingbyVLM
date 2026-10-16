@@ -77,6 +77,16 @@ def test_evaluate_incident_report_marks_early_only_alert_as_missed() -> None:
     assert result.late_alert_episodes == 0
 
 
+def test_event_evaluation_prefers_actual_source_decision_times_when_available():
+    report = _report([False, True, False, False, False])
+    report["window_end_times_sec"] = [1.2, 2.3, 3.4, 4.5, 5.6]
+    result = evaluate_incident_report(report, _clip())
+    assert result.trigger_time_sec == pytest.approx(2.3)
+    report["window_end_times_sec"] = [1.2, 2.3]
+    with pytest.raises(ValueError, match="aligned"):
+        evaluate_incident_report(report, _clip())
+
+
 def test_evaluate_incident_report_rejects_oracle_inference() -> None:
     report = _report([False, True, False, False, False])
     report["annotation_free_inference"] = False

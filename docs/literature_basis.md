@@ -31,6 +31,13 @@ provides the publisher's journal information.
 
 ## Primary Implementation Sources
 
+Fawcett, T. (2006). An introduction to ROC analysis. *Pattern Recognition
+Letters*, 27(8), 861--874. [DOI](https://doi.org/10.1016/j.patrec.2005.10.010).
+This motivates separating ranking quality from an operating decision selected
+under application costs. The continuous-event study adapts that principle to
+episode budgets on held-out training clips; it does not equate event recall
+with a window ROC coordinate.
+
 - [ACCIDENT benchmark](https://github.com/accidentbench/ACCIDENT): fixed-CCTV
   incident metadata and official data partitions.
 - [VideoMAE](https://github.com/MCG-NJU/VideoMAE): pretrained video encoder and
@@ -52,6 +59,8 @@ provides the publisher's journal information.
 - [scikit-learn AUROC](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html)
   and [average precision](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html):
   window-level ranking metrics in the matched representation study.
+- [scikit-learn threshold selection](https://scikit-learn.org/stable/modules/classification_threshold.html):
+  independent threshold tuning and separation of score estimation from decisions.
 
 DOI titles for the five journal references were checked against Crossref during
 this implementation. Source access date: 16 October 2026.
