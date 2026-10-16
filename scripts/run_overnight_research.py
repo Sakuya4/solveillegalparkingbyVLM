@@ -74,17 +74,30 @@ def decoding_steps() -> list[tuple[str, list[str]]]:
     ]
 
 
+def cadence_steps() -> list[tuple[str, list[str]]]:
+    steps = []
+    for arm in ("legacy", "fixed"):
+        directory = f"data/processed/accident/presentation_{arm}"
+        steps.append((f"presentation_{arm}_features", ["scripts/extract_presentation_features.py", "--arm", arm, "--output-dir", directory, "--device", "0"]))
+    for arm in ("legacy", "fixed"):
+        for feature in ("candidate_", "global_"):
+            for split in ("iid", "geographic"):
+                steps.append((f"presentation_{arm}_{feature}{split}", ["scripts/train_presentation_tcn.py", "--features-dir", f"data/processed/accident/presentation_{arm}", "--feature", feature, "--split-scheme", split, "--device", "cuda"]))
+    steps.append(("publish_presentation_comparison", ["scripts/publish_presentation_comparison.py"]))
+    return steps
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the bounded, sequential research queue with resumable checkpoints.")
     parser.add_argument("--deadline", required=True, help="Timezone-aware ISO deadline, e.g. 2026-10-17T04:00:00+00:00")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--keep-awake-until-deadline", action="store_true")
-    parser.add_argument("--phase", choices=("initial", "representations", "resolution", "calibration", "decoding"), default="initial")
+    parser.add_argument("--phase", choices=("initial", "representations", "resolution", "calibration", "decoding", "cadence"), default="initial")
     args = parser.parse_args()
     deadline = datetime.fromisoformat(args.deadline)
     if deadline.tzinfo is None:
         parser.error("--deadline must include a timezone")
-    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps, "calibration": calibration_steps, "decoding": decoding_steps}[args.phase]()
+    steps = {"initial": workflow_steps, "representations": representation_steps, "resolution": resolution_steps, "calibration": calibration_steps, "decoding": decoding_steps, "cadence": cadence_steps}[args.phase]()
     if args.dry_run:
         print(json.dumps(steps, indent=2))
         return

@@ -44,7 +44,9 @@
 - [x] Verify native MJPEG closure recovery and temporal warm-up after source gaps.
 - [x] Rerun the complete reference clip, retain actual VLM disagreement, and publish source-hashed detection/native videos with visible media attribution.
 - [x] Audit all source-container frame counts/hashes and verify presentation clocks on seven train-only decoded traces.
-- [ ] Freeze presentation-time sampling, annotation-frame support and paired cohorts before cadence-consistent training.
+- [x] Freeze presentation-time sampling, annotation-frame support and paired cohorts before cadence-consistent training.
+- [x] Verify both real-detector extraction arms on a train-only smoke subset and reject smoke data for fitting.
+- [x] Implement a separate guarded queue for two complete feature arms, eight matched fits and hash-verified paired reporting.
 - [ ] Train and evaluate matched cadence/context TCN ablations without replacing reference models.
 
 ## Completed Case: Red-Line Parking

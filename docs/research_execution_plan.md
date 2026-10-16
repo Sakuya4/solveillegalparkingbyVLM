@@ -155,6 +155,17 @@ At the deadline, report delivered artifacts and remaining external requirements.
     up to 1.36 s. Freeze a presentation-time and annotation-support contract
     before fitting; do not equate the legacy source-index clock with PTS.
     [Source audit and controlled continuation](cadence_source_audit.md).
+17. Presentation-time protocol frozen before fitting: 1,861 clips and 2,985
+    paired windows, with every selected input and annotation frame verified
+    against decoder presentation timestamps. Both arms retain identical
+    clip-grouped memberships. Train-only real-detector smoke extraction
+    succeeds for both arms; smoke arrays cannot enter fitting.
+    The new `--phase cadence` queue extracts both complete arms, fits eight
+    candidate/global by IID/geographic TCNs, and verifies paired reports.
+    Inspect `cadence_status.json` before new GPU work. All earlier queues
+    remain complete and must not restart. [Frozen study](presentation_time_protocol.md).
+    Subsequent work adds continuous PTS replay on the fixed 88/90 test-clip
+    intersections and corresponding 94/83 calibration clips.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -170,7 +181,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 359 tests pass,
+(native desktop and portable runtime). Current full regression: 385 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

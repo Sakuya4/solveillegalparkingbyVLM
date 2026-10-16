@@ -141,6 +141,11 @@ Distinguish presentation timestamps from frame-index/container-FPS clocks.
 The corpus clock audit hashes 2,027 sources and decodes seven train-only
 traces before the cadence/context ablation. Preserve annotation-frame support
 and specify physical-time cohorts before fitting additional models.
+The frozen presentation study retains 1,861 clips and 2,985 paired windows,
+with matched legacy-context and bounded-jitter 7.5-Hz policies, fixed grouped
+holdouts and eight candidate/global by IID/geographic fits. Its four source-
+clip bootstrap contrasts are pointwise; continuous event evaluation remains
+separate and uses the fixed 88/90-clip intersections.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and

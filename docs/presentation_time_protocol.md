@@ -27,6 +27,8 @@ not applied to the new ground-truth anchor. Container counts equal to the
 metadata count or one greater are supported; other count discrepancies are
 excluded. Both policies must observe the event in their positive window.
 Eligible negative windows must be available under both policies.
+Both arms are re-extracted under verified container support; the original
+reference tensors are not reused or relabeled.
 
 The presentation-grid event window begins eight target slots before its
 event target slot, clamped only to available grid support. Its negative window
@@ -48,7 +50,9 @@ ByteTrack. Thresholds target a calibration-window FPR of 0.2.
 
 Primary reporting uses paired source-clip window-F1 contrasts and 2,000
 bootstrap resamples with seed 42. AUROC, average precision, actual test FPR
-and fitting/calibration counts accompany every model. Subsequent continuous
+and fitting/calibration counts accompany every model.
+The four contrast intervals are pointwise and conditional on the fitted models
+and thresholds; no family-wise coverage is asserted. Subsequent continuous
 PTS inference uses 15-step hops and two-window persistence. Its episode budget
 is 0.5 per accident clip, selected only on the corresponding training holdout.
 The test event cohort is the eligible intersection with each previously frozen
@@ -68,3 +72,45 @@ artifact names. Test scores do not determine replacement defaults.
 python scripts/prepare_presentation_protocol.py
 python -m pytest tests/test_incident_presentation.py
 ```
+
+## Frozen Cohort
+
+All 2,027 sources were inspected before fitting. The decoded-PTS verification
+retains **1,861 clips and 2,985 paired windows**. Exclusions comprise 126
+fixed-event cadence/lateness violations, 27 decoder frame-identity or clock
+disagreements, seven insufficient-context cases, four unexpected container
+counts and two events beyond the source-frame policy's final sampled frame.
+Decoder disagreements describe this verified reader contract, not independent
+judgments that the underlying videos or annotations are invalid.
+
+| Split | Partition | Clips | Windows | Incident windows |
+| --- | --- | ---: | ---: | ---: |
+| IID | Fit | 376 | 572 | 376 |
+| IID | Calibration | 94 | 141 | 94 |
+| IID | Test | 1,391 | 2,272 | 1,391 |
+| Geographic | Fit | 332 | 496 | 332 |
+| Geographic | Calibration | 83 | 122 | 83 |
+| Geographic | Test | 1,446 | 2,367 | 1,446 |
+
+The separately frozen continuous-event intersections contain 88 IID and
+90 geographic test clips, with 94 and 83 training-holdout calibration clips.
+No excluded test clips are replaced. Comparisons with earlier cohorts must
+retain these changes in sample composition and event clocks.
+
+[Protocol, source hashes and frozen contracts](results/presentation_protocol.json) ·
+[Paired frame indices, presentation times and membership](results/presentation_protocol.jsonl).
+
+## Sequential Execution
+
+```powershell
+python scripts/run_overnight_research.py --phase cadence --deadline 2026-10-17T04:00:00+00:00
+```
+
+The new queue extracts both complete feature arms before fitting eight
+candidate/global by IID/geographic models. It uses one GPU job and two CPU
+threads per worker, retains resumable per-window caches, and publishes verified
+predictions, model/input hashes, runtime versions, class prevalence and four
+paired contrasts after all fits finish. Source decode uses the same per-clip
+support verified at cohort preparation; only the chosen arm's 16 images enter
+the detector and motion model. Smoke subsets are explicitly barred from fitting.
+Continuous PTS event replay remains a subsequent, separate evaluation.
