@@ -84,3 +84,5 @@ scripts/run_streaming_incident.py text eol=lf
 Application/DebugVersion/src/illegal_parking/incident_camera_startup.py text eol=lf
 Application/DebugVersion/src/illegal_parking/incident_streaming.py text eol=lf
 docs/results/live_runtime_20261017_protocol.json text eol=lf
+scripts/publish_live_runtime.py text eol=lf
+docs/results/live_runtime_20261017.json text eol=lf

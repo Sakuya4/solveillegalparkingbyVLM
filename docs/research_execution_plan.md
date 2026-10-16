@@ -259,6 +259,13 @@ At the deadline, report delivered artifacts and remaining external requirements.
     Prior window-test observations remain disclosed. No extraction/fitting
     has started. Next test and freeze execution workers, fit all models,
     calibrate on TRAIN holdouts, freeze policies, then replay test sources.
+33. Completed: a separately predeclared 120-second Taichung camera session on
+    17 October processes 884 sampled frames and 58 decisions, with median/p95
+    decoder-arrival latency 107/141 ms. Four read failures and four retry
+    attempts accompany a completed observation, with no sampled-frame gaps
+    above one second. All 119.835 eligible acquisition seconds remain
+    independently unassigned; zero candidate alerts add no reviewed-normal
+    exposure. Publish numeric traces/hashes, retain footage locally.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -274,9 +281,10 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 498 tests pass,
+(native desktop and portable runtime). Current full regression: 509 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
-Three additional public-support/protocol tests are verified separately.
+The full run includes public-support/protocol and new live-runtime publication
+tests and exits zero. Main publication is authorized by the user on 17 October.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
 and `18f63b3` (native evidence and demonstration).

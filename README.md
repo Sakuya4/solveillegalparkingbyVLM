@@ -218,6 +218,15 @@ source denominators and motivate a matched continuous-context training study.
 The [fit-only alignment audit and frozen training protocol](docs/continuous_context_training.md)
 retain the original source partitions and predeclare the next eight-model comparison.
 
+### Public-Camera Runtime
+
+A [120-second Taichung public-camera experiment](docs/live_cctv_runtime.md)
+processed 884 sampled frames and 58 temporal decisions on the CPU runtime.
+Median decoder-arrival-to-decision latency was 107 ms (p95 141 ms); bounded
+reconnection sustained the session across four read failures. The numerical
+release includes timestamps, decisions and provenance. This session emitted
+zero candidate alerts and retains an unassigned ground-truth label.
+
 ### Multimodal Evidence and Restoration
 
 ![Privacy-treated temporal evidence](docs/assets/incident_vlm_clean_evidence.jpg)

@@ -58,3 +58,13 @@ are retained under `outputs/release_verification/`.
 | Initial failing JUnit record | `7b2cf5aa9cc9d7c25f4ef49f297a77dfc0a2aac1b5b1a63534831888a4ca7524` |
 | Passing confirmation JUnit record | `ee2c877dbbf1565d60167e448e4685ba4d8f305e5152d734dd994aff40e153de` |
 | Reference analysis report | `f86fabc00d3fb14034b6e3a7432c5ae0307e501a23543740de8475f43b6bcdd7` |
+
+## Main Publication Gate
+
+On 17 October 2026, the complete developer regression passed **509 tests**
+with process exit code zero, including the frozen-training inputs and new
+public-camera trace verification. The JUnit record is retained at
+`outputs/research_runs/main_release_20261017_tests.xml`. The separate
+[120-second public-camera experiment](live_cctv_runtime.md) also completed,
+with native playback verified. Research reference weights and operating
+defaults remain unchanged.

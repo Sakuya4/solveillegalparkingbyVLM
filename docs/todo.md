@@ -69,6 +69,7 @@
 - [x] Independently verify all supported clip rankings and both policy detections against public data and the frozen production evaluator.
 - [x] Publish the eight-model diagnostic report, decomposition figures and native TRAIN-only comparison modes.
 - [x] Verify isolated desktop installation, declare tracker dependencies and separate camera warm-up from observation clocks.
+- [x] Run a predeclared 120-second night-time public-camera experiment and publish numeric timing/reconnection traces without assigning ground truth.
 - [x] Freeze and complete the fit-only continuous-context support audit, without reading model scores or test endpoints.
 - [x] Freeze the eight-model continuous-context training comparison, source splits, settings, operating objective and new event cohorts before extraction/fitting.
 - [ ] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.

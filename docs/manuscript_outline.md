@@ -198,6 +198,13 @@ fit/calibration sources. Its 100/100 new event cohorts exclude prior replays
 while acknowledging earlier window-test observations. Model extraction and
 fitting follow a separately tested execution freeze; these support counts
 are feasibility results rather than recognition gains.
+The native runtime was subsequently exercised on a predeclared 120-second
+Taichung night-time public-camera observation. It processed 884 sampled
+frames and 58 decisions, with median/p95 local decoder-arrival-to-decision
+latency of 107/141 ms. Four read failures were handled within the bounded
+reconnect workflow without sampled-frame gaps above one second. These
+execution endpoints remain separate from event accuracy and independently
+reviewed normal-camera exposure; the observation's ground truth is unassigned.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and
