@@ -1,107 +1,47 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
-import time
 from pathlib import Path
 
 import cv2
 
 ROOT = Path(__file__).resolve().parents[1]
-SRC = ROOT / "Application" / "DebugVersion" / "src"
-sys.path.insert(0, str(SRC))
-
-from illegal_parking.frame_sources import HTTPImageSource
+sys.path.insert(0, str(ROOT / "Application/DebugVersion/src"))
+from illegal_parking.cctv_capture import capture_camera_observation, redacted_camera_url
+from illegal_parking.frame_sources import HTTPImageSource, MJPEGFrameSource
 from illegal_parking.live_cctv import resolve_first_media_url
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(
-        description="Capture a wall-clock-timed public CCTV image endpoint to video."
-    )
-    parser.add_argument("--page-url", required=True)
-    parser.add_argument("--duration-sec", type=float, default=300.0)
+    parser = argparse.ArgumentParser(description="Capture a timed public CCTV observation with source timestamps.")
+    inputs = parser.add_mutually_exclusive_group(required=True)
+    inputs.add_argument("--page-url")
+    inputs.add_argument("--source-url")
+    parser.add_argument("--transport", choices=("snapshot", "mjpeg"), default="snapshot")
+    parser.add_argument("--duration-sec", type=float, default=300)
     parser.add_argument("--poll-interval-sec", type=float, default=0.5)
     parser.add_argument("--target-width", type=int, default=640)
-    parser.add_argument("--output-video", required=True)
-    parser.add_argument("--output-report", required=True)
+    parser.add_argument("--target-fps", type=float, default=7.5)
+    parser.add_argument("--output-video", type=Path, required=True)
+    parser.add_argument("--output-report", type=Path, required=True)
+    parser.add_argument("--preview", type=Path)
+    parser.add_argument("--stop-file", type=Path)
     args = parser.parse_args()
-    if args.duration_sec <= 0 or args.poll_interval_sec <= 0 or args.target_width <= 0:
-        raise SystemExit("duration, poll interval, and target width must be positive")
-
-    media_url = resolve_first_media_url(args.page_url)
-    if not media_url:
-        raise SystemExit(f"No image endpoint found in {args.page_url}")
-    source = HTTPImageSource(media_url, max_frames=None, timeout_sec=10.0)
-    frames = []
-    frame_times: list[float] = []
-    hashes: list[str] = []
-    failures = 0
-    started = time.perf_counter()
-    next_poll = started
-    while time.perf_counter() - started < args.duration_sec:
-        delay = next_poll - time.perf_counter()
-        if delay > 0:
-            time.sleep(delay)
-        ok, frame = source.read()
-        observed = time.perf_counter()
-        next_poll = observed + args.poll_interval_sec
-        if not ok or frame is None:
-            failures += 1
-            continue
-        height, width = frame.shape[:2]
-        if width != args.target_width:
-            frame = cv2.resize(
-                frame,
-                (args.target_width, round(height * args.target_width / width)),
-                interpolation=cv2.INTER_AREA,
-            )
-        frames.append(frame)
-        frame_times.append(observed - started)
-        hashes.append(hashlib.sha1(frame.tobytes()).hexdigest())
-
-    elapsed_sec = time.perf_counter() - started
-    if len(frames) < 16:
-        raise SystemExit(f"Only captured {len(frames)} frames; at least 16 are required")
-    effective_fps = (len(frames) - 1) / max(frame_times[-1] - frame_times[0], 1e-6)
-    output_video = _resolve(args.output_video)
-    output_video.parent.mkdir(parents=True, exist_ok=True)
-    height, width = frames[0].shape[:2]
-    writer = cv2.VideoWriter(
-        str(output_video), cv2.VideoWriter_fourcc(*"mp4v"), effective_fps, (width, height)
-    )
-    if not writer.isOpened():
-        raise SystemExit(f"Cannot create {output_video}")
-    try:
-        for frame in frames:
-            writer.write(frame)
-    finally:
-        writer.release()
-
-    report = {
-        "source_page": args.page_url,
-        "media_endpoint_redacted": True,
-        "requested_duration_sec": args.duration_sec,
-        "observed_wall_duration_sec": elapsed_sec,
-        "successful_frames": len(frames),
-        "failed_reads": failures,
-        "effective_fps": effective_fps,
-        "unique_exact_frames": len(set(hashes)),
-        "exact_duplicate_rate": 1.0 - len(set(hashes)) / len(hashes),
-        "output_video": output_video.name,
-    }
-    output_report = _resolve(args.output_report)
-    output_report.parent.mkdir(parents=True, exist_ok=True)
-    output_report.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    source_url = args.page_url or args.source_url
+    redacted_camera_url(source_url)
+    media = resolve_first_media_url(args.page_url, timeout_sec=5) if args.page_url else args.source_url
+    if not media:
+        raise ValueError("No camera endpoint was found in the source page")
+    redacted_camera_url(media)
+    cv2.setNumThreads(2)
+    source = MJPEGFrameSource(media, timeout_sec=5) if args.transport == "mjpeg" else HTTPImageSource(media, max_frames=None, timeout_sec=5)
+    report = capture_camera_observation(source, args.output_video, source_url=source_url, transport=args.transport, duration_sec=args.duration_sec, poll_interval_sec=args.poll_interval_sec, target_width=args.target_width, target_fps=args.target_fps, stop_file=args.stop_file, preview_path=args.preview, progress=lambda row: print(json.dumps(row), flush=True))
+    args.output_report.parent.mkdir(parents=True, exist_ok=True)
+    args.output_report.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({key: value for key, value in report.items() if key not in {"frame_times_sec", "frame_sha256"}}, indent=2), flush=True)
     return 0
-
-
-def _resolve(value: str) -> Path:
-    path = Path(value)
-    return path if path.is_absolute() else ROOT / path
 
 
 if __name__ == "__main__":

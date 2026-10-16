@@ -25,6 +25,8 @@ def main() -> None:
     parser.add_argument("--max-duration-sec", type=float, default=120)
     parser.add_argument("--vlm-review", action="store_true")
     parser.add_argument("--max-vlm-events", type=int, default=3)
+    parser.add_argument("--min-positive-windows", type=int, choices=(1, 2), default=2)
+    parser.add_argument("--capture-report", type=Path)
     args = parser.parse_args()
     if args.threads <= 0 or args.max_duration_sec <= 0 or args.max_vlm_events <= 0:
         parser.error("Thread count, duration limit, and VLM event budget must be positive")
@@ -42,6 +44,7 @@ def main() -> None:
     from illegal_parking.incident_video_pipeline import run_candidate_incident_inference
     from illegal_parking.onnx_runtime import OnnxIncidentPredictor
     from illegal_parking.incident_vlm_evidence import write_clean_review_package, review_disposition
+    from illegal_parking.cctv_capture import load_camera_observation
     from run_candidate_incident_video import _write_annotated_video, _blur_plate_region
 
     torch.set_num_threads(args.threads)
@@ -56,6 +59,10 @@ def main() -> None:
         raise ValueError("Input must be a readable video with a known duration")
     if frame_count / fps > args.max_duration_sec:
         raise ValueError(f"Select a clip of at most {args.max_duration_sec:g} seconds for interactive analysis")
+    capture_metadata = load_camera_observation(args.capture_report, args.input, int(frame_count)) if args.capture_report else None
+
+    def source_time(index):
+        return capture_metadata["frame_times_sec"][index] if capture_metadata is not None else index / fps
     if not args.detector.is_file():
         raise FileNotFoundError(f"Detector checkpoint required: {args.detector}")
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -66,7 +73,7 @@ def main() -> None:
         args.input, YOLO(str(args.detector)), predictor,
         detector_path=args.detector, model_path=args.model, device="cpu",
         target_fps=7.5, target_width=640, image_size=320, confidence=0.15,
-        sequence_steps=15, hop_steps=15, min_positive_windows=2,
+        sequence_steps=15, hop_steps=15, min_positive_windows=args.min_positive_windows,
     )
     print("Rendering privacy-treated model output", flush=True)
     video_path = args.output_dir / "incident_output.mp4"
@@ -78,7 +85,7 @@ def main() -> None:
         if flag and not active:
             start = result.report["window_starts"][index]
             decision_frame = min(start + result.report["sequence_steps"], len(result.source_indices) - 1)
-            events.append({"window_index": index, "trigger_time_sec": result.source_indices[decision_frame] / result.report["source_fps"], "probability": result.report["window_probabilities"][index]})
+            events.append({"window_index": index, "trigger_time_sec": source_time(result.source_indices[decision_frame]), "output_frame_index": decision_frame, "input_frame_index": result.source_indices[decision_frame], "probability": result.report["window_probabilities"][index]})
         active = flag
     report = {
         **result.report, "runtime": predictor.runtime, "events": events,
@@ -90,7 +97,10 @@ def main() -> None:
         "software": {"python": sys.version.split()[0], "torch": torch.__version__, "opencv": cv2.__version__, "ultralytics": ultralytics.__version__},
         "detector_device": "cpu", "detector_role": "vehicle proposal and tracking",
         "temporal_model_role": "calibrated incident probability and persistence gate",
+        "event_clock": "captured observation timestamps" if capture_metadata is not None else "source video frame clock",
     }
+    if capture_metadata is not None:
+        report["capture"] = capture_metadata
     vlm_pipeline = None
     for index, event in enumerate(events):
         window_start = result.report["window_starts"][event["window_index"]]
@@ -102,7 +112,7 @@ def main() -> None:
             for track in result.tracked[result.source_indices[frame_index]]:
                 _blur_plate_region(frame, track)
             review_frames.append(frame)
-        times = tuple(result.source_indices[frame] / result.report["source_fps"] for frame in frame_indices)
+        times = tuple(source_time(result.source_indices[frame]) for frame in frame_indices)
         event["evidence"] = write_clean_review_package(tuple(review_frames), times, args.output_dir / f"event_{index + 1:03d}", privacy_method=result.report["privacy"])
         if args.vlm_review and index < args.max_vlm_events:
             from illegal_parking.vlm_review import VlmReviewRequest, parse_vlm_review_result_text, build_unparsed_vlm_review_result
