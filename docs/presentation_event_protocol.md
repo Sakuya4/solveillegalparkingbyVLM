@@ -94,3 +94,36 @@ from complete-cohort publication. The complete 408-test regression suite
 passes before starting the new GPU queue.
 
 [Frozen model, source and implementation hashes](results/presentation_event_protocol.json).
+
+## Execution Amendments
+
+All 170 distinct calibration-source replays complete before operating-point
+selection. The original reporter exposes NumPy integer episode counts that
+the standard JSON encoder cannot serialize. The
+[format-only amendment](results/presentation_event_serialization.json)
+binds the unchanged calibration batch, protocol and reporting implementation
+to a reporter-local scalar encoder. It converts NumPy scalars to identical
+Python scalars without changing probabilities, numerical endpoints or the
+selection rule. Original failure logs and runner status are preserved; the
+completed GPU calibration batch is reused rather than recomputed.
+
+After calibration, four models select threshold zero under the declared
+episode budget. A separate [diagnostic control specification](results/presentation_event_controls_protocol.json)
+is therefore frozen before test replay. It evaluates always-positive and
+always-negative contexts on the same valid source grid, with identical
+persistence and missing-hop resets. The positive control needs no images
+or model scores: it tests how event placement and sequence warm-up affect
+recall. These controls are a calibration-motivated diagnostic addition, not
+part of the original pre-fitting model comparison.
+
+The control audit also recomputes every saved checkpoint probability from
+the hash-bound per-clip feature tensors, with absolute tolerance 1e-7.
+All eight model-minus-clock recall contrasts are reported, with pointwise
+paired source-clip intervals and the fraction of positive context decisions.
+Zero-threshold models must agree exactly with the clock-only positive control.
+
+```powershell
+python scripts/run_presentation_event_reporting.py calibrate
+python scripts/run_overnight_research.py --phase pts_events --deadline 2026-10-17T04:00:00+00:00
+python scripts/audit_presentation_event_predictions.py publish
+```

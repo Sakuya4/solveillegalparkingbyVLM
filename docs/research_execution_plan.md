@@ -176,6 +176,13 @@ At the deadline, report delivered artifacts and remaining external requirements.
     and a real-detector training-only clip verify the new reader/features.
     Freeze model/code hashes before `--phase pts_events`; inspect all status
     files first and never restart the completed cadence queue.
+20. Calibration replay complete on all 170 distinct sources. Preserve the
+    original reporter's NumPy-scalar JSON failure and reuse its hash-matched
+    GPU outputs through a separately frozen format-only reporting adapter.
+    Eight selections are recorded before test replay; four select threshold
+    zero. Freeze nonvisual positive/negative diagnostic controls before test
+    replay and audit saved probabilities against all eight checkpoints.
+    The recovered queue resumes at selection and test, not calibration.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -191,7 +198,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 408 tests pass,
+(native desktop and portable runtime). Current full regression: 416 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

@@ -97,6 +97,9 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
         "model_comparison": deployment_models,
         "full_cohort_models": _load_json(results / "full_cohort_model_comparison.json")["models"],
         "vlm_comparison": _load_json(results / "vlm_forwarded_comparison.json"),
+        "presentation_windows": _load_json(results / "presentation_comparison.json"),
+        "presentation_events": _load_json(results / "presentation_event_comparison.json") if (results / "presentation_event_comparison.json").exists() else None,
+        "presentation_controls": _load_json(results / "presentation_event_controls.json") if (results / "presentation_event_controls.json").exists() else None,
         "ablations": ablations,
         "deployment": deployment,
         "government": {

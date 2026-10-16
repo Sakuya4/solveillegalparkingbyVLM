@@ -1,0 +1,18 @@
+{
+  "created_at_utc": "2026-10-16T11:35:33.635126+00:00",
+  "protocol_sha256": "f8725a5e20f5d6ac04c55f15b37e88f8e2ae8555eb3599f8ed903768ab77b131",
+  "selection_sha256": "18b50009e6bc4d161ff686803311e59b6692bf105167b54109074aec83ef6e00",
+  "auditor_sha256": "1d81e7e71116b57f94f6738202117e7a4dcfa28c0e743a88c21696237296ab08",
+  "serialization_amendment_sha256": "30341409f0458afa1124e0c0b35cedd4cf9e104c9c60aed4fcae8af831378f26",
+  "reason": "Diagnostic addition after calibration revealed zero-threshold selections, before test replay; not part of the original pre-fitting model comparison",
+  "controls": {
+    "clock_only_positive": "Every valid context positive, gate2, same actual PTS and missing-hop resets; no image or probability inputs",
+    "always_negative": "Every valid context negative; same cohort and denominator"
+  },
+  "fixed_control_threshold": 0.5,
+  "paired_bootstrap_resamples": 2000,
+  "seed": 42,
+  "comparison": "Each selected model minus clock-only positive event recall, paired by source clip, all eight models",
+  "prediction_verification": "Recompute all eight checkpoint outputs from every saved feature tensor; absolute tolerance 1e-7",
+  "scope": "Diagnostic controls expose temporal dataset structure, not normal-camera operational performance"
+}

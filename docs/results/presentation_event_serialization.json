@@ -1,0 +1,20 @@
+{
+  "created_at_utc": "2026-10-16T11:33:19.913993+00:00",
+  "kind": "numpy_scalar_serialization_only",
+  "adapter_sha256": "ba837909b4db36ef479bde473090e9c8e586bfc2349242e35367baf885fda733",
+  "frozen_reporter_sha256": "3473cb18a2085b86cd44fc2899a33ce67053a2b035b009e36873d04fe4509ab2",
+  "protocol_sha256": "f8725a5e20f5d6ac04c55f15b37e88f8e2ae8555eb3599f8ed903768ab77b131",
+  "calibration_batch_sha256": "9e02246367430be98e48d8e1b1a4fd35f0e1ff543489807f76254cd66f3f4d29",
+  "original_failure_log_sha256": "6f3893a9dae812e3a1a6419b13ff1706ee78c2a61e9bcf26ac7fa1255c19c7ae",
+  "unchanged": [
+    "models",
+    "source clips",
+    "annotation clocks",
+    "features",
+    "probabilities",
+    "threshold grid",
+    "selection rule",
+    "endpoints"
+  ],
+  "behavior": "Convert NumPy scalar values to their identical Python scalar representation during JSON encoding; reject nonfinite values; no arrays or scientific settings are changed"
+}

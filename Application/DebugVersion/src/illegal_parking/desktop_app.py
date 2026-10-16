@@ -355,6 +355,8 @@ class TrafficResearchWindow(QMainWindow):
             [label, f'{contrasts[key]["difference"]:+.0%}', f'[{contrasts[key]["lower_95"]:+.0%}, {contrasts[key]["upper_95"]:+.0%}]', contrasts[key]["clusters"]]
             for key, label in (("qwen3_v2_minus_llava3_v2", "Qwen minus LLaVA / 3 frames"), ("qwen8_v2_minus_qwen3_v2", "Qwen 8 minus 3 frames"))]))
         tabs.addTab(vlm_page, "VLM / generation v2")
+        from .desktop_presentation_results import add_presentation_tabs
+        add_presentation_tabs(tabs, self.snapshot, make_table)
         layout.addWidget(tabs, 1)
         return page
 

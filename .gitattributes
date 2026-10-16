@@ -22,3 +22,7 @@ Application/DebugVersion/src/illegal_parking/incident_evaluation.py text eol=crl
 Application/DebugVersion/src/illegal_parking/incident_event_calibration.py text eol=lf
 Application/DebugVersion/src/illegal_parking/incident_features.py text eol=crlf
 Application/DebugVersion/src/illegal_parking/incident_trajectory.py text eol=crlf
+scripts/run_presentation_event_reporting.py text eol=lf
+docs/results/presentation_event_serialization.json text eol=lf
+scripts/audit_presentation_event_predictions.py text eol=lf
+docs/results/presentation_event_controls_protocol.json text eol=lf

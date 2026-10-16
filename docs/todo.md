@@ -52,6 +52,10 @@
 - [x] Implement and CPU-test continuous PTS contexts, missing-hop persistence resets and annotation-time event evaluation.
 - [x] Implement a separate model/source-hashed event protocol and calibration-before-test queue.
 - [ ] Complete continuous PTS replay and publish eight-model event recall, delay and alert-budget outcomes.
+- [x] Complete 170-source calibration replay and preserve/recover a format-only reporting failure without changing frozen scientific implementations.
+- [x] Freeze nonvisual temporal controls after calibration and before test replay.
+- [ ] Verify all continuous probabilities from saved features and publish clock-control contrasts.
+- [ ] Display completed PTS window/event/control results in the native workbench.
 
 ## Completed Case: Red-Line Parking
 

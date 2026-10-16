@@ -115,9 +115,9 @@ def cadence_steps() -> list[tuple[str, list[str]]]:
 def presentation_event_steps():
     return [
         ("pts_event_calibration_replay", ["scripts/replay_presentation_events.py", "--cohort", "calibration"]),
-        ("pts_event_threshold_selection", ["scripts/evaluate_presentation_events.py", "calibrate"]),
+        ("pts_event_threshold_selection", ["scripts/run_presentation_event_reporting.py", "calibrate"]),
         ("pts_event_test_replay", ["scripts/replay_presentation_events.py", "--cohort", "test"]),
-        ("pts_event_comparison", ["scripts/evaluate_presentation_events.py", "evaluate"]),
+        ("pts_event_comparison", ["scripts/run_presentation_event_reporting.py", "evaluate"]),
     ]
 
 
