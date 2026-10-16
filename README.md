@@ -67,6 +67,9 @@ reference to an implemented method or experimental design.
 
 ### Native Desktop Application
 
+Use Python 3.11. On Windows, keep the checkout path short (for example,
+`C:\src\traffic`) so Qt resource filenames remain within Windows path limits.
+
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r Application/DebugVersion/requirements.txt -r requirements-desktop.txt

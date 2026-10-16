@@ -9,6 +9,11 @@ it, inspects event timestamps, and exports the resulting JSON record.
 
 ## Installation and Launch
 
+The desktop installation is verified with Python 3.11 on Windows. Use a short
+checkout path such as `C:\src\traffic` before creating `.venv`: Qt wheel resources
+can exceed Windows filename limits in deeply nested virtual environments.
+`lap` is installed explicitly for ByteTrack, without first-use dependency downloads.
+
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r Application/DebugVersion/requirements.txt -r requirements-desktop.txt
