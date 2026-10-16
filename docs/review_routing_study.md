@@ -135,6 +135,9 @@ python scripts/evaluate_incident_review_routing.py --batch-dir outputs/accident/
 
 ## Subsequent Evaluation
 
-Extend event-retention experiments to normal-stream exposure, variable service
-times, and heterogeneous camera arrivals. Government risk can inform resource allocation, with minimum camera
+The [empirical service-variability extension](review_service_variability.md)
+completes 176 scenarios and 32 additional SystemC checks. It reports tail
+latency and retained event identities separately from constant-service results.
+Extend event-retention experiments to normal-stream exposure and heterogeneous
+camera arrivals. Government risk can inform resource allocation, with minimum camera
 service guarantees evaluated alongside risk-weighted prioritization.

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import deque
 from dataclasses import asdict, dataclass, replace
+import math
 
 import numpy as np
 
@@ -59,15 +60,18 @@ def simulate_edge_trace_queues(
     candidate_flags: list[bool] | np.ndarray,
     *,
     review_events: list[dict] | None = None,
+    review_service_ms: list[float] | np.ndarray | None = None,
 ) -> EdgeQueueResult:
     flags = np.asarray(candidate_flags, dtype=np.bool_).reshape(-1)
-    return _simulate_edge_queues(profile, candidate_flags=flags, review_events=review_events)
+    service = np.asarray(review_service_ms, dtype=float).reshape(-1) if review_service_ms is not None else None
+    return _simulate_edge_queues(profile, candidate_flags=flags, review_events=review_events, review_service_ms=service)
 
 
 def _simulate_edge_queues(
     profile: EdgeQueueProfile,
     candidate_flags: np.ndarray | None,
     review_events: list[dict] | None = None,
+    review_service_ms: np.ndarray | None = None,
 ) -> EdgeQueueResult:
     profile.validate()
     duration_ms = profile.duration_sec * 1000.0
@@ -76,6 +80,8 @@ def _simulate_edge_queues(
         raise ValueError(
             f"candidate flags must match generated frames: {len(candidate_flags)} != {len(arrivals)}"
         )
+    if review_service_ms is not None and (len(review_service_ms) != len(arrivals) or not np.all(np.isfinite(review_service_ms)) or np.any(review_service_ms < 0)):
+        raise ValueError("Review service trace must contain one finite nonnegative duration per generated frame")
     service_ms = profile.detector_latency_ms + profile.temporal_latency_ms
 
     npu_finishes: deque[float] = deque()
@@ -114,6 +120,7 @@ def _simulate_edge_queues(
         ]
     review_finishes: deque[float] = deque()
     accepted_reviews: list[float] = []
+    accepted_review_service: list[float] = []
     dropped_candidates = 0
     for source_index, candidate_time in zip(candidate_indices, candidate_times):
         _discard_completed(review_finishes, candidate_time)
@@ -123,9 +130,11 @@ def _simulate_edge_queues(
                 review_events.append({"source_index": source_index, "status": "dropped", "candidate_time_ms": candidate_time, "finish_ms": None})
             continue
         start = max(candidate_time, review_finishes[-1] if review_finishes else candidate_time)
-        finish = start + profile.review_latency_ms
+        service = profile.review_latency_ms if review_service_ms is None else float(review_service_ms[source_index])
+        finish = start + service
         review_finishes.append(finish)
         accepted_reviews.append(finish)
+        accepted_review_service.append(service)
         if review_events is not None:
             review_events.append({"source_index": source_index, "status": "completed" if finish <= duration_ms else "pending", "candidate_time_ms": candidate_time, "finish_ms": finish})
 
@@ -148,7 +157,7 @@ def _simulate_edge_queues(
         pending_reviews=pending_reviews,
         dropped_candidates=dropped_candidates,
         review_drop_rate=_divide(dropped_candidates, generated_candidates),
-        review_utilization=min(1.0, _divide(len(accepted_reviews) * profile.review_latency_ms, duration_ms)),
+        review_utilization=min(1.0, _divide(sum(accepted_review_service), duration_ms)),
     )
 
 
@@ -170,7 +179,7 @@ def simulate_camera_capacity_sweep(
 
 
 def _frame_arrivals(camera_count: int, camera_fps: float, duration_sec: float) -> list[float]:
-    frame_count_per_camera = int(round(camera_fps * duration_sec))
+    frame_count_per_camera = math.floor(camera_fps * duration_sec + 0.5)
     return sorted(
         frame_index * 1000.0 / camera_fps
         for _camera_index in range(camera_count)
