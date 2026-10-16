@@ -57,14 +57,17 @@ def simulate_edge_queues(profile: EdgeQueueProfile) -> EdgeQueueResult:
 def simulate_edge_trace_queues(
     profile: EdgeQueueProfile,
     candidate_flags: list[bool] | np.ndarray,
+    *,
+    review_events: list[dict] | None = None,
 ) -> EdgeQueueResult:
     flags = np.asarray(candidate_flags, dtype=np.bool_).reshape(-1)
-    return _simulate_edge_queues(profile, candidate_flags=flags)
+    return _simulate_edge_queues(profile, candidate_flags=flags, review_events=review_events)
 
 
 def _simulate_edge_queues(
     profile: EdgeQueueProfile,
     candidate_flags: np.ndarray | None,
+    review_events: list[dict] | None = None,
 ) -> EdgeQueueResult:
     profile.validate()
     duration_ms = profile.duration_sec * 1000.0
@@ -97,7 +100,13 @@ def _simulate_edge_queues(
     frame_latencies = [accepted_latencies[index] for index in completed_indices]
     if candidate_flags is None:
         candidate_times = _candidate_times(completed_finishes, profile.candidate_probability)
+        candidate_indices = [None] * len(candidate_times)
     else:
+        candidate_indices = [
+            accepted_source_indices[index]
+            for index in completed_indices
+            if candidate_flags[accepted_source_indices[index]]
+        ]
         candidate_times = [
             finish
             for index, finish in zip(completed_indices, completed_finishes)
@@ -106,15 +115,19 @@ def _simulate_edge_queues(
     review_finishes: deque[float] = deque()
     accepted_reviews: list[float] = []
     dropped_candidates = 0
-    for candidate_time in candidate_times:
+    for source_index, candidate_time in zip(candidate_indices, candidate_times):
         _discard_completed(review_finishes, candidate_time)
         if len(review_finishes) >= profile.review_queue_capacity + 1:
             dropped_candidates += 1
+            if review_events is not None:
+                review_events.append({"source_index": source_index, "status": "dropped", "candidate_time_ms": candidate_time, "finish_ms": None})
             continue
         start = max(candidate_time, review_finishes[-1] if review_finishes else candidate_time)
         finish = start + profile.review_latency_ms
         review_finishes.append(finish)
         accepted_reviews.append(finish)
+        if review_events is not None:
+            review_events.append({"source_index": source_index, "status": "completed" if finish <= duration_ms else "pending", "candidate_time_ms": candidate_time, "finish_ms": finish})
 
     completed_reviews = sum(finish <= duration_ms for finish in accepted_reviews)
     pending_reviews = len(accepted_reviews) - completed_reviews

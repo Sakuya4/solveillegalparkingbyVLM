@@ -118,6 +118,18 @@ def test_trace_queue_uses_explicit_candidate_flags() -> None:
     assert result.generated_candidates == 2
 
 
+def test_trace_review_identities_preserve_completion_pending_and_overflow():
+    profile = EdgeQueueProfile(2, 2, 2, 1, 1, 8, 1, 1000, 1)
+    events = []
+    result = simulate_edge_trace_queues(profile, [True] * 8, review_events=events)
+    assert len(events) == result.generated_candidates == 8
+    assert [event["source_index"] for event in events] == list(range(8))
+    for status, expected in (("completed", result.completed_reviews), ("pending", result.pending_reviews), ("dropped", result.dropped_candidates)):
+        assert sum(event["status"] == status for event in events) == expected
+        assert expected > 0
+    assert events[0]["finish_ms"] == pytest.approx(1002)
+
+
 def test_trace_queue_rejects_flag_count_mismatch() -> None:
     profile = EdgeQueueProfile(
         camera_count=1,

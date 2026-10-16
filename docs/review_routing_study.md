@@ -76,9 +76,65 @@ hashes. Existing CMake targets also support other SystemC installations.
 
 [Numerical artifact](results/review_routing.json)
 
+## TCN-Gated Event Retention
+
+The second workload uses continuous-clip TCN outputs rather than raw candidate
+proposals. For each of 100 IID and 100 geographic clips, persistence is applied
+causally and only the first window of each positive episode generates a review
+arrival. Accident annotations are attached afterward to measure retention
+within the existing -1/+3-second event-matching interval. The workload preserves
+fixed clip order, zero inter-clip gaps, and synchronized one/four-camera replay;
+it measures benchmark demand rather than field incident frequency.
+
+Original IID reports use five-step decision hops; geographic reports use
+15-step hops. Routing comparisons hold each source batch fixed. Cross-split
+differences therefore are not isolated effects of geography.
+
+All 24 policy/profile/camera/split combinations reproduce the eight integer
+counters in the locally built SystemC model. Candidate identities retained by
+the Python simulation additionally link review completion to annotated events.
+
+Selected conservative-profile comparisons are shown below. Completed event
+counts refer to service completion for a matching detected episode. They do
+not incorporate VLM classification correctness.
+
+| Split | Cameras | Policy | Detected events | Completed matched events | Queue drops | Review latency p95 (s) |
+| --- | ---: | --- | ---: | ---: | ---: | ---: |
+| IID | 1 | All episodes | 44 | 44 | 0 | 33.00 |
+| IID | 1 | 100% meter | 44 | 30 | 0 | 8.28 |
+| IID | 4 | All episodes | 176 | 84 | 329 | 73.77 |
+| IID | 4 | 100% meter | 176 | 69 | 0 | 33.10 |
+| Geographic | 1 | All episodes | 30 | 29 | 0 | 10.55 |
+| Geographic | 1 | 100% meter | 30 | 26 | 0 | 8.28 |
+| Geographic | 4 | All episodes | 120 | 85 | 98 | 72.79 |
+| Geographic | 4 | 100% meter | 120 | 69 | 0 | 33.10 |
+
+Removing overflow does not guarantee improved event retention. For example,
+single-camera IID conservative replay retains all 44 detected events without
+metering, whereas the full-capacity meter retains 30. Conversely, in responsive
+four-camera IID replay, the meter increases completed matched events from 51
+to 62 out of 300 detected event-camera instances. Burst structure, persistence,
+and admission jointly determine the retention/latency tradeoff.
+
+These results motivate separating immediate edge notification from optional
+VLM evidence review. A review budget controls evidence-service expenditure;
+it should not silently suppress the detector's original event record. Camera
+replicas do not represent independent statistical observations. The review
+service is a constant measured mean; front-end times remain explicit scenario
+parameters.
+
+[IID event-retention artifact](results/incident_review_routing_iid.json) ·
+[Geographic event-retention artifact](results/incident_review_routing_geographic.json)
+
+![Native event-retention diagnostics](assets/desktop_event_retention.png)
+
+```powershell
+python scripts/evaluate_incident_review_routing.py --systemc-executable outputs/toolchain/traffic-systemc-msvc-build/Release/npu_queue_sim.exe
+python scripts/evaluate_incident_review_routing.py --batch-dir outputs/accident/event_batch_geographic_100_20261016 --output docs/results/incident_review_routing_geographic.json --systemc-executable outputs/toolchain/traffic-systemc-msvc-build/Release/npu_queue_sim.exe
+```
+
 ## Subsequent Evaluation
 
-Measure event retention after routing using independent incident labels,
-normal-stream exposure, variable service times, and heterogeneous camera
-arrivals. Government risk can inform resource allocation, with minimum camera
+Extend event-retention experiments to normal-stream exposure, variable service
+times, and heterogeneous camera arrivals. Government risk can inform resource allocation, with minimum camera
 service guarantees evaluated alongside risk-weighted prioritization.

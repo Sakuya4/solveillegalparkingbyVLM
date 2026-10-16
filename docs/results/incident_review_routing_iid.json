@@ -1,0 +1,934 @@
+{
+  "split_scheme": "iid",
+  "clips": 100,
+  "source_batch_sha256": "f3fcae008a888ad120c96207f2fb507bbb11f861c18a1e29609778172456fb7d",
+  "source_reports": [
+    {
+      "report": "real_videos__0ThWw_efieo_01.json",
+      "sha256": "3b79198862fe2f41e5e2e281e96cdd5f224d904171b4bed8e3b36f04d295bbeb"
+    },
+    {
+      "report": "real_videos__0isplBZQftg_00.json",
+      "sha256": "92eb12fa12084e9d6afc9286b069e4a8879cadeb26fa38d160762749b3340de7"
+    },
+    {
+      "report": "real_videos__1Utldy8lKBo_00.json",
+      "sha256": "4996601e60fafd51cc7538060c9fe8962c9dec33bf2642730bed255426cd0e93"
+    },
+    {
+      "report": "real_videos__3mB4p8BgiTg_00.json",
+      "sha256": "830a8d6145e5e5eedfc149b814539e99fbbd3f1eb22a63e670c972436062020e"
+    },
+    {
+      "report": "real_videos__4tXvj7hHsNA_00.json",
+      "sha256": "11a3e31db9d33c3e40fccb6e31f5974a8b58b9772ba56e560ef812093d626c08"
+    },
+    {
+      "report": "real_videos__5bxGXH9wjOs_01.json",
+      "sha256": "c1973bc0de0c1833401cddacff9ad8531dbdb5c723b1bb2d7ac797c42369b0e2"
+    },
+    {
+      "report": "real_videos__7Q6tqECKuVw_00.json",
+      "sha256": "8fb9365b7148b98933fdca31fcf4d8ef44bb872834f7cbc63766eeb4e5fe1678"
+    },
+    {
+      "report": "real_videos__9eOu-gdsJD4_00.json",
+      "sha256": "f446aebe9ad0b95bae0c4a6800a07e7dc311441bde7bc023a3099fb2acab86e5"
+    },
+    {
+      "report": "real_videos__Au7DlgzqzEo_00.json",
+      "sha256": "5409ee2f02335d8619a303ccdf373fda055100caa78afdb01301d6bc79a6c462"
+    },
+    {
+      "report": "real_videos__BdL1TIuXeuY_00.json",
+      "sha256": "034cb6555886df709567ac97f94fdf342a1808bd68b46fac90d51e835b06fa60"
+    },
+    {
+      "report": "real_videos__Bv1O4yUKzEo_00.json",
+      "sha256": "f4520486a4c23045e7e2edaf588851bf24409d5cfdb883f83da759ff7e43f5ae"
+    },
+    {
+      "report": "real_videos__CJYMnDmGxio_00.json",
+      "sha256": "5a174bdd2b2ef2e0748ea286abaa7970ac45d3c8984bde85cc763be012e9a462"
+    },
+    {
+      "report": "real_videos__CRu-S6GbqF0_00.json",
+      "sha256": "8621d90856785bb5dd15efea550c08e2ef035af2bf446b86be11f49f62ebfcaa"
+    },
+    {
+      "report": "real_videos__Cfot7TRlxAQ_00.json",
+      "sha256": "8594c02593349fe9f1645f2ece07c67ee97b6c3a749833e78b87a46789816a33"
+    },
+    {
+      "report": "real_videos__D7D-zT4wxC4_00.json",
+      "sha256": "5f8f55a8d9cd4dad9ae306c5e6438ad8ae60ecca84cbeffa21ef98009d1d1bf1"
+    },
+    {
+      "report": "real_videos__DJ-zFm_TSTM_00.json",
+      "sha256": "8538770c8daaeb7c8e78852cc941755eb926df94335cafcb79632eecbdd00521"
+    },
+    {
+      "report": "real_videos__EVZe1VSzboY_00.json",
+      "sha256": "b96c70863b50475a454ff85364185b851e7821fc579defc9ee5609db60b6ae28"
+    },
+    {
+      "report": "real_videos__F8PPMv46IQk_00.json",
+      "sha256": "4ff146749885c72c56e0cdb04ed2bfc6d8b7263b5f1c337898af9c5715db8bcf"
+    },
+    {
+      "report": "real_videos__Gi1LR7ikvBo_00.json",
+      "sha256": "4f52c01576bc80aec6efa4d0e6911599440cd6c09a6a9cd14b71c0804749cd0d"
+    },
+    {
+      "report": "real_videos__IQDkEcJP3rw_00.json",
+      "sha256": "cb645faeb24c3f81e696e24d0eef9199903e6a0f48369a282e2ec427714a26c5"
+    },
+    {
+      "report": "real_videos__ITahkTaWzyQ_00.json",
+      "sha256": "e4ed7e1a1ead473b54b9f9ad009b2993f842f50bf257f7841c6b611c42c8e412"
+    },
+    {
+      "report": "real_videos__J4QZ5vJy-3E_00.json",
+      "sha256": "d4799f9a3e1bb9f925258b24a58110489c62e01963bd84b82fc77bc5c1cbe8c6"
+    },
+    {
+      "report": "real_videos__KUBbn-T3XYI_00.json",
+      "sha256": "dfe97756e46acc29fb4ba9e279c75dc27c6c63b81d18de371425beb0a671ac87"
+    },
+    {
+      "report": "real_videos__KZ8uvPQdYdk_00.json",
+      "sha256": "ff2c91f2e19fe9d6a236c8b620d707a6e61ae1ea3aec0c9c4980c3ac11d80804"
+    },
+    {
+      "report": "real_videos__KZl-FNCuiGs_00.json",
+      "sha256": "b07919e7247dd3903feb4dfefb60deb006287bb21bf5fb3943d7d66299a5446a"
+    },
+    {
+      "report": "real_videos__LVrfZ4HLlR4_00.json",
+      "sha256": "e8c412700c89cc25839233c4c2154705985c5ca978a68d6dfd360d5f175ced12"
+    },
+    {
+      "report": "real_videos__LY4ki_2dmwU_00.json",
+      "sha256": "4d3372c8933000ec5e56cdfa24f43a1c70b794aee96fb691398092bafbd8f206"
+    },
+    {
+      "report": "real_videos__LeRsK6lfpK8_00.json",
+      "sha256": "e34fea010c605a3e62715f37b0fc7194f860b8a283cf4119d32675d7b88d3462"
+    },
+    {
+      "report": "real_videos__Mzuyrdg3hxY_00.json",
+      "sha256": "7ecb8e8e321025be72fe5eccc9d5c0adcb3e627f7733a05efa5e90960d7d2eaf"
+    },
+    {
+      "report": "real_videos__NQXpqL8dL8s_00.json",
+      "sha256": "c08f4f7fedcfd88b13320815dbf4abe173e7765e58e92bea7b4108cd7a78c9e7"
+    },
+    {
+      "report": "real_videos__NdXcu0X1nH8_00.json",
+      "sha256": "1743c235ba2c3337207a91326b68060909f05de89c803276d95860aad696f3ea"
+    },
+    {
+      "report": "real_videos__Ns30XeulhHo_01.json",
+      "sha256": "863dc962222c4aed1bc29efef22c8dfb7ebafacda89bf32d169be89b7cf9d04f"
+    },
+    {
+      "report": "real_videos__Ns30XeulhHo_05.json",
+      "sha256": "a14c69695b09d1483c2db509f4c5e81e15b973964d07abb6088f9d4b23dcef86"
+    },
+    {
+      "report": "real_videos__OPrn1pj3g5M_00.json",
+      "sha256": "10eb894df3fa90d3f6f796f4b3ab092d15d28885acd11c5aed0adc0d1898ae05"
+    },
+    {
+      "report": "real_videos__OXVXsdDT9QQ_00.json",
+      "sha256": "da0350edad6052aa81b328f89b26fbf91823469d569efa8a64faca465ed5014b"
+    },
+    {
+      "report": "real_videos__OehnhIPFm4Q_01.json",
+      "sha256": "d28466b0b4a441efe56bfea1f2480ce56bda50c9cb4d94f87c3cbf546babdd44"
+    },
+    {
+      "report": "real_videos__OehnhIPFm4Q_02.json",
+      "sha256": "8bc46758e79648fb1945d00b5cd9d0dfa8b5826b228408cda97620e7f8ba8808"
+    },
+    {
+      "report": "real_videos__OjosPgV4Lss_00.json",
+      "sha256": "453cf3b0db1712cf36b6d9d0b0d93fdf04cd894bee78549d72b819f495ebf2bb"
+    },
+    {
+      "report": "real_videos__PVYTq0m-OR0_00.json",
+      "sha256": "1cd4ae9b52c480f48a41d7961aeeb08d632c59f5b4ef8acc007fd9f25148b80a"
+    },
+    {
+      "report": "real_videos__RokQ01Hx_Fg_00.json",
+      "sha256": "744dabfe6db97e3b91d0d702cb876a43043c7c49c7685b870a4fe76977fe22c8"
+    },
+    {
+      "report": "real_videos__VSNqivMhWnM_00.json",
+      "sha256": "810398cf6135e2339bb3e684e9fce73035090b0cac7b72468a63391535076ac5"
+    },
+    {
+      "report": "real_videos__VVgQuJDBIfU_00.json",
+      "sha256": "93747fc8e222008ee6e16aed825ace729678bb33b05bd5ff68bd11ef33aeaba5"
+    },
+    {
+      "report": "real_videos__VVgQuJDBIfU_01.json",
+      "sha256": "c159869b9c7474f2af9d0e48aa3a5ef401fa084d1b316aaabde37dd5a9259697"
+    },
+    {
+      "report": "real_videos__WTz4apKhaQY_00.json",
+      "sha256": "187d05e92520109f546e58df656c5ac62553a2721aa259c11e3a66ad2f0c5122"
+    },
+    {
+      "report": "real_videos__X09_GoSwRR0_00.json",
+      "sha256": "8add0ee94aaaf8b10ae9238dcbd7126d1ab3eeb5779eef78334a4ad22cbc7e28"
+    },
+    {
+      "report": "real_videos__Xy3P5EhdZ7k_00.json",
+      "sha256": "fdc81d58717bd6b73c4928bc4af71d5eef412a1ff77694d01e7adfe9a8eb847f"
+    },
+    {
+      "report": "real_videos__YlhV3d6sFhY_00.json",
+      "sha256": "45847c91b177d922c04e7e18dd2cffec32b8f5ddbefc70d5fb1c62b3413b3ec5"
+    },
+    {
+      "report": "real_videos__YueG1zLkV8o_01.json",
+      "sha256": "85afd94bee6f8b5f409f74003f9ab723fc19978858fe009e3dcb1ea8dec8a665"
+    },
+    {
+      "report": "real_videos__YyJF_uXryNs_00.json",
+      "sha256": "8d8fd3407939e40119c2a9be6bae62e75898ebb7b336c8aaa3f744bad6566359"
+    },
+    {
+      "report": "real_videos__ZSgfKfHNOb8_00.json",
+      "sha256": "aec09078e61815a5b8314805d2456abaf66467163ce71ced7bef013ed7347acf"
+    },
+    {
+      "report": "real_videos__Zp5xCOo7DSE_00.json",
+      "sha256": "f3e8e6493f2ca6aeb07fc555f3e03febb08db32a25c3e01368ebb73221740f07"
+    },
+    {
+      "report": "real_videos___DbmvhywZZ8_00.json",
+      "sha256": "70d57770849799c1395051239b6e3dbe863d9ada304672c5d1efb7c91d93b707"
+    },
+    {
+      "report": "real_videos__at2_tQSDlKg_00.json",
+      "sha256": "c7dfbadf4dfb048ce9978ed251168a12e26dd72acb13ae8532dee41dbebb1b17"
+    },
+    {
+      "report": "real_videos__bJMc3sNP2AU_00.json",
+      "sha256": "5af4dc4a8ae955417b118d2db67f703ae558776b69b690ba5a9224c97592eb0d"
+    },
+    {
+      "report": "real_videos__bw6JUt3iQls_00.json",
+      "sha256": "f6d76c0ccfb4119a3948226dc49819a9167f84725aeb2f22e6504290394117fb"
+    },
+    {
+      "report": "real_videos__bys_qghQe0w_01.json",
+      "sha256": "bfc8e84ac542425ad2cf365f24575663a9cf5d4192c8193fc43fc3c91f8d5323"
+    },
+    {
+      "report": "real_videos__c_u8oPMBGEI_02.json",
+      "sha256": "ff64b9cf8fae99156ad920e58cbdf9c607c2158d280fa8cbf6df79cef38db4bc"
+    },
+    {
+      "report": "real_videos__e17Wq4Hpqlk_00.json",
+      "sha256": "16a60be91940dadb9291514ad48474ce89da61fc15073a2be8e110994867b43e"
+    },
+    {
+      "report": "real_videos__e17Wq4Hpqlk_01.json",
+      "sha256": "4ec338395e3c08cf61e0adeebfe7c0f3bd63dd728b5133cd1bcb5a07e4f2bc96"
+    },
+    {
+      "report": "real_videos__e17Wq4Hpqlk_02.json",
+      "sha256": "861cfe50d6b48431788994d76e35b0b1eeb5a72b291aa15a930cb0ea85ce11c2"
+    },
+    {
+      "report": "real_videos__eQ1QDZ811c0_00.json",
+      "sha256": "a53cb99c028b50d01be65dd60c325988d6e4ccf3639b664a8785a099a046e601"
+    },
+    {
+      "report": "real_videos__ej0GaDepmoQ_00.json",
+      "sha256": "3990821cca8861fcd89daa3503641e9db21e13fdeb1ec7fb03a350b7a11c641d"
+    },
+    {
+      "report": "real_videos__fEprGEfHTZE_00.json",
+      "sha256": "b2ccd32ec336b59e78ddd652857a8b9f0291fd4c5f2473bef6bab313639a0d3c"
+    },
+    {
+      "report": "real_videos__fFxTIUK_Ju0_00.json",
+      "sha256": "34311ebecee431fbf95b5d6a11ef40077ecda2f7edf341563522a9339b7d9ca7"
+    },
+    {
+      "report": "real_videos__fxiCDDZx2YM_00.json",
+      "sha256": "8d5dd8475b8771fb0e7a14ef44fb59b5bb107f654379a58ab36e9ba198ab6bb0"
+    },
+    {
+      "report": "real_videos__g-JnlWPEZd4_00.json",
+      "sha256": "ef15b1ff9e0000274f24e9a056957b43954adc92a9f05ff821a4d39d9eedcec7"
+    },
+    {
+      "report": "real_videos__g9P2Y9bwPQQ_00.json",
+      "sha256": "c6d1d3eb06ff679f56574c8e318621e408a36dfda12fb8b6041ca3df36bc26c1"
+    },
+    {
+      "report": "real_videos__hdyWKrR5uCk_00.json",
+      "sha256": "634c75861a58e9f3be85ec74c906e9de4b8dc0b162bf3cd1fdfdc38c0b1acf7d"
+    },
+    {
+      "report": "real_videos__hs-_vD6T78s_00.json",
+      "sha256": "af2f0d9700287a7c8c2b0a0868ad1f558a5d865d7d598670540c24e695c2bd4e"
+    },
+    {
+      "report": "real_videos__hzxEJZNwy6s_00.json",
+      "sha256": "57962f61cb39df82d378a5d56aab4b228461f8dbfe0b9c4285df550d02ad1445"
+    },
+    {
+      "report": "real_videos__jF_WIm0oxLc_00.json",
+      "sha256": "1fb181f8df882325ce5d0d52777617e114d43a31c8e1791ee5881b2926f1e6a9"
+    },
+    {
+      "report": "real_videos__jI0_0zPf6BQ_00.json",
+      "sha256": "7b7fe62e6f1a54ba835abf29c2f00d8ff70bbdcdf69d1ec2459d67ab1e1b2abd"
+    },
+    {
+      "report": "real_videos__kkwEN_zBCx8_00.json",
+      "sha256": "f65c302e911b5dab9dbef4b123ee97d6d9faf0742588115e12003cf29006bac8"
+    },
+    {
+      "report": "real_videos__kkwEN_zBCx8_01.json",
+      "sha256": "fc203d159898383fff501db74c9228d83b88f064040610ab167c908e69599fd5"
+    },
+    {
+      "report": "real_videos__kkwEN_zBCx8_02.json",
+      "sha256": "3bfd2912f59c45c268fa9965d43ccc804d809c9c122e3f6e4623fadd61ee5de8"
+    },
+    {
+      "report": "real_videos__kuwhQxdw6TU_00.json",
+      "sha256": "0522b44c394b82b9963371e620e80e7272b51137a78777821a783ea06df77aec"
+    },
+    {
+      "report": "real_videos__lkIQC6QRbys_00.json",
+      "sha256": "7ae45f9e5610e61100fe9aa220b07e1c96ff62307eb843d097c80febe46562d7"
+    },
+    {
+      "report": "real_videos__mjKiqWEZoAM_00.json",
+      "sha256": "38d6f9d9d47446c2dd038013c26f63b6e4f8e87c09d8f394df7b63071ddd4bf1"
+    },
+    {
+      "report": "real_videos__nEszisiy2ho_00.json",
+      "sha256": "0285bc0b4ad9d1d2c3721529548e28763e0dc01d4111f6ffa9bfdb22b067e043"
+    },
+    {
+      "report": "real_videos__owO2-pjxOqs_00.json",
+      "sha256": "6d3068736478edcfd887f233e1b9daf2b0e37aa7a5f16a7f626866849b076af6"
+    },
+    {
+      "report": "real_videos__q7UutMH5DTM_00.json",
+      "sha256": "3e77b3083a7e17abc629bba2da0f6564f82ac2c5ce191b3ce75eee3d816fb3de"
+    },
+    {
+      "report": "real_videos__qfCt6R_rTMY_00.json",
+      "sha256": "84c7ffc6caab7e3a218fa99041625b10be1ad9a8d9d5719450361769cc65c202"
+    },
+    {
+      "report": "real_videos__russia16_00.json",
+      "sha256": "280c8045ad569bd23e8da40e8555b9ae9a49bdeba805f7fd048e16505714fd02"
+    },
+    {
+      "report": "real_videos__russia17_00.json",
+      "sha256": "36993a99866457eb42f547129d2a7e537281ddc14175bfcd8301960311433d55"
+    },
+    {
+      "report": "real_videos__russia1_00.json",
+      "sha256": "8665304e05b50d2e6bf04099583dbbcf4fcad91bf6232ce5e77e1729f5febedc"
+    },
+    {
+      "report": "real_videos__russia4_00.json",
+      "sha256": "556f0daebb6f848bafa599810d2286906bf74f39727cfee1c043e5d2b5154bf1"
+    },
+    {
+      "report": "real_videos__russia6_00.json",
+      "sha256": "c5d99883b2e45d39b4c5395ce47ece7d203b89df102671571dc3980254e3fb32"
+    },
+    {
+      "report": "real_videos__russia8_00.json",
+      "sha256": "0a8011d59305b2bd1bcf9deaebf73e50894bbf34218820dd443bfa3f2d34b3df"
+    },
+    {
+      "report": "real_videos__s80RaghtMRk_03.json",
+      "sha256": "62d482c82c0e74dd609346f6208f577fd0d01beaaf702ae36aa64eb2b397f332"
+    },
+    {
+      "report": "real_videos__sfGi08xARHo_00.json",
+      "sha256": "ab4b0c6b74fec3febf3d71d77f8463a2663d023dd7da1e275f1e64084b050a7a"
+    },
+    {
+      "report": "real_videos__taahlmWl1Pc_00.json",
+      "sha256": "bd8bdd626900069d8541e9a29eaf5cfd82d917f78137e32cf189e309e9c26be8"
+    },
+    {
+      "report": "real_videos__tnO5_kjf1II_00.json",
+      "sha256": "26f61e9aff6415cd12e4354e471b0802fd7b180b06edbd0fda936815a036b20a"
+    },
+    {
+      "report": "real_videos__twdqtlixsj0_00.json",
+      "sha256": "0f6c9f02e4b97f80f700e7036be618b833b0ba3681c9ee7ad5eb1f4e6276726c"
+    },
+    {
+      "report": "real_videos__uSTubEz9Mpw_00.json",
+      "sha256": "870f428f659b7c0005aedf4dd53860c18d7f655046c73adcbcb3e98222af919e"
+    },
+    {
+      "report": "real_videos__udobZNZzMZE_00.json",
+      "sha256": "8c202508ef0c0d3f7eadae2ed102ffa5bf0eb34c9cd8323c02cedc03e5f38b3a"
+    },
+    {
+      "report": "real_videos__uoY--IlBdjw_02.json",
+      "sha256": "e8afd46bcf70e0eeea0e74467786255c37e9191c40c70af1c8d8e052245b2a43"
+    },
+    {
+      "report": "real_videos__vWus0so2b0w_00.json",
+      "sha256": "22ea456204781f31e29d735192cd42ec490fb91182589ba1775201715f70c5d0"
+    },
+    {
+      "report": "real_videos__xDNd4r5dECc_00.json",
+      "sha256": "598b649d5216bd685d5d98b3212ea6bfc2a77eaeec431a3ce1d2c1081e292bc6"
+    },
+    {
+      "report": "real_videos__yGYOGSKjE3o_00.json",
+      "sha256": "f3397e9836ef4985bfcc4388c1820b129685dae59aff8e14e9644905278f03ea"
+    },
+    {
+      "report": "real_videos__yx-CTXIhAGA_00.json",
+      "sha256": "d877a836feb190bda061f66483c56bc39a1a0b23898f9a8c3244d171e3306d22"
+    }
+  ],
+  "metadata_sha256": "a3d06073353a7fedff140b652d025135f017860a240cad693990f5288c6c0ec9",
+  "model_sha256": "96ba12dd849ce49ae7f49702f35ef0ae269312117ea5ab5244526e1412f436a2",
+  "review_report_sha256": "159a74a6948994e30f4cd417c50135e64ba4b7bd968341a4496fc2412fad4832",
+  "review_service_sec": 8.273610775003908,
+  "nominal_camera_fps": 7.5,
+  "workload_duration_sec": 1996.0,
+  "front_end_service_ms": {
+    "detector": 3.9,
+    "temporal": 3.0
+  },
+  "policies": [
+    {
+      "min_positive_windows": 1,
+      "camera_count": 1,
+      "policy": "all_episodes",
+      "raw_episodes": 433,
+      "budget_denied": 0,
+      "admitted_per_camera": [
+        433
+      ],
+      "queue": {
+        "generated_frames": 14970,
+        "processed_frames": 14970,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.05175,
+        "mean_frame_latency_ms": 6.8999999999644315,
+        "p95_frame_latency_ms": 6.900000000023283,
+        "generated_candidates": 433,
+        "completed_reviews": 240,
+        "pending_reviews": 8,
+        "dropped_candidates": 185,
+        "review_drop_rate": 0.42725173210161665,
+        "review_utilization": 1.0
+      },
+      "event_retention": {
+        "clip_camera_events": 100,
+        "detected_before_routing": 75,
+        "retained_after_admission": 75,
+        "retained_after_queue_acceptance": 47,
+        "retained_after_completed_service": 45,
+        "admission_retention": 1.0,
+        "completed_service_retention": 0.6,
+        "completed_service_event_coverage": 0.45,
+        "completed_review_latency_sec": {
+          "median": 70.44850011744047,
+          "p95": 74.14026921747356
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 1,
+      "camera_count": 1,
+      "policy": "metered_80pct",
+      "raw_episodes": 433,
+      "budget_denied": 293,
+      "admitted_per_camera": [
+        140
+      ],
+      "queue": {
+        "generated_frames": 14970,
+        "processed_frames": 14970,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.05175,
+        "mean_frame_latency_ms": 6.8999999999644315,
+        "p95_frame_latency_ms": 6.900000000023283,
+        "generated_candidates": 140,
+        "completed_reviews": 139,
+        "pending_reviews": 1,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.5803133810122981
+      },
+      "event_retention": {
+        "clip_camera_events": 100,
+        "detected_before_routing": 75,
+        "retained_after_admission": 35,
+        "retained_after_queue_acceptance": 35,
+        "retained_after_completed_service": 35,
+        "admission_retention": 0.4666666666666667,
+        "completed_service_retention": 0.4666666666666667,
+        "completed_service_event_coverage": 0.35,
+        "completed_review_latency_sec": {
+          "median": 8.280510775003902,
+          "p95": 8.28051077500393
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 1,
+      "camera_count": 1,
+      "policy": "metered_100pct",
+      "raw_episodes": 433,
+      "budget_denied": 272,
+      "admitted_per_camera": [
+        161
+      ],
+      "queue": {
+        "generated_frames": 14970,
+        "processed_frames": 14970,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.05175,
+        "mean_frame_latency_ms": 6.8999999999644315,
+        "p95_frame_latency_ms": 6.900000000023283,
+        "generated_candidates": 161,
+        "completed_reviews": 160,
+        "pending_reviews": 1,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.6673603881641429
+      },
+      "event_retention": {
+        "clip_camera_events": 100,
+        "detected_before_routing": 75,
+        "retained_after_admission": 39,
+        "retained_after_queue_acceptance": 39,
+        "retained_after_completed_service": 39,
+        "admission_retention": 0.52,
+        "completed_service_retention": 0.52,
+        "completed_service_event_coverage": 0.39,
+        "completed_review_latency_sec": {
+          "median": 8.280510775003902,
+          "p95": 8.28051077500393
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 1,
+      "camera_count": 4,
+      "policy": "all_episodes",
+      "raw_episodes": 1732,
+      "budget_denied": 0,
+      "admitted_per_camera": [
+        433,
+        433,
+        433,
+        433
+      ],
+      "queue": {
+        "generated_frames": 59880,
+        "processed_frames": 59880,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999911083,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 1732,
+        "completed_reviews": 240,
+        "pending_reviews": 9,
+        "dropped_candidates": 1483,
+        "review_drop_rate": 0.8562355658198614,
+        "review_utilization": 1.0
+      },
+      "event_retention": {
+        "clip_camera_events": 400,
+        "detected_before_routing": 300,
+        "retained_after_admission": 300,
+        "retained_after_queue_acceptance": 53,
+        "retained_after_completed_service": 51,
+        "admission_retention": 1.0,
+        "completed_service_retention": 0.17,
+        "completed_service_event_coverage": 0.1275,
+        "completed_review_latency_sec": {
+          "median": 71.73882192526185,
+          "p95": 74.24066521354723
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 1,
+      "camera_count": 4,
+      "policy": "metered_80pct",
+      "raw_episodes": 1732,
+      "budget_denied": 1536,
+      "admitted_per_camera": [
+        49,
+        49,
+        49,
+        49
+      ],
+      "queue": {
+        "generated_frames": 59880,
+        "processed_frames": 59880,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999911083,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 196,
+        "completed_reviews": 194,
+        "pending_reviews": 2,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.8124387334172174
+      },
+      "event_retention": {
+        "clip_camera_events": 400,
+        "detected_before_routing": 300,
+        "retained_after_admission": 48,
+        "retained_after_queue_acceptance": 48,
+        "retained_after_completed_service": 48,
+        "admission_retention": 0.16,
+        "completed_service_retention": 0.16,
+        "completed_service_event_coverage": 0.12,
+        "completed_review_latency_sec": {
+          "median": 10.561021550007863,
+          "p95": 24.63516155294385
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 1,
+      "camera_count": 4,
+      "policy": "metered_100pct",
+      "raw_episodes": 1732,
+      "budget_denied": 1488,
+      "admitted_per_camera": [
+        61,
+        61,
+        61,
+        61
+      ],
+      "queue": {
+        "generated_frames": 59880,
+        "processed_frames": 59880,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999911083,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 244,
+        "completed_reviews": 240,
+        "pending_reviews": 4,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 1.0
+      },
+      "event_retention": {
+        "clip_camera_events": 400,
+        "detected_before_routing": 300,
+        "retained_after_admission": 62,
+        "retained_after_queue_acceptance": 62,
+        "retained_after_completed_service": 62,
+        "admission_retention": 0.20666666666666667,
+        "completed_service_retention": 0.20666666666666667,
+        "completed_service_event_coverage": 0.155,
+        "completed_review_latency_sec": {
+          "median": 30.53534987109306,
+          "p95": 32.95534019120562
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 2,
+      "camera_count": 1,
+      "policy": "all_episodes",
+      "raw_episodes": 141,
+      "budget_denied": 0,
+      "admitted_per_camera": [
+        141
+      ],
+      "queue": {
+        "generated_frames": 14970,
+        "processed_frames": 14970,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.05175,
+        "mean_frame_latency_ms": 6.8999999999644315,
+        "p95_frame_latency_ms": 6.900000000023283,
+        "generated_candidates": 141,
+        "completed_reviews": 141,
+        "pending_reviews": 0,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.5844584765909574
+      },
+      "event_retention": {
+        "clip_camera_events": 100,
+        "detected_before_routing": 44,
+        "retained_after_admission": 44,
+        "retained_after_queue_acceptance": 44,
+        "retained_after_completed_service": 44,
+        "admission_retention": 1.0,
+        "completed_service_retention": 1.0,
+        "completed_service_event_coverage": 0.44,
+        "completed_review_latency_sec": {
+          "median": 12.554121550007723,
+          "p95": 32.99578620003117
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 2,
+      "camera_count": 1,
+      "policy": "metered_80pct",
+      "raw_episodes": 141,
+      "budget_denied": 61,
+      "admitted_per_camera": [
+        80
+      ],
+      "queue": {
+        "generated_frames": 14970,
+        "processed_frames": 14970,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.05175,
+        "mean_frame_latency_ms": 6.8999999999644315,
+        "p95_frame_latency_ms": 6.900000000023283,
+        "generated_candidates": 80,
+        "completed_reviews": 80,
+        "pending_reviews": 0,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.3316076462927418
+      },
+      "event_retention": {
+        "clip_camera_events": 100,
+        "detected_before_routing": 44,
+        "retained_after_admission": 29,
+        "retained_after_queue_acceptance": 29,
+        "retained_after_completed_service": 29,
+        "admission_retention": 0.6590909090909091,
+        "completed_service_retention": 0.6590909090909091,
+        "completed_service_event_coverage": 0.29,
+        "completed_review_latency_sec": {
+          "median": 8.280510775003902,
+          "p95": 8.28051077500393
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 2,
+      "camera_count": 1,
+      "policy": "metered_100pct",
+      "raw_episodes": 141,
+      "budget_denied": 56,
+      "admitted_per_camera": [
+        85
+      ],
+      "queue": {
+        "generated_frames": 14970,
+        "processed_frames": 14970,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.05175,
+        "mean_frame_latency_ms": 6.8999999999644315,
+        "p95_frame_latency_ms": 6.900000000023283,
+        "generated_candidates": 85,
+        "completed_reviews": 85,
+        "pending_reviews": 0,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.3523331241860382
+      },
+      "event_retention": {
+        "clip_camera_events": 100,
+        "detected_before_routing": 44,
+        "retained_after_admission": 30,
+        "retained_after_queue_acceptance": 30,
+        "retained_after_completed_service": 30,
+        "admission_retention": 0.6818181818181818,
+        "completed_service_retention": 0.6818181818181818,
+        "completed_service_event_coverage": 0.3,
+        "completed_review_latency_sec": {
+          "median": 8.280510775003902,
+          "p95": 8.28051077500393
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 2,
+      "camera_count": 4,
+      "policy": "all_episodes",
+      "raw_episodes": 564,
+      "budget_denied": 0,
+      "admitted_per_camera": [
+        141,
+        141,
+        141,
+        141
+      ],
+      "queue": {
+        "generated_frames": 59880,
+        "processed_frames": 59880,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999911083,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 564,
+        "completed_reviews": 232,
+        "pending_reviews": 3,
+        "dropped_candidates": 329,
+        "review_drop_rate": 0.5833333333333334,
+        "review_utilization": 0.9740974609849291
+      },
+      "event_retention": {
+        "clip_camera_events": 400,
+        "detected_before_routing": 176,
+        "retained_after_admission": 176,
+        "retained_after_queue_acceptance": 84,
+        "retained_after_completed_service": 84,
+        "admission_retention": 1.0,
+        "completed_service_retention": 0.4772727272727273,
+        "completed_service_event_coverage": 0.21,
+        "completed_review_latency_sec": {
+          "median": 63.945766033599156,
+          "p95": 73.77466191351776
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 2,
+      "camera_count": 4,
+      "policy": "metered_80pct",
+      "raw_episodes": 564,
+      "budget_denied": 394,
+      "admitted_per_camera": [
+        43,
+        43,
+        42,
+        42
+      ],
+      "queue": {
+        "generated_frames": 59880,
+        "processed_frames": 59880,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999911083,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 170,
+        "completed_reviews": 167,
+        "pending_reviews": 3,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.7046662483720764
+      },
+      "event_retention": {
+        "clip_camera_events": 400,
+        "detected_before_routing": 176,
+        "retained_after_admission": 58,
+        "retained_after_queue_acceptance": 58,
+        "retained_after_completed_service": 58,
+        "admission_retention": 0.32954545454545453,
+        "completed_service_retention": 0.32954545454545453,
+        "completed_service_event_coverage": 0.145,
+        "completed_review_latency_sec": {
+          "median": 18.715231316690218,
+          "p95": 33.1013431000156
+        }
+      },
+      "systemc_python_parity": true
+    },
+    {
+      "min_positive_windows": 2,
+      "camera_count": 4,
+      "policy": "metered_100pct",
+      "raw_episodes": 564,
+      "budget_denied": 367,
+      "admitted_per_camera": [
+        50,
+        49,
+        49,
+        49
+      ],
+      "queue": {
+        "generated_frames": 59880,
+        "processed_frames": 59880,
+        "pending_frames": 0,
+        "dropped_frames": 0,
+        "frame_drop_rate": 0.0,
+        "npu_utilization": 0.207,
+        "mean_frame_latency_ms": 17.249999999911083,
+        "p95_frame_latency_ms": 27.600000000093132,
+        "generated_candidates": 197,
+        "completed_reviews": 194,
+        "pending_reviews": 3,
+        "dropped_candidates": 0,
+        "review_drop_rate": 0.0,
+        "review_utilization": 0.8165838289958767
+      },
+      "event_retention": {
+        "clip_camera_events": 400,
+        "detected_before_routing": 176,
+        "retained_after_admission": 69,
+        "retained_after_queue_acceptance": 69,
+        "retained_after_completed_service": 69,
+        "admission_retention": 0.39204545454545453,
+        "completed_service_retention": 0.39204545454545453,
+        "completed_service_event_coverage": 0.1725,
+        "completed_review_latency_sec": {
+          "median": 25.346479804207597,
+          "p95": 33.101343100015626
+        }
+      },
+      "systemc_python_parity": true
+    }
+  ],
+  "protocol": "Causal TCN persistence and episode starts; fixed benchmark clip order, synchronized camera replication, zero inter-clip gap; post-hoc annotation matching at -1/+3 seconds",
+  "endpoint": "Retention of annotation-matched detected episodes through admission and simulated review-service completion, not VLM classification accuracy",
+  "timing_scope": "Constant review service equals measured Qwen mean; front-end service times are scenario parameters, not Snapdragon measurements; outstanding reviews remain pending at observation end",
+  "systemc_executable_sha256": "7a0bedf8a917a3d8667205c58670a55615d4caaeb42a05946a236cadd9763c6b",
+  "systemc_source_sha256": "dd3fd514f37a754798edb90cc468a2be6fe45727fa65e2cd2407c2067cee64c5"
+}
