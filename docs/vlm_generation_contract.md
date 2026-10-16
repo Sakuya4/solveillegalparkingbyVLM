@@ -44,7 +44,16 @@ versioned replication is available.
 python -m pytest tests/test_vlm_transformers.py tests/test_incident_review_service.py
 python scripts/audit_vlm_generation_contract.py
 python scripts/run_overnight_research.py --phase decoding --deadline 2026-10-17T04:00:00+00:00
+python scripts/publish_vlm_forwarded_comparison.py
 ```
+
+The comparison publisher verifies case hashes, reconstructed input signatures,
+manifest identity, labels, confusion counts, correctness, and service means.
+It reports paired all-case correctness differences using 2,000 source-clip
+bootstrap resamples (seed 42), retaining both sequences of a sampled clip
+together. The ten source clips, not the twenty sequences, are the independent
+resampling units. Invalid structured responses count as incorrect; legacy
+versus corrected runs and three/eight-frame comparisons remain separate.
 
 Implementation reference: the installed `transformers/pipelines/image_text_to_text.py`
 and [primary pipeline source](https://github.com/huggingface/transformers/blob/main/src/transformers/pipelines/image_text_to_text.py).

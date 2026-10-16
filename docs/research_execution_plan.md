@@ -123,6 +123,9 @@ At the deadline, report delivered artifacts and remaining external requirements.
 13. Next: complete `decoding_status.json` replications; publish their separate
     model comparison and evidence-density endpoints. Extend independently
     reviewed normal exposure. Do not restart completed training queues.
+    `scripts/publish_vlm_forwarded_comparison.py` verifies every new input/result
+    hash and recomputes metrics before paired source-clip bootstrap reporting.
+    Two focused publisher tests pass in addition to the 313-test regression.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
