@@ -79,8 +79,8 @@ At the deadline, report delivered artifacts and remaining external requirements.
 2. Completed: matched-request Qwen/LLaVA comparison and eight-frame Qwen
    evidence-density ablation on 20 paired sequences. A runtime audit identifies
    that requested sampling parameters were not forwarded to generation.
-   Preserve all legacy results and run separate `decoding` replications with
-   explicit `generate_kwargs` and pinned model revisions.
+   Completed separate `decoding` replications with explicit `generate_kwargs`
+   and pinned model revisions; all legacy results remain unchanged.
 3. Audit temporal sampling: source FPS spans 3.92--49.70, while the existing
    frame-stride training rate has median 7.49 steps/s and the deployment target
    is 7.5. Test cadence-consistent extraction as a controlled ablation.
@@ -120,9 +120,12 @@ At the deadline, report delivered artifacts and remaining external requirements.
     GPU OS locks, and actual research-child PID checks. Both saved Taichung
     alerts receive incomplete-evidence dispositions with explicit generation
     forwarding; independent labels remain unassigned.
-13. Next: complete `decoding_status.json` replications; publish their separate
-    model comparison and evidence-density endpoints. Extend independently
-    reviewed normal exposure. Do not restart completed training queues.
+13. Completed: `decoding_status.json` replications and verified paired reporting.
+    Qwen three-frame correctness is 0.60 versus LLaVA 0.30; their paired
+    difference is +0.30 [0.10, 0.50]. Qwen eight-frame correctness is 0.55.
+    Native comparison tables preserve the same endpoints and source-clip units.
+    Next extend independently reviewed normal exposure. Do not restart any
+    completed queue.
     `scripts/publish_vlm_forwarded_comparison.py` verifies every new input/result
     hash and recomputes metrics before paired source-clip bootstrap reporting.
     Two focused publisher tests pass in addition to the 313-test regression.
@@ -157,4 +160,4 @@ The spatial-resolution queue is also complete. Its publisher verifies common
 window grids and prevents confounding decision hops with feature resolution.
 Native continuous inference and 24 TCN-gated SystemC replays are published;
 train-only event calibration and native post-stream review are complete.
-Corrected decoding replications and reviewed stream exposure remain next.
+Corrected decoding replications are complete; reviewed stream exposure remains next.

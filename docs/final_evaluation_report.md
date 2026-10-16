@@ -155,6 +155,21 @@ grounding and operator-review outcomes.
 
 Data: [SAM2/VLM study](results/sam2_vlm_ablation.csv).
 
+The generation-contract version-2 replication explicitly forwards sampling
+parameters to model generation and pins the original revisions. On the same
+twenty paired sequences, Qwen three-frame schema validity is 95%, all-case
+structured correctness 60%, and mean service 8.533 s. LLaVA yields 40%, 30%,
+and 7.692 s. Their paired correctness difference is +30 percentage points
+(95% source-clip bootstrap: +10 to +50). Qwen with eight frames yields 95%
+schema validity and 55% all-case correctness at 9.736 s; the eight-minus-three
+contrast is -5 points (-25 to +15). The source clip is the bootstrap unit;
+ten source clips are not treated as twenty independent sequences.
+[Corrected comparisons and provenance](vlm_generation_contract.md#corrected-paired-results).
+
+The following retained runs document the requested-decoding implementation
+before the runtime audit; their original results and service measurements
+remain available for versioned comparison.
+
 An expanded paired study evaluates ten IID test clips, each contributing a
 collision sequence and a pre-event sequence. Both models receive identical
 privacy-treated frames, a collision-specific prompt, and a 192-token budget.

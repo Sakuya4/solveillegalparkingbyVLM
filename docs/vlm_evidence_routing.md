@@ -48,6 +48,9 @@ not as an independently established scene fact.
 
 The [generation-contract audit](vlm_generation_contract.md) documents the
 legacy requested-decoding metadata and separately versioned corrected runs.
+In the corrected three-frame Qwen run, eight cases retain incomplete-evidence
+disposition, eleven show temporal/visual disagreement, and one fails the
+response contract. All twenty remain unresolved by the complete-evidence gate.
 
 [Case-level routing and source hashes](results/vlm_review_dispositions.json)
 

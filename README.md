@@ -157,18 +157,18 @@ SAM2 refines difficult spatial candidates; VLMs produce structured evidence
 reviews. The same-sample SAM2 study compares proposal recall and processing
 cost. Clean-blind VLM cases examine schema validity and visual grounding.
 
-In the preserved paired 20-sequence run, Qwen2.5-VL-3B
-achieves 100% schema validity and 70% correct structured outputs across all
-cases; LLaVA/Qwen-0.5B achieves 40% and 30%. Mean review times are 8.27 s and
-7.76 s. The native workbench exports
+With explicitly forwarded greedy generation on twenty paired sequences,
+Qwen2.5-VL-3B achieves 95% schema validity and 60% correct structured outputs
+across all cases; LLaVA/Qwen-0.5B achieves 40% and 30%. Mean review times are
+8.53 s and 7.69 s. The paired correctness difference is +30 percentage points
+(95% source-clip interval: +10 to +50). The native workbench exports
 event-specific temporal evidence and can attach Qwen review results directly.
 Temporal/visual disagreement retains the event for operator inspection.
-An eight-frame evidence-density ablation produces 60% correct structured
-outputs at 10.12 s per review, compared with 70% at 8.27 s for three frames.
-The paired protocol fixes clip selection and requested generation settings.
-A [runtime generation-contract audit](docs/vlm_generation_contract.md)
-identified a parameter-routing difference; explicitly forwarded greedy
-replications are versioned separately from these retained results.
+An eight-frame evidence-density ablation produces 55% correct structured
+outputs at 9.74 s per review, compared with 60% at 8.53 s for three frames.
+The [generation-contract study](docs/vlm_generation_contract.md) reports
+all corrected comparisons and source-clip uncertainty, alongside the preserved
+legacy runs. The native model-evaluation page displays the same verified data.
 
 ![NAFNet restoration](docs/assets/nafnet_cctv_demo/comparison.jpg)
 

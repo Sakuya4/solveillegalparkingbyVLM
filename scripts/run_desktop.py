@@ -23,7 +23,7 @@ def main():
     parser.add_argument("--continuous", action="store_true", help="Run causal streaming inference instead of capture followed by analysis")
     parser.add_argument("--seek-sec", type=float, default=0)
     args = parser.parse_args()
-    if not 0 <= args.tab < {1: 2, 3: 3, 4: 2}.get(args.page, 1):
+    if not 0 <= args.tab < {1: 3, 3: 3, 4: 2}.get(args.page, 1):
         parser.error("Select an available tab for this page")
     if args.report and args.capture_page:
         parser.error("Choose a saved report or a camera source")

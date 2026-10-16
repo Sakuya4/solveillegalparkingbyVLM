@@ -135,6 +135,17 @@ def test_extended_model_tab_uses_all_matched_models_and_ranking_metrics(window):
     assert table.horizontalHeaderItem(8).text() == "AP"
 
 
+def test_native_vlm_tab_displays_corrected_results_and_clustered_uncertainty(window):
+    tabs = window.pages.widget(1).findChild(QTabWidget)
+    assert tabs.count() == 3
+    tabs.setCurrentIndex(2)
+    assert window.vlm_results.rowCount() == 3
+    assert window.vlm_results.item(0, 2).text() == "95%"
+    assert window.vlm_results.item(0, 3).text() == "60%"
+    assert window.vlm_results.item(1, 3).text() == "30%"
+    assert window.vlm_results.item(2, 3).text() == "55%"
+
+
 def test_edge_page_exposes_tcn_event_retention_instead_of_only_proposal_counts(window):
     tabs = window.pages.widget(4).findChild(QTabWidget)
     assert tabs.count() == 2

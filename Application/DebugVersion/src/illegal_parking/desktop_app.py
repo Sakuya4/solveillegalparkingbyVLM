@@ -302,6 +302,19 @@ class TrafficResearchWindow(QMainWindow):
         tabs = QTabWidget()
         tabs.addTab(make_table(["Model", "Split", "Precision", "Recall", "F1", "FPR"], [[r["model"], r["split"], *(f'{r[key]:.3f}' for key in ("precision", "recall", "f1", "false_positive_rate"))] for r in self.snapshot["model_comparison"]]), "500-clip reference")
         tabs.addTab(make_table(["Representation", "Split", "Fit", "Calibration", "Test clips", "F1", "FPR", "AUROC", "AP"], [[r["display_name"], r["split"], r["fit_clips"], r["calibration_clips"], r["test_clips"], f'{r["test"]["f1"]:.3f}', f'{r["test"]["false_positive_rate"]:.3f}', f'{r["ranking"]["auroc"]:.3f}', f'{r["ranking"]["average_precision"]:.3f}'] for r in self.snapshot["full_cohort_models"]]), "2,021-clip extension")
+        vlm_page = QWidget()
+        vlm_layout = QVBoxLayout(vlm_page)
+        studies = self.snapshot["vlm_comparison"]["studies"]
+        self.vlm_results = make_table(["Model", "Frames", "Schema valid", "All-case correct", "TP / FP / FN / TN", "Mean service"], [
+            [name, frames, f'{studies[key]["schema_valid_rate"]:.0%}', f'{studies[key]["end_to_end_correct_rate"]:.0%}',
+             " / ".join(str(studies[key]["valid_case_confusion"][field]) for field in ("tp", "fp", "fn", "tn")), f'{studies[key]["mean_review_sec"]:.3f} s']
+            for key, name, frames in (("qwen3_v2", "Qwen2.5-VL-3B", 3), ("llava3_v2", "LLaVA/Qwen-0.5B", 3), ("qwen8_v2", "Qwen2.5-VL-3B", 8))])
+        vlm_layout.addWidget(self.vlm_results)
+        contrasts = self.snapshot["vlm_comparison"]["paired_all_case_correctness"]
+        vlm_layout.addWidget(make_table(["Paired contrast", "Correctness difference", "95% source-clip interval", "Source clips"], [
+            [label, f'{contrasts[key]["difference"]:+.0%}', f'[{contrasts[key]["lower_95"]:+.0%}, {contrasts[key]["upper_95"]:+.0%}]', contrasts[key]["clusters"]]
+            for key, label in (("qwen3_v2_minus_llava3_v2", "Qwen minus LLaVA / 3 frames"), ("qwen8_v2_minus_qwen3_v2", "Qwen 8 minus 3 frames"))]))
+        tabs.addTab(vlm_page, "VLM / generation v2")
         layout.addWidget(tabs, 1)
         return page
 

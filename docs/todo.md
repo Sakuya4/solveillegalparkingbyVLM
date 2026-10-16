@@ -18,7 +18,8 @@
 - [x] Produce an end-to-end native demonstration recording.
 - [x] Compare matched Qwen/LLaVA requests and three/eight-frame evidence; preserve legacy requested-decoding runs.
 - [x] Audit installed generation routing and enforce explicitly forwarded sampling parameters.
-- [ ] Complete separately versioned greedy Qwen/LLaVA and eight-frame replications.
+- [x] Complete separately versioned greedy Qwen/LLaVA and eight-frame replications.
+- [x] Publish source-clip paired intervals and native version-2 VLM comparison tables.
 - [x] Replay candidate queues using measured Qwen review-service time.
 - [x] Complete full-cohort candidate/global TCN training and controlled reporting.
 - [x] Evaluate proposal coalescing and budgeted review routing with SystemC parity.

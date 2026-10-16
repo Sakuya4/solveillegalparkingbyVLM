@@ -96,6 +96,7 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
         "geographic_event_profiles": _load_json(results / "geographic_event_evaluation.json")["profiles"],
         "model_comparison": deployment_models,
         "full_cohort_models": _load_json(results / "full_cohort_model_comparison.json")["models"],
+        "vlm_comparison": _load_json(results / "vlm_forwarded_comparison.json"),
         "ablations": ablations,
         "deployment": deployment,
         "government": {

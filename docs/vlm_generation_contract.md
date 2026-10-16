@@ -37,14 +37,56 @@ not restarted; a separate `decoding` queue contains only these replications.
 The earlier queue and variable-service studies retain their observed service
 samples. They describe those measured workloads rather than the service
 distribution of the corrected decoder. Likewise, evidence-aware policy
-reanalysis remains tied to its original hashed responses until the separately
-versioned replication is available.
+reanalysis remains tied to its original hashed responses; corrected responses
+and their disposition counts are reported separately below.
+
+## Corrected Paired Results
+
+All three version-2 replications completed on the original twenty sequences
+from ten source clips. Models receive matched privacy-treated imagery, the
+collision-specific prompt, BF16 execution, and a 192-token budget. Input and
+result hashes reproduce the published summaries.
+
+| Model | Frames | Schema validity | All-case structured correctness | TP / FP / FN / TN | Mean service (s) |
+| --- | ---: | ---: | ---: | --- | ---: |
+| Qwen2.5-VL-3B | 3 | 95% | 60% | 5 / 3 / 4 / 7 | 8.533 |
+| LLaVA/Qwen-0.5B | 3 | 40% | 30% | 0 / 0 / 2 / 6 | 7.692 |
+| Qwen2.5-VL-3B | 8 | 95% | 55% | 3 / 2 / 6 / 8 | 9.736 |
+
+Confusion counts include schema-valid responses; the correctness denominator
+includes all twenty cases. Qwen minus LLaVA is +30 percentage points, with a
+paired source-clip bootstrap 95% interval of +10 to +50 points. The eight-minus-
+three-frame contrast is -5 points (-25 to +15). Additional frames increase
+mean service time by 1.203 s (14.1%) without establishing improved correctness
+on this cohort. Model sizes differ, so this comparison does not isolate an
+architecture effect or establish performance at equal model capacity.
+
+Relative to the preserved requested-greedy run, Qwen three-frame correctness
+changes by -10 points (-25 to 0); LLaVA's all-case outcomes are unchanged.
+This is an implementation-contract replication, not a search for a better
+test result. Neither new response files nor summaries replace the legacy
+service workloads or their measured queue results.
+
+The version-2 three-frame Qwen disposition counts are eight incomplete-evidence,
+eleven temporal/visual disagreement, and one response-contract review. No case
+passes the complete-evidence support gate; supported-case precision remains
+undefined. VLM descriptions remain model outputs rather than ground truth.
+
+![Versioned results and paired uncertainty](assets/vlm_forwarded_comparison.png)
+
+[Verified comparison and case hashes](results/vlm_forwarded_comparison.json) ·
+[Qwen three-frame summary](results/incident_vlm_qwen_forwarded_v2_batch.json) ·
+[LLaVA summary](results/incident_vlm_llava_forwarded_v2_batch.json) ·
+[Qwen eight-frame summary](results/incident_vlm_qwen_dense8_forwarded_v2_batch.json)
+
+![Native VLM comparison](assets/desktop_vlm_comparison.png)
 
 ```powershell
 python -m pytest tests/test_vlm_transformers.py tests/test_incident_review_service.py
 python scripts/audit_vlm_generation_contract.py
 python scripts/run_overnight_research.py --phase decoding --deadline 2026-10-17T04:00:00+00:00
 python scripts/publish_vlm_forwarded_comparison.py
+python scripts/plot_vlm_forwarded_comparison.py
 ```
 
 The comparison publisher verifies case hashes, reconstructed input signatures,
