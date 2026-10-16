@@ -157,3 +157,19 @@ python scripts/record_desktop_demo.py --report outputs/desktop/RUN_ID/report.jso
 The script records window pixels and writes capture metadata alongside its
 video. Recording reuses completed inference rather than launching another GPU
 workload.
+
+The [16 October reference execution](assets/incident_demo.json) connects a
+fresh streaming run to the 30-second H.264 detection video and the 40-second
+native recording. Reproduce it with two CPU threads and one exclusive VLM job:
+
+```powershell
+python scripts/run_streaming_incident.py --input docs/assets/incident_input.mp4 --output-dir outputs/desktop/NEW_DEMO
+python scripts/review_desktop_events.py --report outputs/desktop/NEW_DEMO/report.json --event-index 0 --output-dir outputs/desktop/NEW_REVIEW
+python scripts/record_desktop_demo.py --report outputs/desktop/NEW_REVIEW/report.json --output outputs/desktop/NEW_DEMO/workbench_demo.mp4 --segment-seconds 8
+python scripts/publish_desktop_demo.py --report outputs/desktop/NEW_REVIEW/report.json --walkthrough outputs/desktop/NEW_DEMO/workbench_demo.mp4 --ffmpeg C:/ffmpeg/bin/ffmpeg.exe
+```
+
+Publication verifies matching input and report hashes, retains the original
+inference report, transcodes to H.264/yuv420p with progressive download support,
+and adds visible source attribution. The native recording reuses completed
+inference; its playback duration is not an inference-latency measurement.

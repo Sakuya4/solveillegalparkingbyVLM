@@ -10,7 +10,28 @@ deployment priorities derived from Taiwan government crash and camera records.
 ![Native traffic research workbench](docs/assets/desktop_workbench.png)
 
 [Native application walkthrough](docs/assets/desktop_walkthrough.mp4) ·
-[Causal incident-model output](docs/assets/candidate_incident_model_output.mp4)
+[Full reference-case detection video](docs/assets/incident_demo.mp4) ·
+[Execution record](docs/assets/incident_demo.json)
+
+### Reference-Case Demonstration
+
+[![Continuous incident detection](docs/assets/incident_demo_preview.gif)](docs/assets/incident_demo.mp4)
+
+The complete 30-second ACCIDENT reference clip is processed by the bundled
+temporal model with two-thread CPU inference. Across 225 sampled frames and
+14 temporal windows, the persistence gate emits one event at source time
+**10.04 s**. Median sampled-frame processing is **81.3 ms** (p95 **94.7 ms**).
+These timings exclude initialization and the separate VLM evidence service.
+
+Qwen2.5-VL reviews the saved three-frame evidence in **8.21 s** and reports
+insufficient visual support for a collision. The workbench retains the temporal
+event and explicitly routes the temporal/visual disagreement for inspection.
+The [40-second native walkthrough](docs/assets/desktop_walkthrough.mp4) follows
+video playback, ordered evidence, model comparisons, government risk allocation,
+and hardware queue results. The [execution record](docs/assets/incident_demo.json)
+preserves model, detector, input and output hashes. Demonstration media retain
+the dataset's [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+license; [source attribution](docs/assets/README.md) accompanies the derivatives.
 
 ### Research Motivation
 

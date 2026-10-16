@@ -42,6 +42,7 @@
 - [x] Evaluate reviewed normal exposure with source-clock gap exclusion, duplicate/conflict checks and Poisson upper limits.
 - [x] Validate real public-camera reconnects over 120 seconds and preserve the earlier source-failure record.
 - [x] Verify native MJPEG closure recovery and temporal warm-up after source gaps.
+- [x] Rerun the complete reference clip, retain actual VLM disagreement, and publish source-hashed detection/native videos with visible media attribution.
 
 ## Completed Case: Red-Line Parking
 

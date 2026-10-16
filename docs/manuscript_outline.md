@@ -137,3 +137,7 @@ and regression-to-the-mean controls.
 Provide source manifests, model/archive hashes, split definitions, seeds,
 calibration scope, complete sweeps, launch commands, tests, figure scripts,
 software versions, and target specifications for hardware measurements.
+Include the source-hashed reference-case video and native walkthrough as
+qualitative workflow material. The reference execution preserves temporal/VLM
+disagreement and separates per-frame processing, source-time triggering and
+VLM service duration; it does not enter aggregate performance estimates.

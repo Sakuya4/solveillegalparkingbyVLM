@@ -6,7 +6,6 @@ import json
 import os
 from pathlib import Path
 import sys
-import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "Application/DebugVersion/src"))
@@ -41,7 +40,6 @@ def main():
     writer = cv2.VideoWriter(str(args.output), cv2.VideoWriter_fourcc(*"mp4v"), args.fps, (window.width(), window.height()))
     if not writer.isOpened():
         raise OSError(f"Cannot create {args.output}")
-    started = time.perf_counter()
     frame_count = 0
     previous_page = None
     sequence = (0, 2, 1, 3, 4)
@@ -49,7 +47,7 @@ def main():
 
     def capture():
         nonlocal frame_count, previous_page
-        elapsed = time.perf_counter() - started
+        elapsed = frame_count / args.fps
         segment = int(elapsed / args.segment_seconds)
         if segment >= len(sequence):
             timer.stop()
@@ -64,8 +62,10 @@ def main():
                 trigger = window.report["events"][0]["trigger_time_sec"] if window.report["events"] else 2
                 window.video.seek(round(max(0, trigger - 2) * window.video.fps))
                 window.video.toggle_playback()
-            elif page == 3:
+            elif page in (1, 3):
                 window.pages.widget(page).findChild(QTabWidget).setCurrentIndex(2)
+            elif page == 4:
+                window.pages.widget(page).findChild(QTabWidget).setCurrentIndex(1)
             previous_page = page
         if page == 2:
             within_segment = elapsed - segment * args.segment_seconds
@@ -91,6 +91,8 @@ def main():
         "source_report_sha256": hashlib.sha256(args.report.read_bytes()).hexdigest(),
         "capture": "Native PySide6 window rendering with recorded analysis and video playback",
         "pages": ["incident", "evidence", "model_comparison", "government_coverage", "edge_runtime"],
+        "selected_tabs": {"model_comparison": 2, "government_coverage": 2, "edge_runtime": 1},
+        "model_sha256": window.report["model_sha256"],
         "fps": args.fps, "frames": frame_count, "duration_sec": frame_count / args.fps,
         "resolution": resolution, "source_media_license": "CC BY-NC-SA 4.0",
     }

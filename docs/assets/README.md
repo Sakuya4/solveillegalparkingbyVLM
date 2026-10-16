@@ -41,3 +41,26 @@ result tables from checked-in numerical studies. `full_cohort_model_curves.png`
 and `.pdf` are generated from verified full-cohort test predictions using
 `scripts/plot_full_model_comparison.py`. Camera observation payloads are retained
 locally; public camera-session artifacts contain numerical measurements only.
+
+## Continuous Reference Demonstration (16 October 2026)
+
+`incident_demo.mp4` is the complete 30-second reference clip with causal
+streaming output, vehicle privacy blur, motion proposals and temporal scores.
+`incident_demo_preview.jpg` is a frame from that output; the corresponding GIF
+shows source seconds 6--14 for inline README playback. `desktop_walkthrough.mp4`
+records the corresponding native incident, evidence, corrected-decoding model,
+government-allocation and event-retention views. These recordings are
+derivatives, not additional independent benchmark samples.
+
+- Dataset and creator: [ACCIDENT / accidentbench](https://github.com/accidentbench/ACCIDENT).
+- Distribution: [ACCIDENT on Kaggle](https://www.kaggle.com/datasets/picekl/accident).
+- License: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+- License verification: the official [Kaggle dataset metadata endpoint](https://www.kaggle.com/api/v1/datasets/view/picekl/accident)
+  returned `licenseName: CC BY-NC-SA 4.0` on 16 October 2026.
+- Source credit: Arkansas Department of Transportation, as visible in the clip.
+- Transformations: sampled/blurred frames, model annotations, silent H.264
+  transcoding, and native application capture. Source credit remains visible.
+- `incident_demo.json` preserves measured endpoints, source/model/media hashes,
+  pinned VLM revision and generation settings, and the actual disagreement.
+- These media retain the non-commercial share-alike license independently of
+  the repository's software license.

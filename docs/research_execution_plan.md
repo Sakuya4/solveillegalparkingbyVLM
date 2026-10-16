@@ -164,7 +164,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 330 tests pass,
+(native desktop and portable runtime). Current full regression: 338 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
@@ -181,3 +181,11 @@ window grids and prevents confounding decision hops with feature resolution.
 Native continuous inference and 24 TCN-gated SystemC replays are published;
 train-only event calibration and native post-stream review are complete.
 Corrected decoding replications are complete; reviewed stream exposure remains next.
+
+The 16 October reference-case demonstration reruns the bundled model without
+changing its weights or operating point. Its 225 frames and 14 windows yield
+one event at source time 10.042 s; median sampled-frame processing is 81.3 ms.
+The saved-event Qwen review takes 8.214 s and disagrees with the temporal
+candidate. The public execution record retains this outcome and all source,
+model and media hashes. The 30-second detection video and 40-second native
+walkthrough are presentation artifacts, not an additional benchmark cohort.
