@@ -60,6 +60,10 @@ complete reference clip are included. The default interactive configuration
 uses two CPU threads. Qualcomm QNN HTP is selectable when its execution provider
 and target-compatible model are installed.
 
+The camera action supports public MJPEG pages, direct MJPEG streams, and
+snapshot URLs, with preview, bounded acquisition, cancellation, and subsequent
+analysis. Observation timestamps and source hashes accompany the exported events.
+
 [Desktop architecture and deployment protocol](docs/desktop_application.md)
 
 On Windows, `RunTrafficWorkbench.cmd` launches the installed native application.
@@ -129,10 +133,14 @@ Candidate/global TCNs share these windows and fixed training-holdout calibration
 | --- | ---: | ---: |
 | Candidate motion | 0.346 / 0.139 | 0.395 / 0.146 |
 | Global motion | 0.521 / 0.290 | 0.357 / 0.131 |
+| Frozen VideoMAE | 0.444 / 0.159 | 0.373 / 0.138 |
+| Fine-tuned VideoMAE | 0.450 / 0.190 | 0.378 / 0.138 |
 
 This extension has a different class and geographic composition from the
 balanced reference cohort. [Verified full-cohort results](docs/results/full_cohort_temporal.json)
 include fitting, calibration, and test counts, model hashes, and exclusion records.
+[Full representation comparison and paired uncertainty](docs/results/full_cohort_model_comparison.json)
+include all eight model/split results with AUROC and average precision.
 
 ### Multimodal Evidence and Restoration
 

@@ -20,9 +20,12 @@
 - [x] Replay candidate queues using measured Qwen review-service time.
 - [x] Complete full-cohort candidate/global TCN training and controlled reporting.
 - [x] Evaluate proposal coalescing and budgeted review routing with SystemC parity.
-- [ ] Complete full-cohort frozen and fine-tuned VideoMAE comparison.
+- [x] Complete full-cohort frozen and fine-tuned VideoMAE comparison.
+- [x] Publish AUROC/AP and paired source-clip F1 intervals on matched windows.
 - [ ] Measure incident retention after admission control.
-- [ ] Add native CCTV ingestion and independently reviewed normal exposure.
+- [x] Add native persistent CCTV observations, preview, cancellation, and source-clock analysis.
+- [ ] Add continuous streaming inference with bounded buffers and replay parity.
+- [ ] Extend independently reviewed normal exposure and TCN-gated queue replay.
 
 ## Completed Case: Red-Line Parking
 

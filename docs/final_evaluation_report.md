@@ -77,6 +77,8 @@ clips. Grouped calibration reserves 101 and 90 training clips, respectively.
 | --- | ---: | ---: |
 | Candidate motion | 0.346 / 0.139 | 0.395 / 0.146 |
 | Global motion | 0.521 / 0.290 | 0.357 / 0.131 |
+| Frozen VideoMAE | 0.444 / 0.159 | 0.373 / 0.138 |
+| Fine-tuned VideoMAE | 0.450 / 0.190 | 0.378 / 0.138 |
 
 Each TCN is trained for 40 epochs with seed 42, 32 channels, and dropout 0.1.
 Calibration targets a training-holdout FPR of 0.20. Candidate features improve
@@ -88,6 +90,38 @@ The 500-clip reference model remains unchanged in the desktop bundle.
 The publisher reconstructs all test metrics from stored predictions, verifies
 exact test-set membership and targets, and records source/model hashes.
 Data: [full-cohort temporal study](results/full_cohort_temporal.json).
+
+The matched VideoMAE extension uses all eligible windows. Fine-tuning updates
+1,776,002 parameters, including the final encoder block, with the existing
+1e-5 encoder and 1e-3 head learning rates. Grouped-holdout early stopping
+selects epochs 3 and 5 for IID and geographic training, respectively.
+
+| Representation | IID AUROC / AP | Geographic AUROC / AP |
+| --- | ---: | ---: |
+| Candidate ROI TCN | 0.607 / 0.685 | 0.575 / 0.681 |
+| Global motion TCN | 0.599 / 0.684 | 0.613 / 0.691 |
+| Frozen VideoMAE | 0.623 / 0.712 | 0.609 / 0.696 |
+| Fine-tuned VideoMAE | 0.609 / 0.689 | 0.605 / 0.698 |
+
+AP uses the recall-weighted precision definition implemented by scikit-learn.
+Positive-window prevalence is 0.593 for IID and 0.596 for geographic evaluation.
+Thresholds remain fixed from the training holdout; the test curves characterize
+ranking behavior across operating points.
+
+A paired source-clip bootstrap with 2,000 resamples estimates fine-tuned minus
+frozen F1 differences of 0.0062 (95% interval -0.0223 to 0.0341) for IID and
+0.0054 (-0.0192 to 0.0289) for geographic evaluation. Candidate minus global
+differences are -0.1746 (-0.2054 to -0.1425) and 0.0378 (0.0074 to 0.0689),
+respectively, at their separately calibrated thresholds. Resampling captures
+test-clip variation conditional on fixed trained models and thresholds.
+
+![Matched full-cohort ROC and precision-recall curves](assets/full_cohort_model_curves.png)
+
+Colored ROC markers denote the training-calibrated operating points. Dashed
+lines show random-ranking ROC behavior and the positive-prevalence PR baseline.
+
+Data: [eight-model comparison](results/full_cohort_model_comparison.csv),
+[hashes, protocols, and paired estimates](results/full_cohort_model_comparison.json).
 
 ## 4. Spatial Evidence and Multimodal Review
 
@@ -149,6 +183,23 @@ Poisson exposure bound is 34.55 alerts per camera-hour. Additional exposure
 will tighten that interval and characterize site-to-site variation.
 
 Data: [deployment measurements](results/deployment_metrics.json).
+
+### 5.1 Persistent Camera Ingestion
+
+The native observation workflow was subsequently verified against the same
+Taichung public-camera page using persistent MJPEG transport. A 30.03-second
+capture preserves 218 frames at 7.283 FPS, with one connection, zero read
+failures, and zero exact duplicate frames. A separate native end-to-end run
+preserves 223 frames at 7.446 FPS and completes CPU analysis in 17.613 s,
+producing zero review events. These observations retain their annotation status
+separately from the normal-exposure cohort above.
+
+The application previews acquisition, preserves source-frame timestamps,
+verifies the captured-video hash, and maps exported events back to observation
+time. Acquisition precedes batch analysis in this workflow; continuous inference
+is specified in [ADR 005](decisions/005-observation-clock-and-live-inference.md).
+
+Data: [native camera observations](results/native_cctv_observations.json).
 
 ## 6. Edge Runtime and Hardware Evaluation
 

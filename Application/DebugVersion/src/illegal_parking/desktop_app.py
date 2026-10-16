@@ -4,6 +4,7 @@ import csv
 import json
 import os
 import sys
+import time
 import uuid
 from pathlib import Path
 
@@ -12,6 +13,7 @@ from PySide6.QtCore import QProcess, QProcessEnvironment, Qt, QTimer
 from PySide6.QtGui import QAction, QCloseEvent, QFont, QFontDatabase, QImage, QPixmap
 from PySide6.QtWidgets import (
     QApplication, QCheckBox, QComboBox, QFileDialog, QHBoxLayout, QHeaderView, QLabel,
+    QDialog, QDialogButtonBox, QFormLayout, QLineEdit, QSpinBox,
     QListWidget, QMainWindow, QMessageBox, QPlainTextEdit, QPushButton,
     QSlider, QSizePolicy, QSplitter, QStackedWidget, QStyle, QTableWidget, QTableWidgetItem,
     QTabWidget, QToolBar, QVBoxLayout, QWidget,
@@ -20,6 +22,7 @@ from PySide6.QtWidgets import (
 from .onnx_runtime import runtime_capabilities
 from .project_snapshot import build_project_snapshot
 from .incident_vlm_evidence import review_disposition
+from .cctv_capture import load_camera_observation, redacted_camera_url
 
 
 def configure_application_fonts(application: QApplication) -> None:
@@ -81,6 +84,8 @@ class VideoPanel(QWidget):
         self.fps = max(1.0, capture.get(cv2.CAP_PROP_FPS))
         self.timer.setInterval(max(1, round(1000 / self.fps)))
         self.slider.setRange(0, max(0, self.frame_count - 1))
+        self.play.setEnabled(True)
+        self.slider.setEnabled(True)
         self.seek(0)
 
     def seek(self, index: int):
@@ -98,13 +103,16 @@ class VideoPanel(QWidget):
             self.play.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaPlay))
             return
         self.frame_index = max(0, int(self.capture.get(cv2.CAP_PROP_POS_FRAMES)) - 1)
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        self.current_image = QImage(rgb.data, rgb.shape[1], rgb.shape[0], rgb.strides[0], QImage.Format.Format_RGB888).copy()
-        self._render()
+        self.display_frame(frame)
         self.slider.setValue(self.frame_index)
         current = int(self.frame_index / self.fps)
         total = int(self.frame_count / self.fps)
         self.position.setText(f"{current // 60:02}:{current % 60:02} / {total // 60:02}:{total % 60:02}")
+
+    def display_frame(self, frame):
+        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        self.current_image = QImage(rgb.data, rgb.shape[1], rgb.shape[0], rgb.strides[0], QImage.Format.Format_RGB888).copy()
+        self._render()
 
     def _render(self):
         if self.current_image is not None:
@@ -146,6 +154,7 @@ def make_table(headers: list[str], rows: list[list[object]]) -> QTableWidget:
             table.setItem(row_index, column, QTableWidgetItem(str(value)))
     table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
     table.horizontalHeader().setStretchLastSection(True)
+    table.horizontalHeader().setDefaultAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
     return table
 
 
@@ -158,6 +167,9 @@ class TrafficResearchWindow(QMainWindow):
         self.report = None
         self.job = None
         self.cancelled = False
+        self.capture_report_path = None
+        self.preview_timer = QTimer(self)
+        self.preview_timer.timeout.connect(self._refresh_camera_preview)
         self.setWindowTitle("Traffic Incident Detection and Risk Assessment | Research Workbench")
         self.resize(1400, 900)
         self.setMinimumSize(960, 640)
@@ -172,6 +184,7 @@ class TrafficResearchWindow(QMainWindow):
         self.pages.addWidget(self._evidence_page())
         self.pages.addWidget(self._government_page())
         self.pages.addWidget(self._deployment_page())
+        self.event_profile.currentIndexChanged.connect(self._update_reference_metrics)
         self.navigation.currentRowChanged.connect(self.pages.setCurrentIndex)
         self.navigation.setCurrentRow(0)
         content = QHBoxLayout()
@@ -190,6 +203,7 @@ class TrafficResearchWindow(QMainWindow):
         self.addToolBar(toolbar)
         actions = [
             ("Open video", QStyle.StandardPixmap.SP_DialogOpenButton, self.open_video),
+            ("Camera observation", QStyle.StandardPixmap.SP_DriveNetIcon, self.open_camera_dialog),
             ("Open results", QStyle.StandardPixmap.SP_FileDialogDetailedView, self.open_results),
             ("Reference clip", QStyle.StandardPixmap.SP_FileDialogContentsView, self.load_demo),
             ("Analyze", QStyle.StandardPixmap.SP_MediaPlay, self.analyze_video),
@@ -213,6 +227,12 @@ class TrafficResearchWindow(QMainWindow):
         if capabilities["qnn_available"]:
             self.provider.addItem("Qualcomm QNN HTP", "QNNExecutionProvider")
         toolbar.addWidget(self.provider)
+        toolbar.addWidget(QLabel(" Event profile "))
+        self.event_profile = QComboBox()
+        self.event_profile.addItem("Responsive", 1)
+        self.event_profile.addItem("Conservative", 2)
+        self.event_profile.setCurrentIndex(1)
+        toolbar.addWidget(self.event_profile)
         self.vlm_enabled = QCheckBox("Qwen evidence review")
         self.vlm_enabled.setToolTip("Review up to three candidate events with the local Qwen2.5-VL model")
         toolbar.addWidget(self.vlm_enabled)
@@ -233,12 +253,12 @@ class TrafficResearchWindow(QMainWindow):
     def _incident_page(self):
         page, layout = self._page("Traffic incident workspace", "Vehicle proposals · causal temporal inference · persistence-gated review")
         metrics = QHBoxLayout()
-        responsive = next(row for row in self.snapshot["event_profiles"] if row["profile"] == "responsive")
-        geographic = next(row for row in self.snapshot["model_comparison"] if row["model"] == "Candidate ROI TCN" and row["split"] == "geographic")
-        for title, value in [("Event recall / responsive", f'{responsive["event_recall"]:.1%}'), ("Median trigger delay", f'{responsive["delay_median_sec"]:.3f} s'), ("Geographic TCN F1", f'{geographic["f1"]:.3f}')]:
-            label = QLabel(f"<span style='color:#60746c;font-size:11px'>{title}</span><br><span style='font-size:23px;font-weight:600'>{value}</span>")
+        self.metric_labels = []
+        for title, value in self._reference_metric_values():
+            label = QLabel(self._metric_html(title, value))
             label.setObjectName("metric")
             metrics.addWidget(label)
+            self.metric_labels.append(label)
         layout.addLayout(metrics)
         self.video = VideoPanel()
         self.events = make_table(["Event", "Trigger time", "Probability"], [])
@@ -258,13 +278,27 @@ class TrafficResearchWindow(QMainWindow):
         layout.addWidget(self.log)
         return page
 
+    @staticmethod
+    def _metric_html(title, value):
+        return f"<span style='color:#60746c;font-size:11px'>{title}</span><br><span style='font-size:23px;font-weight:600'>{value}</span>"
+
+    def _reference_metric_values(self):
+        name = self.event_profile.currentText().lower()
+        profile = next(row for row in self.snapshot["event_profiles"] if row["profile"] == name)
+        geographic = next(row for row in self.snapshot["model_comparison"] if row["model"] == "Candidate ROI TCN" and row["split"] == "geographic")
+        return [(f"IID recall / {name}", f'{profile["event_recall"]:.1%}'), (f"Median delay / {name}", f'{profile["delay_median_sec"]:.3f} s'), ("Reference window F1 / geographic", f'{geographic["f1"]:.3f}')]
+
+    def _update_reference_metrics(self):
+        for label, (title, value) in zip(self.metric_labels, self._reference_metric_values()):
+            label.setText(self._metric_html(title, value))
+
     def _model_page(self):
         page, layout = self._page("Temporal model evaluation", "500-clip reference and 2,021-clip extended cohorts; grouped calibration and IID / geographic evaluation")
         profiles = [("IID", row) for row in self.snapshot["event_profiles"]] + [("Geographic", row) for row in self.snapshot["geographic_event_profiles"]]
         layout.addWidget(make_table(["Split", "Profile", "Clips", "Event recall", "Median delay", "p95 delay", "Early / late episodes"], [[split, p["profile"], p["clips"], f'{p["event_recall"]:.3f}', f'{p["delay_median_sec"]:.3f} s', f'{p["delay_p95_sec"]:.3f} s', f'{p["early_alert_episodes"]} / {p["late_alert_episodes"]}'] for split, p in profiles]))
         tabs = QTabWidget()
         tabs.addTab(make_table(["Model", "Split", "Precision", "Recall", "F1", "FPR"], [[r["model"], r["split"], *(f'{r[key]:.3f}' for key in ("precision", "recall", "f1", "false_positive_rate"))] for r in self.snapshot["model_comparison"]]), "500-clip reference")
-        tabs.addTab(make_table(["TCN features", "Split", "Fit clips", "Calibration clips", "Test clips", "F1", "FPR"], [[r["feature_set"], r["split"], r["fit_clips"], r["calibration_clips"], r["test_clips"], f'{r["test"]["f1"]:.3f}', f'{r["test"]["false_positive_rate"]:.3f}'] for r in self.snapshot["full_cohort_models"]]), "2,021-clip extension")
+        tabs.addTab(make_table(["Representation", "Split", "Fit", "Calibration", "Test clips", "F1", "FPR", "AUROC", "AP"], [[r["display_name"], r["split"], r["fit_clips"], r["calibration_clips"], r["test_clips"], f'{r["test"]["f1"]:.3f}', f'{r["test"]["false_positive_rate"]:.3f}', f'{r["ranking"]["auroc"]:.3f}', f'{r["ranking"]["average_precision"]:.3f}'] for r in self.snapshot["full_cohort_models"]]), "2,021-clip extension")
         layout.addWidget(tabs, 1)
         return page
 
@@ -302,6 +336,12 @@ class TrafficResearchWindow(QMainWindow):
         path, text = assets[index]
         image_path = self.root / "docs/assets" / path
         self.frame_choice.setVisible(index == 0)
+        no_event = index == 0 and self.report is not None and not self.report["events"]
+        self.frame_choice.setEnabled(not no_event)
+        if no_event:
+            self.evidence_image.clear()
+            self.evidence_text.setText("No review event in this analysis")
+            return
         frame_name = (None, "before", "trigger", "after")[self.frame_choice.currentIndex()]
         if index == 0 and self.report is not None and self.report["events"]:
             event = self.report["events"][max(0, self.events.currentRow())]
@@ -364,6 +404,78 @@ class TrafficResearchWindow(QMainWindow):
         if filename:
             self.load_input(Path(filename))
 
+    def open_camera_dialog(self):
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Camera observation")
+        dialog.resize(600, 240)
+        layout = QFormLayout(dialog)
+        mode = QComboBox()
+        for label, value in (("Public page / MJPEG", "page"), ("MJPEG URL", "mjpeg"), ("Snapshot URL", "snapshot")):
+            mode.addItem(label, value)
+        url = QLineEdit("https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129")
+        url.setMaxLength(2048)
+        duration = QSpinBox()
+        duration.setRange(30, 120)
+        duration.setSingleStep(30)
+        duration.setValue(60)
+        analyze = QCheckBox()
+        analyze.setChecked(True)
+        layout.addRow("Source type", mode)
+        layout.addRow("Source URL", url)
+        layout.addRow("Duration (s)", duration)
+        layout.addRow("Analyze when ready", analyze)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        layout.addRow(buttons)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            try:
+                self.capture_camera(url.text().strip(), mode.currentData(), duration.value(), analyze.isChecked())
+            except ValueError as exc:
+                QMessageBox.warning(self, "Camera source", str(exc))
+
+    def capture_camera(self, url: str, mode: str, duration_sec: float, analyze_after: bool = True):
+        if self.job and self.job.state() != QProcess.ProcessState.NotRunning:
+            return
+        public_source = redacted_camera_url(url)
+        if mode not in {"page", "mjpeg", "snapshot"} or not 0 < duration_sec <= 120:
+            raise ValueError("Select a supported source and an observation of at most 120 seconds")
+        self.input_path = self.report = self.capture_report_path = None
+        self.events.setRowCount(0)
+        self.show_evidence(self.evidence_choice.currentIndex())
+        self.actions_by_name["Export results"].setEnabled(False)
+        self.output_dir = self.root / "outputs/desktop" / uuid.uuid4().hex[:12]
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.video.release()
+        self.video.current_image = None
+        self.video.preview.clear()
+        self.video.preview.setText("Connecting camera")
+        self.video.play.setEnabled(False)
+        self.video.slider.setEnabled(False)
+        self.clip_label.setText(public_source.split("/", 3)[2])
+        self.navigation.setCurrentRow(0)
+        self._preview_modified = None
+        self._capture_started = time.perf_counter()
+        arguments = ["--page-url" if mode == "page" else "--source-url", url, "--transport", "snapshot" if mode == "snapshot" else "mjpeg", "--duration-sec", str(duration_sec), "--output-video", str(self.output_dir / "capture.mp4"), "--output-report", str(self.output_dir / "capture.json"), "--preview", str(self.output_dir / "preview.jpg"), "--stop-file", str(self.output_dir / "cancel_capture")]
+        self._start_job("scripts/capture_public_cctv.py", arguments, "capture")
+        self.job.setProperty("analyze_after_capture", analyze_after)
+        self.preview_timer.start(300)
+
+    def _refresh_camera_preview(self):
+        path = self.output_dir / "preview.jpg"
+        try:
+            modified = path.stat().st_mtime_ns
+            if modified == self._preview_modified:
+                return
+            import numpy as np
+            frame = cv2.imdecode(np.frombuffer(path.read_bytes(), dtype=np.uint8), cv2.IMREAD_COLOR)
+            if frame is not None:
+                self.video.display_frame(frame)
+                self.video.position.setText(f"{time.perf_counter() - self._capture_started:.0f} s | CCTV")
+                self._preview_modified = modified
+        except OSError:
+            return
+
     def open_results(self):
         filename, _ = QFileDialog.getOpenFileName(self, "Open completed analysis", str(self.root / "outputs/desktop"), "JSON (*.json)")
         if filename:
@@ -381,12 +493,22 @@ class TrafficResearchWindow(QMainWindow):
             QMessageBox.warning(self, "Video input", str(exc))
             return
         self.input_path = path
+        self.capture_report_path = None
+        capture_path = path.with_name("capture.json")
+        if capture_path.is_file():
+            try:
+                capture = load_camera_observation(capture_path, path, self.video.frame_count)
+                self.capture_report_path = capture_path
+            except (OSError, ValueError):
+                self.log.appendPlainText("Capture metadata could not be associated with this video")
         self.report = None
         self.events.setRowCount(0)
         self.show_evidence(self.evidence_choice.currentIndex())
         self.actions_by_name["Export results"].setEnabled(False)
         self.actions_by_name["Analyze"].setEnabled(True)
         self.clip_label.setText(path.name)
+        if self.capture_report_path is not None:
+            self.clip_label.setText(f'{path.name} | {capture["effective_fps"]:.2f} FPS | {capture["exact_duplicate_rate"]:.1%} repeated frames')
         self.navigation.setCurrentRow(0)
 
     def load_demo(self):
@@ -395,8 +517,9 @@ class TrafficResearchWindow(QMainWindow):
     def seek_selected_event(self):
         row = self.events.currentRow()
         if self.report is not None and 0 <= row < len(self.report["events"]):
-            timestamp = self.report["events"][row]["trigger_time_sec"]
-            self.video.seek(round(timestamp * self.video.fps))
+            event = self.report["events"][row]
+            frame_index = event.get("output_frame_index", round(event["trigger_time_sec"] * self.video.fps))
+            self.video.seek(frame_index)
             self.show_evidence(0)
 
     def analyze_video(self):
@@ -408,7 +531,18 @@ class TrafficResearchWindow(QMainWindow):
         self.show_evidence(self.evidence_choice.currentIndex())
         self.actions_by_name["Export results"].setEnabled(False)
         self.output_dir = self.root / "outputs/desktop" / uuid.uuid4().hex[:12]
+        arguments = ["--input", str(self.input_path), "--output-dir", str(self.output_dir), "--provider", self.provider.currentData(), "--min-positive-windows", str(self.event_profile.currentData())]
+        if self.vlm_enabled.isChecked():
+            arguments.append("--vlm-review")
+        if self.capture_report_path is not None:
+            arguments.extend(["--capture-report", str(self.capture_report_path)])
+        self._start_job("scripts/analyze_desktop_video.py", arguments, "analysis")
+
+    def _start_job(self, script: str, arguments: list[str], kind: str):
+        self.cancelled = False
+        self.log.clear()
         job = QProcess(self)
+        job.setProperty("kind", kind)
         self.job = job
         job.setWorkingDirectory(str(self.root))
         environment = QProcessEnvironment.systemEnvironment()
@@ -423,35 +557,53 @@ class TrafficResearchWindow(QMainWindow):
         self.actions_by_name["Analyze"].setEnabled(False)
         self.actions_by_name["Cancel"].setEnabled(True)
         self.provider.setEnabled(False)
+        self.event_profile.setEnabled(False)
         self.vlm_enabled.setEnabled(False)
         self.actions_by_name["Open video"].setEnabled(False)
         self.actions_by_name["Reference clip"].setEnabled(False)
         self.actions_by_name["Open results"].setEnabled(False)
-        self.statusBar().showMessage("Analyzing video | CPU proposal tracking + selected temporal runtime")
-        arguments = [str(self.root / "scripts/analyze_desktop_video.py"), "--input", str(self.input_path), "--output-dir", str(self.output_dir), "--provider", self.provider.currentData()]
-        if self.vlm_enabled.isChecked():
-            arguments.append("--vlm-review")
-        job.start(worker_python(), arguments)
+        self.actions_by_name["Camera observation"].setEnabled(False)
+        self.statusBar().showMessage("Observing camera" if kind == "capture" else "Analyzing video | CPU proposals + selected temporal runtime")
+        job.start(worker_python(), [str(self.root / script), *arguments])
 
     def _reset_job_controls(self):
-        self.actions_by_name["Analyze"].setEnabled(True)
+        self.actions_by_name["Analyze"].setEnabled(self.input_path is not None)
         self.actions_by_name["Cancel"].setEnabled(False)
         self.provider.setEnabled(True)
+        self.event_profile.setEnabled(True)
         self.vlm_enabled.setEnabled(True)
         self.actions_by_name["Open video"].setEnabled(True)
         self.actions_by_name["Reference clip"].setEnabled(True)
         self.actions_by_name["Open results"].setEnabled(True)
+        self.actions_by_name["Camera observation"].setEnabled(True)
 
     def _job_error(self, job: QProcess, error):
+        if job is not self.job:
+            return
         if error == QProcess.ProcessError.FailedToStart:
+            self.preview_timer.stop()
             self._reset_job_controls()
             self.log.appendPlainText(job.errorString())
             self.statusBar().showMessage("Analysis process could not start")
 
     def _job_finished(self, job: QProcess, code: int):
+        if job is not self.job:
+            return
+        self.preview_timer.stop()
         self._reset_job_controls()
         if self.cancelled:
-            self.statusBar().showMessage("Analysis cancelled")
+            self.statusBar().showMessage("Job cancelled")
+            return
+        if job.property("kind") == "capture":
+            capture_path = self.output_dir / "capture.json"
+            if code != 0 or not capture_path.is_file():
+                self.statusBar().showMessage("Camera observation ended with an error; see process output")
+                return
+            self.load_input(self.output_dir / "capture.mp4")
+            if job.property("analyze_after_capture"):
+                self.analyze_video()
+            else:
+                self.statusBar().showMessage("Camera observation saved")
             return
         report_path = self.output_dir / "report.json"
         if code != 0 or not report_path.is_file():
@@ -463,17 +615,24 @@ class TrafficResearchWindow(QMainWindow):
         payload = json.loads(report_path.read_text(encoding="utf-8"))
         if not isinstance(payload.get("events"), list) or not isinstance(payload.get("runtime"), dict):
             raise ValueError("Select a completed desktop analysis report")
+        profile_index = self.event_profile.findData(payload.get("min_positive_windows", 2))
+        if profile_index < 0:
+            raise ValueError("Report event profile must require one or two positive windows")
         video_path = Path(payload["output_video"])
         if not video_path.is_absolute():
             video_path = report_path.parent / video_path
         self.video.load(video_path)
         self.report = payload
+        self.event_profile.setCurrentIndex(profile_index)
         source = Path(payload.get("input", ""))
         if not source.is_absolute():
             source = self.root / source
         self.input_path = source if source.is_file() else None
+        self.capture_report_path = source.with_name("capture.json") if self.input_path is not None and source.with_name("capture.json").is_file() else None
         self.actions_by_name["Analyze"].setEnabled(self.input_path is not None)
         self.clip_label.setText(f"{video_path.name} | {report_path.name}")
+        if "capture" in self.report:
+            self.clip_label.setText(f'{video_path.name} | source {self.report["capture"]["effective_fps"]:.2f} FPS | {report_path.name}')
         self.events.setRowCount(len(self.report["events"]))
         for index, event in enumerate(self.report["events"]):
             for column, value in enumerate((index + 1, f'{event["trigger_time_sec"]:.3f} s', f'{event["probability"]:.3f}')):
@@ -486,8 +645,13 @@ class TrafficResearchWindow(QMainWindow):
         if self.job and self.job.state() != QProcess.ProcessState.NotRunning:
             self.cancelled = True
             job = self.job
-            job.terminate()
-            QTimer.singleShot(1500, job, lambda: job.kill() if job.state() != QProcess.ProcessState.NotRunning else None)
+            if job.property("kind") == "capture":
+                (self.output_dir / "cancel_capture").touch()
+                timeout = 6500
+            else:
+                job.terminate()
+                timeout = 1500
+            QTimer.singleShot(timeout, job, lambda: job.kill() if job.state() != QProcess.ProcessState.NotRunning else None)
 
     def export_results(self):
         if self.report is None:
@@ -497,6 +661,7 @@ class TrafficResearchWindow(QMainWindow):
             Path(filename).write_text(json.dumps(self.report, indent=2) + "\n", encoding="utf-8")
 
     def closeEvent(self, event: QCloseEvent):
+        self.preview_timer.stop()
         self.video.release()
         if self.job and self.job.state() != QProcess.ProcessState.NotRunning:
             self.job.kill()

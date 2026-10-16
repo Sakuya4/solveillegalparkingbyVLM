@@ -49,6 +49,9 @@ provides the publisher's journal information.
   strict token-bucket conformance for measured-service review admission.
 - [Accellera SystemC 3.0.2](https://github.com/accellera-official/systemc/releases/tag/3.0.2):
   transaction-level camera, inference, and evidence-queue simulation.
+- [scikit-learn AUROC](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html)
+  and [average precision](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.average_precision_score.html):
+  window-level ranking metrics in the matched representation study.
 
 DOI titles for the five journal references were checked against Crossref during
 this implementation. Source access date: 16 October 2026.

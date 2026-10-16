@@ -95,6 +95,9 @@ test the relationship between evidence cost and downstream review capacity.
 The full-cohort temporal study and five-policy SystemC-verified routing results
 are retained separately from the 500-clip reference comparison. Report explicit
 budget denials alongside completed reviews and queue drops.
+The full VideoMAE comparison includes eight model/split results, AUROC/AP,
+source-clip bootstrap intervals, and test-prevalence baselines. Persistent
+public-camera observations report source cadence and analysis time separately.
 
 ## 6. Discussion
 

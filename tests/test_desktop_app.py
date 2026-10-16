@@ -2,6 +2,9 @@ import os
 import sys
 import subprocess
 import json
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import threading
+import time
 from pathlib import Path
 
 os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
@@ -9,10 +12,44 @@ os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
 import pytest
 
 pytest.importorskip("PySide6")
-from PySide6.QtWidgets import QApplication
+from PySide6.QtWidgets import QApplication, QTabWidget
 from PySide6.QtCore import QCoreApplication, QEvent, QProcess
 from PySide6.QtTest import QTest
 from illegal_parking.desktop_app import TrafficResearchWindow
+
+
+@pytest.fixture
+def mjpeg_server():
+    import cv2
+    import numpy as np
+    stopped = threading.Event()
+    payload = cv2.imencode(".jpg", np.full((24, 32, 3), 80, dtype=np.uint8))[1].tobytes()
+
+    class Handler(BaseHTTPRequestHandler):
+        def log_message(self, *args):
+            pass
+
+        def do_GET(self):
+            try:
+                self.send_response(200)
+                self.send_header("Content-Type", "multipart/x-mixed-replace; boundary=frame")
+                self.end_headers()
+                while not stopped.is_set():
+                    self.wfile.write(b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + payload + b"\r\n")
+                    self.wfile.flush()
+                    time.sleep(0.04)
+            except ConnectionError:
+                return
+
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    server.daemon_threads = False
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    yield f"http://127.0.0.1:{server.server_port}/stream"
+    stopped.set()
+    server.shutdown()
+    server.server_close()
+    thread.join(timeout=2)
 
 
 @pytest.fixture(scope="session")
@@ -57,6 +94,14 @@ def test_video_seek_and_playback_preserve_frame_state(window):
     assert not window.actions_by_name["Export results"].isEnabled()
 
 
+def test_reference_metrics_follow_the_selected_event_gate(window):
+    assert window.event_profile.currentData() == 2
+    assert "44.0%" in window.metric_labels[0].text()
+    window.event_profile.setCurrentIndex(0)
+    assert window.event_profile.currentData() == 1
+    assert "75.0%" in window.metric_labels[0].text()
+
+
 def test_loading_another_video_clears_previous_event_evidence(window):
     window.evidence_text.setText("Previous event result")
     window.load_demo()
@@ -71,6 +116,15 @@ def test_evidence_selection_loads_real_images(window):
         assert window.evidence_text.text()
 
 
+def test_extended_model_tab_uses_all_matched_models_and_ranking_metrics(window):
+    tabs = window.pages.widget(1).findChild(QTabWidget)
+    tabs.setCurrentIndex(1)
+    table = tabs.currentWidget()
+    assert table.rowCount() == 8
+    assert table.horizontalHeaderItem(7).text() == "AUROC"
+    assert table.horizontalHeaderItem(8).text() == "AP"
+
+
 def test_completed_analysis_can_be_reopened_without_inference(window, tmp_path):
     report = {
         "input": str(window.input_path), "output_video": str(window.input_path),
@@ -81,8 +135,48 @@ def test_completed_analysis_can_be_reopened_without_inference(window, tmp_path):
     path.write_text(json.dumps(report), encoding="utf-8")
     window.load_report(path)
     assert window.report["events"] == []
+    assert "No review event" in window.evidence_text.text()
     assert window.actions_by_name["Export results"].isEnabled()
     assert window.video.current_image is not None
+
+
+def test_report_rejects_unknown_event_gate_before_changing_ui(window, tmp_path):
+    path = tmp_path / "report.json"
+    path.write_text(json.dumps({"events": [], "runtime": {}, "min_positive_windows": 3}), encoding="utf-8")
+    with pytest.raises(ValueError, match="one or two"):
+        window.load_report(path)
+    assert window.event_profile.currentData() == 2
+
+
+def test_native_capture_worker_loads_video_and_verified_clock(window, mjpeg_server):
+    window.capture_camera(mjpeg_server, "mjpeg", 3, analyze_after=False)
+    assert not window.actions_by_name["Open video"].isEnabled()
+    for _ in range(200):
+        if window.capture_report_path is not None:
+            break
+        QTest.qWait(50)
+    assert window.capture_report_path is not None, window.log.toPlainText()
+    assert window.input_path.name == "capture.mp4"
+    assert window.actions_by_name["Analyze"].isEnabled()
+    assert not window.preview_timer.isActive()
+    assert window.video.current_image is not None
+    report = json.loads(window.capture_report_path.read_text(encoding="utf-8"))
+    assert report["source_metadata"]["connections"] == 1
+    assert len(report["frame_times_sec"]) == window.video.frame_count
+
+
+def test_native_capture_cancel_is_cooperative(window, mjpeg_server):
+    window.capture_camera(mjpeg_server, "mjpeg", 30, analyze_after=False)
+    QTest.qWait(1000)
+    window.cancel_analysis()
+    for _ in range(160):
+        if window.job.state() == QProcess.ProcessState.NotRunning:
+            break
+        QTest.qWait(50)
+    assert window.cancelled
+    assert window.job.state() == QProcess.ProcessState.NotRunning
+    assert not window.actions_by_name["Analyze"].isEnabled()
+    assert not list(window.output_dir.glob("camera_frames_*"))
 
 
 def test_cancel_analysis_terminates_the_active_worker(window):

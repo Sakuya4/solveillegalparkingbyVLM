@@ -86,8 +86,12 @@ At the deadline, report delivered artifacts and remaining external requirements.
    The 500-clip desktop model remains the reference version.
 5. Completed: five-policy routing comparison with exact SystemC/Python parity.
    Extend routing to independently labeled event-retention evaluation.
-6. Integrate native CCTV input. Native
-   demonstration recording is complete and reproducible from saved results.
+6. Completed: native camera preview, bounded persistent observations, cooperative
+   cancellation, and automatic subsequent analysis with source-clock provenance.
+7. Implement continuous streaming inference with bounded frame/feature buffers,
+   immediate window-end decisions, and replay parity; see ADR 005.
+8. Replay TCN-gated event demand through the measured-service hardware model;
+   keep the existing proposal-level workloads as stress tests.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -103,14 +107,15 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 250 tests pass,
+(native desktop and portable runtime). Current full regression: 263 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
 and `18f63b3` (native evidence and demonstration).
 Subsequent checkpoints are `369f5ef` (measured-service SystemC routing),
 `573c8d9` (full-cohort TCN publication), and `d7ae6e3` (VideoMAE queue).
-The initial queue is complete. Full-cohort VideoMAE extraction is active;
-inspect its dedicated log for progress. Three Icarus testbenches were rerun
+Both initial and representation queues are complete. Full-cohort VideoMAE
+results have been verified against predictions and paired source-clip bootstrap
+estimates have been published. Three Icarus testbenches were rerun
 successfully. SystemC 3.0.2 was built locally with MSVC 19.44 and verified on
 all five measured-service routing workloads.

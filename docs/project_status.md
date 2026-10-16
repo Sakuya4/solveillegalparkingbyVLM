@@ -21,7 +21,7 @@ The same matrix is generated from checked-in artifacts for the integrated
 ## Verified
 
 - [x] Native PySide6 application: playback, asynchronous analysis, cancellation,
-  event navigation, export, and portable ONNX execution.
+  event navigation, export, portable ONNX execution, and camera observations.
 - [x] Temporal government-data allocation: 180 matched-budget comparisons with
   January--September selection and October--December evaluation.
 - [x] Red-line parking rule, two-sided curb interpretation, privacy treatment,
@@ -66,7 +66,10 @@ The same matrix is generated from checked-in artifacts for the integrated
 - Measured Qwen service-time routing: 198 completed, three pending, zero queue
   drops, and 1,367 budget denials after coalescing; Python/SystemC agree.
 - Full cohort: 2,021 eligible clips; candidate/global TCN IID F1 0.346/0.521
-  and geographic F1 0.395/0.357. Full-cohort VideoMAE extraction is active.
+  and geographic F1 0.395/0.357. Frozen/fine-tuned VideoMAE IID F1 is
+  0.444/0.450 and geographic F1 is 0.373/0.378, with paired clip-level intervals.
+- Native public-camera observation: 223 frames at 7.446 FPS, zero read failures,
+  one persistent connection, and 17.613 s of CPU analysis for the 30 s capture.
 - Existing New Taipei camera sites cover `18.95%` of joined top-risk score
   within 1 km.
 

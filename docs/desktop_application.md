@@ -32,7 +32,7 @@ need not be repeated to inspect a saved result.
 ## Workspaces
 
 1. Incident workspace: video playback, seek controls, asynchronous analysis,
-   cancellation, event timestamps, and result export.
+   cancellation, event timestamps, result export, and camera observations.
 2. Model evaluation: event-level recall/delay and matched-cohort temporal-model
    comparisons at holdout-calibrated operating points.
 3. Visual evidence: before/trigger/after context, NAFNet restoration, and
@@ -44,6 +44,18 @@ need not be repeated to inspect a saved result.
 5. Edge deployment: available ONNX providers and Verilog/SystemC validation.
 
 ## Runtime Contract
+
+The camera action accepts a compatible public page, a direct MJPEG URL, or a
+snapshot URL. Observations are bounded to 30--120 seconds and support preview
+and cooperative cancellation. Compatible MJPEG feeds use one persistent
+connection. Captured frames are spooled on disk, then encoded for playback at
+their measured mean cadence. Source timestamps, hashes, and transport metadata
+remain in `capture.json`; analysis verifies the video hash before using that
+clock. The optional subsequent analysis executes in its own worker.
+
+```powershell
+python scripts/run_desktop.py --capture-page "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129" --capture-duration 30 --analyze
+```
 
 Each analysis runs in a separate `QProcess`, preserving UI responsiveness and
 isolating worker termination. Input clips are limited to 120 seconds for
