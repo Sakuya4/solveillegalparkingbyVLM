@@ -180,6 +180,14 @@ not an effective deployment operating point. The independent public-data
 auditor reconstructs 816 calibration points, 2,000 per-clip outcomes and eight
 paired intervals from 13,060 context scores and the complete clip inventory.
 Preserve unsupported-prefix clips and disclose prior window-test observations.
+The separately frozen TRAIN-only diagnostic isolates timing support, score
+ranking and episode suppression. Its within-clip AUROC is 0.491--0.592; all
+eight paired AUROC/AP intervals include zero. Although 84/94 IID and 63/83
+geographic clips are structurally reachable under gate 2, constrained misses
+mostly lack an adjacent target positive pair. Low-threshold onset suppression
+is a different failure mode. Keep those populations distinct and motivate
+continuous-grid training rather than presenting threshold changes as better
+visual recognition. The next fitting study requires a new source/label freeze.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and

@@ -132,12 +132,20 @@ keeps missing evidence and requested operator review visible.
 
 ## Reproducible UI Verification
 
-Model evaluation contains seven tabs: reference, full-cohort models,
-generation-v2 VLM review, PTS windows, PTS events, nonvisual controls and
-positive-context constraints. The last tab retains all eight paired
+Model evaluation contains eight tabs: reference, full-cohort models,
+generation-v2 VLM review, PTS windows, PTS events, nonvisual controls,
+positive-context constraints and TRAIN diagnostics. The positive-context tab
+retains all eight paired
 operating-policy results on the new 100/100 cohorts, test-cap exceedances,
 pointwise recall intervals and supported/unsupported prefix counts.
 Its source is the hash-bound numerical study rather than recomputed UI metrics.
+
+The TRAIN diagnostic tab has separate score-ranking, controller-outcome and
+paired-interval views. It preserves 708 assigned calibration model/clip rows,
+including unsupported contexts, and does not present development metrics as
+new test performance.
+
+![Native TRAIN-only diagnostic view](assets/desktop_event_diagnostics.png)
 
 ![Native positive-context comparison](assets/desktop_positive_context.png)
 

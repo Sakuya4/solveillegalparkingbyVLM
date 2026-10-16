@@ -206,6 +206,13 @@ auditor reconstructs 816 calibration points and 2,000 per-clip outcomes from
 
 ![Event sensitivity and positive-context constraints](docs/assets/positive_context_tradeoffs.png)
 
+The [training-holdout diagnostic](docs/event_local_discrimination.md) separates
+score ranking, temporal support and controller failures before further model
+development. All eight within-clip AUROC/AP contrast intervals include zero.
+Under constrained thresholds, missing event-local positive pairs dominate
+onset suppression. The public report and native TRAIN view retain complete
+source denominators and motivate a matched continuous-context training study.
+
 ### Multimodal Evidence and Restoration
 
 ![Privacy-treated temporal evidence](docs/assets/incident_vlm_clean_evidence.jpg)

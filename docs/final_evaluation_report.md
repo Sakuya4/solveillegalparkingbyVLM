@@ -406,6 +406,16 @@ Public traces permit independent reconstruction of all 816 calibration
 points, 2,000 per-clip outcomes and eight paired contrasts without private
 data or model weights. Native tables and figures expose the full tradeoff.
 
+The [TRAIN-only event-local diagnostic](event_local_discrimination.md) then
+examines 4,464 calibration scores under a separate pre-analysis freeze.
+Within-clip AUROC spans 0.491--0.592, and all eight paired ranking intervals
+include zero. Two-window structural support is 84/94 IID and 63/83 geographic
+clips. Under constrained thresholds, 71--77 IID and 51--60 geographic clips
+per model lack an adjacent positive pair ending in the event band; only 0--2
+fail through onset suppression. These findings distinguish controller timing
+from score/label alignment and motivate a frozen continuous-context training
+comparison. They do not add test-set evidence or change the reference default.
+
 Continuous-event calibration uses 101 IID and 90 geographic held-out training
 clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating
 settings are evaluated on separate 100-clip test batches after threshold

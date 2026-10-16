@@ -228,6 +228,20 @@ At the deadline, report delivered artifacts and remaining external requirements.
     contract; do not optimize or select defaults on the observed test cohorts.
     New independent normal-camera labels and physical QNN profiling remain
     external requirements. All research queues are complete; do not restart.
+28. Completed: the TRAIN-only event-local diagnostic was specified and committed
+    before its new metrics, with a second implementation freeze after fixture
+    tests. Calibration-only inputs contain 708 model/clip rows and 4,464 scores.
+    Within-clip AUROC is 0.491--0.592; all eight paired ranking intervals include
+    zero. Two-window structural support is 84/94 IID and 63/83 geographic.
+    Constrained misses primarily lack a target positive pair, whereas low
+    onset-only thresholds often suppress a new episode through sustained scores.
+    Publish all categories and unsupported populations; do not invert rankings.
+29. Next: freeze a continuous-context training comparison before new feature
+    extraction or fitting. Audit fit-only source/label support, then compare
+    annotation-anchored versus actual continuous-grid training under the same
+    PTS context, features and controller. A video representation must use the
+    same physical-time/label contract. Keep all prior models/defaults and test
+    results; this diagnostic is exploratory reuse of TRAIN calibration clips.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -243,7 +257,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 465 tests pass,
+(native desktop and portable runtime). Current full regression: 483 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

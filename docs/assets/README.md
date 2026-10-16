@@ -51,6 +51,12 @@ hashes. `desktop_positive_context.png` captures the seventh native evaluation
 tab from those checked-in results. These figures contain aggregate research
 measurements, not additional source-video frames or independent observations.
 
+`event_discrimination.png` and `.pdf` display TRAIN-only event-local ranking
+and the complete inherited-policy failure decomposition. Their JSON manifest
+binds the numerical source and plotting code. `desktop_event_diagnostics.png`
+captures the corresponding native research view; no new video inference is
+performed to produce these numerical figures or screenshots.
+
 `incident_demo.mp4` is the complete 30-second reference clip with causal
 streaming output, vehicle privacy blur, motion proposals and temporal scores.
 `incident_demo_preview.jpg` is a frame from that output; the corresponding GIF

@@ -64,7 +64,11 @@
 - [x] Export every model-assigned calibration/test context and complete source inventory without modifying frozen implementations.
 - [x] Independently reconstruct 816 calibration points, 2,000 per-clip outcomes, prefix support and eight paired intervals from public data.
 - [x] Publish all operating-policy tradeoffs and a native positive-context comparison tab, retaining test-cap exceedances.
-- [ ] Predeclare training-holdout event-local discrimination diagnostics before any new representation or fitting study.
+- [x] Predeclare training-holdout event-local discrimination diagnostics before any new representation or fitting study.
+- [x] Freeze calibration-only score inputs and execute ranking/support/controller diagnostics without new test endpoints.
+- [x] Independently verify all supported clip rankings and both policy detections against public data and the frozen production evaluator.
+- [x] Publish the eight-model diagnostic report, decomposition figures and native TRAIN-only comparison modes.
+- [ ] Freeze a continuous-context training comparison, including fit-only label support, source splits, physical-time contracts and representation controls, before further extraction/fitting.
 
 ## Completed Case: Red-Line Parking
 

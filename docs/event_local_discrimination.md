@@ -76,3 +76,96 @@ eight pointwise contrasts: four within-clip AUROC and four within-clip AP
 differences, with 2,000 source-clip percentile bootstrap resamples, seed 42.
 Keep both signs, class/support counts and conditional uncertainty. No new test
 scores or test-driven hyperparameters enter this diagnostic.
+
+## Completed Findings
+
+Protocol `2859dc658d2a7ce390780094722be975b4db3c27c5fca9c461724b58c37db45c`
+and the separate execution appendix were committed before real-data analysis.
+The input contains **708 model-assigned calibration clips and 4,464 scores**;
+no test rows enter the worker. The original **94/83** source denominators and
+all eight existing model hashes remain unchanged.
+
+| Model / split | Pooled AUROC | Within-clip AUROC | Within-clip AP | Supported clips |
+| --- | ---: | ---: | ---: | ---: |
+| Source-frame candidate / IID | 0.599 | 0.559 | 0.738 | 59 |
+| Source-frame global / IID | 0.590 | 0.590 | 0.754 | 59 |
+| Source-frame candidate / geographic | 0.554 | 0.498 | 0.703 | 40 |
+| Source-frame global / geographic | 0.587 | 0.504 | 0.695 | 40 |
+| Fixed-time candidate / IID | 0.570 | 0.531 | 0.708 | 59 |
+| Fixed-time global / IID | 0.568 | 0.566 | 0.746 | 59 |
+| Fixed-time candidate / geographic | 0.539 | 0.491 | 0.678 | 40 |
+| Fixed-time global / geographic | 0.595 | 0.592 | 0.735 | 40 |
+
+The pooled target fractions are **0.607/0.611**; equal-supported-clip target
+fractions are **0.529/0.507**. AP values therefore require their task and
+prevalence context. Constant-score AP equals prevalence, but random-order
+expected AP need not equal that constant baseline in short samples. With one
+positive and one negative, the two untied rank orders have AP 1 and 0.5, whose
+mean is 0.75, whereas tied constant scores yield 0.5. AP minus prevalence is
+reported as a reference contrast, not a chance-corrected significance test.
+
+Within-clip AUROC ranges from **0.491 to 0.592**, compared with pooled values
+0.539--0.599. These distinct estimands reveal limited event-local ordering
+under the retained representation and endpoint labels. Fixed-minus-source
+AUROC differences are -0.028/-0.024 for IID candidate/global and -0.007/+0.089
+for geographic candidate/global. Every one of the eight paired AUROC/AP
+intervals includes zero; the positive geographic-global point contrast does
+not establish a consistently superior training policy.
+
+One-context timing support is **94/94 IID** and **82/83 geographic**. Requiring
+an adjacent prior context reduces structural attainability to **84/94** and
+**63/83**. The one empty geographic clip remains in its assigned denominator.
+This annotation-aided bound ignores recognition and operating constraints.
+
+| Model / split | Capped detections | Structurally unreachable | No target positive pair | Onset suppression |
+| --- | ---: | ---: | ---: | ---: |
+| Source-frame candidate / IID | 11 | 10 | 73 | 0 |
+| Source-frame global / IID | 11 | 10 | 71 | 2 |
+| Source-frame candidate / geographic | 3 | 20 | 60 | 0 |
+| Source-frame global / geographic | 8 | 20 | 55 | 0 |
+| Fixed-time candidate / IID | 6 | 10 | 77 | 1 |
+| Fixed-time global / IID | 7 | 10 | 76 | 1 |
+| Fixed-time candidate / geographic | 7 | 20 | 56 | 0 |
+| Fixed-time global / geographic | 12 | 20 | 51 | 0 |
+
+At onset-only thresholds, suppression accounts for **31--34 IID** and
+**14--22 geographic** clips per model. At constrained thresholds, only 0--2
+clips per model fail this way; **71--77 IID** and **51--60 geographic** clips
+instead lack a qualifying positive pair. Re-arming the controller alone
+therefore cannot explain or repair most constrained misses. This is a
+deterministic diagnostic, not proof of which visual cues are absent.
+
+![TRAIN-only ranking and controller diagnostics](assets/event_discrimination.png)
+
+## Verification and Next Experiment
+
+Public tests reconstruct every supported clip's AUROC through direct positive-
+negative pair comparisons and AP through tied threshold groups. Every policy's
+detection is also compared against the frozen production PTS evaluator. All
+eight constrained detection counts match their earlier training-only selection
+records. Empty/unsupported clips, test-row rejection, gap resets, orientation,
+ties and chronology have explicit regression coverage.
+
+The native diagnostic view separates ranking, all sixteen controller outcomes
+and eight paired intervals. These are TRAIN-only development measurements,
+not new final-test scores.
+
+```powershell
+python -m pytest tests/test_event_discrimination.py tests/test_event_discrimination_public.py tests/test_desktop_event_diagnostics.py
+python scripts/plot_event_discrimination.py
+python scripts/run_desktop.py --page 1 --tab 7 --screenshot outputs/train_diagnostics.png
+```
+
+Subsequent work should first freeze a continuous-context training comparison:
+retain source-level fit/calibration partitions, physical-time inference and
+controller semantics, and compare inherited annotation-anchored training with
+training contexts drawn from the actual continuous PTS grid. Introduce a video
+representation only under the same context/label contract. Audit fit-only class
+support and freeze fitting/calibration settings before extraction or training.
+The present diagnostics motivate that experiment without selecting a model
+from observed test scores or forecasting improved accuracy.
+
+[Frozen protocol](results/event_discrimination_protocol.json) ·
+[Execution appendix](results/event_discrimination_execution.json) ·
+[All model summaries and paired contrasts](results/event_discrimination_results.json) ·
+[708 per-clip diagnostic outcomes](results/event_discrimination_outcomes.csv).

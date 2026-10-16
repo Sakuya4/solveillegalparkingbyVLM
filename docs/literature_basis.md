@@ -31,6 +31,15 @@ provides the publisher's journal information.
 
 ## Primary Implementation Sources
 
+Saito, T., and Rehmsmeier, M. (2015). The Precision-Recall Plot Is More
+Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced
+Datasets. *PLOS ONE*, 10(3), e0118432.
+[Publisher DOI](https://doi.org/10.1371/journal.pone.0118432).
+Publisher metadata confirms publication on 4 March 2015. The event-local
+diagnostic reports AP alongside AUROC and the target fraction, distinguishing
+pooled context weighting from within-clip ranking. It uses noninterpolated AP
+and does not equate constant-score AP with finite-sample random-order skill.
+
 Fawcett, T. (2006). An introduction to ROC analysis. *Pattern Recognition
 Letters*, 27(8), 861--874. [DOI](https://doi.org/10.1016/j.patrec.2005.10.010).
 This motivates separating ranking quality from an operating decision selected

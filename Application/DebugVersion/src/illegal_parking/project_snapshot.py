@@ -102,6 +102,7 @@ def build_project_snapshot(repo_root: Path) -> dict[str, Any]:
         "presentation_events": _load_json(results / "presentation_event_comparison.json") if (results / "presentation_event_comparison.json").exists() else None,
         "presentation_controls": _load_json(results / "presentation_event_controls.json") if (results / "presentation_event_controls.json").exists() else None,
         "positive_context_events": _load_json(results / "positive_exposure_results.json") if (results / "positive_exposure_results.json").exists() else None,
+        "event_discrimination": _load_json(results / "event_discrimination_results.json") if (results / "event_discrimination_results.json").exists() else None,
         "ablations": ablations,
         "deployment": deployment,
         "government": {

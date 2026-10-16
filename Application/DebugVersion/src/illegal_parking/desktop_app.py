@@ -359,6 +359,8 @@ class TrafficResearchWindow(QMainWindow):
         add_presentation_tabs(tabs, self.snapshot, make_table)
         from .desktop_positive_context_results import add_positive_context_tab
         add_positive_context_tab(tabs, self.snapshot, make_table)
+        from .desktop_event_diagnostics import add_event_diagnostic_tab
+        add_event_diagnostic_tab(tabs, self.snapshot, make_table)
         layout.addWidget(tabs, 1)
         return page
 

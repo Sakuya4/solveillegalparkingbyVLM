@@ -69,3 +69,5 @@ scripts/analyze_event_discrimination.py text eol=lf
 docs/results/event_discrimination_execution.json text eol=lf
 docs/results/event_discrimination_results.json text eol=lf
 docs/results/event_discrimination_outcomes.csv text eol=crlf
+scripts/plot_event_discrimination.py text eol=lf
+docs/assets/event_discrimination.json text eol=lf

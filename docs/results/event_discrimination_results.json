@@ -1,0 +1,697 @@
+{
+  "protocol_sha256": "2859dc658d2a7ce390780094722be975b4db3c27c5fca9c461724b58c37db45c",
+  "execution_sha256": "714f07f8c122b6fc622358fb6c6126999e847496275bbec7e331d191165db55d",
+  "started_at_utc": "2026-10-16T14:37:32.327327+00:00",
+  "completed_at_utc": "2026-10-16T14:37:33.678938+00:00",
+  "inputs": {
+    "inventory": {
+      "path": "docs/results/event_discrimination_calibration_inventory.csv",
+      "sha256": "02b25dc636d11a1e2e9c20dfc57c3daeff6079e7c7d54b1e41724505d73b9683",
+      "rows": 708
+    },
+    "contexts": {
+      "path": "docs/results/event_discrimination_calibration_scores.csv",
+      "sha256": "b2b7b83196f7ce8b01e6d8ae926f68af0bd7673f308aed0bdc2344560648d19a",
+      "rows": 4464
+    }
+  },
+  "trace_sha256": "7b0d9c4bc80648ca4d27cd0b665266ada2cd5092625f2de48afd1ca38fbb5d99",
+  "trace_rows": 708,
+  "models": [
+    {
+      "model": "legacy_candidate_iid",
+      "split": "iid",
+      "summary": {
+        "clip_count": 94,
+        "empty_context_clips": 0,
+        "support": {
+          "both": 59,
+          "no_prefix": 35,
+          "no_target": 0,
+          "neither": 0
+        },
+        "pooled": {
+          "auroc": 0.5985346889952153,
+          "average_precision": 0.6927980872085636,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.0859015354844257
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.6068965517241379,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.5586158192090396,
+          "average_precision": 0.7384180790960453,
+          "target_prevalence": 0.5293785310734462,
+          "ap_minus_prevalence": 0.20903954802259886,
+          "max_target_minus_max_prefix": 0.17516986094415188
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 114,
+            "mean": 0.4553611477747102,
+            "median": 0.39248719811439514,
+            "minimum": 0.00380400987342,
+            "maximum": 0.9998375177383423
+          },
+          "target": {
+            "count": 176,
+            "mean": 0.578869505257568,
+            "median": 0.6645618677139282,
+            "minimum": 0.0038204456213861704,
+            "maximum": 0.9994303584098816
+          },
+          "post": {
+            "count": 448,
+            "mean": 0.4691488044461169,
+            "median": 0.4085037261247635,
+            "minimum": 0.0034694441128522158,
+            "maximum": 0.9997361302375793
+          }
+        },
+        "gate1_attainable_clips": 94,
+        "gate2_attainable_clips": 84,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 50,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 0,
+            "onset_suppression": 34
+          },
+          "positive_context": {
+            "detected": 11,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 73,
+            "onset_suppression": 0
+          }
+        }
+      }
+    },
+    {
+      "model": "legacy_global_iid",
+      "split": "iid",
+      "summary": {
+        "clip_count": 94,
+        "empty_context_clips": 0,
+        "support": {
+          "both": 59,
+          "no_prefix": 35,
+          "no_target": 0,
+          "neither": 0
+        },
+        "pooled": {
+          "auroc": 0.5897129186602871,
+          "average_precision": 0.7001844931226334,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.0932879413984955
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.6068965517241379,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.5896892655367233,
+          "average_precision": 0.7536723163841809,
+          "target_prevalence": 0.5293785310734462,
+          "ap_minus_prevalence": 0.22429378531073446,
+          "max_target_minus_max_prefix": 0.0793995523856858
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 114,
+            "mean": 0.4999248668420733,
+            "median": 0.4302050322294235,
+            "minimum": 0.032325707376003265,
+            "maximum": 0.9568212628364563
+          },
+          "target": {
+            "count": 176,
+            "mean": 0.5771894236518578,
+            "median": 0.5516813397407532,
+            "minimum": 0.1604902744293213,
+            "maximum": 0.9920830726623535
+          },
+          "post": {
+            "count": 448,
+            "mean": 0.5099675132660195,
+            "median": 0.46562492847442627,
+            "minimum": 0.038233108818531036,
+            "maximum": 0.9916681051254272
+          }
+        },
+        "gate1_attainable_clips": 94,
+        "gate2_attainable_clips": 84,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 53,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 0,
+            "onset_suppression": 31
+          },
+          "positive_context": {
+            "detected": 11,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 71,
+            "onset_suppression": 2
+          }
+        }
+      }
+    },
+    {
+      "model": "legacy_candidate_geographic",
+      "split": "geographic",
+      "summary": {
+        "clip_count": 83,
+        "empty_context_clips": 1,
+        "support": {
+          "both": 40,
+          "no_prefix": 42,
+          "no_target": 0,
+          "neither": 1
+        },
+        "pooled": {
+          "auroc": 0.5535313001605136,
+          "average_precision": 0.6527022813446359,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.04134856955424293
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.611353711790393,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.49769345238095236,
+          "average_precision": 0.7025396825396825,
+          "target_prevalence": 0.5072817460317459,
+          "ap_minus_prevalence": 0.1952579365079365,
+          "max_target_minus_max_prefix": 0.12745382503489963
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 89,
+            "mean": 0.6635239686029819,
+            "median": 0.8116990923881531,
+            "minimum": 0.00017073385242838413,
+            "maximum": 0.9999594688415527
+          },
+          "target": {
+            "count": 140,
+            "mean": 0.7234215337183879,
+            "median": 0.8861103355884552,
+            "minimum": 9.816068313739379e-07,
+            "maximum": 0.9999997615814209
+          },
+          "post": {
+            "count": 149,
+            "mean": 0.610569578815545,
+            "median": 0.7203572988510132,
+            "minimum": 0.0001040136776282452,
+            "maximum": 0.999995231628418
+          }
+        },
+        "gate1_attainable_clips": 82,
+        "gate2_attainable_clips": 63,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 42,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 7,
+            "onset_suppression": 14
+          },
+          "positive_context": {
+            "detected": 3,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 60,
+            "onset_suppression": 0
+          }
+        }
+      }
+    },
+    {
+      "model": "legacy_global_geographic",
+      "split": "geographic",
+      "summary": {
+        "clip_count": 83,
+        "empty_context_clips": 1,
+        "support": {
+          "both": 40,
+          "no_prefix": 42,
+          "no_target": 0,
+          "neither": 1
+        },
+        "pooled": {
+          "auroc": 0.5867977528089887,
+          "average_precision": 0.7083054447092288,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.09695173291883585
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.611353711790393,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.5035416666666668,
+          "average_precision": 0.6952777777777778,
+          "target_prevalence": 0.5072817460317459,
+          "ap_minus_prevalence": 0.18799603174603172,
+          "max_target_minus_max_prefix": 0.03205560073256493
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 89,
+            "mean": 0.49523348899118685,
+            "median": 0.44215095043182373,
+            "minimum": 0.025448428466916084,
+            "maximum": 1.0
+          },
+          "target": {
+            "count": 140,
+            "mean": 0.5773753369493144,
+            "median": 0.4999663978815079,
+            "minimum": 0.023928657174110413,
+            "maximum": 1.0
+          },
+          "post": {
+            "count": 149,
+            "mean": 0.45325385841647253,
+            "median": 0.38831597566604614,
+            "minimum": 0.01933838054537773,
+            "maximum": 0.9971643090248108
+          }
+        },
+        "gate1_attainable_clips": 82,
+        "gate2_attainable_clips": 63,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 41,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 1,
+            "onset_suppression": 21
+          },
+          "positive_context": {
+            "detected": 8,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 55,
+            "onset_suppression": 0
+          }
+        }
+      }
+    },
+    {
+      "model": "fixed_candidate_iid",
+      "split": "iid",
+      "summary": {
+        "clip_count": 94,
+        "empty_context_clips": 0,
+        "support": {
+          "both": 59,
+          "no_prefix": 35,
+          "no_target": 0,
+          "neither": 0
+        },
+        "pooled": {
+          "auroc": 0.5695773524720893,
+          "average_precision": 0.6603514045842946,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.05345485286015672
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.6068965517241379,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.5310734463276836,
+          "average_precision": 0.7083333333333334,
+          "target_prevalence": 0.5293785310734462,
+          "ap_minus_prevalence": 0.178954802259887,
+          "max_target_minus_max_prefix": 0.13304482393116707
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 114,
+            "mean": 0.5029596810044288,
+            "median": 0.42451389133930206,
+            "minimum": 0.00016114750178530812,
+            "maximum": 0.999945878982544
+          },
+          "target": {
+            "count": 176,
+            "mean": 0.6151269717970123,
+            "median": 0.788097620010376,
+            "minimum": 0.0002801257651299238,
+            "maximum": 0.9999939203262329
+          },
+          "post": {
+            "count": 448,
+            "mean": 0.4801940891148969,
+            "median": 0.4111540764570236,
+            "minimum": 3.5947345168096945e-05,
+            "maximum": 0.9999967813491821
+          }
+        },
+        "gate1_attainable_clips": 94,
+        "gate2_attainable_clips": 84,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 50,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 0,
+            "onset_suppression": 34
+          },
+          "positive_context": {
+            "detected": 6,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 77,
+            "onset_suppression": 1
+          }
+        }
+      }
+    },
+    {
+      "model": "fixed_global_iid",
+      "split": "iid",
+      "summary": {
+        "clip_count": 94,
+        "empty_context_clips": 0,
+        "support": {
+          "both": 59,
+          "no_prefix": 35,
+          "no_target": 0,
+          "neither": 0
+        },
+        "pooled": {
+          "auroc": 0.5683313397129186,
+          "average_precision": 0.6814234806182712,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.07452692889413326
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.6068965517241379,
+          "target_prevalence": 0.6068965517241379,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.5656779661016951,
+          "average_precision": 0.74590395480226,
+          "target_prevalence": 0.5293785310734462,
+          "ap_minus_prevalence": 0.21652542372881353,
+          "max_target_minus_max_prefix": 0.07162908957166186
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 114,
+            "mean": 0.41841952355063866,
+            "median": 0.31929685175418854,
+            "minimum": 0.003537222044542432,
+            "maximum": 0.967395007610321
+          },
+          "target": {
+            "count": 176,
+            "mean": 0.4847289242898114,
+            "median": 0.43814830482006073,
+            "minimum": 0.011953087523579597,
+            "maximum": 0.9985723495483398
+          },
+          "post": {
+            "count": 448,
+            "mean": 0.42058981271111406,
+            "median": 0.3466627448797226,
+            "minimum": 0.006280777044594288,
+            "maximum": 0.9997126460075378
+          }
+        },
+        "gate1_attainable_clips": 94,
+        "gate2_attainable_clips": 84,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 50,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 0,
+            "onset_suppression": 34
+          },
+          "positive_context": {
+            "detected": 7,
+            "structurally_unreachable": 10,
+            "no_target_positive_pair": 76,
+            "onset_suppression": 1
+          }
+        }
+      }
+    },
+    {
+      "model": "fixed_candidate_geographic",
+      "split": "geographic",
+      "summary": {
+        "clip_count": 83,
+        "empty_context_clips": 1,
+        "support": {
+          "both": 40,
+          "no_prefix": 42,
+          "no_target": 0,
+          "neither": 1
+        },
+        "pooled": {
+          "auroc": 0.5390850722311396,
+          "average_precision": 0.6700262013065037,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.058672489516110704
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.611353711790393,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.4911011904761905,
+          "average_precision": 0.6781051587301586,
+          "target_prevalence": 0.5072817460317459,
+          "ap_minus_prevalence": 0.17082341269841267,
+          "max_target_minus_max_prefix": 0.08906416168174473
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 89,
+            "mean": 0.550904668515072,
+            "median": 0.5566010475158691,
+            "minimum": 0.0004500107024796307,
+            "maximum": 0.9999614953994751
+          },
+          "target": {
+            "count": 140,
+            "mean": 0.5999875278066611,
+            "median": 0.7430192828178406,
+            "minimum": 0.00013484031660482287,
+            "maximum": 1.0
+          },
+          "post": {
+            "count": 149,
+            "mean": 0.49171282400215166,
+            "median": 0.4168799817562103,
+            "minimum": 8.85766712599434e-05,
+            "maximum": 0.9999692440032959
+          }
+        },
+        "gate1_attainable_clips": 82,
+        "gate2_attainable_clips": 63,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 41,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 0,
+            "onset_suppression": 22
+          },
+          "positive_context": {
+            "detected": 7,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 56,
+            "onset_suppression": 0
+          }
+        }
+      }
+    },
+    {
+      "model": "fixed_global_geographic",
+      "split": "geographic",
+      "summary": {
+        "clip_count": 83,
+        "empty_context_clips": 1,
+        "support": {
+          "both": 40,
+          "no_prefix": 42,
+          "no_target": 0,
+          "neither": 1
+        },
+        "pooled": {
+          "auroc": 0.5945425361155698,
+          "average_precision": 0.686150149801491,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.07479643801109803
+        },
+        "constant_control": {
+          "auroc": 0.5,
+          "average_precision": 0.611353711790393,
+          "target_prevalence": 0.611353711790393,
+          "ap_minus_prevalence": 0.0
+        },
+        "within_clip_macro": {
+          "auroc": 0.5921130952380953,
+          "average_precision": 0.7350694444444443,
+          "target_prevalence": 0.5072817460317459,
+          "ap_minus_prevalence": 0.22778769841269844,
+          "max_target_minus_max_prefix": 0.07289325762540103
+        },
+        "score_distributions": {
+          "prefix": {
+            "count": 89,
+            "mean": 0.4276530224453197,
+            "median": 0.34379974007606506,
+            "minimum": 0.009616933763027191,
+            "maximum": 0.9999924898147583
+          },
+          "target": {
+            "count": 140,
+            "mean": 0.5104701372262622,
+            "median": 0.49299587309360504,
+            "minimum": 0.024091562256217003,
+            "maximum": 1.0
+          },
+          "post": {
+            "count": 149,
+            "mean": 0.4484417224865432,
+            "median": 0.3690555691719055,
+            "minimum": 0.01862754486501217,
+            "maximum": 0.9999327659606934
+          }
+        },
+        "gate1_attainable_clips": 82,
+        "gate2_attainable_clips": 63,
+        "policy_decomposition": {
+          "onset_only": {
+            "detected": 41,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 0,
+            "onset_suppression": 22
+          },
+          "positive_context": {
+            "detected": 12,
+            "structurally_unreachable": 20,
+            "no_target_positive_pair": 51,
+            "onset_suppression": 0
+          }
+        }
+      }
+    }
+  ],
+  "paired_ranking_contrasts": [
+    {
+      "split": "iid",
+      "feature": "candidate",
+      "metric": "auroc",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 59,
+        "difference": -0.027542372881355925,
+        "lower_95": -0.11440677966101695,
+        "upper_95": 0.060045903954802166
+      }
+    },
+    {
+      "split": "iid",
+      "feature": "candidate",
+      "metric": "average_precision",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 59,
+        "difference": -0.030084745762711862,
+        "lower_95": -0.08037782485875708,
+        "upper_95": 0.017514124293785318
+      }
+    },
+    {
+      "split": "iid",
+      "feature": "global",
+      "metric": "auroc",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 59,
+        "difference": -0.024011299435028246,
+        "lower_95": -0.11299435028248588,
+        "upper_95": 0.06920903954802261
+      }
+    },
+    {
+      "split": "iid",
+      "feature": "global",
+      "metric": "average_precision",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 59,
+        "difference": -0.007768361581920909,
+        "lower_95": -0.05666666666666667,
+        "upper_95": 0.04209039548022596
+      }
+    },
+    {
+      "split": "geographic",
+      "feature": "candidate",
+      "metric": "auroc",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 40,
+        "difference": -0.006592261904761909,
+        "lower_95": -0.1524281994047619,
+        "upper_95": 0.13917671130952358
+      }
+    },
+    {
+      "split": "geographic",
+      "feature": "candidate",
+      "metric": "average_precision",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 40,
+        "difference": -0.02443452380952381,
+        "lower_95": -0.10284747023809526,
+        "upper_95": 0.051142113095238056
+      }
+    },
+    {
+      "split": "geographic",
+      "feature": "global",
+      "metric": "auroc",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 40,
+        "difference": 0.08857142857142856,
+        "lower_95": -0.033898809523809526,
+        "upper_95": 0.20999999999999996
+      }
+    },
+    {
+      "split": "geographic",
+      "feature": "global",
+      "metric": "average_precision",
+      "contrast": "Fixed-time minus source-frame within-clip mean",
+      "interval": {
+        "clips": 40,
+        "difference": 0.03979166666666668,
+        "lower_95": -0.03333854166666665,
+        "upper_95": 0.11232291666666651
+      }
+    }
+  ],
+  "scope": "Exploratory diagnostic using only corresponding official-TRAIN calibration rows, already used for prior threshold selection. Motivated after observing previous studies, not an untouched confirmatory sample. No fitting, inversion, threshold tuning, model selection or default changes; no new test endpoints computed."
+}

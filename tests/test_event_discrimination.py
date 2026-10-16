@@ -32,6 +32,12 @@ def test_perfect_reversed_and_constant_rankings_keep_orientation_and_ties():
     assert ranking_metrics([1], [.5])["average_precision"] is None
 
 
+def test_short_clip_constant_ap_is_not_random_order_expected_ap():
+    orders = [ranking_metrics([0, 1], scores)["average_precision"] for scores in ([.1, .9], [.9, .1])]
+    assert np.mean(orders) == .75
+    assert ranking_metrics([0, 1], [.5, .5])["average_precision"] == .5
+
+
 def test_miss_categories_separate_structural_pair_and_sustained_onset_failures():
     positive = clip_diagnostic(clip(), contexts(scores=(.9,) * 4), {"p": .5})
     assert positive["policies"]["p"]["category"] == "onset_suppression"
