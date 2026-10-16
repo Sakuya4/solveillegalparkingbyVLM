@@ -113,6 +113,11 @@ Version-2 Qwen/LLaVA all-case correctness is 0.60/0.30; the paired source-clip
 difference is +0.30 [0.10, 0.50]. Eight-frame Qwen correctness is 0.55 with a
 three-frame contrast of -0.05 [-0.25, 0.15]. Preserve both negative evidence-
 density findings and the ten-clip resampling unit.
+The exposure workflow records reviewer-attributed clean-video observations,
+source-clock gap exclusion, duplicate/conflict handling and exact one-sided
+Poisson bounds. Acquisition inventories and VLM responses do not supply
+independent normal labels. This keeps model scores, review decisions and
+exposure denominators as separate experimental objects.
 The fixed-contract event-calibration study reports all 24 settings selected
 on held-out training clips. Distinguish improvements in two-window event recall
 from test budget exceedance and changes in one-window recall. The 176-scenario

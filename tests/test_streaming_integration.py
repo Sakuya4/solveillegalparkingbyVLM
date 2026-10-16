@@ -25,6 +25,8 @@ def test_real_cpu_streaming_matches_batch_reference_and_defers_post_context(tmp_
     assert batch["window_review_flags"] == stream["window_review_flags"]
     assert [event["input_frame_index"] for event in batch["events"]] == [event["input_frame_index"] for event in stream["events"]]
     assert stream["model_sha256"] == batch["model_sha256"]
+    assert stream["initialization_before_observation_sec"] > 0
+    assert stream["worker_elapsed_sec"] > stream["elapsed_sec"]
     import cv2
     clean_path = Path(stream["clean_video"])
     assert hashlib.sha256(clean_path.read_bytes()).hexdigest() == stream["clean_video_sha256"]

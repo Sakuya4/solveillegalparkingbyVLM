@@ -16,6 +16,7 @@ sys.path.insert(0, str(ROOT / "Application/DebugVersion/src"))
 
 
 def main():
+    worker_started = time.perf_counter()
     parser = argparse.ArgumentParser(description="Run bounded-memory causal incident inference on a video or persistent camera stream.")
     parser.add_argument("--input", required=True)
     parser.add_argument("--source-mode", choices=("file", "page", "mjpeg", "snapshot"), default="file")
@@ -196,6 +197,7 @@ def main():
     if not processed:
         raise ValueError("No frames were processed")
     report = {"input": source, "output_video": str(output_video.resolve()), "source_mode": args.source_mode,
+              "initialization_before_observation_sec": started - worker_started, "worker_elapsed_sec": time.perf_counter() - worker_started,
               "requested_duration_sec": args.duration_sec, "context_gap_limit_sec": MAX_OBSERVATION_GAP_SEC, "context_gaps": context_gaps,
               "clean_video": str(clean_video.resolve()), "clean_video_sha256": hashlib.sha256(clean_video.read_bytes()).hexdigest(),
               "clean_video_contract": "Privacy-treated sampled frames without model boxes, probabilities, event state, or artificial timestamp overlays",

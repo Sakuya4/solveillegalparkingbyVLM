@@ -1,0 +1,82 @@
+{
+  "observations": [
+    {
+      "source_report_sha256": "dcd320378a4d5a3e015d237877c3b58e79cb8b7f2e7a8c3eb301b8cb072b5d06",
+      "clean_video_sha256": "29a74fcad226d2ffcea2cf5eb13e77c65a491a25c773e562236b50d5d7019ca9",
+      "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+      "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "started_at_utc": "2026-10-16T05:44:02.006742+00:00",
+      "source_mode": "page",
+      "source_clock": "decoder observation clock",
+      "source": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+      "sampled_frames": 207,
+      "source_span_sec": 29.97990460001165,
+      "requested_duration_sec": null,
+      "end_reason": "source_error",
+      "source_error": "Streaming camera read failed",
+      "context_gaps": [],
+      "first_decision_after_observation_start_wall_sec": 4.353945499999099,
+      "initialization_before_observation_sec": null,
+      "observable_sec_at_gap_limit": 27.824194700006046,
+      "excluded_gap_sec": 2.155709900005604,
+      "model_alert_episodes": 0,
+      "acquisition": {
+        "decoded_frames": 295,
+        "mailbox_overwrites": 20,
+        "clock": "Local decoder observation, not a source-camera sensor timestamp"
+      },
+      "arrival_to_decision_sec": {
+        "median": 0.08094459999119863,
+        "p95": 0.09784596000099555
+      },
+      "review_status": "unassigned",
+      "normal_exposure_added_hours": 0
+    },
+    {
+      "source_report_sha256": "5453ae836d42219939b52e7de168a6a43dbc787da9a5d677422b1d3060292ca6",
+      "clean_video_sha256": "44992be515af8cdd736bc6377119dfa12955f24573bedfe741936471557e4e3c",
+      "model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+      "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+      "started_at_utc": "2026-10-16T05:47:28.872353+00:00",
+      "source_mode": "page",
+      "source_clock": "decoder observation clock",
+      "source": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+      "sampled_frames": 861,
+      "source_span_sec": 119.82797410000057,
+      "requested_duration_sec": 120.0,
+      "end_reason": "duration_limit",
+      "source_error": null,
+      "context_gaps": [
+        {
+          "before_sec": 0.12531509999826085,
+          "after_sec": 2.3415199000010034,
+          "duration_sec": 2.2162048000027426,
+          "temporal_context_reset": true
+        }
+      ],
+      "first_decision_after_observation_start_wall_sec": 4.61772860000201,
+      "initialization_before_observation_sec": null,
+      "observable_sec_at_gap_limit": 117.61176929999783,
+      "excluded_gap_sec": 2.2162048000027426,
+      "model_alert_episodes": 4,
+      "acquisition": {
+        "decoded_frames": 1169,
+        "mailbox_overwrites": 22,
+        "read_failures": 4,
+        "retry_attempts": 4,
+        "max_consecutive_retries": 3,
+        "connections": 4,
+        "clock": "Local decoder observation, not a source-camera sensor timestamp"
+      },
+      "arrival_to_decision_sec": {
+        "median": 0.08002330000454094,
+        "p95": 0.09175929999910293
+      },
+      "review_status": "unassigned",
+      "normal_exposure_added_hours": 0
+    }
+  ],
+  "max_observation_gap_sec": 1.0,
+  "scope": "Acquired review-ready observations only; no normal/incident ground-truth label or normal-exposure claim is inferred from acquisition or model output",
+  "media_policy": "Public-camera videos and images remain local; only numerical provenance is published"
+}

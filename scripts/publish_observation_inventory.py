@@ -17,15 +17,22 @@ def main():
     observations = []
     for path in args.report:
         report, _ = load_review_observation(path)
+        decisions_path = path.parent / "decisions.jsonl"
+        if hashlib.sha256(decisions_path.read_bytes()).hexdigest() != report["decisions_sha256"]:
+            raise ValueError("Window decision log no longer matches its observation report")
+        decisions = [json.loads(line) for line in decisions_path.read_text(encoding="utf-8").splitlines() if line]
         times = report["frame_times_sec"]
         differences = [b - a for a, b in zip(times, times[1:])]
         observations.append({"source_report_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
                              "clean_video_sha256": report["clean_video_sha256"], "model_sha256": report["model_sha256"],
                              "detector_sha256": report["detector_sha256"], "started_at_utc": report["started_at_utc"],
                              "source_mode": report["source_mode"], "source_clock": report["event_clock"],
+                             "source": report["input"] if report["source_mode"] != "file" else "reference file replay",
                              "sampled_frames": report["sampled_frames"], "source_span_sec": times[-1] - times[0],
                              "requested_duration_sec": report.get("requested_duration_sec"), "end_reason": report["end_reason"], "source_error": report["source_error"],
                              "context_gaps": report.get("context_gaps", []),
+                             "first_decision_after_observation_start_wall_sec": decisions[0]["available_wall_sec"] if decisions else None,
+                             "initialization_before_observation_sec": report.get("initialization_before_observation_sec"),
                              "observable_sec_at_gap_limit": sum(value for value in differences if value <= MAX_OBSERVATION_GAP_SEC),
                              "excluded_gap_sec": sum(value for value in differences if value > MAX_OBSERVATION_GAP_SEC),
                              "model_alert_episodes": len(report["events"]), "acquisition": report.get("acquisition"),

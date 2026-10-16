@@ -128,13 +128,27 @@ At the deadline, report delivered artifacts and remaining external requirements.
     completed queue.
     `scripts/publish_vlm_forwarded_comparison.py` verifies every new input/result
     hash and recomputes metrics before paired source-clip bootstrap reporting.
-    Two focused publisher tests pass in addition to the 313-test regression.
+    Publisher verification and paired source-clip tests are included in the
+    full regression suite.
 14. Implemented: clean full-observation streaming recording, native reviewer
     annotation and hash-bound normal-exposure evaluation. The one-second
     acquisition-gap contract is fixed before collecting additional observations.
     Labels require reviewer attribution; uncertain/incomplete/model-informed
     records and conflicting labels are excluded. No additional normal camera-
     hours are claimed from unassigned observations.
+15. Transport validation: an initial 120-second request ended after 30.303 s
+    with a source-read failure. Preserve this record. Checkpoint `ecd3b46`
+    adds bounded reconnects and source-gap temporal resets before a separately
+    recorded 120-second follow-up. Publish actual completion and gap metrics;
+    do not substitute requested duration for observed exposure.
+    Completed: the follow-up reaches duration limit, processes 861 frames,
+    and records four connections/retries and four unassigned alert episodes.
+    The 2.216-second sampled-frame gap is excluded from acquisition coverage
+    and resets temporal context. No additional normal labels are inferred.
+16. Next: preserve the review-ready camera packets for independent labels and
+    develop a predeclared cadence-consistent training ablation. Hold physical
+    sampling duration, fit/calibration splits and test contracts explicit;
+    preserve current model binaries and do not tune defaults on test scores.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -150,7 +164,7 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 313 tests pass,
+(native desktop and portable runtime). Current full regression: 330 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),

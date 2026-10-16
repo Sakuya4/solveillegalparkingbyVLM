@@ -40,6 +40,8 @@
 - [x] Review both saved Taichung alerts with version-2 generation; retain unassigned independent labels.
 - [x] Add full-observation clean playback and attributed native reviewer annotations.
 - [x] Evaluate reviewed normal exposure with source-clock gap exclusion, duplicate/conflict checks and Poisson upper limits.
+- [x] Validate real public-camera reconnects over 120 seconds and preserve the earlier source-failure record.
+- [x] Verify native MJPEG closure recovery and temporal warm-up after source gaps.
 
 ## Completed Case: Red-Line Parking
 

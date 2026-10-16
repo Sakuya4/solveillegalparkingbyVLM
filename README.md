@@ -70,6 +70,11 @@ backlog. [Streaming protocol and measured latency](docs/streaming_inference.md).
 VLM review preserves visual reasons, evidence gaps, and operator-review
 requests without removing temporal events. [Evidence-routing protocol](docs/vlm_evidence_routing.md).
 
+Clean observation playback supports attributed reviewer annotations and
+source-clock exposure accounting. Bounded reconnects preserve camera operation
+across transient disconnects; long sampled-frame gaps reset temporal context.
+[Observation review and acquisition results](docs/observation_review_protocol.md).
+
 [Desktop architecture and deployment protocol](docs/desktop_application.md)
 
 On Windows, `RunTrafficWorkbench.cmd` launches the installed native application.

@@ -38,6 +38,13 @@ under application costs. The continuous-event study adapts that principle to
 episode budgets on held-out training clips; it does not equate event recall
 with a window ROC coordinate.
 
+Garwood, F. (1936). Fiducial Limits for the Poisson Distribution. *Biometrika*,
+28(3--4), 437--442. [DOI](https://doi.org/10.1093/biomet/28.3-4.437).
+The reviewed normal-exposure workflow uses the one-sided exact count bound,
+including its zero-count limit, conditional on a stationary Poisson rate.
+Source-clock coverage, label attribution and conflicting reviews are evaluated
+before computing this interval; they are not resolved by the interval itself.
+
 - [ACCIDENT benchmark](https://github.com/accidentbench/ACCIDENT): fixed-CCTV
   incident metadata and official data partitions.
 - [VideoMAE](https://github.com/MCG-NJU/VideoMAE): pretrained video encoder and

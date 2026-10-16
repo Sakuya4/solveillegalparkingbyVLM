@@ -9,6 +9,10 @@ timestamp overlays. The clean video and original frame timestamps are hashed
 in the source report. Earlier reports without this complete clean recording
 are not retroactively promoted to blinded observation records.
 
+The earlier 0.0867-camera-hour contact-sheet-screened pilot retains its original
+protocol and result. It is not retrospectively certified by this new workflow
+or pooled into its reviewer-attested exposure cohort.
+
 The native annotation dialog opens only clean playback. The default label is
 `uncertain`; complete viewing and non-consultation of model outputs are separate,
 unchecked reviewer attestations. Reviewer identity is mandatory. Saving writes
@@ -84,3 +88,30 @@ python -m pytest tests/test_observation_review.py tests/test_streaming_integrati
 The acquisition inventory reports unassigned review status and zero added
 normal exposure until reviewer records satisfy the protocol. Public numeric
 artifacts do not redistribute public-camera imagery.
+
+## Acquisition Results
+
+The reconnect-enabled follow-up completes the 120-second request in 120.152 s,
+with 861 sampled frames and 1,169 decoded frames. Acquisition records four
+connections, four failed reads and four retry attempts across separate failure
+bursts. The conservative reference emits four unassigned review episodes.
+Median/p95 decoder-arrival-to-decision latency is 80.0/91.8 ms.
+
+A 2.216-second sampled-frame gap near startup triggers a temporal reset.
+The source span is 119.828 s; excluding this gap leaves 117.612 s of eligible
+acquisition coverage before any label eligibility is considered. This gap may
+reflect processing or acquisition behavior; it is not automatically attributed
+to a transport outage. The first window decision becomes available 4.618 s
+after the worker's observation-clock origin. This includes sequence warm-up
+but not model initialization, which occurs before that origin. Subsequent
+worker reports record initialization and total worker duration separately.
+
+Both this follow-up and the earlier failed acquisition remain unassigned for
+independent review. Neither zero alerts in the first observation nor four
+alerts in the follow-up determines its true label. Their added reviewed-normal
+exposure is zero. [Numeric acquisition inventory](results/review_ready_observations.json).
+
+![Native clean-video annotation dialog](assets/desktop_observation_review.png)
+
+The screenshot uses the licensed reference clip to demonstrate the annotation
+workflow. File replay is explicitly excluded from camera-hour evaluation.

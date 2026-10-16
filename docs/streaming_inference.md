@@ -84,8 +84,8 @@ streaming processor exposes the latter as an explicit controlled setting;
 display width remains independent of feature width. A matched event-level
 audit evaluates the resulting operating-distribution change without replacing
 the original model, threshold, or reported reference protocol. Cadence-consistent
-training and train-only event calibration are the subsequent methodological
-steps. The [paired audit](spatial_preprocessing_study.md) reports resolution
+training remains a subsequent methodological step; train-only event calibration
+is now published under its own fixed protocol. The [paired audit](spatial_preprocessing_study.md) reports resolution
 and decision-hop sensitivity explicitly. Benchmark cards identify the original
 IID hop-five protocol; desktop replay and streaming workers use 15-step hops.
 
@@ -103,3 +103,16 @@ action submits that package in a separate, GPU-guarded worker without rerunning
 the detector. It writes a new report and retains the original source report;
 review time does not replace immediate event-notification latency. Local-video
 analysis also retains the integrated Qwen-review option.
+
+New observations also save a full clean sampled-video track with its own hash.
+The native observation-annotation dialog uses this unmarked track and records
+reviewer identity, observation label and explicit review attestations. The
+[normal-exposure protocol](observation_review_protocol.md) excludes acquisition
+gaps, uncertain/model-informed/incomplete records, duplicate exposure and
+conflicting labels before computing normal-camera rates.
+
+Transient source failures use three bounded consecutive reconnect attempts and
+interruptible backoff. Source-clock gaps above one second reset the tracker,
+motion buffer, window-grid phase and persistence gate. Pending evidence is
+truncated at the last pre-gap image rather than spanning the interruption.
+Acquisition reports retain failure/retry/connection counters and context resets.

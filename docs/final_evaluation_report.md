@@ -302,6 +302,15 @@ Its two review episodes remain unlabeled and are not added to the reviewed
 normal-exposure cohort. [Streaming protocol](streaming_inference.md) records
 the clock boundary, resource limits, and reproducible validation.
 
+The subsequent observation workflow saves a full model-unmarked sampled-video
+track and append-only reviewer records. Source-report/video hashes bind labels
+to observations. The normal-exposure evaluator excludes uncertain, incomplete,
+model-informed and conflicting records, counts duplicate media once, and
+removes source-clock gaps above one second. Distinct inference contracts are
+not pooled. One-sided Poisson upper bounds remain conditional on stationary
+arrival assumptions. Acquisition and VLM triage alone add no reviewed normal
+camera-hours. [Observation-review protocol](observation_review_protocol.md).
+
 QNN preparation fixes the input to `(1, 15, 10)` and calibrates A16W8 QDQ using
 128 training windows from 112 clips. Calibration/test clip overlap is zero.
 On 450 test windows, probability MAE is 0.00201 and decisions match float32 on

@@ -34,9 +34,13 @@ def mjpeg_server():
                 self.send_response(200)
                 self.send_header("Content-Type", "multipart/x-mixed-replace; boundary=frame")
                 self.end_headers()
+                frames = 0
                 while not stopped.is_set():
                     self.wfile.write(b"--frame\r\nContent-Type: image/jpeg\r\n\r\n" + payload + b"\r\n")
                     self.wfile.flush()
+                    frames += 1
+                    if self.path == "/disconnect" and frames == 12:
+                        return
                     time.sleep(0.04)
             except ConnectionError:
                 return
@@ -267,6 +271,23 @@ def test_cancel_analysis_terminates_the_active_worker(window):
         QTest.qWait(100)
     assert process.state() == QProcess.ProcessState.NotRunning
     assert window.cancelled is True
+
+
+def test_native_continuous_worker_recovers_real_mjpeg_connection_closures(window, mjpeg_server):
+    if not (window.root / "yolov8n.pt").is_file():
+        pytest.skip("Local detector required for native transport recovery")
+    window.capture_camera(mjpeg_server.replace("/stream", "/disconnect"), "mjpeg", 3, continuous=True)
+    for _ in range(400):
+        if window.report is not None:
+            break
+        QTest.qWait(50)
+    assert window.report is not None, window.log.toPlainText()
+    report = window.report
+    assert report["end_reason"] == "duration_limit"
+    assert report["acquisition"]["connections"] >= 2
+    assert report["acquisition"]["retry_attempts"] >= 1
+    assert report["acquisition"]["read_failures"] >= 1
+    assert report["frame_times_sec"][-1] - report["frame_times_sec"][0] > 2
 
 
 @pytest.mark.parametrize("page", [0, 2, 4])

@@ -132,6 +132,12 @@ keeps missing evidence and requested operator review visible.
 
 ## Reproducible UI Verification
 
+The observation-annotation action is enabled for new continuous reports that
+contain full clean playback. Its dialog begins with an uncertain label and
+unchecked review attestations. Reviewer records are append-only and source-
+hashed; [exposure evaluation](observation_review_protocol.md) is separate from
+VLM evidence triage and does not convert unreviewed observations into negatives.
+
 ```powershell
 python scripts/run_desktop.py --analyze --screenshot docs/assets/desktop_workbench.png
 python scripts/run_desktop.py --report outputs/desktop/RUN_ID/report.json --page 2 --screenshot outputs/desktop/evidence.png
