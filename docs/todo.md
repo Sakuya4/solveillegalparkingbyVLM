@@ -68,7 +68,11 @@
 - [x] Freeze calibration-only score inputs and execute ranking/support/controller diagnostics without new test endpoints.
 - [x] Independently verify all supported clip rankings and both policy detections against public data and the frozen production evaluator.
 - [x] Publish the eight-model diagnostic report, decomposition figures and native TRAIN-only comparison modes.
-- [ ] Freeze a continuous-context training comparison, including fit-only label support, source splits, physical-time contracts and representation controls, before further extraction/fitting.
+- [x] Verify isolated desktop installation, declare tracker dependencies and separate camera warm-up from observation clocks.
+- [x] Freeze and complete the fit-only continuous-context support audit, without reading model scores or test endpoints.
+- [x] Freeze the eight-model continuous-context training comparison, source splits, settings, operating objective and new event cohorts before extraction/fitting.
+- [ ] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.
+- [ ] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
 
 ## Completed Case: Red-Line Parking
 

@@ -188,6 +188,16 @@ mostly lack an adjacent target positive pair. Low-threshold onset suppression
 is a different failure mode. Keep those populations distinct and motivate
 continuous-grid training rather than presenting threshold changes as better
 visual recognition. The next fitting study requires a new source/label freeze.
+The subsequent fit-only PTS audit retains 557 distinct sources and confirms
+1,216 IID and 978 geographic prefix-target fitting contexts without adding
+source clips. Anchored labels show no endpoint disagreement; only 43/572 and
+44/496 anchored contexts exactly match continuous-grid frame identities.
+The newly frozen eight-model comparison therefore targets context-phase and
+supervision alignment jointly, with unchanged TCN architecture and grouped
+fit/calibration sources. Its 100/100 new event cohorts exclude prior replays
+while acknowledging earlier window-test observations. Model extraction and
+fitting follow a separately tested execution freeze; these support counts
+are feasibility results rather than recognition gains.
 Include the source-hashed reference-case video and native walkthrough as
 qualitative workflow material. The reference execution preserves temporal/VLM
 disagreement and separates per-frame processing, source-time triggering and

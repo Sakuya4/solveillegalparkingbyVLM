@@ -215,6 +215,8 @@ development. All eight within-clip AUROC/AP contrast intervals include zero.
 Under constrained thresholds, missing event-local positive pairs dominate
 onset suppression. The public report and native TRAIN view retain complete
 source denominators and motivate a matched continuous-context training study.
+The [fit-only alignment audit and frozen training protocol](docs/continuous_context_training.md)
+retain the original source partitions and predeclare the next eight-model comparison.
 
 ### Multimodal Evidence and Restoration
 

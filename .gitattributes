@@ -77,3 +77,6 @@ docs/results/continuous_training_support_protocol.json text eol=lf
 docs/results/continuous_training_support.json text eol=lf
 docs/results/continuous_training_support.csv text eol=crlf
 docs/results/continuous_training_support_contexts.csv text eol=crlf
+scripts/prepare_continuous_training_study.py text eol=lf
+docs/results/continuous_training_protocol.json text eol=lf
+docs/results/continuous_training_protocol.jsonl text eol=lf

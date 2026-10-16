@@ -242,6 +242,23 @@ At the deadline, report delivered artifacts and remaining external requirements.
     PTS context, features and controller. A video representation must use the
     same physical-time/label contract. Keep all prior models/defaults and test
     results; this diagnostic is exploratory reuse of TRAIN calibration clips.
+30. Completed: isolated native installation and reference analysis. The portable
+    suite passes 40 tests with one developer-checkpoint skip; a separately
+    confirmed run exits zero. Explicit lap installation and pre-observation
+    model warm-up address the reproduced installation/startup failures.
+31. Completed: fit-only support protocol committed as `98d364a` before new
+    endpoints. All 557 sources match media/packet hashes. IID/geographic fit
+    sources provide 1,216/978 prefix-target contexts, with gate-2 structural
+    support 337/376 and 282/332. No anchored endpoint-label disagreement was
+    observed; context phase/support, not demonstrated label errors, motivates
+    the intervention. Expanded-context decoder verification remains required.
+32. Frozen: eight anchored/continuous by candidate/global by IID/geographic
+    TCNs, unchanged 376/94 and 332/83 fit/calibration memberships, 40 epochs
+    and a common dual-cap operating objective. New event tests are 100/100
+    clips (190-source union), excluding 654 prior event/holdout identities.
+    Prior window-test observations remain disclosed. No extraction/fitting
+    has started. Next test and freeze execution workers, fit all models,
+    calibrate on TRAIN holdouts, freeze policies, then replay test sources.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
@@ -257,8 +274,9 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 483 tests pass,
+(native desktop and portable runtime). Current full regression: 498 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
+Three additional public-support/protocol tests are verified separately.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
 and `18f63b3` (native evidence and demonstration).
