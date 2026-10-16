@@ -13,6 +13,8 @@ The desktop installation is verified with Python 3.11 on Windows. Use a short
 checkout path such as `C:\src\traffic` before creating `.venv`: Qt wheel resources
 can exceed Windows filename limits in deeply nested virtual environments.
 `lap` is installed explicitly for ByteTrack, without first-use dependency downloads.
+The [fresh-install verification](desktop_release_check.md) records the resolved
+environment, native analysis, camera regressions and artifact hashes.
 
 ```powershell
 python -m venv .venv

@@ -116,3 +116,10 @@ interruptible backoff. Source-clock gaps above one second reset the tracker,
 motion buffer, window-grid phase and persistence gate. Pending evidence is
 truncated at the last pre-gap image rather than spanning the interruption.
 Acquisition reports retain failure/retry/connection counters and context resets.
+
+Camera workers initialize lazy detector/tracker and temporal-runtime backends
+before starting observation. Synthetic initialization tracks are reset before
+source acquisition, and `camera_model_warmup_sec` is recorded within
+`initialization_before_observation_sec`. Initialization therefore does not
+consume the requested observation interval or count as camera exposure. File
+replay retains its original execution path.
