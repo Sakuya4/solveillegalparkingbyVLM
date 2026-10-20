@@ -83,3 +83,20 @@ def test_complete_publisher_fixture_checks_all_eight_models_and_empty_sources(tm
     assert result["prediction_verification"]["checked_probabilities"] == 96
     assert all(row["test"]["summary"]["clip_count"] == 2 for row in result["models"])
     assert result["files"]["outcomes"]["rows"] == 24
+    from scripts import export_context_inventory as exporter
+    from scripts.audit_continuous_contexts import audit
+    protocol_path = tmp_path / "docs/results/continuous_training_protocol.json"
+    module.dump(protocol_path, protocol)
+    module.dump(tmp_path / "docs/results/continuous_context_selection.json", json.loads(selection_path.read_text()))
+    monkeypatch.setattr(exporter, "ROOT", tmp_path)
+    monkeypatch.setattr(exporter, "DIRECTORY", directory)
+    monkeypatch.setattr(exporter, "PROTOCOL", protocol_path)
+    monkeypatch.setattr(exporter, "load_study", lambda: (protocol, {}, []))
+    monkeypatch.setattr(exporter, "load_models", lambda: definitions)
+    monkeypatch.setattr(exporter, "load_batch", lambda cohort: cohorts[cohort])
+    exporter.main()
+    checked = audit(tmp_path)
+    assert checked["outcomes"] == 24
+    assert checked["clip_inventory_rows"] == 32
+    assert checked["calibration_points"] == 24
+    assert checked["context_scores"] == 96

@@ -24,3 +24,23 @@ def test_native_paired_changes_are_percentage_points_not_raw_proportions():
         {"results": [{"model": "continuous_global_iid", "median_ms": 1, "p95_ms": 2, "calls": 1000}]})
     assert rows[0][2] == "-20.000" and rows[0][3] == "[-30.00, -10.00]"
     assert costs[0][-1] == 1000
+
+
+def test_native_context_views_switch_without_completed_study(monkeypatch):
+    monkeypatch.setenv("QT_QPA_PLATFORM", "offscreen")
+    from PySide6.QtWidgets import QApplication, QComboBox, QStackedWidget, QTabWidget, QTableWidget
+    from illegal_parking.desktop_context_training import add_context_training_tab
+    application = QApplication.instance() or QApplication([])
+    tabs = QTabWidget()
+    add_context_training_tab(tabs, {}, lambda headers, rows: QTableWidget(len(rows), len(headers)))
+    assert tabs.count() == 1
+    selector = tabs.findChild(QComboBox, "contextTrainingView")
+    views = tabs.findChild(QStackedWidget, "contextTrainingViews")
+    assert views.count() == 3
+    for index in range(3):
+        selector.setCurrentIndex(index)
+        assert views.currentIndex() == index
+        assert views.currentWidget().rowCount() == 0
+    tabs.close()
+    tabs.deleteLater()
+    application.processEvents()
