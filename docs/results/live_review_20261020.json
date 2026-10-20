@@ -1,0 +1,87 @@
+{
+  "protocol_sha256": "d9979c7ac73eee880047594dbdda32340f8dbf02a297b29fa36c4711e0c3d980",
+  "source_report_sha256": "0a599743154ab572863c88f8ae591364b75f5923645a5fd0fc65bf35791b285e",
+  "reviewed_report_sha256": "4c8ad5bdbaac9df44e77e13b3bdf1a1bca48e655562d9c0a31cff48f4f732e3f",
+  "completed_at_utc": "2026-10-20T04:52:28.575482+00:00",
+  "events": [
+    {
+      "event_index": 0,
+      "trigger_time_sec": 30.5926728999475,
+      "schema_valid": true,
+      "likely_violation": true,
+      "confidence": 0.85,
+      "service_sec_excluding_model_load": 9.88517550000688,
+      "missing_evidence_items": 1,
+      "disposition": "incomplete_visual_evidence",
+      "independent_label": "UNASSIGNED",
+      "raw_response_sha256": "530a7d1b3c326eafb3deb15079cde2f1c3324cde78dab06c9f72fe6daefcf1c1",
+      "request_sha256": "2be03878b95e339b64f2917082123c621724980a727cac04f3ba3526a9c4d043",
+      "image_sha256": [
+        "eb18102e261c7c416d2689d6b5cab763edc746a7d89d7c0ee1084edaee00f0c8",
+        "bad6c56ea2257abd88267582b8abc631e7dce6fd78697d29f92d2fe2e3d1b9ad",
+        "a27b08b75f7c1de4caf48398508ee735d069f651095a066dfb4a4cebd25282f2"
+      ]
+    },
+    {
+      "event_index": 1,
+      "trigger_time_sec": 58.02359810000053,
+      "schema_valid": true,
+      "likely_violation": true,
+      "confidence": 0.85,
+      "service_sec_excluding_model_load": 12.489845899981447,
+      "missing_evidence_items": 1,
+      "disposition": "incomplete_visual_evidence",
+      "independent_label": "UNASSIGNED",
+      "raw_response_sha256": "c116a1eef20f46738a0d5d1756ab4565740ca4749e1978483d34ad0513900480",
+      "request_sha256": "8259312554333b4e976062da89ffff9afb263d41c9df56f450eb84a5879e2869",
+      "image_sha256": [
+        "9e9e742f6f1ba2678a81a13e08fd5406d238d9c0fcf558c63f7574aecde9a5a5",
+        "9c39fe33e24ecd8d4ad393dd01385f216024a935b512d81dc1df2d92dbce9dbd",
+        "b5fb3114c3824e5573c2466cf75770c46d02bf47df3496b4149016e3b499123e"
+      ]
+    },
+    {
+      "event_index": 2,
+      "trigger_time_sec": 98.92875629995251,
+      "schema_valid": true,
+      "likely_violation": true,
+      "confidence": 0.85,
+      "service_sec_excluding_model_load": 9.37042609998025,
+      "missing_evidence_items": 1,
+      "disposition": "incomplete_visual_evidence",
+      "independent_label": "UNASSIGNED",
+      "raw_response_sha256": "4a0525c7b8fcd332b9e464959c6c6a8b61000e32d441c396b79b613342c908b4",
+      "request_sha256": "a7df16894a472e9de17d3520d69b79b916a7b541bd826b44646c203bd4aa1651",
+      "image_sha256": [
+        "35efbea59c9385c21268c8ca3a9360e4778b888b59c123acf5de69097dacacd9",
+        "d05f1d4de09ed48cb395fded57e8caae7afc38440e489c5f8e68850c0688aa03",
+        "a7544df199a70cb5c91c04b5ac01c0b9a7f69499d53c57b0ecdfe03eb286cf36"
+      ]
+    },
+    {
+      "event_index": 3,
+      "trigger_time_sec": 117.80095219996292,
+      "schema_valid": true,
+      "likely_violation": true,
+      "confidence": 0.85,
+      "service_sec_excluding_model_load": 10.670719799993094,
+      "missing_evidence_items": 1,
+      "disposition": "incomplete_visual_evidence",
+      "independent_label": "UNASSIGNED",
+      "raw_response_sha256": "0282ea89a686286aa8cab986166580795d39520b05335f7ad542bd8bb4dd5e51",
+      "request_sha256": "512c0ef2a5b0e0ad86f9fba2e16225c0d63e8ce3a5d9a1afa57521326d0253df",
+      "image_sha256": [
+        "f1cbed4d0bb576a6806938e67d0f37ee74d6239625dfad93bf880306807fe75d",
+        "87646fb2a39b5ff1d191cb4f08b519fa49c5e359b73d311f2e7cbc356e4dc8d6",
+        "4088b2b33e23469c6aba0425a47e333532cacf873319bf124cec711ea1283e33"
+      ]
+    }
+  ],
+  "batch_elapsed_sec_including_model_load": [
+    96.37848319998011,
+    19.62232949997997
+  ],
+  "normal_exposure_added_hours": 0,
+  "scope": "All four retained daytime candidates; three clean privacy-treated images each. Fixed two-batch service limit, without detector reruns. Record malformed or inconclusive outputs without retries or event selection.",
+  "label_policy": "UNASSIGNED; VLM opinions do not create independent ground truth or normal-camera exposure."
+}

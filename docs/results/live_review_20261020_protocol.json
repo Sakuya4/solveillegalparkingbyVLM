@@ -1,0 +1,72 @@
+{
+  "created_at_utc": "2026-10-20T04:34:40.375037+00:00",
+  "source_report_sha256": "0a599743154ab572863c88f8ae591364b75f5923645a5fd0fc65bf35791b285e",
+  "events": [
+    {
+      "event_index": 0,
+      "request_sha256": "2be03878b95e339b64f2917082123c621724980a727cac04f3ba3526a9c4d043",
+      "image_sha256": [
+        "eb18102e261c7c416d2689d6b5cab763edc746a7d89d7c0ee1084edaee00f0c8",
+        "bad6c56ea2257abd88267582b8abc631e7dce6fd78697d29f92d2fe2e3d1b9ad",
+        "a27b08b75f7c1de4caf48398508ee735d069f651095a066dfb4a4cebd25282f2"
+      ],
+      "prompt_sha256": "191bc0aed52428d1be95726a4a68edda218090329c2b0bbca9b8f4133343f880"
+    },
+    {
+      "event_index": 1,
+      "request_sha256": "8259312554333b4e976062da89ffff9afb263d41c9df56f450eb84a5879e2869",
+      "image_sha256": [
+        "9e9e742f6f1ba2678a81a13e08fd5406d238d9c0fcf558c63f7574aecde9a5a5",
+        "9c39fe33e24ecd8d4ad393dd01385f216024a935b512d81dc1df2d92dbce9dbd",
+        "b5fb3114c3824e5573c2466cf75770c46d02bf47df3496b4149016e3b499123e"
+      ],
+      "prompt_sha256": "191bc0aed52428d1be95726a4a68edda218090329c2b0bbca9b8f4133343f880"
+    },
+    {
+      "event_index": 2,
+      "request_sha256": "a7df16894a472e9de17d3520d69b79b916a7b541bd826b44646c203bd4aa1651",
+      "image_sha256": [
+        "35efbea59c9385c21268c8ca3a9360e4778b888b59c123acf5de69097dacacd9",
+        "d05f1d4de09ed48cb395fded57e8caae7afc38440e489c5f8e68850c0688aa03",
+        "a7544df199a70cb5c91c04b5ac01c0b9a7f69499d53c57b0ecdfe03eb286cf36"
+      ],
+      "prompt_sha256": "191bc0aed52428d1be95726a4a68edda218090329c2b0bbca9b8f4133343f880"
+    },
+    {
+      "event_index": 3,
+      "request_sha256": "512c0ef2a5b0e0ad86f9fba2e16225c0d63e8ce3a5d9a1afa57521326d0253df",
+      "image_sha256": [
+        "f1cbed4d0bb576a6806938e67d0f37ee74d6239625dfad93bf880306807fe75d",
+        "87646fb2a39b5ff1d191cb4f08b519fa49c5e359b73d311f2e7cbc356e4dc8d6",
+        "4088b2b33e23469c6aba0425a47e333532cacf873319bf124cec711ea1283e33"
+      ],
+      "prompt_sha256": "191bc0aed52428d1be95726a4a68edda218090329c2b0bbca9b8f4133343f880"
+    }
+  ],
+  "batches": [
+    [
+      0,
+      1,
+      2
+    ],
+    [
+      3
+    ]
+  ],
+  "model_id": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+  "generation_contract_version": 2,
+  "do_sample": false,
+  "max_new_tokens": 256,
+  "seed": 42,
+  "threads": 2,
+  "implementation_sha256": {
+    "scripts/review_daytime_camera.py": "2fcdca977c726185600e1bba524092f14e93386decbc2153c80b021e7c3f7359",
+    "Application/DebugVersion/src/illegal_parking/incident_review_service.py": "a1525956390194d59937da3f93cce27c1f2e3d803dd2b92afdafb030a882d153",
+    "Application/DebugVersion/src/illegal_parking/vlm_transformers.py": "8bd6db199d7449ba1ab6669a6aeafd1cabbbc79bf1a6ace12e6410175dbf7312",
+    "Application/DebugVersion/src/illegal_parking/incident_vlm_evidence.py": "fed1f1610bbf7e2317d3dff1d01a76dd4d735a8586a75e3617828bd650a1e592"
+  },
+  "scope": "All four retained daytime candidates; three clean privacy-treated images each. Fixed two-batch service limit, without detector reruns. Record malformed or inconclusive outputs without retries or event selection.",
+  "label_policy": "UNASSIGNED; VLM opinions do not create independent ground truth or normal-camera exposure.",
+  "publication": "Numeric dispositions, schema/service statistics and hashes only; all footage, requests and generated text remain local."
+}

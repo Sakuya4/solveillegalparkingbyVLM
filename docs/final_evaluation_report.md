@@ -416,6 +416,26 @@ fail through onset suppression. These findings distinguish controller timing
 from score/label alignment and motivate a frozen continuous-context training
 comparison. They do not add test-set evidence or change the reference default.
 
+The completed [continuous-context training comparison](continuous_context_training.md)
+fits eight TCNs and evaluates 100 IID/100 geographic event clips from a new
+190-source union. All 26,232 probabilities reproduce exactly. Continuous-
+minus-anchored recall changes are 0/+2 pp for candidate IID/geographic and
++5/-8 pp for global IID/geographic; all four pointwise intervals include zero.
+All four continuous policies meet both test caps, compared with two anchored
+policies, but continuous-policy recall remains 0.05--0.11. The intervention
+therefore demonstrates workload-feasibility differences rather than uniform
+recognition gains. Source support, clock controls, 1,200 per-clip outcomes and
+all 808 calibration points are publicly reconstructible. Historical anchored
+input values and labels agree exactly, while layout-dependent float32
+reductions and final weights are nonidentical; new contrasts use the same
+new training worker. Reference models remain unchanged.
+
+The corresponding temporal-only CPU benchmark records 8,000 timed calls with
+median latency 0.962--0.985 ms. New selected score streams produce zero
+RTL/golden mismatches over 29,124 cycles, with no observed quantization-induced
+decision or event changes. Detector costs, SystemC queue workloads and physical
+Snapdragon measurements are separate endpoints.
+
 Continuous-event calibration uses 101 IID and 90 geographic held-out training
 clips under a frozen 320-pixel, 7.5-Hz, source-clock protocol. All 24 operating
 settings are evaluated on separate 100-clip test batches after threshold

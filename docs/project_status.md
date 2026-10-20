@@ -57,6 +57,18 @@ The same matrix is generated from checked-in artifacts for the integrated
 
 ## Measured Results
 
+- Continuous-context training: all eight fits and the new 190-source event
+  replay are complete, with 26,232 exactly reproduced probabilities. All four
+  continuous policies meet test workload caps; recall is 0.05--0.11 and every
+  paired recall interval includes zero. The reference default is unchanged.
+  Public reconstruction checks 808 calibration points and 1,200 outcomes.
+- Matched temporal CPU inference: median 0.962--0.985 ms across eight models.
+  The new confidence streams pass 29,124 RTL cycles without golden mismatches
+  or observed float/quantized event changes. These are separate from NPU compute.
+- Daytime public-camera observation: 120 seconds, 841 sampled frames, 56
+  decisions and four independently unassigned candidates. Source-clock and
+  evidence artifacts are retained; no reviewed-normal exposure is added.
+
 - Positive-context follow-up: 191 distinct sources, all 16,568 checkpoint
   probabilities exactly reproduced; six of eight settings meet both test caps,
   with recall 0.05--0.25. Public context traces independently reproduce every

@@ -72,8 +72,18 @@
 - [x] Run a predeclared 120-second night-time public-camera experiment and publish numeric timing/reconnection traces without assigning ground truth.
 - [x] Freeze and complete the fit-only continuous-context support audit, without reading model scores or test endpoints.
 - [x] Freeze the eight-model continuous-context training comparison, source splits, settings, operating objective and new event cohorts before extraction/fitting.
-- [ ] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.
-- [ ] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
+- [x] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.
+- [x] Pass two common-fit real-detector CPU smoke sources; keep all 13 smoke contexts separate from fitting.
+- [x] Verify all 27,986 selected frames across 557 sources and 2,633 fit contexts before production extraction; retain zero decoder failures.
+- [x] Predeclare matched temporal CPU timing and new-score RTL verification before study results.
+- [x] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
+- [x] Independently reconstruct all 808 calibration points, 1,200 outcomes and four paired intervals from public context/source data.
+- [x] Publish matched temporal CPU costs and verify the new selected score streams in the existing RTL controller.
+- [x] Expose the complete continuous-context comparison, paired intervals and costs in the native application.
+- [x] Complete a predeclared daytime CCTV observation and preserve all four unassigned candidate events.
+- [x] Complete predeclared Qwen review of all four daytime evidence packages, retaining independent labels as unassigned.
+- [x] Pass the complete 550-test regression and visually inspect the new comparison figure and native tab.
+- [ ] Freeze a continuous-context video-representation and multi-seed comparison before further training.
 
 ## Completed Case: Red-Line Parking
 

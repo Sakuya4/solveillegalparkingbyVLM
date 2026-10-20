@@ -198,6 +198,17 @@ fit/calibration sources. Its 100/100 new event cohorts exclude prior replays
 while acknowledging earlier window-test observations. Model extraction and
 fitting follow a separately tested execution freeze; these support counts
 are feasibility results rather than recognition gains.
+The completed comparison retains all eight final-epoch models and a new
+190-source event union. Continuous training meets both test caps in four of
+four settings, but event recall remains 0.05--0.11. Paired changes are
+0/+2/+5/-8 pp and all four intervals contain zero. Retain this workload versus
+sensitivity result without promoting a new reference model. The 26,232 exact
+checkpoint predictions, 808 calibration points, 1,200 per-clip outcomes and
+four paired intervals are independently checked; public reconstruction uses
+13,740 scores and 1,508 complete model/source records. Historical controls
+have identical input values but nonidentical float32 reductions and trained
+parameters, so compare only the matched new arms. Temporal CPU medians are
+0.962--0.985 ms, and 29,124 real-score RTL cycles have zero golden mismatches.
 The native runtime was subsequently exercised on a predeclared 120-second
 Taichung night-time public-camera observation. It processed 884 sampled
 frames and 58 decisions, with median/p95 local decoder-arrival-to-decision

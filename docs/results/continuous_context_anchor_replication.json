@@ -1,0 +1,58 @@
+{
+  "protocol_sha256": "ef41a101f446b2a872c4bcdbaac1a0557056523235c15ce09e772f0c2ccbe35e",
+  "prior_comparison_sha256": "db93ecbfedc3b63055fb29cea502caf56e191fd65c097669a62e635a25578196",
+  "models_sha256": "cb7c59982b1859ddb5ace26951ab23bea3d78d69c6fe6228191dfd4d138af628",
+  "auditor_sha256": "63ec97c1851f8722f12f94466a37d11f444d8f5b18b56828f2494e855bfb98a2",
+  "completed_at_utc": "2026-10-20T04:31:11.385326+00:00",
+  "results": [
+    {
+      "model": "anchored_candidate_iid",
+      "previous_model_sha256": "bfe22b248c86f16325beaa8db79e9842a5723dfdd05ca2c90ab840df709feb9b",
+      "new_model_sha256": "b70a730c640910d8ce25ad1530191908a455696ffa5c71126e0f065f90dfbb8f",
+      "parameters": 19009,
+      "maximum_parameter_difference": 0.1641761064529419,
+      "bitwise_state_equal": false,
+      "standardizer_differences": {
+        "feature_mean": 5.7220458984375e-06,
+        "feature_scale": 4.76837158203125e-07
+      }
+    },
+    {
+      "model": "anchored_global_iid",
+      "previous_model_sha256": "d80b482f4e7c2c3b3be5a3b3536b169e174f0afc89259f6022a71f1d3f632173",
+      "new_model_sha256": "114ad7b786094e902de7e10f4288309c749d093dfb32d0bc9a59f3d8a8f1a9a8",
+      "parameters": 18817,
+      "maximum_parameter_difference": 0.12264405936002731,
+      "bitwise_state_equal": false,
+      "standardizer_differences": {
+        "feature_mean": 1.430511474609375e-06,
+        "feature_scale": 1.430511474609375e-06
+      }
+    },
+    {
+      "model": "anchored_candidate_geographic",
+      "previous_model_sha256": "367c5e239d699420924da1729c56310de832637c317c857475b95adbd6683349",
+      "new_model_sha256": "93376ee96a6222bf61f5569f19bd056c59fbcb6c34b4281e8269b3b2449ae862",
+      "parameters": 19009,
+      "maximum_parameter_difference": 0.11560225486755371,
+      "bitwise_state_equal": false,
+      "standardizer_differences": {
+        "feature_mean": 1.9073486328125e-06,
+        "feature_scale": 1.9073486328125e-06
+      }
+    },
+    {
+      "model": "anchored_global_geographic",
+      "previous_model_sha256": "52ea91aff3233780d9a47c850c29df5ef7199f1494a9461149aedc24f5751575",
+      "new_model_sha256": "c1878b5d4af5141d25391529ef40998402df47d28feb5312a2cb1e2261ed2da6",
+      "parameters": 18817,
+      "maximum_parameter_difference": 0.10992667078971863,
+      "bitwise_state_equal": false,
+      "standardizer_differences": {
+        "feature_mean": 1.430511474609375e-06,
+        "feature_scale": 1.430511474609375e-06
+      }
+    }
+  ],
+  "scope": "Numerical historical-control audit only. Compare final-epoch parameters and fit-only standardizers, excluding changed threshold calibration. No test scores or deployment defaults are selected."
+}

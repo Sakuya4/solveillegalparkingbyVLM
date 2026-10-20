@@ -1,6 +1,8 @@
 # Research and Desktop Implementation Plan
 
 Execution window: 16 October 2026 to 17 October 2026, 12:00 Asia/Taipei.
+The scheduled window is closed. The user authorized the present manual
+continuation on 20 October; no recurring worker has been re-enabled.
 
 ## Research Objective
 
@@ -256,9 +258,9 @@ At the deadline, report delivered artifacts and remaining external requirements.
     TCNs, unchanged 376/94 and 332/83 fit/calibration memberships, 40 epochs
     and a common dual-cap operating objective. New event tests are 100/100
     clips (190-source union), excluding 654 prior event/holdout identities.
-    Prior window-test observations remain disclosed. No extraction/fitting
-    has started. Next test and freeze execution workers, fit all models,
-    calibrate on TRAIN holdouts, freeze policies, then replay test sources.
+    Prior window-test observations remain disclosed. The separately frozen
+    workers now complete extraction, all eight fits and TRAIN calibration.
+    Commit `b934615` preserves every selected policy before new test replay.
 33. Completed: a separately predeclared 120-second Taichung camera session on
     17 October processes 884 sampled frames and 58 decisions, with median/p95
     decoder-arrival latency 107/141 ms. Four read failures and four retry
@@ -266,8 +268,45 @@ At the deadline, report delivered artifacts and remaining external requirements.
     above one second. All 119.835 eligible acquisition seconds remain
     independently unassigned; zero candidate alerts add no reviewed-normal
     exposure. Publish numeric traces/hashes, retain footage locally.
+34. Execution appendix committed as `531d572` before real jobs. Sixteen new
+    fixture tests cover leakage, tie order, smoke exclusion, final-epoch
+    reproducibility and an eight-model synthetic publisher. Two common-fit
+    CPU smoke clips produce 13 contexts and no fitting artifacts. The complete
+    expanded-frame decoder audit passes all 27,986 selected frames from 557
+    sources before production extraction.
+35. A new 20 October daytime observation completes 120 seconds with 841
+    sampled frames, 56 decisions and four unassigned candidate episodes.
+    Eligible acquisition is 119.700 seconds with no sampled gap above one
+    second. Median/p95 decoder-arrival latency is 129/195 ms under concurrent
+    fit-audit CPU load; do not interpret this as a paired day/night comparison.
+    Independent labels are still external, and all camera imagery stays local.
+36. Completed: 2,633 fitting tensors and eight final-epoch TCN fits. All 808
+    TRAIN calibration points precede test replay. A historical-control audit
+    confirms identical anchored fit identities, labels and tensor values, but
+    different float32 reduction layouts and nonidentical final weights. New
+    contrasts use the same new worker, not historical checkpoint substitution.
+37. Completed: the separately frozen 190-source event-test union. All 26,232
+    probabilities reproduce exactly. Continuous-minus-anchored recall changes
+    are 0/+2/+5/-8 pp, with all four intervals containing zero. All four
+    continuous policies meet test caps, compared with two anchored policies;
+    continuous recall remains 0.05--0.11. Public-data reconstruction checks
+    all 808 calibration points, 1,200 outcomes and four paired intervals from
+    13,740 scores and 1,508 source/model records. The ninth native tab displays
+    operating points, paired intervals and matched CPU costs.
+38. Completed: the predeclared temporal-only CPU benchmark and new-score RTL
+    replay. Median CPU inference is 0.962--0.985 ms over 8,000 measured calls;
+    29,124 controller cycles have zero golden mismatches. No float/UNORM16
+    decision or event changes occur on these streams. Physical NPU compute,
+    synthesized timing and power remain separate external measurements.
+39. Completed after GPU replay: all four daytime saved-event Qwen reviews,
+    with pinned revision and explicitly forwarded greedy generation. All
+    outputs are schema-valid, positive model opinions with missing evidence;
+    every disposition remains incomplete and independent labels unassigned.
+    Per-event service is 9.370--12.490 seconds excluding model load. Original
+    camera report/media are preserved, with numeric-only public results.
 
-The sequential runner is `scripts/run_overnight_research.py`. Its active
+Historical queue configuration follows; these queues are complete and must
+not be restarted. The sequential runner was `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are
 recorded atomically in `outputs/research_runs/overnight_status.json`. Inspect
 that file before starting another GPU workload. The queue starts with controlled
@@ -281,10 +320,13 @@ both splits. Inspect both state files and their actual child processes before
 any GPU job. The runner rejects a live child belonging to the other phase.
 
 Completed checkpoints: `af20fb2` (government temporal allocation), `a2dfcf0`
-(native desktop and portable runtime). Current full regression: 509 tests pass,
+(native desktop and portable runtime). Current full regression: 550 tests pass,
 including the locally built SystemC replay and Windows desktop integration.
 The full run includes public-support/protocol and new live-runtime publication
-tests and exits zero. Main publication is authorized by the user on 17 October.
+tests, continuous-context public reconstruction, corruption checks, native
+integration and existing hardware workflows, and exits zero. Main publication
+was authorized by the user on 17 October and completed as `739b79a`; the new
+20 October results remain on the research branch for a separate review.
 Further checkpoints include `3b757f7` (QNN quantization), `a6f79cc`
 (geographic evaluation and uncertainty), `93083ab` (controlled VLM study),
 and `18f63b3` (native evidence and demonstration).

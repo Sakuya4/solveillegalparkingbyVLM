@@ -70,3 +70,61 @@ footage whose reuse terms have not been separately established.
 [Predeclared protocol](results/live_runtime_20261017_protocol.json) ·
 [Complete numerical trace and provenance](results/live_runtime_20261017.json) ·
 [Public camera page](https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129).
+
+## Daytime Observation on 20 October
+
+A separately predeclared request began at 12:09:42 Asia/Taipei on
+20 October 2026. It retained the same reference model and native camera
+contract, with two CPU threads. A fit-only decoder audit ran concurrently;
+these measurements are not a resource-isolated benchmark or a paired
+day/night model comparison.
+
+| Endpoint | Daytime measurement |
+| --- | ---: |
+| Requested / elapsed observation | 120 / 120.198 s |
+| Decoded / sampled frames | 1,169 / 841 |
+| Temporal decisions | 56 |
+| Eligible acquisition at the one-second gap limit | 119.700 s |
+| Decoder-arrival-to-decision median / p95 | 129.0 / 195.4 ms |
+| Sampled-frame processing median / p95 | 110.1 / 154.9 ms |
+| Connections / read failures / retry attempts | 4 / 4 / 4 |
+| Sampled-frame gaps above one second | 0 |
+| Candidate alert episodes | 4 |
+
+The four source-clock triggers occur at 30.593, 58.024, 98.929 and 117.801 s.
+Their full privacy-treated clean observation and event evidence remain local
+under `outputs/streaming/live_20261020_daytime/`. All four alerts and the full
+observation remain **UNASSIGNED**. They support independent review and
+subsequent error analysis; they do not add reviewed-normal exposure or a
+measured false-alarm rate. A model-informed visual review is not a substitute
+for independent observation labels.
+
+[Daytime protocol](results/live_runtime_20261020_protocol.json) ·
+[Daytime frame/decision trace and hashes](results/live_runtime_20261020.json).
+
+### Saved-Event Multimodal Review
+
+All four retained candidates subsequently pass through the pinned Qwen2.5-VL-3B
+review service using three privacy-treated clean images per event and generation
+contract version 2. A separate protocol fixes every request/image/prompt hash,
+greedy generation, revision, token limit and the existing three-event batch
+limit before execution. Two batches retain the complete report chain without
+rerunning detection or modifying the original observation report.
+
+All four outputs are schema-valid. Each returns a positive triage opinion at
+reported confidence 0.85 while also identifying one missing-evidence item; the
+policy therefore retains all four as `incomplete_visual_evidence`. The model's
+confidence is not an empirical correctness estimate. Per-event generation and
+parsing take 9.370--12.490 s, excluding model load; both batch totals including
+load are recorded separately. These later services do not redefine the earlier
+edge notification timestamps or establish independent event truth.
+
+The final local report is
+`outputs/streaming/live_20261020_daytime_review_all/report.json` and can be
+opened directly in the native application. Text and camera media remain local;
+the public release includes numeric opinions, dispositions and provenance.
+Every independent label remains unassigned and added reviewed-normal exposure
+remains zero.
+
+[Review protocol](results/live_review_20261020_protocol.json) ·
+[Four-event review results](results/live_review_20261020.json).

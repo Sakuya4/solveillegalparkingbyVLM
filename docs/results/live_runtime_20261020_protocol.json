@@ -1,0 +1,32 @@
+{
+  "status": "predeclared_before_public_camera_acquisition",
+  "local_date": "2026-10-20",
+  "timezone": "Asia/Taipei",
+  "camera_page": "https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129",
+  "requested_observation_sec": 120,
+  "source_mode": "page",
+  "source_policy": "One daytime request; retain source failure or truncated acquisition. No replacement camera. Existing bounded reconnect policy is unchanged.",
+  "runtime": "Native streaming worker, CPUExecutionProvider, two CPU threads; no VLM during acquisition",
+  "concurrent_execution": "Fit-only video decoder audit runs concurrently, also with two CPU threads; this is not a resource-isolated latency benchmark or a paired day/night performance comparison.",
+  "reference_model_sha256": "eb4b36d6976e887c6fdd7262e445c74af8fec759d0cfb402bd7a0cf8f7dff2c3",
+  "detector_sha256": "f59b3d833e2ff32e194b5bb8e08d211dc7c5bdf144b90d2c8412c47ccfc83b36",
+  "inference": {
+    "target_fps": 7.5,
+    "display_width": 640,
+    "feature_width_limit": null,
+    "sequence_steps": 15,
+    "hop_steps": 15,
+    "min_positive_windows": 2,
+    "threshold": 0.8547053337097168,
+    "tracker_scope": "Persistent within uninterrupted observation; reset after sampled-frame gaps above one second"
+  },
+  "clock": "Local decoder arrival/elapsed clock, not camera sensor time or verified image freshness",
+  "endpoints": ["Acquisition completion and reconnect counters", "Numeric frame/decision clocks and processing summaries", "Candidate alerts retained for independent review, not assigned truth"],
+  "label_policy": "UNASSIGNED until complete independent reviewer annotation. No inferred normal exposure, accuracy, recall or false-alarm rate.",
+  "media_policy": "Keep public-camera footage and native screenshot local. Publish numerical traces and hashes only; reuse rights are not independently established.",
+  "implementation_sha256": {
+    "scripts/run_streaming_incident.py": "321a9953cf7743d5c01ff482152b44e31ad1e6e70a4623fddf5592d6997c0d19",
+    "Application/DebugVersion/src/illegal_parking/incident_camera_startup.py": "2fb3a9e6dddeade683316fe3cb765a7c35c46cb475b75f23ba129a2d948c51b1",
+    "Application/DebugVersion/src/illegal_parking/incident_streaming.py": "baa2044fda86af59adf655541565c68117ad48f0fa3b0d3026e69eb62bbc45de"
+  }
+}

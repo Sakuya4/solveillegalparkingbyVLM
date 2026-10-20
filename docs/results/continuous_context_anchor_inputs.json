@@ -1,0 +1,85 @@
+{
+  "auditor_sha256": "d462aaba815719a04c89bfd071737a57084a644351828de0c8bae5c841c9421a",
+  "historical_features_sha256": "bdd4d653f3035b40af1d09d15f1a7484a25b55ae4e842068eadef73b602dee80",
+  "new_features_sha256": "90f508c3e7ecd4105f95a9072b6921659d91502abe1aceac8b8582dc6125ef3c",
+  "models_sha256": "cb7c59982b1859ddb5ace26951ab23bea3d78d69c6fe6228191dfd4d138af628",
+  "results": [
+    {
+      "model": "anchored_candidate_iid",
+      "contexts": 572,
+      "row_label_and_tensor_values_equal": true,
+      "historical_strides": [
+        600,
+        4,
+        60
+      ],
+      "new_strides": [
+        60,
+        4,
+        34320
+      ],
+      "mean_difference": 5.7220458984375e-06,
+      "scale_difference": 4.76837158203125e-07,
+      "contiguous_minus_historical_mean": 3.0517578125e-05,
+      "contiguous_minus_historical_scale": 1.1116266250610352e-05
+    },
+    {
+      "model": "anchored_candidate_geographic",
+      "contexts": 496,
+      "row_label_and_tensor_values_equal": true,
+      "historical_strides": [
+        600,
+        4,
+        60
+      ],
+      "new_strides": [
+        60,
+        4,
+        29760
+      ],
+      "mean_difference": 1.9073486328125e-06,
+      "scale_difference": 1.9073486328125e-06,
+      "contiguous_minus_historical_mean": 1.33514404296875e-05,
+      "contiguous_minus_historical_scale": 1.2814998626708984e-05
+    },
+    {
+      "model": "anchored_global_iid",
+      "contexts": 572,
+      "row_label_and_tensor_values_equal": true,
+      "historical_strides": [
+        240,
+        4,
+        60
+      ],
+      "new_strides": [
+        60,
+        4,
+        34320
+      ],
+      "mean_difference": 1.430511474609375e-06,
+      "scale_difference": 1.430511474609375e-06,
+      "contiguous_minus_historical_mean": 2.86102294921875e-06,
+      "contiguous_minus_historical_scale": 5.7220458984375e-06
+    },
+    {
+      "model": "anchored_global_geographic",
+      "contexts": 496,
+      "row_label_and_tensor_values_equal": true,
+      "historical_strides": [
+        240,
+        4,
+        60
+      ],
+      "new_strides": [
+        60,
+        4,
+        29760
+      ],
+      "mean_difference": 1.430511474609375e-06,
+      "scale_difference": 1.430511474609375e-06,
+      "contiguous_minus_historical_mean": 8.821487426757812e-06,
+      "contiguous_minus_historical_scale": 1.9073486328125e-06
+    }
+  ],
+  "scope": "FIT-only tensor/order/layout audit. Equal tensor values do not guarantee bitwise-equivalent float32 reductions or GPU optimization. No refitting, threshold change, test-score inspection or default selection."
+}
