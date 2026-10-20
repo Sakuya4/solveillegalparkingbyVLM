@@ -1,0 +1,9 @@
+model,threshold,event_recall,off_target_per_clip,prefix_macro,prefix_supported_clips,median_delay_sec,p95_delay_sec,episode_cap_exceeded,prefix_cap_exceeded
+anchored_candidate_iid,0.98,0.05,0.19,0.09507042253521127,71,2.0833329999999997,2.7583336,False,False
+anchored_candidate_geographic,0.99,0.09,0.29,0.2504182754182754,74,1.4666670000000002,2.7249999999999996,False,True
+anchored_global_iid,0.81,0.02,0.14,0.07668231611893583,71,2.5416665,2.61666665,False,False
+anchored_global_geographic,0.63,0.17,0.65,0.3624517374517375,74,0.46666700000000017,2.5216664,True,True
+continuous_candidate_iid,0.91,0.05,0.21,0.13285267158506595,71,0.7916669999999999,2.553333,False,False
+continuous_candidate_geographic,0.88,0.11,0.24,0.14375804375804374,74,1.416667,2.6166665,False,False
+continuous_global_iid,0.71,0.07,0.25,0.1922646993069528,71,2.333333,2.7708331,False,False
+continuous_global_geographic,0.89,0.09,0.15,0.149002574002574,74,1.416667,2.7416668,False,False

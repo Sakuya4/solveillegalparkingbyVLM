@@ -1,0 +1,16 @@
+{
+  "protocol_sha256": "ef41a101f446b2a872c4bcdbaac1a0557056523235c15ce09e772f0c2ccbe35e",
+  "results_sha256": "3a56e5338e13d876231d3d9feebe145bf37be02158f5bff61ad5bcae55abfbd5",
+  "selection_sha256": "9da60e2ac32c62fd61e61d3ec2ca594405baae4c6c743834bc65325ab64b2f2b",
+  "exporter_sha256": "d251e2fc30842bcf0d2ec6ddb562194d5fdb4e3b809912878a3241237d00a498",
+  "inventory": {
+    "path": "docs/results/continuous_context_inventory.csv",
+    "sha256": "365b41c79f46b2acac2d5a8d8bb964594bf8eba0d3d2966006449b5f31b44643",
+    "rows": 1508
+  },
+  "batch_sha256": {
+    "calibration": "66b7af7f8d7152d04ceeed1afb6daf5b45856ee0de9615a59667b94fbddf92fa",
+    "test": "9a2fb7cb5f1a6e28ff3729c2efdea3544c94e70fdf20f59a40430b0c3e2ee2fa"
+  },
+  "scope": "Complete corresponding model/source memberships, including zero-context sources. No new endpoints or source substitutions."
+}

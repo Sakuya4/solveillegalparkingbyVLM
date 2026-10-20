@@ -1,0 +1,9 @@
+{
+  "results_sha256": "3a56e5338e13d876231d3d9feebe145bf37be02158f5bff61ad5bcae55abfbd5",
+  "plotter_sha256": "60b6e8e06c8ef3934fd462b92f57d34a2018cbc3dcc1b4cb194d26e4eb82ed21",
+  "figures": {
+    "png": "b352ad351962adc7ca639fb437ac134796a1d413c7d3152c10470058308e74ab",
+    "pdf": "f392f15c146be6d8f0cb737b113e359cf1e15218d1b2fc21e2e2ed8d1e58977a"
+  },
+  "scope": "All eight predeclared policies and four pointwise paired source-clip intervals; conditional on fixed fitted models/calibration. Missing policies are not imputed as zero."
+}

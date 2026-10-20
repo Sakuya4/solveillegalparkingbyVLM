@@ -4,7 +4,7 @@
 
 The TRAIN-only event-local diagnostic identifies weak within-source score
 ranking and insufficient adjacent target-positive decisions under constrained
-thresholds. A new training comparison will therefore examine the alignment of
+thresholds. The training comparison therefore examines the alignment of
 training contexts with continuous inference, retaining the existing TCN
 architecture and candidate/global feature definitions as controls.
 
@@ -113,8 +113,9 @@ budget exceedances and constant controls will be reported.
 
 The [2,633-row fitting manifest](results/continuous_training_protocol.jsonl)
 contains only each source's corresponding fit memberships. Execution workers
-and their hash-bound appendix must be tested and frozen before real extraction
-or fitting. No new training or event-test result is claimed at this stage.
+and their hash-bound appendix were tested and committed before real extraction
+or fitting. All eight fits and 808 TRAIN calibration points are complete;
+commit `b934615` fixes every policy before the new event-test replay.
 
 ## Execution Appendix
 
@@ -174,3 +175,119 @@ or claim NPU arithmetic, synthesized timing or target power.
 
 [CPU timing contract](results/continuous_context_latency_protocol.json) ·
 [New-score controller contract](results/continuous_context_rtl_protocol.json).
+
+## Historical-Control Reproducibility
+
+The four newly fitted anchored controls retain exactly the historical fit-row
+order, labels and feature values. They are not bitwise checkpoint replicas.
+Changing channel/source indexing order changes NumPy strides and float32
+reduction order: the maximum fit-mean difference is 5.72e-6 and the maximum
+fit-scale difference is 1.91e-6. Final parameter differences reach 0.1099--0.1642
+across the four models. These are measured numerical differences, not evidence
+of changed labels or test leakage, and the audit does not attribute the full
+optimization difference to a single cause.
+
+The new study compares both training arms through one frozen worker and leaves
+all historical weights and results untouched. Paired intervals condition on
+one fitted seed and the selected calibration policies; they do not quantify
+optimization-seed uncertainty. Future multi-seed work should fix contiguous
+reduction conventions before fitting rather than changing this completed run.
+
+[Checkpoint comparison](results/continuous_context_anchor_replication.json) ·
+[FIT-only identity and layout audit](results/continuous_context_anchor_inputs.json).
+
+## Completed Event Comparison
+
+The 190-source test union is complete, with 100 corresponding clips per
+split and no replacements. All 26,232 calibration/test probabilities reproduce
+exactly from the eight fitted checkpoints and saved tensors. Test prefix
+support is 71/100 IID and 74/100 geographic clips, comprising 157/175 contexts;
+the remaining 29/26 clips stay in event-recall denominators. The common grid
+rejects 36/33 contexts, with no empty-context test sources.
+
+| Training contexts | Features | Split | Threshold | Event recall | Off-target / clip | Macro prefix-positive | Test caps |
+| --- | --- | --- | ---: | ---: | ---: | ---: | --- |
+| Anchored | Candidate | IID | 0.98 | 0.05 | 0.19 | 0.095 | Met |
+| Anchored | Candidate | Geographic | 0.99 | 0.09 | 0.29 | 0.250 | Prefix exceeded |
+| Anchored | Global | IID | 0.81 | 0.02 | 0.14 | 0.077 | Met |
+| Anchored | Global | Geographic | 0.63 | 0.17 | 0.65 | 0.362 | Both exceeded |
+| Continuous | Candidate | IID | 0.91 | 0.05 | 0.21 | 0.133 | Met |
+| Continuous | Candidate | Geographic | 0.88 | 0.11 | 0.24 | 0.144 | Met |
+| Continuous | Global | IID | 0.71 | 0.07 | 0.25 | 0.192 | Met |
+| Continuous | Global | Geographic | 0.89 | 0.09 | 0.15 | 0.149 | Met |
+
+All four continuous-context policies meet both test caps, compared with two
+of four anchored policies. This descriptive feasibility result accompanies
+low sensitivity, not a uniform recognition improvement. Continuous-minus-
+anchored recall changes are 0 pp [-6, 5] and +2 pp [-4, 9] for candidate IID
+and geographic testing, and +5 pp [0, 11] and -8 pp [-15.025, 0] for global
+testing. Every pointwise 95% interval contains zero. These intervals condition
+on the fitted seed and TRAIN-selected policies, without multiplicity correction.
+
+The clock-only positive controls attain recall 0.54/0.58, but exceed the
+prefix cap with fraction 1.0 and the episode cap with 0.55/0.53 episodes per
+clip. Always-negative controls meet both caps with zero recall. Thus neither
+raw recall nor cap compliance alone establishes a useful detector. Prefix
+labels remain annotation-relative accident-clip labels, not independently
+reviewed normal-camera exposure.
+
+![Matched continuous-context training comparison](assets/continuous_context_comparison.png)
+
+[Complete results and model hashes](results/continuous_context_results.json) ·
+[Operating points and signed delays](results/continuous_context_results.csv) ·
+[Public context scores](results/continuous_context_scores.csv) ·
+[Complete source inventory](results/continuous_context_inventory.csv) ·
+[Per-clip outcomes](results/continuous_context_outcomes.csv) ·
+[All 808 calibration points](results/continuous_context_calibration.csv).
+
+The separate public-data auditor reconstructs all 808 calibration points,
+eight selections, 1,200 model/control outcomes and four paired intervals from
+13,740 assigned context scores and 1,508 model/source inventory rows, without
+video or checkpoint access. Six rehashed corruption cases test semantic
+checks beyond checksum validation. The ninth native model-evaluation tab
+shows operating points, paired intervals and temporal costs without changing
+the reference deployment selection.
+
+```powershell
+python scripts/export_context_inventory.py
+python scripts/audit_continuous_contexts.py
+python scripts/benchmark_context_models.py run
+python scripts/verify_context_score_rtl.py verify
+python scripts/plot_continuous_context_study.py
+```
+
+Commands that create immutable outputs reject overwrites; the reconstruction
+function can be rerun through the public regression tests. See the
+[independent audit](results/continuous_context_audit.json).
+
+## Measured Execution and Controller Parity
+
+The predeclared CPU benchmark measures 1,000 batch-one calls per model after
+20 warm-up calls, using the same ten TRAIN contexts and two CPU threads.
+Median temporal inference is 0.962--0.985 ms and p95 is 1.194--1.335 ms.
+Raw timings are retained. This measures standardization and the TCN, separately
+from image decoding, detector/tracker features, network delivery and VLM service.
+Run order is fixed and operating-system activity is not controlled; small
+between-model differences should not be interpreted as architectural speedups.
+
+All 13,740 corresponding confidence decisions across 1,508 model/source runs
+expand to 29,124 checked RTL cycles. Icarus and the integer golden controller
+have zero mismatches. UNORM16 maximum observed probability error is 7.62916e-6,
+with zero observed changes in positive/review flags, episode pulses, event
+detection or trigger time. The pre-existing near-threshold counterexample
+remains part of the tests, so this is trace-conditional parity. The contribution
+verifies post-inference control and preserves the separate SystemC queue studies;
+it does not measure accelerator computation, synthesized timing or device power.
+
+[Raw CPU timing study](results/continuous_context_latency.json) ·
+[New-model RTL verification](results/continuous_context_rtl.json).
+
+![Native matched-context evaluation](assets/native_context_training.png)
+
+## Next Research Contract
+
+The present comparison does not justify replacing the reference model.
+A subsequent video-representation comparison should use the same continuous
+source/context/label contract, with settings and calibration objectives frozen
+before fitting. Multi-seed optimization and independently reviewed normal
+camera-hours address different uncertainties and should be reported separately.

@@ -76,3 +76,32 @@ def test_published_temporal_cpu_percentiles_match_all_raw_calls():
         assert len(row["timings_sec"]) == row["calls"] == 1000
         assert row["median_ms"] == pytest.approx(1000 * np.median(row["timings_sec"]))
         assert row["p95_ms"] == pytest.approx(1000 * np.percentile(row["timings_sec"], 95))
+
+
+def test_context_study_preserves_all_bundled_reference_binaries():
+    parent = json.loads((BASE / "presentation_protocol.json").read_text())
+    for name, expected in parent["reference_model_sha256"].items():
+        assert digest(ROOT / "Application/desktop/models" / name) == expected
+
+
+def test_new_rtl_summary_covers_every_selected_public_context_and_source():
+    path = BASE / "continuous_context_rtl.json"
+    if not path.exists():
+        pytest.skip("Controller replay not yet published")
+    report = json.loads(path.read_text())
+    study_path = BASE / "continuous_context_results.json"
+    study = json.loads(study_path.read_text())
+    protocol = json.loads((BASE / "continuous_training_protocol.json").read_text())
+    assert report["results_sha256"] == digest(study_path)
+    assert report["rtl_golden_mismatches"] == 0
+    assert report["simulation_output"].splitlines()[0] == f'PASS tcn_confidence_gate_tb tokens={report["tokens_checked"]}'
+    with (ROOT / study["files"]["contexts"]["path"]).open(newline="", encoding="utf-8") as handle:
+        contexts = list(csv.DictReader(handle))
+    for row in report["summaries"]:
+        if row.get("status") == "unselected":
+            continue
+        expected = [value for value in contexts if value["cohort"] == row["cohort"] and value["model"] == row["model"]]
+        split = row["model"].rsplit("_", 1)[-1]
+        assert row["decisions"] == len(expected)
+        assert row["source_runs"] == len(protocol["memberships"][split][row["cohort"] + "_clip_paths"])
+        assert row["maximum_probability_error"] <= .5 / 65535 + 1e-12

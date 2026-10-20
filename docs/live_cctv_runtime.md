@@ -101,3 +101,30 @@ for independent observation labels.
 
 [Daytime protocol](results/live_runtime_20261020_protocol.json) ·
 [Daytime frame/decision trace and hashes](results/live_runtime_20261020.json).
+
+### Saved-Event Multimodal Review
+
+All four retained candidates subsequently pass through the pinned Qwen2.5-VL-3B
+review service using three privacy-treated clean images per event and generation
+contract version 2. A separate protocol fixes every request/image/prompt hash,
+greedy generation, revision, token limit and the existing three-event batch
+limit before execution. Two batches retain the complete report chain without
+rerunning detection or modifying the original observation report.
+
+All four outputs are schema-valid. Each returns a positive triage opinion at
+reported confidence 0.85 while also identifying one missing-evidence item; the
+policy therefore retains all four as `incomplete_visual_evidence`. The model's
+confidence is not an empirical correctness estimate. Per-event generation and
+parsing take 9.370--12.490 s, excluding model load; both batch totals including
+load are recorded separately. These later services do not redefine the earlier
+edge notification timestamps or establish independent event truth.
+
+The final local report is
+`outputs/streaming/live_20261020_daytime_review_all/report.json` and can be
+opened directly in the native application. Text and camera media remain local;
+the public release includes numeric opinions, dispositions and provenance.
+Every independent label remains unassigned and added reviewed-normal exposure
+remains zero.
+
+[Review protocol](results/live_review_20261020_protocol.json) ·
+[Four-event review results](results/live_review_20261020.json).

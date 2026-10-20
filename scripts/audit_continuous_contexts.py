@@ -147,6 +147,7 @@ def audit(root=ROOT):
     return {"calibration_points": len(curves), "clip_inventory_rows": len(inventory), "context_scores": len(contexts),
             "outcomes": len(outcomes), "paired_intervals": len(study["contrasts"]),
             "audit_sha256": digest(Path(__file__)), "independent_evaluator_sha256": digest(ROOT / "scripts/audit_positive_contexts.py"),
+            "bootstrap_sha256": digest(ROOT / "Application/DebugVersion/src/illegal_parking/research_statistics.py"),
             "results_sha256": manifest["results_sha256"], "inventory_sha256": manifest["inventory"]["sha256"],
             "scope": "Public CSV and protocol reconstruction, without videos, fitted checkpoints, production event evaluators or GPU. Bootstrap helper is shared and hash-recorded."}
 

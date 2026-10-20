@@ -150,6 +150,24 @@ def test_native_vlm_tab_displays_corrected_results_and_clustered_uncertainty(win
     assert window.vlm_results.item(2, 3).text() == "55%"
 
 
+def test_native_context_training_tab_exposes_all_policies_intervals_and_costs(window):
+    from PySide6.QtWidgets import QComboBox, QStackedWidget
+    if not window.snapshot.get("continuous_context_training"):
+        pytest.skip("Context study not yet published")
+    tabs = window.pages.widget(1).findChild(QTabWidget)
+    tabs.setCurrentIndex(8)
+    selector = tabs.currentWidget().findChild(QComboBox, "contextTrainingView")
+    views = tabs.currentWidget().findChild(QStackedWidget, "contextTrainingViews")
+    assert views.widget(0).rowCount() == 8
+    assert views.widget(1).rowCount() == 4
+    assert views.widget(2).rowCount() == 8
+    selector.setCurrentIndex(1)
+    assert views.currentIndex() == 1
+    assert views.currentWidget().horizontalHeaderItem(2).text() == "Recall change (pp)"
+    selector.setCurrentIndex(2)
+    assert views.currentWidget().item(0, 5).text() == "1000"
+
+
 def test_edge_page_exposes_tcn_event_retention_instead_of_only_proposal_counts(window):
     tabs = window.pages.widget(4).findChild(QTabWidget)
     assert tabs.count() == 2

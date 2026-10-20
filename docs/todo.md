@@ -76,8 +76,14 @@
 - [x] Pass two common-fit real-detector CPU smoke sources; keep all 13 smoke contexts separate from fitting.
 - [x] Verify all 27,986 selected frames across 557 sources and 2,633 fit contexts before production extraction; retain zero decoder failures.
 - [x] Predeclare matched temporal CPU timing and new-score RTL verification before study results.
-- [ ] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
-- [ ] Publish matched temporal CPU costs and verify the new selected score streams in the existing RTL controller.
+- [x] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
+- [x] Independently reconstruct all 808 calibration points, 1,200 outcomes and four paired intervals from public context/source data.
+- [x] Publish matched temporal CPU costs and verify the new selected score streams in the existing RTL controller.
+- [x] Expose the complete continuous-context comparison, paired intervals and costs in the native application.
+- [x] Complete a predeclared daytime CCTV observation and preserve all four unassigned candidate events.
+- [x] Complete predeclared Qwen review of all four daytime evidence packages, retaining independent labels as unassigned.
+- [x] Pass the complete 550-test regression and visually inspect the new comparison figure and native tab.
+- [ ] Freeze a continuous-context video-representation and multi-seed comparison before further training.
 
 ## Completed Case: Red-Line Parking
 

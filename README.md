@@ -216,7 +216,19 @@ Under constrained thresholds, missing event-local positive pairs dominate
 onset suppression. The public report and native TRAIN view retain complete
 source denominators and motivate a matched continuous-context training study.
 The [fit-only alignment audit and frozen training protocol](docs/continuous_context_training.md)
-retain the original source partitions and predeclare the next eight-model comparison.
+retain the original source partitions and fix the eight-model comparison before execution.
+
+The completed comparison trains all eight models and evaluates a new 190-source
+event-replay union. All 26,232 saved probabilities reproduce exactly. The four
+continuous-context policies satisfy both test workload caps; their event recall
+is 0.05--0.11, and all four paired recall-change intervals include zero.
+[Results, protocols and public-data reconstruction](docs/continuous_context_training.md)
+separate sensitivity, alert demand and timing support. Matched temporal CPU
+inference takes a median 0.962--0.985 ms; 29,124 controller cycles match the
+Verilog golden model. The native workbench exposes these results in its
+Context training tab while retaining the reference deployment model.
+
+![Continuous-context training and workload constraints](docs/assets/continuous_context_comparison.png)
 
 ### Public-Camera Runtime
 
@@ -226,6 +238,15 @@ Median decoder-arrival-to-decision latency was 107 ms (p95 141 ms); bounded
 reconnection sustained the session across four read failures. The numerical
 release includes timestamps, decisions and provenance. This session emitted
 zero candidate alerts and retains an unassigned ground-truth label.
+A separately predeclared daytime session on 20 October processed 841 frames
+and 56 decisions in 120 seconds, with four retained candidate episodes.
+Median/p95 decoder-arrival latency was 129/195 ms under documented concurrent
+CPU load. Candidate evidence and full-observation review remain distinct from
+independent event labels; numerical traces and source hashes are published.
+All four saved candidates receive pinned Qwen review without detector reruns.
+Each remains an incomplete-evidence disposition, with 9.37--12.49 s per-event
+service. Immediate edge notifications and later evidence review retain
+separate clocks and records.
 
 ### Multimodal Evidence and Restoration
 
