@@ -266,6 +266,17 @@ At the deadline, report delivered artifacts and remaining external requirements.
     above one second. All 119.835 eligible acquisition seconds remain
     independently unassigned; zero candidate alerts add no reviewed-normal
     exposure. Publish numeric traces/hashes, retain footage locally.
+34. Execution appendix committed as `531d572` before real jobs. Sixteen new
+    fixture tests cover leakage, tie order, smoke exclusion, final-epoch
+    reproducibility and an eight-model synthetic publisher. Two common-fit
+    CPU smoke clips produce 13 contexts and no fitting artifacts. The complete
+    expanded-frame decoder audit is running before production extraction.
+35. A new 20 October daytime observation completes 120 seconds with 841
+    sampled frames, 56 decisions and four unassigned candidate episodes.
+    Eligible acquisition is 119.700 seconds with no sampled gap above one
+    second. Median/p95 decoder-arrival latency is 129/195 ms under concurrent
+    fit-audit CPU load; do not interpret this as a paired day/night comparison.
+    Independent labels are still external, and all camera imagery stays local.
 
 The sequential runner is `scripts/run_overnight_research.py`. Its active
 process and child PID, current step, log path, and completed checkpoints are

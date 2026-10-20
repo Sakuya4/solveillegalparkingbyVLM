@@ -70,3 +70,34 @@ footage whose reuse terms have not been separately established.
 [Predeclared protocol](results/live_runtime_20261017_protocol.json) ·
 [Complete numerical trace and provenance](results/live_runtime_20261017.json) ·
 [Public camera page](https://motoretag.taichung.gov.tw/ATIS_TCC/Device/Showcctv?id=C000129).
+
+## Daytime Observation on 20 October
+
+A separately predeclared request began at 12:09:42 Asia/Taipei on
+20 October 2026. It retained the same reference model and native camera
+contract, with two CPU threads. A fit-only decoder audit ran concurrently;
+these measurements are not a resource-isolated benchmark or a paired
+day/night model comparison.
+
+| Endpoint | Daytime measurement |
+| --- | ---: |
+| Requested / elapsed observation | 120 / 120.198 s |
+| Decoded / sampled frames | 1,169 / 841 |
+| Temporal decisions | 56 |
+| Eligible acquisition at the one-second gap limit | 119.700 s |
+| Decoder-arrival-to-decision median / p95 | 129.0 / 195.4 ms |
+| Sampled-frame processing median / p95 | 110.1 / 154.9 ms |
+| Connections / read failures / retry attempts | 4 / 4 / 4 |
+| Sampled-frame gaps above one second | 0 |
+| Candidate alert episodes | 4 |
+
+The four source-clock triggers occur at 30.593, 58.024, 98.929 and 117.801 s.
+Their full privacy-treated clean observation and event evidence remain local
+under `outputs/streaming/live_20261020_daytime/`. All four alerts and the full
+observation remain **UNASSIGNED**. They support independent review and
+subsequent error analysis; they do not add reviewed-normal exposure or a
+measured false-alarm rate. A model-informed visual review is not a substitute
+for independent observation labels.
+
+[Daytime protocol](results/live_runtime_20261020_protocol.json) ·
+[Daytime frame/decision trace and hashes](results/live_runtime_20261020.json).
