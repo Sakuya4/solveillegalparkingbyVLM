@@ -115,3 +115,39 @@ The [2,633-row fitting manifest](results/continuous_training_protocol.jsonl)
 contains only each source's corresponding fit memberships. Execution workers
 and their hash-bound appendix must be tested and frozen before real extraction
 or fitting. No new training or event-test result is claimed at this stage.
+
+## Execution Appendix
+
+The new execution workers leave all earlier study implementations unchanged.
+Fixture tests exercise exact threshold tie-breaking, unsupported populations,
+partition leakage rejection, finite feature tensors, smoke-data exclusion,
+final-epoch reproducibility and the complete eight-model publisher. A
+synthetic end-to-end publication retains an empty test source and verifies
+every checkpoint probability against its stored tensor.
+
+The execution freeze records two common-fit smoke sources, runtime and tool
+versions, code hashes and permitted cache reuse. Parent fixed-time anchored
+features and the existing continuous TRAIN-calibration tensors may be reused
+only after hash, runtime and context-identity checks. Old model scores are not
+used. Continuous fitting and new event-test tensors are generated separately.
+Reused and newly extracted feature costs remain distinct.
+
+```powershell
+python scripts/freeze_continuous_context_execution.py
+# Commit the execution appendix before real jobs.
+python scripts/run_continuous_context_study.py smoke --device cpu
+python scripts/run_continuous_context_study.py verify-fit
+python scripts/run_continuous_context_study.py extract-fit
+python scripts/run_continuous_context_study.py fit
+python scripts/run_continuous_context_study.py calibrate
+# Preserve all TRAIN-only selected policies before test replay.
+python scripts/run_continuous_context_study.py test
+python scripts/publish_continuous_context_study.py
+```
+
+All expanded fitting-frame identities must pass the decoder audit before
+complete extraction or fitting. Failed sources remain in the audit and halt
+the study rather than changing its cohort. Every new checkpoint's embedded
+0.5 threshold is explicitly an unselected placeholder; only the separately
+frozen training-holdout selection defines operating policies. Reference
+desktop models are not replaced.

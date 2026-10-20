@@ -1,0 +1,60 @@
+{
+  "created_at_utc": "2026-10-20T04:07:27.968321+00:00",
+  "protocol_sha256": "ef41a101f446b2a872c4bcdbaac1a0557056523235c15ce09e772f0c2ccbe35e",
+  "implementation_sha256": {
+    "scripts/run_continuous_context_study.py": "44d3d69e6f1988d39596f4a5c230c4d4721975b241284a3edb5a586dcb617452",
+    "scripts/publish_continuous_context_study.py": "7cbee7a29ac5ac9dbd04fe27ed31cde14162ef97cff4c235b042d37534e42a99",
+    "scripts/freeze_continuous_context_execution.py": "d45ba199381ec10b836277d8426b7021ecc74a4d8cf31b6cc374bc0bdd1314a5",
+    "scripts/replay_presentation_events.py": "bc62ccec419de6ba68e3db915242b02653284450f3d402daf452b85fc414fbce",
+    "scripts/prepare_presentation_protocol.py": "3e38020585823006501f4419e7a3f6f4c4eef3f854b8023a28e028e9de0779b6",
+    "Application/DebugVersion/src/illegal_parking/incident_context_study.py": "f33f194f9009da50238a834f6fe6433effb3a7e6ffe50a0a9df643bf88fd39bf",
+    "Application/DebugVersion/src/illegal_parking/incident_tcn_inference.py": "1a02c87ee8dde84d2106277d379542fab6dcdd6ecdb4923823d4036987343f88",
+    "Application/DebugVersion/src/illegal_parking/incident_presentation_events.py": "22c04688fb7089441cf0ae09d4e53317de7ed8c7e2f940c456fffd82d2d770ff",
+    "Application/DebugVersion/src/illegal_parking/incident_evaluation.py": "6d42b2dff594414bbd59768dad6629d2e5b52489d063b66ed08410d271c4ecc3",
+    "Application/DebugVersion/src/illegal_parking/incident_positive_exposure.py": "e97f097771fb681433d19609f2a55e53884f0c5bd6188023d373f605122e0cd1",
+    "Application/DebugVersion/src/illegal_parking/incident_event_calibration.py": "c5841c1b78e8cfc4ef8020327eaada66bd9c31099e43484003f05a7e32a3f585",
+    "Application/DebugVersion/src/illegal_parking/research_statistics.py": "d6f5487ce903307aa89a91a09e30fd0f7c6adb0316dcfdd4714daf9ff781eed8",
+    "Application/DebugVersion/src/illegal_parking/incident_trajectory.py": "bb3a75ad38f72dd6ad9e92c1136134e48573ac04ff8bcb4e0c9f8480c363aab4",
+    "Application/DebugVersion/src/illegal_parking/incident_features.py": "7b027f8a8227a97454a08e8b2e1681154be8a2c63a429ca13b240818eb14ed9a",
+    "Application/DebugVersion/src/illegal_parking/gpu_job.py": "94e63fc3d7864805da1e34c5465a7237b00ed3d80b2e4d0846fe001b42da5a3f"
+  },
+  "versions": {
+    "torch": "2.11.0+cu128",
+    "opencv": "5.0.0",
+    "ultralytics": "8.4.87"
+  },
+  "cuda_runtime": "12.8",
+  "gpu_name": "NVIDIA GeForce RTX 3060",
+  "detector_device": "0",
+  "threads": 2,
+  "smoke_sources": [
+    "real_videos/1_F0r7KVJ1k_00.mp4",
+    "real_videos/3Xd6PxEvbNk_8_00.mp4"
+  ],
+  "smoke_policy": "CPU-only real-detector extraction on two common-fit sources; no partial-cohort fitting; separate cache/artifacts",
+  "anchored_cache": {
+    "directory": "data/processed/accident/presentation_fixed",
+    "files": {
+      "extraction.json": "bcec15e5dbe0e3fdb00a5c7018960a903066adefaf7a9b2af2036272c69417e7",
+      "sequences.npz": "bdd4d653f3035b40af1d09d15f1a7484a25b55ae4e842068eadef73b602dee80"
+    }
+  },
+  "calibration_cache": {
+    "directory": "outputs/accident/presentation_events_calibration",
+    "batch_sha256": "9e02246367430be98e48d8e1b1a4fd35f0e1ff543489807f76254cd66f3f4d29"
+  },
+  "cache_policy": "Reuse only checksum-verified parent fixed-time anchored tensors and continuous TRAIN calibration tensors with matching source/PTS identities, runtime and feature contract. Ignore all old model scores. Newly generated continuous-fit and test features use separate per-context/per-source caches.",
+  "decode_gate": "Every expanded fitting frame/annotation is decoded and checked before any complete-cohort extraction/fitting. Retain all failures and stop; no replacement or label changes.",
+  "order": [
+    "CPU fixtures and execution freeze",
+    "Two-clip CPU smoke",
+    "Complete fit decoder audit",
+    "Complete fit extraction",
+    "All eight final-epoch fits",
+    "TRAIN replay and all-policy freeze",
+    "New test replay",
+    "Checkpoint-score verification and all-policy/control publication"
+  ],
+  "fitting_checkpoint_threshold": "0.5 is an explicitly unselected placeholder, not a deployment policy; only the separate TRAIN selection supplies operating thresholds",
+  "feature_cost": "Report newly extracted continuous tensors and reused anchored cache separately; do not claim an anchored extraction-speed improvement from cache reuse"
+}
