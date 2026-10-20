@@ -1,0 +1,19 @@
+{
+  "created_at_utc": "2026-10-20T04:18:47.944922+00:00",
+  "training_protocol_sha256": "ef41a101f446b2a872c4bcdbaac1a0557056523235c15ce09e772f0c2ccbe35e",
+  "implementation_sha256": {
+    "scripts/verify_context_score_rtl.py": "47b5ef04c388558efb319eb66f1a8b5b70f74812f25153e09283e86d320f9837",
+    "scripts/verify_tcn_confidence_rtl.py": "2e2400dcd7d43f0edb73d683ada8822609d2ddae435a7665126841f7af7d5703",
+    "hardware_sim/python_golden/tcn_confidence_model.py": "a1883f540c339ec5a4c7c215e8cecc5ef10d391ff586478b9152b031cecc448c",
+    "hardware_sim/rtl/tcn_confidence_gate.v": "b95fc5ff34ab252c5186117a2b17367f1f16a2754d63ce2afe87cb40541a6b03",
+    "hardware_sim/testbench/tcn_confidence_gate_tb.v": "9560e1157f402af28f0290922b4b1085a0cefe0f9619b7384b981053d3e00c22"
+  },
+  "encoding": "UNORM16 floor(value*65535+0.5); same encoding for scores and TRAIN-selected thresholds",
+  "endpoints": [
+    "Integer-golden/RTL cycle mismatches",
+    "Float/integer positive, review and episode changes",
+    "Float/integer event-detection and trigger-time changes"
+  ],
+  "cohorts": "Every selected model and corresponding calibration/test source, including empty sources; no score-dependent exclusion",
+  "scope": "Post-inference control verification only; not Snapdragon NPU compute, synthesis, timing or power"
+}

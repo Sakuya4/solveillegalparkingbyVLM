@@ -151,3 +151,26 @@ the study rather than changing its cohort. Every new checkpoint's embedded
 0.5 threshold is explicitly an unselected placeholder; only the separately
 frozen training-holdout selection defines operating policies. Reference
 desktop models are not replaced.
+
+### Decoder Gate and Cost Contracts
+
+The complete fitting decoder gate passes **27,986 selected frames** from
+557 sources and all 2,633 manifest contexts, with zero failed sources. The
+full audit is retained under `outputs/accident/continuous_context/`; its SHA256
+is `6c0d7a2605ae5f8c8688eb945a4bbad3ebf5d44733c7641ec1b77dbd0549d212`.
+
+Separate contracts, fixed before new model results, specify temporal-only
+CPU latency and integer-controller verification. All models receive the same
+first context from ten supported TRAIN-calibration sources. Twenty warm-up
+calls precede 1,000 timed batch-one calls per model, with two CPU threads.
+The benchmark includes standardization but excludes detection, decoding,
+networking, queueing and VLM review. It runs after the extraction/replay jobs.
+
+The new hardware check applies the original UNORM16 encoder, Python golden
+controller and Icarus testbench to all selected calibration/test streams. It
+counts float/integer positive, review, episode, event and trigger-time changes,
+including empty sources and gap resets. It does not assume quantization parity
+or claim NPU arithmetic, synthesized timing or target power.
+
+[CPU timing contract](results/continuous_context_latency_protocol.json) ·
+[New-score controller contract](results/continuous_context_rtl_protocol.json).

@@ -74,8 +74,10 @@
 - [x] Freeze the eight-model continuous-context training comparison, source splits, settings, operating objective and new event cohorts before extraction/fitting.
 - [x] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.
 - [x] Pass two common-fit real-detector CPU smoke sources; keep all 13 smoke contexts separate from fitting.
-- [ ] Complete expanded-frame decoder verification before production feature extraction.
+- [x] Verify all 27,986 selected frames across 557 sources and 2,633 fit contexts before production extraction; retain zero decoder failures.
+- [x] Predeclare matched temporal CPU timing and new-score RTL verification before study results.
 - [ ] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
+- [ ] Publish matched temporal CPU costs and verify the new selected score streams in the existing RTL controller.
 
 ## Completed Case: Red-Line Parking
 

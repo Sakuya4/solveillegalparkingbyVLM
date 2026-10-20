@@ -1,0 +1,96 @@
+{
+  "created_at_utc": "2026-10-20T04:16:57.906445+00:00",
+  "protocol_sha256": "ef41a101f446b2a872c4bcdbaac1a0557056523235c15ce09e772f0c2ccbe35e",
+  "execution_sha256": "afcd4b133878a925c5d24b1775078a2c617c61c8dd70fd291211d14ce4731f0b",
+  "benchmark_sha256": "991c5da0a848e3732414d930ec255d1f39a7cc4e3fcd5959a6278119879d97c5",
+  "inputs": [
+    {
+      "path": "real_videos/-Qt5bDJNT84_00.mp4",
+      "source_sha256": "8cf18669880dde4488a127d2ebd70bb483c11fa0c254ab2cd062f4ae614dadbf",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/5e473d80cec97f799b819889729ef148b20b45f73e44b389ed059e28dab42065.npz",
+      "features_sha256": "c99bb4e499b2b4c87f1e82fecd32ed127e9e86a13667eb8223e2a4374243a6fd",
+      "report_sha256": "c75fcbea2e877d7774ff26f6ea82053b1041acf5b3feabe58160d8dbbd161f78"
+    },
+    {
+      "path": "real_videos/-T_E4YhtjyE_00.mp4",
+      "source_sha256": "bb8bfc97671fd492c2ba5bd1f3b5173072c7795373ff2f84dd988e7a87c8faf7",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/e628d4cda2a728568cb3a53ba00b05a76a5c91820fdd9b6c34528e53b36dbbf1.npz",
+      "features_sha256": "3c8d8149d8f337ef936ad1af0f006ecb9e6183a7b80fecb0274c328ae17508d6",
+      "report_sha256": "3551f8636b6ee682a4f9f4e7f3ed946b3acb60dafc90d2178c76dfb4e777db97"
+    },
+    {
+      "path": "real_videos/-jZ5Rlhzzi4_00.mp4",
+      "source_sha256": "b00703cb8f4d188e09a6953a1b0da7a14dc55fb8024711668118ac0f23334599",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/adfae2778e3f6449854b5dd91ef0aa8db74be9387fbd1f91b6e23622e4f4f392.npz",
+      "features_sha256": "394634c8c8968cf7fd063af2147b1eb0eb2eb8aae1eed06a51d554fceebc9b96",
+      "report_sha256": "f0fdc0d2548422836570e906974b80b749ef22ac93dce16ae8f296ac890255d3"
+    },
+    {
+      "path": "real_videos/-yLuZ5wxAsc_00.mp4",
+      "source_sha256": "1961ad6739efcd81328afaaa4a2225378c2c5cad4e539904a6ad43ae63622234",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/6844760dae7aee5475ad895d0947d9e24da8ecd62121e60e3ca19a988878e5ee.npz",
+      "features_sha256": "ddf500963f22e787f5a4e05aedb3f8fa89ae75dcba4697c98d24484fd09e23dd",
+      "report_sha256": "a28efdf2db19f6d66941486c9d54099cb1ca77b91dbedb6e9893cedd95f7fb8c"
+    },
+    {
+      "path": "real_videos/0ThWw_efieo_01.mp4",
+      "source_sha256": "b85c76c7715a8176e9a67ecb36d73c2182b8f5c28c32563440d8ef85ab69b0d8",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/139c2384227ab77aa8f1868143e64abef874d9f3f9aba76464e19c6a4c5640f4.npz",
+      "features_sha256": "b36ca33c445cb4ed8aef3096c0cb6a4b5d1987033ddc74e232a92eb37be2fa7a",
+      "report_sha256": "a4d8dd3683c99391e7092c4da97c6eb1d3a0becf6adc84406dd9878491f2221e"
+    },
+    {
+      "path": "real_videos/1BsCOLh_qEs_00.mp4",
+      "source_sha256": "92e9c04f3a5ae827b1475836f9a6248aae1dc092227b112f59b995cff0138d10",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/f7a009d32b9265b5f31301f5ec118332229122051ba99e8243ae0b09fc006431.npz",
+      "features_sha256": "c68da0ebc937b70370cdd2318bf2738efee8be2bcd1229566a1e732e6feb8bd4",
+      "report_sha256": "c6b992fca0409671eba895afb25cda7160e7d420953b4f0de1ffeffe8efb26fb"
+    },
+    {
+      "path": "real_videos/3UBcAuDgcOg_00.mp4",
+      "source_sha256": "31e193b6e3d9365dc27fb80dad0a9624cceac1c9df420b532045b99dc12d6d56",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/5522cc19b9b31959e2438edda36d66d927cba2b73dd157299c307b04c9351af1.npz",
+      "features_sha256": "05bb9a91d1336154add8b078d1a9902807a01cc7bfbed76767d901612d6595c9",
+      "report_sha256": "040a5c507e93bc4d5b781e0251339a596b5f95058f08e59a85fbd08360911c1d"
+    },
+    {
+      "path": "real_videos/3Xd6PxEvbNk_11_00.mp4",
+      "source_sha256": "3aad43205e9a9a611ef744b00a8355f94ab9c2d926c04dc63aeab04f4799cc42",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/a52d7d4dae81556cd0be6e6f299e1549c03661828e96fdd4361f0ad4894a5634.npz",
+      "features_sha256": "63c6e26ea9aacf810909fa680b4e6a7c1fcb8b44a2a6d303499d9865465ce1d5",
+      "report_sha256": "685da9061eb01d50354c5e69ca60a31e42acc8426327305f7f369994e8861a83"
+    },
+    {
+      "path": "real_videos/3Xd6PxEvbNk_3_00.mp4",
+      "source_sha256": "0a68f9b5dbee58077cab957ffb37a58e91129306eac8390f7f53e5974cb618ff",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/87c823dfb205cbc2f6f88debd198a92c1ebd013f33eec0d16acfd79f2feb7489.npz",
+      "features_sha256": "48aee860b28464b44e991049688a11fc4836667c7b55465b63508e05a4a5e7fb",
+      "report_sha256": "a6f7f5adbd7aee331a35149c78eb42f96a307e58733ab7fd3a56c8258ff30f2e"
+    },
+    {
+      "path": "real_videos/3Xd6PxEvbNk_5_00.mp4",
+      "source_sha256": "763e3043b6fdd97d40fd219dbb57db9b58fb8d80b3702e99c0f4551418ee32cc",
+      "window_offset": 0,
+      "features_path": "outputs/accident/presentation_events_calibration/7e073d3fa473d60b1a511cb22b046d682036435fd732f469925d6c7074b5b3d6.npz",
+      "features_sha256": "49b91c322a3a5fad6e4e38fdd4c03e25f1c9d498f8ebd56b9ee97107335cf5a7",
+      "report_sha256": "6923b4f0e541b1fa99093be5bfa18d301705f4f3916f1c048d70dc4ef4d0d8c5"
+    }
+  ],
+  "input_selection": "First valid context from each of the first ten supported calibration-union source names; not selected by scores or labels",
+  "warmup_calls_per_model": 20,
+  "timed_calls_per_model": 1000,
+  "batch_size": 1,
+  "threads": 2,
+  "schedule": "Deterministic round-robin over ten identical source contexts for all eight models",
+  "scope": "Temporal-only CPU predict_probabilities including standardization; excludes detector, decoder, network, queues and VLM. Not Snapdragon/NPU latency.",
+  "isolation": "Run only after research extraction/fitting/replay jobs finish; OS workload lock held. Other operating-system activity is not controlled."
+}
