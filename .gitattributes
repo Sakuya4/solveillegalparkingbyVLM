@@ -97,3 +97,5 @@ docs/results/continuous_context_results.csv text eol=crlf
 docs/results/continuous_context_outcomes.csv text eol=crlf
 docs/results/continuous_context_scores.csv text eol=crlf
 docs/results/continuous_context_calibration.csv text eol=crlf
+docs/results/live_runtime_20261020_protocol.json text eol=lf
+docs/results/live_runtime_20261020.json text eol=lf

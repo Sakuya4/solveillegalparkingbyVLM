@@ -72,7 +72,9 @@
 - [x] Run a predeclared 120-second night-time public-camera experiment and publish numeric timing/reconnection traces without assigning ground truth.
 - [x] Freeze and complete the fit-only continuous-context support audit, without reading model scores or test endpoints.
 - [x] Freeze the eight-model continuous-context training comparison, source splits, settings, operating objective and new event cohorts before extraction/fitting.
-- [ ] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.
+- [x] Implement/test/hash-freeze the new extraction, fitting and calibration-before-test workers.
+- [x] Pass two common-fit real-detector CPU smoke sources; keep all 13 smoke contexts separate from fitting.
+- [ ] Complete expanded-frame decoder verification before production feature extraction.
 - [ ] Execute all eight fits and the separately frozen event comparison without changing reference defaults.
 
 ## Completed Case: Red-Line Parking
